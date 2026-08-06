@@ -284,8 +284,7 @@ function nbAuthSaveName() {
   var phone = localStorage.getItem('nb_phone') || '';
   var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
 
-  // Save to Shopify cart attributes & pre-fill checkout parameters
-  // Phone auto-populates checkout → Shopify creates customer profile on order completion
+  // Save to Shopify cart attributes & Order Note
   fetch('/cart/update.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -295,7 +294,8 @@ function nbAuthSaveName() {
         'Customer Name':    name,
         'WhatsApp Consent': promoConsent ? 'yes' : 'no',
         'Captured At':      new Date().toLocaleString('en-IN')
-      }
+      },
+      note: 'CUSTOMER CONTACT PHONE: ' + phone + ' | NAME: ' + name
     })
   }).then(function() {
     if (btn) {
@@ -334,7 +334,7 @@ function nbAuthSaveName() {
         setTimeout(function() {
           window.nbCartAdding = false;
           window.nbAuthSaving = false;
-        }, 600);
+        }, 800);
       });
 
     } else if (nbAuthPendingAction === 'preorder') {
@@ -364,13 +364,14 @@ function nbBuildCheckoutUrl(phone, name) {
   var params = [];
 
   if (phone) {
-    var encodedPhone = encodeURIComponent(phone);
+    var phone10       = phone.replace(/\D/g, '').slice(-10);
+    var phoneFormatted = '+91' + phone10;
 
-    params.push('checkout[phone]=' + encodedPhone);
-    params.push('checkout[contact][phone]=' + encodedPhone);
-    params.push('checkout[shipping_address][phone]=' + encodedPhone);
-    params.push('checkout[billing_address][phone]=' + encodedPhone);
-    params.push('checkout[email]=' + encodedPhone);
+    params.push('checkout[phone]=' + encodeURIComponent(phoneFormatted));
+    params.push('checkout[contact][phone]=' + encodeURIComponent(phoneFormatted));
+    params.push('checkout[shipping_address][phone]=' + encodeURIComponent(phone10));
+    params.push('checkout[billing_address][phone]=' + encodeURIComponent(phone10));
+    params.push('checkout[email]=' + encodeURIComponent(phoneFormatted));
   }
 
   if (name) {
@@ -414,7 +415,7 @@ function nbAuthSkip() {
       if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
     })
     .finally(function() {
-      setTimeout(function() { window.nbCartAdding = false; }, 600);
+      setTimeout(function() { window.nbCartAdding = false; }, 800);
     });
   } else if (nbAuthPendingAction === 'preorder') {
     nbAuthPendingAction = null;
@@ -449,7 +450,8 @@ function nbGoToCheckout() {
         'Customer Phone':   phone,
         'Customer Name':    name,
         'WhatsApp Consent': localStorage.getItem('nb_promo_consent') || 'no'
-      }
+      },
+      note: 'CUSTOMER CONTACT PHONE: ' + phone + ' | NAME: ' + name
     })
   }).then(function() {
     window.location.href = nbBuildCheckoutUrl(phone, name);
@@ -460,30 +462,32 @@ function nbGoToCheckout() {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  // ── Global Order Now quick-form submit handler ──
+  // ── Global Order Now quick-form submit handler (CAPTURE PHASE + STOP PROPAGATION) ──
   document.addEventListener('submit', function(e) {
     var form = e.target;
     if (!form || !form.classList || !form.classList.contains('nb-quick-form')) return;
+    
     e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
 
-    if (form.dataset.submitting === 'true' || window.nbCartAdding) return;
+    if (form.dataset.submitting === 'true' || window.nbCartAdding) return false;
+    form.dataset.submitting = 'true';
+    window.nbCartAdding = true;
 
     var phone = localStorage.getItem('nb_phone');
     var name  = localStorage.getItem('nb_name');
 
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var origText = submitBtn ? submitBtn.textContent : 'Order Now';
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Adding...';
+    }
+
     if (phone && name) {
       // Returning customer — add to cart directly with submission locking
-      form.dataset.submitting = 'true';
-      window.nbCartAdding = true;
-
-      var submitBtn = form.querySelector('button[type="submit"]');
-      var origText = submitBtn ? submitBtn.textContent : 'Order Now';
-
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Adding...';
-      }
-
       var variantId = form.querySelector('[name="id"]').value;
       fetch('/cart/add.js', {
         method: 'POST',
@@ -504,13 +508,21 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.disabled = false;
             submitBtn.textContent = origText;
           }
-        }, 600);
+        }, 800);
       });
     } else {
-      // First time — show auth gate
+      // First time — unlock button and show auth gate
+      setTimeout(function() {
+        form.dataset.submitting = 'false';
+        window.nbCartAdding = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = origText;
+        }
+      }, 400);
       nbShowAuthGate('cart', form);
     }
-  });
+  }, true); // Capture phase stops any other theme scripts from double firing!
 
   // ── Pre-Order buttons handler ──
   document.addEventListener('click', function(e) {
