@@ -1,94 +1,21 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "status": {
-      "type": "nb-kitchen-status",
-      "settings": {
-        "status_title": "Open",
-        "status_prep": "⏱️ Est. Prep: 30–60 Mins"
-      }
-    },
-    "hero": {
-      "type": "nb-hero",
-      "settings": {
-        "hero_badge": "⚡ Authentic Hyderabadi Dum Biryani",
-        "hero_title": "Premium Dum Biryani, Freshly Prepared for Every Occasion",
-        "hero_subtitle": "Whether you're craving a quick meal or planning a family gathering, enjoy freshly prepared biryani made with carefully selected ingredients and delivered across Kalyan and nearby areas.",
-        "hero_btn1_text": "⚡ Order Instant Delivery",
-        "hero_btn1_link": "/collections/instant-delivery",
-        "hero_btn2_text": "👑 Plan a Family Order",
-        "hero_btn2_link": "/pages/family-feast",
-        "hero_trust_text": "✓ Freshly Prepared • ✓ 100% Halal • ✓ Secure Online Payments"
-      }
-    },
-    "experience": {
-      "type": "nb-experience-cards",
-      "settings": {
-        "exp_title": "How Would You Like to Order?",
-        "instant_card_title": "Instant Delivery",
-        "instant_card_desc": "Freshly prepared portions available today. Ready in approximately 30–60 minutes.",
-        "instant_card_cta": "Order Now",
-        "instant_card_link": "/collections/instant-delivery",
-        "family_card_title": "Family Orders",
-        "family_card_desc": "Planning a gathering? Pre-order 1 Kg and above with your preferred delivery schedule.",
-        "family_card_cta": "Plan Family Order",
-        "family_card_link": "/pages/family-feast"
-      }
-    },
-    "instant_delivery": {
-      "type": "nb-instant-delivery",
+    "nb_homepage_main": {
+      "type": "nb-homepage",
+      "name": "Niamat Restaurant Homepage",
       "settings": {}
-    },
-    "why_choose_us": {
-      "type": "nb-why-choose-us",
-      "settings": {
-        "reasons_title": "Why Customers Choose Biryani Palace by Niamat"
-      }
-    },
-    "family_menu": {
-      "type": "nb-family-menu",
-      "settings": {}
-    },
-    "delivery_areas": {
-      "type": "nb-delivery-areas",
-      "settings": {
-        "delivery_title": "Where We Deliver",
-        "delivery_desc": "Serving Kalyan and selected nearby areas. Delivery availability and charges are confirmed during checkout based on your location."
-      }
-    },
-    "reviews": {
-      "type": "nb-customer-reviews",
-      "settings": {
-        "reviews_title": "Loved by Our Customers"
-      }
-    },
-    "faq": {
-      "type": "nb-faq",
-      "settings": {
-        "faq_title": "Frequently Asked Questions"
-      }
-    },
-    "final_cta": {
-      "type": "nb-final-cta",
-      "settings": {
-        "final_cta_title": "Ready to Enjoy Freshly Prepared Biryani?",
-        "final_cta_desc": "Choose Instant Delivery for today's cravings or plan your next family gathering with our advance ordering service.",
-        "final_btn1_text": "Order Instant Delivery",
-        "final_btn1_link": "/collections/instant-delivery",
-        "final_btn2_text": "Plan Family Order",
-        "final_btn2_link": "/pages/family-feast"
-      }
     }
   },
   "order": [
-    "status",
-    "hero",
-    "experience",
-    "instant_delivery",
-    "why_choose_us",
-    "family_menu",
-    "delivery_areas",
-    "reviews",
-    "faq",
-    "final_cta"
+    "nb_homepage_main"
   ]
 }
