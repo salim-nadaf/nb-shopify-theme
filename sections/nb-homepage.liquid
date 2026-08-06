@@ -1,13 +1,12 @@
 {% comment %}
   NIAMAT BIRYANI — Behrouz-Inspired Royal Mobile-First Restaurant Homepage
-  100% HTML Validated & Fully Customizable in Shopify Theme Editor
+  100% Self-Contained & Guaranteed Rendering in Shopify
 {% endcomment %}
-{% render 'food-card-styles' %}
 
 <section class="nb-behrouz-home" style="--nb-bg: {{ section.settings.color_page_bg | default: '#FFFAF4' }}; --nb-dark: {{ section.settings.color_dark_bg | default: '#1E100A' }}; --nb-gold: {{ section.settings.color_accent_gold | default: '#C8922A' }};">
 
   <!-- ① KITCHEN STATUS BAR -->
-  {% if section.settings.show_status != false %}
+  {% unless section.settings.show_status == false %}
   <div class="nb-b-status">
     <div class="nb-b-status__inner">
       <div class="nb-b-status__live">
@@ -17,10 +16,10 @@
       <span class="nb-b-status__prep">{{ section.settings.status_prep | default: "⏱️ Est. Prep: 30–60 Mins" }}</span>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ② ROYAL HERO BANNER -->
-  {% if section.settings.show_hero != false %}
+  {% unless section.settings.show_hero == false %}
   <div class="nb-b-hero">
     {% if section.settings.hero_video_url != blank %}
       <video autoplay muted loop playsinline class="nb-b-hero__video">
@@ -55,10 +54,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ③ CHOOSE YOUR DINING EXPERIENCE (DUAL BEHAVIOR GATE) -->
-  {% if section.settings.show_exp != false %}
+  {% unless section.settings.show_exp == false %}
   <div class="nb-b-section">
     <div class="nb-b-container">
       <div class="nb-b-head text-center">
@@ -103,10 +102,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ④ TODAY'S AVAILABLE (INSTANT DELIVERY FOOD CARDS) -->
-  {% if section.settings.show_today != false %}
+  {% unless section.settings.show_today == false %}
   <div class="nb-b-section nb-b-section--alt">
     <div class="nb-b-container">
       <div class="nb-b-head flex-between">
@@ -211,10 +210,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ⑤ WHY CHOOSE US (4 PILLARS) -->
-  {% if section.settings.show_reasons != false %}
+  {% unless section.settings.show_reasons == false %}
   <div class="nb-b-section">
     <div class="nb-b-container">
       <div class="nb-b-head text-center">
@@ -249,10 +248,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ⑥ SIGNATURE COLLECTION BANNER -->
-  {% if section.settings.show_signature != false %}
+  {% unless section.settings.show_signature == false %}
   <div class="nb-b-section nb-b-section--dark-banner">
     <div class="nb-b-container">
       <div class="nb-b-banner-box">
@@ -265,10 +264,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ⑦ FAMILY GATHERINGS & EVENTS -->
-  {% if section.settings.show_family != false %}
+  {% unless section.settings.show_family == false %}
   <div class="nb-b-section nb-b-section--alt">
     <div class="nb-b-container">
       <div class="nb-b-family-card">
@@ -295,10 +294,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ⑧ WHERE WE DELIVER (DELIVERY AREAS) -->
-  {% if section.settings.show_delivery != false %}
+  {% unless section.settings.show_delivery == false %}
   <div class="nb-b-section">
     <div class="nb-b-container">
       <div class="nb-b-delivery-box">
@@ -319,10 +318,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ⑨ CUSTOMER REVIEWS (GOOGLE VERIFIED) -->
-  {% if section.settings.show_reviews != false %}
+  {% unless section.settings.show_reviews == false %}
   <div class="nb-b-section nb-b-section--alt">
     <div class="nb-b-container">
       <div class="nb-b-head text-center">
@@ -372,10 +371,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ⑩ FREQUENTLY ASKED QUESTIONS (ACCORDION) -->
-  {% if section.settings.show_faq != false %}
+  {% unless section.settings.show_faq == false %}
   <div class="nb-b-section">
     <div class="nb-b-container">
       <div class="nb-b-head text-center">
@@ -446,10 +445,10 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- ⑪ FINAL CALL TO ACTION -->
-  {% if section.settings.show_final_cta != false %}
+  {% unless section.settings.show_final_cta == false %}
   <div class="nb-b-section nb-b-section--final-cta">
     <div class="nb-b-container">
       <div class="nb-b-final-box">
@@ -466,7 +465,7 @@
       </div>
     </div>
   </div>
-  {% endif %}
+  {% endunless %}
 
   <!-- DELIVERY AVAILABILITY MODAL -->
   <div id="nb-b-delivery-modal" class="nb-b-modal-overlay">
@@ -499,6 +498,36 @@
     .nb-b-container { padding: 0 24px; }
     .desktop-only { display: inline-block; }
     .mobile-only { display: none; }
+  }
+
+  /* FOOD CARD STYLES */
+  .nb-food-card { display: flex; flex-direction: row; align-items: center; gap: 14px; background: #FFFAF4; border: 1px solid rgba(200,146,42,0.18); border-radius: 14px; padding: 14px; margin-bottom: 12px; position: relative; transition: box-shadow 0.2s ease; }
+  .nb-food-card:hover { box-shadow: 0 4px 20px rgba(44,24,16,0.1); }
+  .nb-food-card__image { position: relative; flex-shrink: 0; width: 110px; height: 110px; border-radius: 10px; overflow: hidden; background: #F5ECD7; }
+  .nb-food-card__image img { width: 100%; height: 100%; object-fit: cover; }
+  .nb-food-card__image-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+  .nb-badge { position: absolute; top: 6px; left: 6px; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; letter-spacing: 0.3px; }
+  .nb-badge--available { background: #C8922A; color: #fff; }
+  .nb-badge--soldout { background: #999; color: #fff; }
+  .nb-food-card__body { flex: 1; display: flex; flex-direction: column; justify-content: space-between; min-height: 110px; }
+  .nb-food-card__title { font-size: 0.95rem; font-weight: 700; color: #2C1810; margin: 0 0 4px; line-height: 1.3; }
+  .nb-food-card__desc { font-size: 0.78rem; color: #7A5C4A; margin: 0 0 6px; line-height: 1.4; }
+  .nb-food-card__bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .nb-food-card__price { font-size: 1.05rem; font-weight: 800; color: #2C1810; }
+  .nb-prep-time { font-size: 0.72rem; font-weight: 600; color: #7A5C4A; margin-left: 6px; }
+  .nb-btn { font-size: 0.82rem; font-weight: 700; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; display: inline-block; white-space: nowrap; transition: background 0.15s ease; }
+  .nb-btn--gold { background: #C8922A; color: #fff; }
+  .nb-btn--gold:hover { background: #A67520; color: #fff; }
+  .nb-btn--disabled { background: #E0D5C8; color: #999; cursor: not-allowed; }
+  .nb-variant-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .nb-variant-pill { font-size: 0.75rem; font-weight: 600; padding: 5px 10px; border-radius: 20px; border: 1.5px solid rgba(200,146,42,0.4); background: #FDF6EC; color: #2C1810; cursor: pointer; transition: all 0.15s; }
+  .nb-variant-pill.active, .nb-variant-pill:hover { background: #C8922A; color: #fff; border-color: #C8922A; }
+
+  @media (min-width: 768px) {
+    .nb-food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .nb-food-card { margin-bottom: 0; }
+    .nb-food-card__image { width: 130px; height: 130px; }
+    .nb-food-card__title { font-size: 1rem; }
   }
 
   /* KITCHEN STATUS */
