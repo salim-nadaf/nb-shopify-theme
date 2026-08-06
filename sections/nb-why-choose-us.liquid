@@ -1,0 +1,68 @@
+{% comment %} NIAMAT BIRYANI — Why Choose Us Section {% endcomment %}
+
+<section class="nb-section">
+  <div class="nb-container">
+    <div class="nb-section-head text-center">
+      <span class="nb-subhead-badge">Our Commitment</span>
+      <h2 class="nb-section-title">{{ section.settings.heading | default: "Why Customers Choose Biryani Palace by Niamat" }}</h2>
+    </div>
+
+    <div class="nb-reasons-grid">
+      <div class="nb-reason-card">
+        <div class="nb-reason-icon">🍲</div>
+        <h4>Freshly Prepared</h4>
+        <p>Prepared for every service using carefully selected ingredients.</p>
+      </div>
+
+      <div class="nb-reason-card">
+        <div class="nb-reason-icon">🌙</div>
+        <h4>100% Halal</h4>
+        <p>Prepared following halal practices.</p>
+      </div>
+
+      <div class="nb-reason-card">
+        <div class="nb-reason-icon">🔒</div>
+        <h4>Secure Online Ordering</h4>
+        <p>Fast and secure online checkout.</p>
+      </div>
+
+      <div class="nb-reason-card">
+        <div class="nb-reason-icon">👨‍👩‍👧‍👦</div>
+        <h4>Family Focused</h4>
+        <p>Perfect for everyday meals and family gatherings.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.nb-reasons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.nb-reason-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 14px; padding: 16px; text-align: center; }
+.nb-reason-icon { font-size: 2rem; margin-bottom: 8px; }
+.nb-reason-card h4 { font-size: 0.95rem; font-weight: 700; color: #2C1810; margin: 0 0 4px; }
+.nb-reason-card p { font-size: 0.78rem; color: #7A5C4A; margin: 0; line-height: 1.4; }
+
+@media (min-width: 768px) {
+  .nb-reasons-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .nb-reason-card { padding: 24px 18px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "🌟 Why Customers Choose Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why Customers Choose Biryani Palace by Niamat"
+    }
+  ],
+  "presets": [
+    {
+      "name": "🌟 Why Customers Choose Us"
+    }
+  ]
+}
+{% endschema %}

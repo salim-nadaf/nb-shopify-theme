@@ -1,0 +1,78 @@
+{% comment %} NIAMAT BIRYANI — Family Gatherings Section {% endcomment %}
+
+<section class="nb-section nb-section--bg-alt">
+  <div class="nb-container">
+    <div class="nb-family-box">
+      <div class="nb-family-content">
+        <span class="nb-subhead-badge">Advance Catering</span>
+        <h2 class="nb-section-title">{{ section.settings.heading | default: "Made for Family Gatherings" }}</h2>
+        <p class="nb-section-desc">{{ section.settings.subheading | default: "Planning a celebration, office lunch or weekend family meal? Pre-order your preferred quantity and delivery time." }}</p>
+        
+        <ul class="nb-family-list">
+          <li>✓ Custom Portioning (1 Kg Serves 4–5 People)</li>
+          <li>✓ Timed Slots Guaranteed Fresh from Handi</li>
+          <li>✓ Special Handi Packaging Included</li>
+        </ul>
+
+        <a href="{{ section.settings.btn_link | default: '/pages/family-feast' }}" class="nb-btn-glass">{{ section.settings.btn_text | default: "Book Family Order" }}</a>
+      </div>
+      <div class="nb-family-visual">
+        <div class="nb-family-badge-icon">👑</div>
+        <h3>Handi Family Feast</h3>
+        <p>1 Kg, 2 Kg & Bulk Packs Available</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.nb-family-box { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.nb-family-list { list-style: none; padding: 0; margin: 16px 0 24px; font-size: 0.85rem; color: #2C1810; font-weight: 600; display: flex; flex-direction: column; gap: 8px; }
+.nb-family-visual { background: linear-gradient(135deg, #FDF6EC 0%, #F5ECD7 100%); border: 1px solid rgba(200, 146, 42, 0.25); border-radius: 16px; padding: 28px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.nb-family-badge-icon { font-size: 3rem; margin-bottom: 8px; }
+.nb-family-visual h3 { font-size: 1.1rem; font-weight: 800; color: #2C1810; margin: 0 0 4px; }
+.nb-family-visual p { font-size: 0.8rem; color: #C8922A; font-weight: 700; margin: 0; }
+
+@media (min-width: 768px) {
+  .nb-family-box { flex-direction: row; align-items: center; padding: 40px; }
+  .nb-family-content { flex: 1; }
+  .nb-family-visual { width: 280px; flex-shrink: 0; padding: 40px 24px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "👨‍👩‍👧‍👦 Family Gatherings",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Made for Family Gatherings"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Planning a celebration, office lunch or weekend family meal? Pre-order your preferred quantity and delivery time."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Book Family Order"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link",
+      "default": "/pages/family-feast"
+    }
+  ],
+  "presets": [
+    {
+      "name": "👨‍👩‍👧‍👦 Family Gatherings"
+    }
+  ]
+}
+{% endschema %}

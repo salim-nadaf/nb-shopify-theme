@@ -1,22 +1,61 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "nb_homepage_rXNfmJ": {
-      "type": "nb-homepage",
-      "disabled": true,
-      "name": "Homepage Content",
+    "hero": {
+      "type": "nb-hero",
+      "settings": {}
+    },
+    "kitchen_status": {
+      "type": "nb-kitchen-status",
+      "settings": {}
+    },
+    "order_experience": {
+      "type": "nb-order-experience",
+      "settings": {}
+    },
+    "today_available": {
+      "type": "nb-today-available",
+      "settings": {}
+    },
+    "why_choose_us": {
+      "type": "nb-why-choose-us",
+      "settings": {}
+    },
+    "signature_menu": {
+      "type": "nb-signature-menu",
+      "settings": {}
+    },
+    "family_gatherings": {
+      "type": "nb-family-gatherings",
+      "settings": {}
+    },
+    "delivery_areas": {
+      "type": "nb-delivery-areas",
+      "settings": {}
+    },
+    "customer_reviews": {
+      "type": "nb-customer-reviews",
+      "settings": {}
+    },
+    "faq_accordion": {
+      "type": "nb-faq-accordion",
+      "settings": {}
+    },
+    "final_cta": {
+      "type": "nb-final-cta",
       "settings": {}
     }
   },
   "order": [
-    "nb_homepage_rXNfmJ"
+    "hero",
+    "kitchen_status",
+    "order_experience",
+    "today_available",
+    "why_choose_us",
+    "signature_menu",
+    "family_gatherings",
+    "delivery_areas",
+    "customer_reviews",
+    "faq_accordion",
+    "final_cta"
   ]
 }

@@ -1,0 +1,131 @@
+{% comment %} NIAMAT BIRYANI — FAQ Accordion Section {% endcomment %}
+
+<section class="nb-section">
+  <div class="nb-container">
+    <div class="nb-section-head text-center">
+      <span class="nb-subhead-badge">Help & Info</span>
+      <h2 class="nb-section-title">{{ section.settings.heading | default: "Frequently Asked Questions" }}</h2>
+    </div>
+
+    <div class="nb-faq-accordion">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq' -%}
+          <details class="nb-faq-item" {{ block.shopify_attributes }}>
+            <summary class="nb-faq-question">
+              <span>{{ block.settings.question }}</span>
+              <span class="nb-faq-icon">+</span>
+            </summary>
+            <div class="nb-faq-answer">
+              <p>{{ block.settings.answer }}</p>
+            </div>
+          </details>
+        {%- endif -%}
+      {%- else -%}
+        <details class="nb-faq-item">
+          <summary class="nb-faq-question">
+            <span>How fast is Instant Delivery?</span>
+            <span class="nb-faq-icon">+</span>
+          </summary>
+          <div class="nb-faq-answer">
+            <p>Instant Delivery orders are prepared fresh and dispatched promptly. Most orders arrive within 30 to 60 minutes depending on your location in Kalyan.</p>
+          </div>
+        </details>
+        <details class="nb-faq-item">
+          <summary class="nb-faq-question">
+            <span>Which areas do you deliver to?</span>
+            <span class="nb-faq-icon">+</span>
+          </summary>
+          <div class="nb-faq-answer">
+            <p>We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and surrounding locations.</p>
+          </div>
+        </details>
+        <details class="nb-faq-item">
+          <summary class="nb-faq-question">
+            <span>What payment methods are supported?</span>
+            <span class="nb-faq-icon">+</span>
+          </summary>
+          <div class="nb-faq-answer">
+            <p>We support all major online payment options including Google Pay, PhonePe, Paytm, Credit/Debit Cards, Net Banking, and Cash on Delivery.</p>
+          </div>
+        </details>
+        <details class="nb-faq-item">
+          <summary class="nb-faq-question">
+            <span>How do Family Pre-Orders work?</span>
+            <span class="nb-faq-icon">+</span>
+          </summary>
+          <div class="nb-faq-answer">
+            <p>For orders of 1 Kg and above, you can select your preferred delivery time slot 2 to 48 hours in advance to ensure fresh handi preparation for your event.</p>
+          </div>
+        </details>
+        <details class="nb-faq-item">
+          <summary class="nb-faq-question">
+            <span>Is the food prepared fresh for every order?</span>
+            <span class="nb-faq-icon">+</span>
+          </summary>
+          <div class="nb-faq-answer">
+            <p>Yes, absolutely. We prepare our biryanis in fresh dum batches throughout the day to ensure authentic aroma, moisture, and flavor in every portion.</p>
+          </div>
+        </details>
+        <details class="nb-faq-item">
+          <summary class="nb-faq-question">
+            <span>Is the meat 100% Halal certified?</span>
+            <span class="nb-faq-icon">+</span>
+          </summary>
+          <div class="nb-faq-answer">
+            <p>Yes. All meats used at Biryani Palace by Niamat are 100% halal certified and handled following strict hygiene and halal protocols.</p>
+          </div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+.nb-faq-accordion { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+.nb-faq-item { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 12px; overflow: hidden; }
+.nb-faq-question { padding: 16px 20px; font-size: 0.92rem; font-weight: 700; color: #2C1810; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+.nb-faq-question::-webkit-details-marker { display: none; }
+.nb-faq-icon { font-size: 1.2rem; color: #C8922A; font-weight: 400; transition: transform 0.2s; }
+.nb-faq-item[open] .nb-faq-icon { transform: rotate(45deg); }
+.nb-faq-answer { padding: 0 20px 16px; font-size: 0.84rem; color: #7A5C4A; line-height: 1.5; }
+.nb-faq-answer p { margin: 0; }
+</style>
+
+{% schema %}
+{
+  "name": "❓ FAQ Accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Q&A Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How fast is Instant Delivery?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Instant Delivery orders are prepared fresh and dispatched promptly. Most orders arrive within 30 to 60 minutes."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "❓ FAQ Accordion"
+    }
+  ]
+}
+{% endschema %}

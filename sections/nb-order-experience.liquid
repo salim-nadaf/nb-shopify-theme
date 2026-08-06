@@ -1,0 +1,125 @@
+{% comment %} NIAMAT BIRYANI — Order Experience Cards Section {% endcomment %}
+
+<section class="nb-section">
+  <div class="nb-container">
+    <div class="nb-section-head text-center">
+      <span class="nb-subhead-badge">Tailored Dining</span>
+      <h2 class="nb-section-title">{{ section.settings.heading | default: "How Would You Like to Order?" }}</h2>
+    </div>
+
+    <div class="nb-experience-grid">
+      <!-- Instant Delivery Card -->
+      <div class="nb-exp-card nb-exp-card--instant">
+        <div class="nb-exp-card__badge">⚡ Today's Craving</div>
+        <div class="nb-exp-card__icon">🍛</div>
+        <h3 class="nb-exp-card__title">{{ section.settings.card1_title | default: "Instant Delivery" }}</h3>
+        <p class="nb-exp-card__desc">{{ section.settings.card1_desc | default: "Freshly prepared portions available today. Ready in approximately 30–60 minutes." }}</p>
+        <div class="nb-exp-card__meta">
+          <span>🚀 30–60 Min Delivery</span>
+          <span>📍 Kalyan & Nearby</span>
+        </div>
+        <a href="{{ section.settings.card1_link | default: '/collections/instant-delivery' }}" class="nb-btn-gold nb-btn-full">{{ section.settings.card1_cta | default: "Order Now" }}</a>
+      </div>
+
+      <!-- Family Orders Card -->
+      <div class="nb-exp-card nb-exp-card--family">
+        <div class="nb-exp-card__badge">👑 Gatherings & Parties</div>
+        <div class="nb-exp-card__icon">👨‍👩‍👧‍👦</div>
+        <h3 class="nb-exp-card__title">{{ section.settings.card2_title | default: "Family Orders" }}</h3>
+        <p class="nb-exp-card__desc">{{ section.settings.card2_desc | default: "Planning a gathering? Pre-order 1 Kg and above with your preferred delivery schedule." }}</p>
+        <div class="nb-exp-card__meta">
+          <span>📦 1 Kg – 10 Kg+ Quantities</span>
+          <span>📅 Scheduled Delivery</span>
+        </div>
+        <a href="{{ section.settings.card2_link | default: '/pages/family-feast' }}" class="nb-btn-glass nb-btn-full">{{ section.settings.card2_cta | default: "Plan Family Order" }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.nb-experience-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.nb-exp-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 18px; padding: 24px 20px; position: relative; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+.nb-exp-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(44, 24, 16, 0.08); }
+.nb-exp-card--instant { border-color: rgba(200, 146, 42, 0.35); }
+.nb-exp-card--family { background: #FFFDF7; border-color: rgba(44, 24, 16, 0.2); }
+.nb-exp-card__badge { align-self: flex-start; font-size: 0.72rem; font-weight: 700; background: rgba(200, 146, 42, 0.12); color: #C8922A; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+.nb-exp-card__icon { font-size: 2.2rem; margin-bottom: 8px; }
+.nb-exp-card__title { font-size: 1.2rem; font-weight: 800; color: #2C1810; margin: 0 0 8px; }
+.nb-exp-card__desc { font-size: 0.85rem; color: #7A5C4A; margin: 0 0 16px; line-height: 1.45; flex: 1; }
+.nb-exp-card__meta { display: flex; gap: 12px; font-size: 0.75rem; font-weight: 600; color: #C8922A; margin-bottom: 18px; flex-wrap: wrap; }
+
+.nb-btn-full { width: 100%; box-sizing: border-box; text-align: center; }
+
+@media (min-width: 768px) {
+  .nb-experience-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .nb-exp-card { padding: 32px 28px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "🍱 Order Experience",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How Would You Like to Order?"
+    },
+    {
+      "type": "text",
+      "id": "card1_title",
+      "label": "Instant Card Title",
+      "default": "Instant Delivery"
+    },
+    {
+      "type": "textarea",
+      "id": "card1_desc",
+      "label": "Instant Card Description",
+      "default": "Freshly prepared portions available today. Ready in approximately 30–60 minutes."
+    },
+    {
+      "type": "text",
+      "id": "card1_cta",
+      "label": "Instant Card Button Text",
+      "default": "Order Now"
+    },
+    {
+      "type": "url",
+      "id": "card1_link",
+      "label": "Instant Card Button Link",
+      "default": "/collections/instant-delivery"
+    },
+    {
+      "type": "text",
+      "id": "card2_title",
+      "label": "Family Card Title",
+      "default": "Family Orders"
+    },
+    {
+      "type": "textarea",
+      "id": "card2_desc",
+      "label": "Family Card Description",
+      "default": "Planning a gathering? Pre-order 1 Kg and above with your preferred delivery schedule."
+    },
+    {
+      "type": "text",
+      "id": "card2_cta",
+      "label": "Family Card Button Text",
+      "default": "Plan Family Order"
+    },
+    {
+      "type": "url",
+      "id": "card2_link",
+      "label": "Family Card Button Link",
+      "default": "/pages/family-feast"
+    }
+  ],
+  "presets": [
+    {
+      "name": "🍱 Order Experience"
+    }
+  ]
+}
+{% endschema %}

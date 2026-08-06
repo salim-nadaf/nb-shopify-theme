@@ -1,0 +1,59 @@
+{% comment %} NIAMAT BIRYANI — Signature Menu Banner Section {% endcomment %}
+
+<section class="nb-section nb-section--banner">
+  <div class="nb-container">
+    <div class="nb-banner-card">
+      <div class="nb-banner-content">
+        <span class="nb-subhead-badge gold">Full Culinary Range</span>
+        <h2>{{ section.settings.heading | default: "Explore Our Signature Menu" }}</h2>
+        <p>{{ section.settings.subheading | default: "Discover our complete range of biryanis, starters and sides." }}</p>
+        <a href="{{ section.settings.btn_link | default: '/collections/all' }}" class="nb-btn-gold">{{ section.settings.btn_text | default: "View Full Menu" }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.nb-banner-card { background: linear-gradient(135deg, #2C1810 0%, #3D2015 100%); border-radius: 20px; padding: 36px 24px; color: #fff; text-align: center; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(44, 24, 16, 0.15); }
+.nb-banner-content { max-width: 600px; margin: 0 auto; }
+.nb-subhead-badge.gold { color: #FDF6EC; background: rgba(200, 146, 42, 0.25); }
+.nb-banner-content h2 { font-size: 1.6rem; font-weight: 800; color: #FFFDF7; margin: 8px 0 10px; }
+.nb-banner-content p { font-size: 0.88rem; color: #E2D5C5; margin: 0 0 22px; }
+</style>
+
+{% schema %}
+{
+  "name": "📜 Signature Menu Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Explore Our Signature Menu"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our complete range of biryanis, starters and sides."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "View Full Menu"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "📜 Signature Menu Banner"
+    }
+  ]
+}
+{% endschema %}
