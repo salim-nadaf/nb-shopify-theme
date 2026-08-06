@@ -1,11 +1,11 @@
 {% comment %} NIAMAT BIRYANI — Premium Restaurant Homepage (Fully Customizable via Theme Editor) {% endcomment %}
 {% render 'food-card-styles' %}
 
-<div class="nb-hp-wrapper" style="--nb-hp-bg: {{ section.settings.color_page_bg }}; --nb-hp-dark: {{ section.settings.color_dark_bg }}; --nb-hp-gold: {{ section.settings.color_accent_gold }}; --nb-hp-text: {{ section.settings.color_text }};">
+<div class="nb-hp-wrapper" style="--nb-hp-bg: {{ section.settings.color_page_bg | default: '#FFFAF4' }}; --nb-hp-dark: {{ section.settings.color_dark_bg | default: '#1E100A' }}; --nb-hp-gold: {{ section.settings.color_accent_gold | default: '#C8922A' }}; --nb-hp-text: {{ section.settings.color_text | default: '#2C1810' }};">
 
   <!-- ==================== SECTION 1: HERO ==================== -->
-  {%- if section.settings.show_hero -%}
-  <section class="nb-hero" style="padding-top: {{ section.settings.hero_padding_top }}px; padding-bottom: {{ section.settings.hero_padding_bottom }}px;">
+  {%- if section.settings.show_hero != false -%}
+  <section class="nb-hero" style="padding-top: {{ section.settings.hero_padding_top | default: 48 }}px; padding-bottom: {{ section.settings.hero_padding_bottom | default: 56 }}px;">
     {%- if section.settings.hero_video_url != blank -%}
       <video autoplay muted loop playsinline class="nb-hero__video">
         <source src="{{ section.settings.hero_video_url }}" type="video/mp4">
@@ -19,47 +19,39 @@
     {%- endif -%}
 
     <div class="nb-container nb-hero__content">
-      {%- if section.settings.hero_badge != blank -%}
-        <span class="nb-hero__badge">{{ section.settings.hero_badge }}</span>
-      {%- endif -%}
-      <h1 class="nb-hero__headline">{{ section.settings.hero_title }}</h1>
-      <p class="nb-hero__subheading">{{ section.settings.hero_subtitle }}</p>
+      <span class="nb-hero__badge">{{ section.settings.hero_badge | default: "⚡ Authentic Hyderabadi Dum Biryani" }}</span>
+      <h1 class="nb-hero__headline">{{ section.settings.hero_title | default: "Premium Dum Biryani, Freshly Prepared for Every Occasion" }}</h1>
+      <p class="nb-hero__subheading">{{ section.settings.hero_subtitle | default: "Whether you're craving a quick meal or planning a family gathering, enjoy freshly prepared biryani made with carefully selected ingredients and delivered across Kalyan and nearby areas." }}</p>
       
       <div class="nb-hero__actions">
-        {%- if section.settings.hero_btn1_text != blank -%}
-          <a href="{{ section.settings.hero_btn1_link }}" class="nb-btn-gold">
-            <span>{{ section.settings.hero_btn1_text }}</span>
-          </a>
-        {%- endif -%}
-        {%- if section.settings.hero_btn2_text != blank -%}
-          <a href="{{ section.settings.hero_btn2_link }}" class="nb-btn-glass">
-            <span>{{ section.settings.hero_btn2_text }}</span>
-          </a>
-        {%- endif -%}
+        <a href="{{ section.settings.hero_btn1_link | default: '/collections/instant-delivery' }}" class="nb-btn-gold">
+          <span>{{ section.settings.hero_btn1_text | default: "⚡ Order Instant Delivery" }}</span>
+        </a>
+        <a href="{{ section.settings.hero_btn2_link | default: '/pages/family-feast' }}" class="nb-btn-glass">
+          <span>{{ section.settings.hero_btn2_text | default: "👑 Plan a Family Order" }}</span>
+        </a>
       </div>
 
-      {%- if section.settings.hero_trust_text != blank -%}
-        <div class="nb-hero__trust">
-          {{ section.settings.hero_trust_text }}
-        </div>
-      {%- endif -%}
+      <div class="nb-hero__trust">
+        {{ section.settings.hero_trust_text | default: "✓ Freshly Prepared &nbsp;•&nbsp; ✓ 100% Halal &nbsp;•&nbsp; ✓ Secure Online Payments" }}
+      </div>
     </div>
   </section>
   {%- endif -%}
 
   <!-- ==================== SECTION 2: KITCHEN STATUS ==================== -->
-  {%- if section.settings.show_status -%}
+  {%- if section.settings.show_status != false -%}
   <section class="nb-section nb-section--status">
     <div class="nb-container">
       <div class="nb-status-card">
         <div class="nb-status-header">
           <div class="nb-status-indicator">
             <span class="nb-pulse-dot"></span>
-            <span class="nb-status-title">Kitchen Status: <strong>{{ section.settings.status_title }}</strong></span>
+            <span class="nb-status-title">Kitchen Status: <strong>{{ section.settings.status_title | default: "Open" }}</strong></span>
           </div>
-          <span class="nb-prep-badge">{{ section.settings.status_prep }}</span>
+          <span class="nb-prep-badge">{{ section.settings.status_prep | default: "⏱️ Est. Prep: 30–60 Minutes" }}</span>
         </div>
-        <p class="nb-status-msg">{{ section.settings.status_msg }}</p>
+        <p class="nb-status-msg">{{ section.settings.status_msg | default: "Today's fresh batches are now available for instant delivery across Kalyan." }}</p>
         <div class="nb-status-services">
           <span class="nb-service-tag active">☀️ Lunch Service (Active)</span>
           <span class="nb-service-tag active">🌙 Dinner Service (Active)</span>
@@ -70,12 +62,12 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 3: CHOOSE YOUR ORDERING EXPERIENCE ==================== -->
-  {%- if section.settings.show_exp -%}
+  {%- if section.settings.show_exp != false -%}
   <section class="nb-section">
     <div class="nb-container">
       <div class="nb-section-head text-center">
         <span class="nb-subhead-badge">Tailored Dining</span>
-        <h2 class="nb-section-title">{{ section.settings.exp_title }}</h2>
+        <h2 class="nb-section-title">{{ section.settings.exp_title | default: "How Would You Like to Order?" }}</h2>
       </div>
 
       <div class="nb-experience-grid">
@@ -83,26 +75,26 @@
         <div class="nb-exp-card nb-exp-card--instant">
           <div class="nb-exp-card__badge">⚡ Today's Craving</div>
           <div class="nb-exp-card__icon">🍛</div>
-          <h3 class="nb-exp-card__title">{{ section.settings.instant_card_title }}</h3>
-          <p class="nb-exp-card__desc">{{ section.settings.instant_card_desc }}</p>
+          <h3 class="nb-exp-card__title">{{ section.settings.instant_card_title | default: "Instant Delivery" }}</h3>
+          <p class="nb-exp-card__desc">{{ section.settings.instant_card_desc | default: "Freshly prepared portions available today. Ready in approximately 30–60 minutes." }}</p>
           <div class="nb-exp-card__meta">
             <span>🚀 30–60 Min Delivery</span>
             <span>📍 Kalyan & Nearby</span>
           </div>
-          <a href="{{ section.settings.instant_card_link }}" class="nb-btn-gold nb-btn-full">{{ section.settings.instant_card_cta }}</a>
+          <a href="{{ section.settings.instant_card_link | default: '/collections/instant-delivery' }}" class="nb-btn-gold nb-btn-full">{{ section.settings.instant_card_cta | default: "Order Now" }}</a>
         </div>
 
         <!-- Family Orders Card -->
         <div class="nb-exp-card nb-exp-card--family">
           <div class="nb-exp-card__badge">👑 Gatherings & Parties</div>
           <div class="nb-exp-card__icon">👨‍👩‍👧‍👦</div>
-          <h3 class="nb-exp-card__title">{{ section.settings.family_card_title }}</h3>
-          <p class="nb-exp-card__desc">{{ section.settings.family_card_desc }}</p>
+          <h3 class="nb-exp-card__title">{{ section.settings.family_card_title | default: "Family Orders" }}</h3>
+          <p class="nb-exp-card__desc">{{ section.settings.family_card_desc | default: "Planning a gathering? Pre-order 1 Kg and above with your preferred delivery schedule." }}</p>
           <div class="nb-exp-card__meta">
             <span>📦 1 Kg – 10 Kg+ Quantities</span>
             <span>📅 Scheduled Delivery</span>
           </div>
-          <a href="{{ section.settings.family_card_link }}" class="nb-btn-glass nb-btn-full">{{ section.settings.family_card_cta }}</a>
+          <a href="{{ section.settings.family_card_link | default: '/pages/family-feast' }}" class="nb-btn-glass nb-btn-full">{{ section.settings.family_card_cta | default: "Plan Family Order" }}</a>
         </div>
       </div>
     </div>
@@ -110,14 +102,14 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 4: TODAY'S AVAILABLE ==================== -->
-  {%- if section.settings.show_today -%}
+  {%- if section.settings.show_today != false -%}
   <section class="nb-section nb-section--bg-alt">
     <div class="nb-container">
       <div class="nb-section-head">
         <div>
           <span class="nb-subhead-badge">Fresh Batches</span>
-          <h2 class="nb-section-title">{{ section.settings.today_title }}</h2>
-          <p class="nb-section-desc">{{ section.settings.today_desc }}</p>
+          <h2 class="nb-section-title">{{ section.settings.today_title | default: "Available Today" }}</h2>
+          <p class="nb-section-desc">{{ section.settings.today_desc | default: "Freshly prepared items currently available for instant delivery." }}</p>
         </div>
         <a href="/collections/instant-delivery" class="nb-link-gold desktop-only">View All Available →</a>
       </div>
@@ -125,7 +117,7 @@
       {%- assign instant_coll = collections[section.settings.today_collection] | default: collections['instant-delivery'] -%}
       <div class="nb-food-grid">
         {%- if instant_coll != blank and instant_coll.products.size > 0 -%}
-          {%- for product in instant_coll.products limit: section.settings.products_to_show -%}
+          {%- for product in instant_coll.products limit: section.settings.products_to_show | default: 6 -%}
             {%- liquid
               assign first_variant = product.selected_or_first_available_variant
               assign is_available = first_variant.available
@@ -218,12 +210,12 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 5: WHY CHOOSE US ==================== -->
-  {%- if section.settings.show_reasons -%}
+  {%- if section.settings.show_reasons != false -%}
   <section class="nb-section">
     <div class="nb-container">
       <div class="nb-section-head text-center">
         <span class="nb-subhead-badge">Our Commitment</span>
-        <h2 class="nb-section-title">{{ section.settings.reasons_title }}</h2>
+        <h2 class="nb-section-title">{{ section.settings.reasons_title | default: "Why Customers Choose Biryani Palace by Niamat" }}</h2>
       </div>
 
       <div class="nb-reasons-grid">
@@ -256,15 +248,15 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 6: SIGNATURE COLLECTION ==================== -->
-  {%- if section.settings.show_signature -%}
+  {%- if section.settings.show_signature != false -%}
   <section class="nb-section nb-section--banner">
     <div class="nb-container">
       <div class="nb-banner-card">
         <div class="nb-banner-content">
           <span class="nb-subhead-badge gold">Full Culinary Range</span>
-          <h2>{{ section.settings.sig_title }}</h2>
-          <p>{{ section.settings.sig_desc }}</p>
-          <a href="{{ section.settings.sig_btn_link }}" class="nb-btn-gold">{{ section.settings.sig_btn_text }}</a>
+          <h2>{{ section.settings.sig_title | default: "Explore Our Signature Menu" }}</h2>
+          <p>{{ section.settings.sig_desc | default: "Discover our complete range of biryanis, starters and sides." }}</p>
+          <a href="{{ section.settings.sig_btn_link | default: '/collections/all' }}" class="nb-btn-gold">{{ section.settings.sig_btn_text | default: "View Full Menu" }}</a>
         </div>
       </div>
     </div>
@@ -272,14 +264,14 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 7: FAMILY GATHERINGS ==================== -->
-  {%- if section.settings.show_family -%}
+  {%- if section.settings.show_family != false -%}
   <section class="nb-section nb-section--bg-alt">
     <div class="nb-container">
       <div class="nb-family-box">
         <div class="nb-family-content">
           <span class="nb-subhead-badge">Advance Catering</span>
-          <h2 class="nb-section-title">{{ section.settings.family_title }}</h2>
-          <p class="nb-section-desc">{{ section.settings.family_desc }}</p>
+          <h2 class="nb-section-title">{{ section.settings.family_title | default: "Made for Family Gatherings" }}</h2>
+          <p class="nb-section-desc">{{ section.settings.family_desc | default: "Planning a celebration, office lunch or weekend family meal? Pre-order your preferred quantity and delivery time." }}</p>
           
           <ul class="nb-family-list">
             <li>✓ Custom Portioning (1 Kg Serves 4–5 People)</li>
@@ -287,7 +279,7 @@
             <li>✓ Special Handi Packaging Included</li>
           </ul>
 
-          <a href="{{ section.settings.family_btn_link }}" class="nb-btn-glass">{{ section.settings.family_btn_text }}</a>
+          <a href="{{ section.settings.family_btn_link | default: '/pages/family-feast' }}" class="nb-btn-glass">{{ section.settings.family_btn_text | default: "Book Family Order" }}</a>
         </div>
         <div class="nb-family-visual">
           <div class="nb-family-badge-icon">👑</div>
@@ -300,13 +292,13 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 8: DELIVERY AREAS ==================== -->
-  {%- if section.settings.show_delivery -%}
+  {%- if section.settings.show_delivery != false -%}
   <section class="nb-section">
     <div class="nb-container">
       <div class="nb-delivery-card">
         <div class="nb-delivery-icon">📍</div>
-        <h2 class="nb-section-title">{{ section.settings.delivery_title }}</h2>
-        <p class="nb-section-desc">{{ section.settings.delivery_desc }}</p>
+        <h2 class="nb-section-title">{{ section.settings.delivery_title | default: "Where We Deliver" }}</h2>
+        <p class="nb-section-desc">{{ section.settings.delivery_desc | default: "Serving Kalyan and selected nearby areas. Delivery availability and charges are confirmed during checkout based on your location." }}</p>
 
         <div class="nb-area-pills">
           <span class="nb-area-pill">Kalyan West</span>
@@ -324,12 +316,12 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 9: CUSTOMER REVIEWS ==================== -->
-  {%- if section.settings.show_reviews -%}
+  {%- if section.settings.show_reviews != false -%}
   <section class="nb-section nb-section--bg-alt">
     <div class="nb-container">
       <div class="nb-section-head text-center">
         <span class="nb-subhead-badge">Verified Reviews</span>
-        <h2 class="nb-section-title">{{ section.settings.reviews_title }}</h2>
+        <h2 class="nb-section-title">{{ section.settings.reviews_title | default: "Loved by Our Customers" }}</h2>
         <p class="nb-section-desc">Read genuine Google Reviews from customers who have enjoyed our food.</p>
       </div>
 
@@ -377,12 +369,12 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 10: FREQUENTLY ASKED QUESTIONS ==================== -->
-  {%- if section.settings.show_faq -%}
+  {%- if section.settings.show_faq != false -%}
   <section class="nb-section">
     <div class="nb-container">
       <div class="nb-section-head text-center">
         <span class="nb-subhead-badge">Help & Info</span>
-        <h2 class="nb-section-title">{{ section.settings.faq_title }}</h2>
+        <h2 class="nb-section-title">{{ section.settings.faq_title | default: "Frequently Asked Questions" }}</h2>
       </div>
 
       <div class="nb-faq-accordion">
@@ -433,15 +425,15 @@
   {%- endif -%}
 
   <!-- ==================== SECTION 11: FINAL CALL TO ACTION ==================== -->
-  {%- if section.settings.show_final_cta -%}
+  {%- if section.settings.show_final_cta != false -%}
   <section class="nb-section nb-section--final-cta">
     <div class="nb-container">
       <div class="nb-final-cta-card">
-        <h2>{{ section.settings.final_cta_title }}</h2>
-        <p>{{ section.settings.final_cta_desc }}</p>
+        <h2>{{ section.settings.final_cta_title | default: "Ready to Enjoy Freshly Prepared Biryani?" }}</h2>
+        <p>{{ section.settings.final_cta_desc | default: "Choose Instant Delivery for today's cravings or plan your next family gathering with our advance ordering service." }}</p>
         <div class="nb-final-actions">
-          <a href="{{ section.settings.final_btn1_link }}" class="nb-btn-gold">{{ section.settings.final_btn1_text }}</a>
-          <a href="{{ section.settings.final_btn2_link }}" class="nb-btn-glass">{{ section.settings.final_btn2_text }}</a>
+          <a href="{{ section.settings.final_btn1_link | default: '/collections/instant-delivery' }}" class="nb-btn-gold">{{ section.settings.final_btn1_text | default: "Order Instant Delivery" }}</a>
+          <a href="{{ section.settings.final_btn2_link | default: '/pages/family-feast' }}" class="nb-btn-glass">{{ section.settings.final_btn2_text | default: "Plan Family Order" }}</a>
         </div>
       </div>
     </div>
