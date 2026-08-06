@@ -316,11 +316,7 @@ function nbAuthSaveName() {
 
     if (nbAuthPendingAction === 'checkout') {
       nbAuthPendingAction = null;
-      var checkoutUrl = '/checkout';
-      if (phone) {
-        checkoutUrl += '?checkout[email]=' + encodeURIComponent(phone) + '&checkout[shipping_address][phone]=' + encodeURIComponent(phone);
-      }
-      window.location.href = checkoutUrl;
+      window.location.href = nbBuildCheckoutUrl(phone, name);
 
     } else if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
       var pendingForm = nbAuthPendingForm;
@@ -359,6 +355,40 @@ function nbAuthSaveName() {
   });
 }
 
+function nbBuildCheckoutUrl(phone, name) {
+  var url = '/checkout';
+  var params = [];
+
+  if (phone) {
+    var encodedPhone = encodeURIComponent(phone);
+    params.push('checkout[phone]=' + encodedPhone);
+    params.push('checkout[contact][phone]=' + encodedPhone);
+    params.push('checkout[shipping_address][phone]=' + encodedPhone);
+    params.push('checkout[billing_address][phone]=' + encodedPhone);
+    params.push('checkout[email]=' + encodedPhone);
+  }
+
+  if (name) {
+    var parts = name.trim().split(/\s+/);
+    var firstName = parts[0] || '';
+    var lastName  = parts.slice(1).join(' ') || '';
+
+    if (firstName) {
+      params.push('checkout[shipping_address][first_name]=' + encodeURIComponent(firstName));
+      params.push('checkout[billing_address][first_name]=' + encodeURIComponent(firstName));
+    }
+    if (lastName) {
+      params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
+      params.push('checkout[billing_address][last_name]=' + encodeURIComponent(lastName));
+    }
+  }
+
+  if (params.length > 0) {
+    url += '?' + params.join('&');
+  }
+  return url;
+}
+
 function nbAuthSkip() {
   nbAuthClose();
   if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
@@ -378,8 +408,10 @@ function nbAuthSkip() {
     nbAuthPendingAction = null;
     window.location.href = '/pages/family-feast';
   } else if (nbAuthPendingAction === 'checkout') {
+    var phone = localStorage.getItem('nb_phone') || '';
+    var name  = localStorage.getItem('nb_name')  || '';
     nbAuthPendingAction = null;
-    window.location.href = '/checkout';
+    window.location.href = nbBuildCheckoutUrl(phone, name);
   } else {
     if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
   }
@@ -408,13 +440,9 @@ function nbGoToCheckout() {
       }
     })
   }).then(function() {
-    var checkoutUrl = '/checkout';
-    if (phone) {
-      checkoutUrl += '?checkout[email]=' + encodeURIComponent(phone) + '&checkout[shipping_address][phone]=' + encodeURIComponent(phone);
-    }
-    window.location.href = checkoutUrl;
+    window.location.href = nbBuildCheckoutUrl(phone, name);
   }).catch(function() {
-    window.location.href = '/checkout';
+    window.location.href = nbBuildCheckoutUrl(phone, name);
   });
 }
 
