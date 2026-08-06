@@ -283,45 +283,9 @@ function nbAuthSaveName() {
   localStorage.setItem('nb_name', name);
   var phone = localStorage.getItem('nb_phone') || '';
   var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
-  var phoneClean = phone.replace(/\D/g, '');
-  var leadEmail = 'customer_' + (phoneClean || Date.now()) + '@niamatbiryani.com';
 
-  // 1. Instantly register lead in Shopify Admin -> Customers BEFORE checkout
-  try {
-    var customerLeadData = new FormData();
-    customerLeadData.append('form_type', 'customer');
-    customerLeadData.append('utf8', '✓');
-    customerLeadData.append('contact[email]', leadEmail);
-    customerLeadData.append('contact[phone]', phone);
-    customerLeadData.append('contact[first_name]', name);
-    customerLeadData.append('contact[tags]', 'AuthGateLead, PreCheckoutLead, WhatsAppOptIn');
-    if (promoConsent) {
-      customerLeadData.append('contact[accepts_marketing]', 'true');
-    }
-
-    fetch('/contact#contact_form', {
-      method: 'POST',
-      body: customerLeadData
-    }).catch(function() {});
-  } catch(e) {}
-
-  // 2. Optional Shopify Forms backend submit
-  try {
-    var formsPayload = new FormData();
-    formsPayload.append('form_id', '1101010');
-    formsPayload.append('contact[first_name]', name);
-    formsPayload.append('contact[phone]', phone);
-    formsPayload.append('contact[email]', leadEmail);
-    formsPayload.append('contact[accepts_marketing]', promoConsent ? 'true' : 'false');
-
-    fetch('/forms/submit', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: formsPayload
-    }).catch(function() {});
-  } catch(e) {}
-
-  // 3. Update Shopify Cart Attributes
+  // Save to Shopify cart attributes & pre-fill checkout parameters
+  // Phone auto-populates checkout → Shopify creates customer profile on order completion
   fetch('/cart/update.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -401,14 +365,12 @@ function nbBuildCheckoutUrl(phone, name) {
 
   if (phone) {
     var encodedPhone = encodeURIComponent(phone);
-    var phoneClean   = phone.replace(/\D/g, '');
-    var leadEmail    = 'customer_' + (phoneClean || Date.now()) + '@niamatbiryani.com';
 
     params.push('checkout[phone]=' + encodedPhone);
     params.push('checkout[contact][phone]=' + encodedPhone);
     params.push('checkout[shipping_address][phone]=' + encodedPhone);
     params.push('checkout[billing_address][phone]=' + encodedPhone);
-    params.push('checkout[email]=' + encodeURIComponent(leadEmail));
+    params.push('checkout[email]=' + encodedPhone);
   }
 
   if (name) {
