@@ -1,0 +1,121 @@
+{% comment %} NIAMAT BIRYANI — Homepage (Full Design Control) {% endcomment %}
+
+<div class="nb-home" style="background: {{ section.settings.page_bg }};">
+
+  <!-- ① KITCHEN STATUS -->
+  {% if section.settings.show_status %}
+  <div class="nb-status-bar" style="background: {{ section.settings.status_bg }}; padding: {{ section.settings.status_padding }}px 20px;">
+    <div class="nb-status-bar__inner">
+      <span class="nb-status-dot" style="background: {{ section.settings.status_dot_color }};"></span>
+      <span class="nb-status-text" style="color: {{ section.settings.status_text_color }}; font-size: {{ section.settings.status_font_size }}px;">
+        {{ section.settings.status_text }}
+      </span>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ② HERO MEDIA -->
+  {% if section.settings.show_hero %}
+  <div class="nb-hero-media" style="height: {{ section.settings.hero_height }}vh;">
+    {% if section.settings.hero_video != blank %}
+      <video autoplay muted loop playsinline class="nb-hero-media__video">
+        <source src="{{ section.settings.hero_video }}">
+      </video>
+    {% elsif section.settings.hero_image != blank %}
+      <img src="{{ section.settings.hero_image | image_url: width: 1400 }}"
+           alt="{{ section.settings.hero_image_alt }}"
+           class="nb-hero-media__img">
+    {% endif %}
+    <div class="nb-hero-media__overlay"
+         style="background: linear-gradient(to top, {{ section.settings.hero_overlay_color }}, transparent);
+                padding: {{ section.settings.hero_padding }}px 24px;
+                align-items: {{ section.settings.hero_align }};">
+      <h2 class="nb-hero-media__title"
+          style="color: {{ section.settings.hero_title_color }};
+                 font-size: {{ section.settings.hero_title_size }}px;">
+        {{ section.settings.hero_title }}
+      </h2>
+      <p class="nb-hero-media__sub"
+         style="color: {{ section.settings.hero_sub_color }};
+                font-size: {{ section.settings.hero_sub_size }}px;">
+        {{ section.settings.hero_subtitle }}
+      </p>
+      <a href="{{ section.settings.hero_btn_link }}"
+         class="nb-btn nb-btn--gold nb-btn--lg"
+         style="background: {{ section.settings.hero_btn_bg }}; color: {{ section.settings.hero_btn_text_color }};">
+        {{ section.settings.hero_btn_text }}
+      </a>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ③ ORDER YOUR WAY -->
+  {% if section.settings.show_ways %}
+  <div class="nb-order-ways"
+       style="padding: {{ section.settings.ways_padding_top }}px 20px {{ section.settings.ways_padding_bottom }}px;
+              background: {{ section.settings.ways_bg }};">
+    <h2 class="nb-section-title"
+        style="color: {{ section.settings.ways_title_color }}; font-size: {{ section.settings.ways_title_size }}px;">
+      {{ section.settings.ways_title }}
+    </h2>
+    <p class="nb-section-sub" style="color: {{ section.settings.ways_sub_color }};">{{ section.settings.ways_subtitle }}</p>
+    <div class="nb-ways-grid" style="max-width: {{ section.settings.content_max_width }}px; margin: 0 auto;">
+      <a href="{{ section.settings.instant_link }}" class="nb-way-card"
+         style="background: {{ section.settings.card_bg }}; border-color: {{ section.settings.card_border_color }}; border-radius: {{ section.settings.card_radius }}px;">
+        <div class="nb-way-card__icon" style="font-size: {{ section.settings.card_icon_size }}px;">{{ section.settings.instant_icon }}</div>
+        <div class="nb-way-card__body">
+          <h3 style="color: {{ section.settings.card_title_color }};">{{ section.settings.instant_title }}</h3>
+          <p style="color: {{ section.settings.card_text_color }};">{{ section.settings.instant_desc }}</p>
+          <span class="nb-way-card__cta"
+                style="background: {{ section.settings.accent_color }}; color: {{ section.settings.accent_text_color }}; border-radius: {{ section.settings.btn_radius }}px;">
+            {{ section.settings.instant_cta }}
+          </span>
+        </div>
+      </a>
+      <a href="{{ section.settings.family_link }}" class="nb-way-card"
+         style="background: {{ section.settings.card_bg }}; border-color: {{ section.settings.card_border_color }}; border-radius: {{ section.settings.card_radius }}px;">
+        <div class="nb-way-card__icon" style="font-size: {{ section.settings.card_icon_size }}px;">{{ section.settings.family_icon }}</div>
+        <div class="nb-way-card__body">
+          <h3 style="color: {{ section.settings.card_title_color }};">{{ section.settings.family_title }}</h3>
+          <p style="color: {{ section.settings.card_text_color }};">{{ section.settings.family_desc }}</p>
+          <span class="nb-way-card__cta nb-way-card__cta--outline"
+                style="border-color: {{ section.settings.accent_color }}; color: {{ section.settings.accent_color }}; border-radius: {{ section.settings.btn_radius }}px;">
+            {{ section.settings.family_cta }}
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ④ TODAY'S KITCHEN -->
+  {% if section.settings.show_today %}
+  <div class="nb-today" style="background: {{ section.settings.today_bg }}; padding: {{ section.settings.today_padding }}px 20px;">
+    <div class="nb-today__inner" style="max-width: {{ section.settings.content_max_width }}px; margin: 0 auto;">
+      <div class="nb-today__text">
+        <span class="nb-today__label" style="color: {{ section.settings.accent_color }};">{{ section.settings.today_label }}</span>
+        <h2 style="color: {{ section.settings.today_title_color }}; font-size: {{ section.settings.today_title_size }}px;">{{ section.settings.today_title }}</h2>
+        <p style="color: {{ section.settings.today_text_color }};">{{ section.settings.today_desc }}</p>
+        <a href="{{ section.settings.today_btn_link }}"
+           class="nb-btn nb-btn--gold"
+           style="background: {{ section.settings.accent_color }}; color: {{ section.settings.accent_text_color }}; border-radius: {{ section.settings.btn_radius }}px;">
+          {{ section.settings.today_btn_text }}
+        </a>
+      </div>
+      <div class="nb-today__badges">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'badge' -%}
+            <div class="nb-badge-card"
+                 style="background: {{ section.settings.badge_bg }}; border-color: {{ section.settings.badge_border }}; border-radius: {{ section.settings.card_radius }}px;"
+                 {{ block.shopify_attributes }}>
+              <span class="nb-badge-card__icon">{{ block.settings.icon }}</span>
+              <span class="nb-badge-card__text" style="color: {{ section.settings.today_title_color }};">{{ block.settings.label }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ⑤ WHY CHOOSE US -->

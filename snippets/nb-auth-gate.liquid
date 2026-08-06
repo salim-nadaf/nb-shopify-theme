@@ -1,0 +1,448 @@
+{% comment %} NIAMAT BIRYANI — Pre-Checkout Auth Gate + Shopify Forms Backend {% endcomment %}
+
+<div id="nb-auth-overlay"></div>
+
+<div id="nb-auth-modal" role="dialog" aria-modal="true">
+  <!-- Step 1: Phone Entry -->
+  <div id="nb-auth-step-1" class="nb-auth-step active">
+    <div class="nb-auth-header">
+      <span class="nb-auth-logo">🍛</span>
+      <h2>Before we proceed</h2>
+      <p>Enter your mobile number to receive order updates on WhatsApp</p>
+    </div>
+    <div class="nb-auth-body">
+      <div class="nb-phone-input-wrap">
+        <span class="nb-phone-prefix">🇮🇳 +91</span>
+        <input type="tel" id="nb-phone-input" placeholder="98765 43210"
+               maxlength="10" pattern="[0-9]{10}" inputmode="numeric"
+               autocomplete="tel-national">
+      </div>
+      <p class="nb-auth-consent">
+        📋 Your number will be used only for order confirmations and delivery updates. We will never share it with third parties.
+      </p>
+      <label class="nb-promo-consent">
+        <input type="checkbox" id="nb-promo-checkbox">
+        <span>Send me offers &amp; updates on WhatsApp</span>
+      </label>
+      <p class="nb-promo-note">Optional · You can unsubscribe anytime</p>
+    </div>
+    <div class="nb-auth-footer">
+      <button class="nb-auth-btn nb-auth-btn--primary" onclick="nbAuthSubmitPhone()">Continue →</button>
+      <button class="nb-auth-btn nb-auth-btn--ghost" onclick="nbAuthSkip()">Skip for now</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Name Entry -->
+  <div id="nb-auth-step-2" class="nb-auth-step">
+    <div class="nb-auth-header">
+      <span class="nb-auth-logo">👋</span>
+      <h2>What should we call you?</h2>
+      <p>So we can personalise your order experience</p>
+    </div>
+    <div class="nb-auth-body">
+      <input type="text" id="nb-name-input" class="nb-name-input"
+             placeholder="Your name" autocomplete="name" inputmode="text">
+      <p class="nb-auth-returning" id="nb-returning-msg" style="display:none">
+        ✅ Welcome back! We found your previous orders.
+      </p>
+    </div>
+    <div class="nb-auth-footer">
+      <button class="nb-auth-btn nb-auth-btn--primary" id="nb-lets-order-btn" onclick="nbAuthSaveName()">
+        Let's Order! 🍛
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+#nb-auth-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(44,24,16,0.6);
+  z-index: 999990;
+  backdrop-filter: blur(3px);
+}
+#nb-auth-overlay.active { display: block; }
+
+#nb-auth-modal {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 999991;
+  background: #FFFAF4;
+  border-radius: 24px 24px 0 0;
+  padding: 28px 24px 48px;
+  max-width: 480px;
+  margin: 0 auto;
+  box-shadow: 0 -8px 40px rgba(44,24,16,0.2);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+#nb-auth-modal.active {
+  display: block;
+  transform: translateY(0);
+}
+#nb-auth-modal::before {
+  content: '';
+  display: block;
+  width: 40px; height: 4px;
+  background: rgba(44,24,16,0.15);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+}
+.nb-auth-step { display: none; }
+.nb-auth-step.active { display: block; }
+
+.nb-auth-header { text-align: center; margin-bottom: 24px; }
+.nb-auth-logo { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+.nb-auth-header h2 { font-size: 1.3rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+.nb-auth-header p { font-size: 0.85rem; color: #7A5C4A; margin: 0; line-height: 1.5; }
+
+.nb-auth-body { margin-bottom: 20px; }
+
+.nb-phone-input-wrap {
+  display: flex; align-items: center;
+  border: 2px solid rgba(200,146,42,0.4);
+  border-radius: 12px; overflow: hidden;
+  background: #fff; margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+.nb-phone-input-wrap:focus-within { border-color: #C8922A; }
+.nb-phone-prefix {
+  padding: 14px 12px; font-size: 0.9rem; font-weight: 600;
+  color: #2C1810; background: rgba(200,146,42,0.08);
+  border-right: 1px solid rgba(200,146,42,0.2);
+  white-space: nowrap; flex-shrink: 0;
+}
+#nb-phone-input {
+  flex: 1; border: none; outline: none;
+  padding: 14px; font-size: 1.1rem; font-weight: 600;
+  color: #2C1810; background: transparent;
+  letter-spacing: 1px; font-family: inherit;
+}
+.nb-name-input {
+  width: 100%; border: 2px solid rgba(200,146,42,0.4);
+  border-radius: 12px; padding: 14px 16px;
+  font-size: 1rem; color: #2C1810;
+  background: #fff; font-family: inherit;
+  box-sizing: border-box; transition: border-color 0.2s;
+}
+.nb-name-input:focus { outline: none; border-color: #C8922A; }
+
+.nb-auth-consent {
+  font-size: 0.75rem; color: #7A5C4A; line-height: 1.5;
+  margin: 0 0 14px; padding: 10px 12px;
+  background: rgba(200,146,42,0.06);
+  border-radius: 8px; border-left: 3px solid #C8922A;
+}
+.nb-promo-consent {
+  display: flex; align-items: flex-start; gap: 10px;
+  cursor: pointer; margin-bottom: 4px;
+}
+.nb-promo-consent input[type="checkbox"] {
+  width: 18px; height: 18px; margin-top: 1px;
+  flex-shrink: 0; accent-color: #C8922A; cursor: pointer;
+}
+.nb-promo-consent span { font-size: 0.82rem; color: #2C1810; line-height: 1.4; font-weight: 500; }
+.nb-promo-note { font-size: 0.72rem; color: #9A8070; margin: 0 0 0 28px; }
+
+.nb-auth-returning {
+  font-size: 0.85rem; color: #2C7A2C; font-weight: 600;
+  text-align: center; padding: 10px;
+  background: rgba(44,122,44,0.08); border-radius: 8px; margin-top: 12px;
+}
+.nb-auth-footer { display: flex; flex-direction: column; gap: 10px; }
+.nb-auth-btn {
+  width: 100%; padding: 15px; border-radius: 12px; border: none;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+}
+.nb-auth-btn--primary { background: #C8922A; color: #fff; }
+.nb-auth-btn--primary:hover { background: #A67520; }
+.nb-auth-btn--primary:disabled { background: #E0C080; cursor: not-allowed; }
+.nb-auth-btn--ghost {
+  background: transparent; color: #7A5C4A;
+  font-size: 0.82rem; font-weight: 500; padding: 8px;
+}
+.nb-auth-btn--ghost:hover { color: #2C1810; }
+
+@media (min-width: 480px) {
+  #nb-auth-modal {
+    bottom: auto; top: 50%; left: 50%; right: auto;
+    transform: translate(-50%, -50%);
+    border-radius: 20px; width: 420px;
+  }
+  #nb-auth-modal.active { transform: translate(-50%, -50%); }
+  #nb-auth-modal::before { display: none; }
+}
+</style>
+
+<script>
+// ===== NB AUTH GATE — Form ID 1101010 =====
+var nbAuthPendingAction = null;
+var nbAuthPendingForm  = null;
+
+function nbShowAuthGate(action, form) {
+  nbAuthPendingAction = action || null;
+  nbAuthPendingForm   = form  || null;
+
+  // Reset to step 1
+  document.querySelectorAll('.nb-auth-step').forEach(function(s) {
+    s.classList.remove('active');
+  });
+  document.getElementById('nb-auth-step-1').classList.add('active');
+
+  document.getElementById('nb-auth-overlay').classList.add('active');
+  setTimeout(function() {
+    document.getElementById('nb-auth-modal').classList.add('active');
+  }, 10);
+  document.body.style.overflow = 'hidden';
+
+  setTimeout(function() {
+    var p = document.getElementById('nb-phone-input');
+    if (p) p.focus();
+  }, 400);
+}
+
+function nbAuthClose() {
+  document.getElementById('nb-auth-overlay').classList.remove('active');
+  document.getElementById('nb-auth-modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function nbAuthSubmitPhone() {
+  var phone = document.getElementById('nb-phone-input').value.replace(/\D/g, '');
+  if (phone.length !== 10) {
+    document.getElementById('nb-phone-input').style.outline = '2px solid #e53e3e';
+    document.getElementById('nb-phone-input').placeholder = 'Enter 10-digit number';
+    return;
+  }
+  var promoConsent = document.getElementById('nb-promo-checkbox').checked;
+  localStorage.setItem('nb_phone', '+91' + phone);
+  localStorage.setItem('nb_promo_consent', promoConsent ? 'yes' : 'no');
+  localStorage.setItem('nb_consent_date', new Date().toISOString());
+
+  // Pre-fill name if returning
+  var savedName = localStorage.getItem('nb_name');
+  if (savedName) {
+    document.getElementById('nb-returning-msg').style.display = 'block';
+    document.getElementById('nb-name-input').value = savedName;
+  }
+
+  document.querySelectorAll('.nb-auth-step').forEach(function(s) {
+    s.classList.remove('active');
+  });
+  document.getElementById('nb-auth-step-2').classList.add('active');
+  setTimeout(function() {
+    document.getElementById('nb-name-input').focus();
+  }, 200);
+}
+
+function nbAuthSaveName() {
+  var name = document.getElementById('nb-name-input').value.trim();
+  if (name.length < 2) {
+    document.getElementById('nb-name-input').style.outline = '2px solid #e53e3e';
+    return;
+  }
+
+  var btn = document.getElementById('nb-lets-order-btn');
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+
+  localStorage.setItem('nb_name', name);
+  var phone       = localStorage.getItem('nb_phone') || '';
+  var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
+  var phoneClean  = phone.replace('+91', '').replace(/\s/g, '');
+
+// Use Shopify Forms proper submission endpoint
+var formsPayload = new FormData();
+formsPayload.append('form_id', '1101010');
+formsPayload.append('contact[first_name]', name);
+formsPayload.append('contact[phone]', phone);
+formsPayload.append('contact[accepts_marketing]', promoConsent ? 'true' : 'false');
+
+fetch('/forms/submit', {
+  method: 'POST',
+  headers: { 'Accept': 'application/json' },
+  body: formsPayload
+}).then(function(r) {
+  return r.json();
+}).then(function(data) {
+  console.log('Forms response:', data);
+}).catch(function(err) {
+  console.log('Forms error:', err);
+});
+
+
+  // 2. Save to cart attributes → visible on every order
+  fetch('/cart/update.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      attributes: {
+        'Customer Phone':    phone,
+        'Customer Name':     name,
+        'WhatsApp Consent':  promoConsent ? 'yes' : 'no',
+        'Captured At':       new Date().toLocaleString('en-IN')
+      }
+    })
+  }).then(function() {
+    btn.textContent = "Let's Order! 🍛";
+    btn.disabled = false;
+    nbAuthClose();
+
+    if (nbAuthPendingAction === 'checkout') {
+      // Came from Proceed to Checkout — go to checkout with phone pre-filled
+      nbAuthPendingAction = null;
+      var url = '/checkout';
+      if (phone) url += '?checkout[email]=' + encodeURIComponent(phone);
+      window.location.href = url;
+
+    } else if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
+      // Came from Order Now — add to cart then open drawer
+      var id = nbAuthPendingForm.querySelector('[name="id"]').value;
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: parseInt(id), quantity: 1 })
+      }).then(function() {
+        nbAuthPendingAction = null;
+        nbAuthPendingForm   = null;
+        if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+      });
+
+    } else if (nbAuthPendingAction === 'preorder') {
+      // Came from Pre-Order button
+      nbAuthPendingAction = null;
+      window.location.href = '/pages/family-feast';
+
+    } else {
+      // Default — open drawer
+      if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+    }
+
+  }).catch(function() {
+    btn.textContent = "Let's Order! 🍛";
+    btn.disabled = false;
+    nbAuthClose();
+    if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+  });
+}
+
+function nbAuthSkip() {
+  nbAuthClose();
+  // Still proceed with the pending action
+  if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
+    var id = nbAuthPendingForm.querySelector('[name="id"]').value;
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: parseInt(id), quantity: 1 })
+    }).then(function() {
+      nbAuthPendingAction = null;
+      nbAuthPendingForm   = null;
+      if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+    });
+  } else if (nbAuthPendingAction === 'preorder') {
+    nbAuthPendingAction = null;
+    window.location.href = '/pages/family-feast';
+  } else {
+    if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+  }
+}
+
+// Called by Proceed to Checkout button in nb-cart-drawer
+function nbGoToCheckout() {
+  var phone = localStorage.getItem('nb_phone') || '';
+  var name  = localStorage.getItem('nb_name')  || '';
+
+  if (!phone || !name) {
+    // First time — show gate
+    nbShowAuthGate('checkout', null);
+    return;
+  }
+
+  // Returning — go straight to checkout
+  fetch('/cart/update.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      attributes: {
+        'Customer Phone':   phone,
+        'Customer Name':    name,
+        'WhatsApp Consent': localStorage.getItem('nb_promo_consent') || 'no'
+      }
+    })
+  }).then(function() {
+    var url = '/checkout';
+    if (phone) url += '?checkout[email]=' + encodeURIComponent(phone);
+    window.location.href = url;
+  }).catch(function() {
+    window.location.href = '/checkout';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  // ── Order Now forms ──
+  document.addEventListener('submit', function(e) {
+    var form = e.target;
+    if (!form.classList.contains('nb-quick-form')) return;
+    e.preventDefault();
+    var phone = localStorage.getItem('nb_phone');
+    var name  = localStorage.getItem('nb_name');
+    if (phone && name) {
+      // Returning — add to cart directly
+      var id = form.querySelector('[name="id"]').value;
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: parseInt(id), quantity: 1 })
+      }).then(function() {
+        if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+      });
+    } else {
+      // First time — show gate
+      nbShowAuthGate('cart', form);
+    }
+  });
+
+  // ── Pre-Order buttons ──
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('a.nb-btn--outline[href="/pages/family-feast"]');
+    if (!btn) return;
+    var phone = localStorage.getItem('nb_phone');
+    var name  = localStorage.getItem('nb_name');
+    if (phone && name) return; // Returning — let through
+    e.preventDefault();
+    nbShowAuthGate('preorder', null);
+  });
+
+  // ── Phone input — numbers only ──
+  var phoneInput = document.getElementById('nb-phone-input');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+      this.style.outline = '';
+    });
+    phoneInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') nbAuthSubmitPhone();
+    });
+  }
+
+  // ── Name input — Enter key ──
+  var nameInput = document.getElementById('nb-name-input');
+  if (nameInput) {
+    nameInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') nbAuthSaveName();
+    });
+  }
+
+  // ── Overlay click — close ──
+  document.getElementById('nb-auth-overlay').addEventListener('click', function() {
+    nbAuthClose();
+  });
+
+});
+</script>

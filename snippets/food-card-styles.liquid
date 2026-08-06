@@ -1,0 +1,193 @@
+{% stylesheet %}
+/* ===== NIAMAT BIRYANI — FOOD CARD SYSTEM ===== */
+
+/* Horizontal food card — Zomato/Behrouz style */
+.nb-food-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  background: #FFFAF4;
+  border: 1px solid rgba(200,146,42,0.18);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  position: relative;
+  transition: box-shadow 0.2s ease;
+}
+.nb-food-card:hover {
+  box-shadow: 0 4px 20px rgba(44,24,16,0.1);
+}
+.nb-food-card--preorder {
+  border-color: rgba(200,146,42,0.35);
+  background: #FFFDF7;
+}
+
+/* Image block */
+.nb-food-card__image {
+  position: relative;
+  flex-shrink: 0;
+  width: 110px;
+  height: 110px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #F5ECD7;
+}
+.nb-food-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.nb-food-card__image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+/* Badges */
+.nb-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+.nb-badge--available { background: #C8922A; color: #fff; }
+.nb-badge--preorder { background: #2C1810; color: #FDF6EC; }
+.nb-badge--soldout { background: #999; color: #fff; }
+
+/* Body */
+.nb-food-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 110px;
+}
+.nb-food-card__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2C1810;
+  margin: 0 0 4px;
+  line-height: 1.3;
+}
+.nb-food-card__desc {
+  font-size: 0.78rem;
+  color: #7A5C4A;
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+.nb-food-card__meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.nb-meta-tag {
+  font-size: 0.72rem;
+  color: #C8922A;
+  background: rgba(200,146,42,0.1);
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.nb-food-card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.nb-food-card__price {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #2C1810;
+}
+
+/* Buttons */
+.nb-btn {
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+.nb-btn--gold {
+  background: #C8922A;
+  color: #fff;
+}
+.nb-btn--gold:hover { background: #A67520; color: #fff; }
+.nb-btn--outline {
+  background: transparent;
+  border: 1.5px solid #C8922A;
+  color: #C8922A;
+}
+.nb-btn--outline:hover { background: #C8922A; color: #fff; }
+.nb-btn--disabled {
+  background: #E0D5C8;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Instant delivery variant selector on card */
+.nb-variant-selector {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.nb-variant-pill {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(200,146,42,0.4);
+  background: #FDF6EC;
+  color: #2C1810;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.nb-variant-pill.active,
+.nb-variant-pill:hover {
+  background: #C8922A;
+  color: #fff;
+  border-color: #C8922A;
+}
+
+/* Desktop: 2-column grid for food cards */
+@media (min-width: 768px) {
+  .nb-food-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .nb-food-card {
+    margin-bottom: 0;
+  }
+  .nb-food-card__image {
+    width: 130px;
+    height: 130px;
+  }
+  .nb-food-card__title { font-size: 1rem; }
+}
+
+/* Mobile bottom dock */
+#nb-mobile-dock {
+  background: #2C1810 !important;
+  border-top: 2px solid #C8922A !important;
+}
+#nb-mobile-dock a { color: #FDF6EC !important; font-size: 10px; font-weight: 600; }
+#nb-mobile-dock a:hover, #nb-mobile-dock a:active { color: #C8922A !important; }
+#nb-mobile-dock svg { stroke: #FDF6EC !important; }
+#nb-mobile-dock a:hover svg { stroke: #C8922A !important; }
+{% endstylesheet %}

@@ -1,0 +1,560 @@
+<!doctype html>
+<html
+  {% if request.design_mode %}
+    class="shopify-design-mode"
+  {% endif %}
+  lang="{{ request.locale.iso_code }}"
+>
+  <head>
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
+
+    {% if settings.transition_to_main_product or settings.page_transition_enabled %}
+      <link
+        rel="expect"
+        href="#MainContent"
+        blocking="render"
+        id="view-transition-render-blocker"
+      >
+    {% endif %}
+
+    {%- render 'meta-tags' -%}
+    {%- render 'stylesheets' -%}
+    {%- render 'fonts' -%}
+    {%- render 'scripts' -%}
+    {%- render 'theme-styles-variables' -%}
+    {%- render 'color-palette' -%}
+
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+    {% endif %}
+
+    {{ content_for_header }}
+
+    <style>
+    /* ===== BIRYANI PALACE — FOOD APP MASTER STYLES ===== */
+
+    body {
+      background-color: #FDF6EC !important;
+      color: #2C1810 !important;
+    }
+
+    header, .header, .header-wrapper, header-component {
+      background-color: #2C1810 !important;
+      border-bottom: 2px solid #C8922A !important;
+    }
+    .header a, .header__heading-link, nav a,
+    .header__menu-item, header-component a {
+      color: #FDF6EC !important;
+    }
+
+    .page-wrapper, main, #MainContent,
+    .color-background-1, .color-background-2,
+    .gradient {
+      background-color: #FDF6EC !important;
+    }
+
+    .button--primary,
+    .product-form__submit,
+    .btn-primary {
+      background: #C8922A !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
+      border-radius: 10px !important;
+      border: none !important;
+    }
+    .button--primary:hover,
+    .product-form__submit:hover {
+      background: #A67520 !important;
+    }
+
+    .product-form__submit[name="add"] { font-size: 0 !important; }
+    .product-form__submit[name="add"]::after {
+      content: "Order Now" !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+    }
+
+    /* Hide header cart icon on mobile — use bottom dock Cart tab instead */
+@media (max-width: 768px) {
+  .nb-cart-trigger {
+    display: none !important;
+  }
+}
+  /* Fix text overflow in food cards on mobile */
+.nb-food-card__body {
+  min-width: 0 !important;
+  overflow: hidden !important;
+}
+.nb-food-card__desc {
+  overflow: hidden !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  word-break: break-word !important;
+}
+.nb-food-card__title {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  max-width: 100% !important;
+}
+.nb-food-card__meta {
+  overflow: hidden !important;
+  flex-wrap: wrap !important;
+}
+.nb-meta-tag {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+.nb-food-card__bottom {
+  flex-wrap: nowrap !important;
+  min-width: 0 !important;
+}
+.nb-food-card__price {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+.nb-btn {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Mobile specific — tighter image to give text more room */
+@media (max-width: 768px) {
+  .nb-food-card__image {
+    width: 85px !important;
+    height: 85px !important;
+  }
+  .nb-food-card {
+    gap: 10px !important;
+    align-items: flex-start !important;
+  }
+  .nb-food-card__body {
+    min-height: unset !important;
+  }
+}
+/* ===== BUTTON SIZE FIX — prevent overflow on mobile ===== */
+.nb-btn--sm {
+  padding: 7px 10px !important;
+  font-size: 0.76rem !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+/* Hide hamburger menu on mobile — bottom dock handles navigation */
+@media (max-width: 768px) {
+  .header__menu-toggle,
+  .header-drawer__toggle,
+  button[aria-controls="header-drawer"],
+  button[aria-label="Menu"],
+  .header__icon--menu,
+  [data-testid="header-drawer-toggle"] {
+    display: none !important;
+  }
+}
+
+/* Hide decimal zeros in prices */
+.nb-food-card__price .money::after,
+.nb-food-card__price sup { display: none !important; }
+
+/* Card bottom row — never wrap, price takes remaining space */
+.nb-food-card__bottom {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 6px !important;
+  flex-wrap: nowrap !important;
+  min-width: 0 !important;
+  width: 100% !important;
+}
+.nb-food-card__price {
+  flex: 0 0 auto !important;        /* Don't stretch — take only what's needed */
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: visible !important;      /* Never truncate the price */
+  text-overflow: unset !important;
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+}
+
+/* Card body — must not overflow its container */
+.nb-food-card__body {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+/* Variant pills — wrap cleanly */
+.nb-variant-selector {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 4px !important;
+  margin-bottom: 6px !important;
+}
+.nb-variant-pill {
+  font-size: 0.7rem !important;
+  padding: 4px 8px !important;
+  white-space: nowrap !important;
+}
+
+/* Form inside card — no extra width */
+.nb-quick-form {
+  flex-shrink: 0 !important;
+  display: flex !important;
+}
+
+
+    .button--secondary {
+      background: transparent !important;
+      border: 2px solid #C8922A !important;
+      color: #C8922A !important;
+      border-radius: 10px !important;
+    }
+
+    /* Hide ecommerce clutter */
+    .shopify-payment-button,
+    .product__payment-button,
+    [data-shopify="payment-button"] { display: none !important; }
+
+    .product-recommendations,
+    .complementary-products,
+    .recently-viewed,
+    .product__text--vendor,
+    .product__sku,
+    nav.breadcrumb,
+    .breadcrumbs,
+    .breadcrumb { display: none !important; }
+
+    /* Hide "Products" title on custom food menu pages */
+    [data-template="collection.family-orders"] .collection__title,
+    [data-template="collection.family-orders"] .collection-hero,
+    [data-template="collection.family-orders"] .page-header,
+    [data-template="collection.instant-delivery"] .collection__title,
+    [data-template="collection.instant-delivery"] .collection-hero,
+    [data-template="collection.instant-delivery"] .page-header { display: none !important; }
+
+    .price, .price-item,
+    .price__regular .price-item,
+    .price__sale .price-item--sale,
+    [class*="price"] {
+      color: #C8922A !important;
+      font-weight: 800 !important;
+    }
+
+    .product-card__content,
+    .card, .card-wrapper .card,
+    .card__inner {
+      background-color: #FFFAF4 !important;
+      border: 1px solid rgba(200,146,42,0.2) !important;
+      border-radius: 14px !important;
+    }
+
+    h1, h2, h3, h4 { color: #2C1810 !important; }
+
+    footer, .footer {
+      background: #2C1810 !important;
+      color: #FDF6EC !important;
+      border-top: 2px solid #C8922A !important;
+    }
+    footer a, .footer a,
+    footer p, .footer p { color: #FDF6EC !important; }
+
+    .variant-pills__input:checked + .variant-pills__label {
+      background: #C8922A !important;
+      color: #fff !important;
+      border-color: #C8922A !important;
+    }
+    .variant-pills__label {
+      border: 1.5px solid rgba(200,146,42,0.4) !important;
+      color: #2C1810 !important;
+      background: #FDF6EC !important;
+      border-radius: 8px !important;
+    }
+
+    /* ===== MOBILE BOTTOM DOCK ===== */
+    #nb-mobile-dock {
+      display: none;
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 99999 !important;
+      background: #2C1810;
+      border-top: 2px solid #C8922A;
+      padding: 8px 0 env(safe-area-inset-bottom, 12px);
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      will-change: transform;
+    }
+    #nb-mobile-dock a {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #FDF6EC;
+      text-decoration: none;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      gap: 3px;
+      padding: 4px 0;
+    }
+    #nb-mobile-dock a:hover,
+    #nb-mobile-dock a:active { color: #C8922A; }
+    #nb-mobile-dock svg { stroke: #FDF6EC; transition: stroke 0.2s; }
+    #nb-mobile-dock a:hover svg,
+    #nb-mobile-dock a:active svg { stroke: #C8922A; }
+
+    /* ===== FOOD CARD SYSTEM ===== */
+    .nb-instant-section { padding: 20px 16px 100px; max-width: 900px; margin: 0 auto; }
+    .nb-section-header { margin-bottom: 20px; }
+    .nb-section-header h2 { font-size: 1.4rem; font-weight: 800; color: #2C1810; margin: 0 0 4px; }
+    .nb-section-header p { font-size: 0.85rem; color: #7A5C4A; margin: 0; }
+
+    .nb-food-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+      background: #FFFAF4;
+      border: 1px solid rgba(200,146,42,0.18);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+      transition: box-shadow 0.2s ease;
+    }
+    .nb-food-card:hover { box-shadow: 0 4px 20px rgba(44,24,16,0.1); }
+
+    .nb-food-card__image {
+      position: relative;
+      flex-shrink: 0;
+      width: 110px; height: 110px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #F5ECD7;
+    }
+    .nb-food-card__image img { width: 100%; height: 100%; object-fit: cover; }
+    .nb-food-card__image-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .nb-badge {
+      position: absolute; top: 6px; left: 6px;
+      font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 20px;
+    }
+    .nb-badge--available { background: #C8922A; color: #fff; }
+    .nb-badge--preorder { background: #2C1810; color: #FDF6EC; }
+    .nb-badge--soldout { background: #999; color: #fff; }
+
+    .nb-food-card__body {
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: space-between; min-height: 110px;
+    }
+    .nb-food-card__title {
+      font-size: 0.95rem; font-weight: 700;
+      color: #2C1810 !important; margin: 0 0 4px; line-height: 1.3;
+    }
+    .nb-food-card__desc {
+      font-size: 0.78rem; color: #7A5C4A;
+      margin: 0 0 6px; line-height: 1.4;
+    }
+    .nb-food-card__meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .nb-meta-tag {
+      font-size: 0.72rem; color: #C8922A;
+      background: rgba(200,146,42,0.1);
+      padding: 2px 8px; border-radius: 20px; font-weight: 600;
+    }
+    .nb-food-card__bottom {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 8px;
+    }
+    .nb-food-card__price { font-size: 1.05rem; font-weight: 800; color: #2C1810; }
+
+    .nb-variant-selector { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .nb-variant-pill {
+      font-size: 0.75rem; font-weight: 600;
+      padding: 5px 10px; border-radius: 20px;
+      border: 1.5px solid rgba(200,146,42,0.4);
+      background: #FDF6EC; color: #2C1810;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .nb-variant-pill.active, .nb-variant-pill:hover {
+      background: #C8922A; color: #fff; border-color: #C8922A;
+    }
+
+    .nb-btn {
+      font-size: 0.82rem; font-weight: 700;
+      padding: 8px 16px; border-radius: 8px;
+      border: none; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      white-space: nowrap; transition: background 0.15s ease;
+    }
+    .nb-btn--gold { background: #C8922A; color: #fff; }
+    .nb-btn--gold:hover { background: #A67520; color: #fff; }
+    .nb-btn--outline {
+      background: transparent;
+      border: 1.5px solid #C8922A; color: #C8922A;
+    }
+    .nb-btn--outline:hover { background: #C8922A; color: #fff; }
+    .nb-btn--disabled { background: #E0D5C8; color: #999; cursor: not-allowed; }
+
+    /* ===== DESKTOP ===== */
+    @media (min-width: 769px) {
+      .nb-food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .nb-food-card { margin-bottom: 0; }
+      .nb-food-card__image { width: 130px; height: 130px; }
+      .nb-instant-section { padding: 32px 24px 80px; }
+      .nb-section-header h2 { font-size: 1.8rem; }
+    }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 768px) {
+      body { padding-bottom: 72px !important; }
+      #nb-mobile-dock { display: flex !important; }
+      .content-for-layout, .page-wrapper { overflow-x: hidden !important; }
+      .nb-instant-section {
+        padding: 16px 12px 100px !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+      }
+      .nb-food-grid {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+      .nb-food-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+      .nb-food-card__image {
+        width: 90px !important;
+        height: 90px !important;
+        flex-shrink: 0 !important;
+      }
+      .nb-food-card__title { font-size: 0.88rem !important; }
+    }
+    </style>
+  </head>
+
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+
+    {% render 'chat-drawer' %}
+    {% render 'nb-cart-drawer' %}
+    {% render 'nb-auth-gate' %}
+
+    <div class="page-wrapper">
+      <div id="header-group">
+        {% sections 'header-group' %}
+      </div>
+
+      <script>
+        (function setHeaderHeighCustomProperties() {
+          const header = document.querySelector('header-component');
+          const headerGroup = document.querySelector('#header-group');
+          const hasHeaderSection = headerGroup?.querySelector('.header-section');
+          if (!header || !headerGroup) return;
+          const headerTopRow = header.querySelector('.header__row--top');
+          const headerHeight = header.offsetHeight;
+          let headerGroupHeight = 0;
+          const children = headerGroup.children;
+          for (let i = 0; i < children.length; i++) {
+            const element = children[i];
+            if (element === header || !(element instanceof HTMLElement)) continue;
+            headerGroupHeight += element.offsetHeight;
+          }
+          if (header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+            headerGroupHeight += headerHeight;
+          }
+          document.body.style.setProperty('--header-height', `${headerHeight}px`);
+          document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
+          if (headerTopRow) {
+            window.requestAnimationFrame(function () {
+              document.body.style.setProperty('--top-row-height', `${headerTopRow.offsetHeight}px`);
+            });
+          }
+          if (!hasHeaderSection || !header?.hasAttribute('transparent')) {
+            document.body.style.setProperty('--transparent-header-offset-boolean', '0');
+            return;
+          }
+          const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
+          const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
+          document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
+        })();
+
+        (function setHeaderMenuStyle() {
+          const headerComponent = document.querySelector('#header-component');
+          if (headerComponent) {
+            const isTouchDevice = 'ontouchstart' in window && navigator.maxTouchPoints > 0;
+            const overflowList = headerComponent?.querySelector('overflow-list');
+            const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
+            headerComponent.dataset.menuStyle = isTouchDevice || hasReachedMinimum ? 'drawer' : 'menu';
+          }
+        })();
+      </script>
+
+      <main
+        id="MainContent"
+        class="content-for-layout"
+        role="main"
+        data-page-transition-enabled="{{ settings.page_transition_enabled }}"
+        data-product-transition="{{ settings.transition_to_main_product }}"
+        data-template="{{ template }}"
+      >
+        {{ content_for_layout }}
+      </main>
+
+      <footer>
+        {% sections 'footer-group' %}
+      </footer>
+    </div>
+
+    {% render 'cart-drawer', render_wrapper: true %}
+    {% render 'theme-drawer' %}
+    {% render 'search-modal' %}
+
+    {% if settings.quick_add or settings.mobile_quick_add %}
+      {% render 'quick-add-modal' %}
+    {% endif %}
+
+    <!-- NIAMAT BIRYANI: Mobile Bottom Dock -->
+<div id="nb-mobile-dock">
+  <a href="/">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="/collections/family-orders">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <span>Menu</span>
+  </a>
+  <a href="/collections/instant-delivery">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    <span>Instant</span>
+  </a>
+  <a href="/pages/family-feast">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span>Family</span>
+  </a>
+  <a href="/cart" onclick="event.preventDefault(); nbOpenDrawer();">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span>Cart</span>
+  </a>
+</div>
+  </body>
+</html>

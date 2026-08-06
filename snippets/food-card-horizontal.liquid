@@ -1,0 +1,83 @@
+{% comment %}
+  NIAMAT BIRYANI — Zomato/Behrouz style horizontal food card
+  Usage: {% render 'food-card-horizontal', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign is_preorder = false
+  if product.tags contains 'pre-order'
+    assign is_preorder = true
+  endif
+  assign first_variant = product.selected_or_first_available_variant
+  assign is_available = first_variant.available
+-%}
+
+<div class="nb-food-card {% if is_preorder %}nb-food-card--preorder{% endif %}">
+  <div class="nb-food-card__image">
+    {%- if product.featured_media -%}
+      <img
+        src="{{ product.featured_media | image_url: width: 200 }}"
+        alt="{{ product.featured_media.alt | escape }}"
+        width="120"
+        height="120"
+        loading="lazy"
+      >
+    {%- else -%}
+      <div class="nb-food-card__image-placeholder">🍛</div>
+    {%- endif -%}
+    {%- if is_preorder -%}
+      <span class="nb-badge nb-badge--preorder">Pre-Order</span>
+    {%- elsif is_available -%}
+      <span class="nb-badge nb-badge--available">⚡ Now</span>
+    {%- else -%}
+      <span class="nb-badge nb-badge--soldout">Sold Out</span>
+    {%- endif -%}
+  </div>
+
+  <div class="nb-food-card__body">
+    <div class="nb-food-card__top">
+      <h3 class="nb-food-card__title">{{ product.title }}</h3>
+      {%- if product.description != blank -%}
+        <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 60 }}</p>
+      {%- endif -%}
+      <div class="nb-food-card__meta">
+        {%- if is_preorder -%}
+          <span class="nb-meta-tag">🕐 Pre-Order</span>
+          <span class="nb-meta-tag">1 Kg+</span>
+        {%- else -%}
+          <span class="nb-meta-tag">⚡ 30-60 mins</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="nb-food-card__bottom">
+      <span class="nb-food-card__price">
+        {%- if product.price_varies -%}
+          From {{ product.price_min | money }}
+        {%- else -%}
+          {{ product.price | money }}
+        {%- endif -%}
+      </span>
+
+      {%- if is_preorder -%}
+        <a href="/pages/family-feast" class="nb-btn nb-btn--outline">
+          Pre-Order →
+        </a>
+      {%- elsif is_available -%}
+        {%- if product.variants.size > 1 -%}
+          <a href="/collections/instant-delivery" class="nb-btn nb-btn--gold">
+            Choose →
+          </a>
+        {%- else -%}
+          <form action="/cart/add" method="post" class="nb-quick-form">
+            <input type="hidden" name="id" value="{{ first_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="nb-btn nb-btn--gold">Order Now</button>
+          </form>
+        {%- endif -%}
+      {%- else -%}
+        <button class="nb-btn nb-btn--disabled" disabled>Sold Out Today</button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

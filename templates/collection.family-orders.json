@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "nb_family": {
+      "type": "nb-family-menu",
+      "settings": {
+        "collection": "family-orders"
+      }
+    }
+  },
+  "order": ["nb_family"]
+}

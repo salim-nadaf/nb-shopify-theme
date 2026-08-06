@@ -1,0 +1,160 @@
+{% comment %} NIAMAT BIRYANI — Instant Delivery Section {% endcomment %}
+{% render 'food-card-styles' %}
+
+<div class="nb-instant-section">
+  <div class="nb-section-header">
+    <h2>⚡ Instant Delivery</h2>
+    <p>Ready in 30–60 minutes · Kalyan West</p>
+  </div>
+
+  {%- assign instant_collection = collections['instant-delivery'] -%}
+  <div class="nb-food-grid">
+    {%- for product in instant_collection.products -%}
+      {%- liquid
+        assign first_variant = product.selected_or_first_available_variant
+        assign is_available = first_variant.available
+      -%}
+      <div class="nb-food-card {% unless is_available %}nb-food-card--soldout{% endunless %}">
+        <div class="nb-food-card__image">
+          {%- if product.featured_media -%}
+            <img src="{{ product.featured_media | image_url: width: 260 }}"
+                 alt="{{ product.featured_media.alt | escape }}"
+                 width="130" height="130" loading="lazy">
+          {%- else -%}
+            <div class="nb-food-card__image-placeholder">🍛</div>
+          {%- endif -%}
+          {%- if is_available -%}
+            <span class="nb-badge nb-badge--available">⚡ Now</span>
+          {%- else -%}
+            <span class="nb-badge nb-badge--soldout">Sold Out</span>
+          {%- endif -%}
+        </div>
+
+        <div class="nb-food-card__body">
+          <h3 class="nb-food-card__title">{{ product.title }}</h3>
+          {%- if product.description != blank -%}
+            <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 55 }}</p>
+          {%- endif -%}
+
+          {%- if product.variants.size > 1 -%}
+            <div class="nb-variant-selector" data-product-id="{{ product.id }}">
+              {%- for variant in product.variants -%}
+                <span class="nb-variant-pill {% if forloop.first %}active{% endif %}"
+                      data-variant-id="{{ variant.id }}"
+                      data-price="{{ variant.price | money }}"
+                      data-available="{{ variant.available }}">
+                  {{ variant.title }}
+                </span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+
+          <div class="nb-food-card__bottom">
+  <span class="nb-food-card__price" data-price-display="{{ product.id }}">
+    {%- if product.price_varies -%}
+      {{ product.selected_or_first_available_variant.price | money }}
+    {%- else -%}
+      {{ product.price | money }}
+    {%- endif -%}
+  </span>
+  {%- if is_available -%}
+    <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
+      <input type="hidden" name="id"
+             value="{{ product.selected_or_first_available_variant.id }}"
+             class="nb-variant-input" data-product="{{ product.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+    </form>
+  {%- else -%}
+    <button class="nb-btn nb-btn--disabled nb-btn--sm" disabled>Sold Out</button>
+  {%- endif -%}
+</div>
+
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<style>
+.nb-instant-section { padding: 20px 16px 100px; max-width: 900px; margin: 0 auto; }
+.nb-section-header { margin-bottom: 20px; }
+.nb-section-header h2 { font-size: 1.4rem; font-weight: 800; color: #2C1810; margin: 0 0 4px; }
+.nb-section-header p { font-size: 0.85rem; color: #7A5C4A; margin: 0; }
+@media (min-width: 768px) {
+  .nb-instant-section { padding: 32px 24px 80px; }
+  .nb-section-header h2 { font-size: 1.8rem; }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Variant pill selection
+  document.querySelectorAll('.nb-variant-selector').forEach(function(selector) {
+    var productId = selector.dataset.productId;
+    selector.querySelectorAll('.nb-variant-pill').forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        selector.querySelectorAll('.nb-variant-pill').forEach(function(p) { p.classList.remove('active'); });
+        pill.classList.add('active');
+        var variantId = pill.dataset.variantId;
+        var price = pill.dataset.price;
+        var available = pill.dataset.available === 'true';
+        // Update hidden input
+        var input = document.querySelector('.nb-variant-input[data-product="' + productId + '"]');
+        if (input) input.value = variantId;
+        // Update price display
+        var priceEl = document.querySelector('[data-price-display="' + productId + '"]');
+        if (priceEl) priceEl.textContent = price;
+        // Update button
+        var form = document.querySelector('.nb-quick-form[data-form="' + productId + '"]');
+        if (form) {
+          var btn = form.querySelector('button');
+          if (!available) {
+            btn.textContent = 'Sold Out';
+            btn.disabled = true;
+            btn.className = 'nb-btn nb-btn--disabled';
+          } else {
+            btn.textContent = 'Order Now';
+            btn.disabled = false;
+            btn.className = 'nb-btn nb-btn--gold';
+          }
+        }
+      });
+    });
+  });
+
+  // Quick add to cart — go directly to checkout
+  document.querySelectorAll('.nb-quick-form').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var id = form.querySelector('[name="id"]').value;
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: id, quantity: 1 })
+      }).then(function() {
+        }).then(function() {
+  if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+  else window.location.href = '/cart';
+
+      }).catch(function() {
+        window.location.href = '/cart';
+      });
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Instant Delivery",
+  "tag": "section",
+  "class": "section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Instant Delivery"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,73 @@
+{% comment %} NIAMAT BIRYANI — Family Orders / Menu Section {% endcomment %}
+
+<div class="nb-instant-section">
+  <div class="nb-section-header">
+    <h2>🍛 Full Menu — Pre-Order</h2>
+    <p>1 Kg+ portions · Bulk & family orders · Book via WhatsApp</p>
+  </div>
+
+  {%- assign menu_collection = collections[section.settings.collection] | default: collections['family-orders'] -%}
+  <div class="nb-food-grid">
+    {%- for product in menu_collection.products limit: 48 -%}
+      <div class="nb-food-card nb-food-card--preorder">
+        <div class="nb-food-card__image">
+          {%- if product.featured_media -%}
+            <img src="{{ product.featured_media | image_url: width: 260 }}"
+                 alt="{{ product.featured_media.alt | escape }}"
+                 width="130" height="130" loading="lazy">
+          {%- else -%}
+            <div class="nb-food-card__image-placeholder">🍛</div>
+          {%- endif -%}
+          <span class="nb-badge nb-badge--preorder">Pre-Order</span>
+        </div>
+
+        <div class="nb-food-card__body">
+          <div>
+            <h3 class="nb-food-card__title">{{ product.title }}</h3>
+            {%- if product.description != blank -%}
+              <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 60 }}</p>
+            {%- endif -%}
+            <div class="nb-food-card__meta">
+              <span class="nb-meta-tag">🕐 Pre-Order</span>
+              <span class="nb-meta-tag">1 Kg+</span>
+            </div>
+          </div>
+          <div class="nb-food-card__bottom">
+            <span class="nb-food-card__price">
+              {%- if product.price_varies -%}
+                From {{ product.price_min | money }}
+              {%- else -%}
+                {{ product.price | money }}
+              {%- endif -%}
+            </span>
+            <a href="/pages/family-feast" class="nb-btn nb-btn--outline nb-btn--sm">
+              Pre-Order →
+            </a>
+          </div>
+
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Family Menu",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection",
+      "info": "Select the collection to display (e.g. Family Orders)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Family Menu"
+    }
+  ]
+}
+{% endschema %}
