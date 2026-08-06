@@ -4,75 +4,116 @@
 <div class="nb-instant-section">
   <div class="nb-section-header">
     <h2>⚡ Instant Delivery</h2>
-    <p>Ready in 30–60 minutes · Kalyan West</p>
+    <p>Freshly prepared biryani & starters · Ready in 30–60 minutes · Kalyan & Nearby</p>
   </div>
 
-  {%- assign instant_collection = collections['instant-delivery'] -%}
+  {% liquid
+    assign instant_collection = collection
+    if instant_collection == blank or instant_collection.products.size == 0
+      assign instant_collection = collections['instant-delivery']
+    endif
+    if instant_collection == blank or instant_collection.products.size == 0
+      assign instant_collection = collections['all']
+    endif
+  %}
+
   <div class="nb-food-grid">
-    {%- for product in instant_collection.products -%}
-      {%- liquid
-        assign first_variant = product.selected_or_first_available_variant
-        assign is_available = first_variant.available
-      -%}
-      <div class="nb-food-card {% unless is_available %}nb-food-card--soldout{% endunless %}">
-        <div class="nb-food-card__image">
-          {%- if product.featured_media -%}
-            <img src="{{ product.featured_media | image_url: width: 260 }}"
-                 alt="{{ product.featured_media.alt | escape }}"
-                 width="130" height="130" loading="lazy">
-          {%- else -%}
-            <div class="nb-food-card__image-placeholder">🍛</div>
-          {%- endif -%}
-          {%- if is_available -%}
-            <span class="nb-badge nb-badge--available">⚡ Now</span>
-          {%- else -%}
-            <span class="nb-badge nb-badge--soldout">Sold Out</span>
-          {%- endif -%}
-        </div>
+    {% if instant_collection != blank and instant_collection.products.size > 0 %}
+      {% for product in instant_collection.products %}
+        {% liquid
+          assign first_variant = product.selected_or_first_available_variant
+          assign is_available = first_variant.available
+        %}
+        <div class="nb-food-card {% unless is_available %}nb-food-card--soldout{% endunless %}">
+          <div class="nb-food-card__image">
+            {% if product.featured_media %}
+              <img src="{{ product.featured_media | image_url: width: 260 }}"
+                   alt="{{ product.featured_media.alt | escape }}"
+                   width="130" height="130" loading="lazy" />
+            {% else %}
+              <div class="nb-food-card__image-placeholder">🍛</div>
+            {% endif %}
+            {% if is_available %}
+              <span class="nb-badge nb-badge--available">⚡ 30-45m</span>
+            {% else %}
+              <span class="nb-badge nb-badge--soldout">Sold Out</span>
+            {% endif %}
+          </div>
 
-        <div class="nb-food-card__body">
-          <h3 class="nb-food-card__title">{{ product.title }}</h3>
-          {%- if product.description != blank -%}
-            <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 55 }}</p>
-          {%- endif -%}
-
-          {%- if product.variants.size > 1 -%}
-            <div class="nb-variant-selector" data-product-id="{{ product.id }}">
-              {%- for variant in product.variants -%}
-                <span class="nb-variant-pill {% if forloop.first %}active{% endif %}"
-                      data-variant-id="{{ variant.id }}"
-                      data-price="{{ variant.price | money }}"
-                      data-available="{{ variant.available }}">
-                  {{ variant.title }}
-                </span>
-              {%- endfor -%}
+          <div class="nb-food-card__body">
+            <div>
+              <h3 class="nb-food-card__title">{{ product.title }}</h3>
+              {% if product.description != blank %}
+                <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 55 }}</p>
+              {% endif %}
             </div>
-          {%- endif -%}
 
+            {% if product.variants.size > 1 %}
+              <div class="nb-variant-selector" data-product-id="{{ product.id }}">
+                {% for variant in product.variants %}
+                  <span class="nb-variant-pill {% if forloop.first %}active{% endif %}"
+                        data-variant-id="{{ variant.id }}"
+                        data-price="{{ variant.price | money }}"
+                        data-available="{{ variant.available }}">
+                    {{ variant.title }}
+                  </span>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="nb-food-card__bottom">
+              <span class="nb-food-card__price" data-price-display="{{ product.id }}">
+                {{ first_variant.price | money }}
+              </span>
+              {% if is_available %}
+                <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
+                  <input type="hidden" name="id" value="{{ first_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
+                  <input type="hidden" name="quantity" value="1" />
+                  <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+                </form>
+              {% else %}
+                <button type="button" class="nb-btn nb-btn--disabled nb-btn--sm" disabled>Sold Out</button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <!-- Fallback Demo Food Cards if Collection Empty -->
+      <div class="nb-food-card">
+        <div class="nb-food-card__image">
+          <div class="nb-food-card__image-placeholder">🍗</div>
+          <span class="nb-badge nb-badge--available">⚡ 30-45m</span>
+        </div>
+        <div class="nb-food-card__body">
+          <div>
+            <h3 class="nb-food-card__title">Chicken Dum Biryani</h3>
+            <p class="nb-food-card__desc">Tender chicken marinated in aromatic spices and slow-cooked with basmati rice.</p>
+          </div>
           <div class="nb-food-card__bottom">
-  <span class="nb-food-card__price" data-price-display="{{ product.id }}">
-    {%- if product.price_varies -%}
-      {{ product.selected_or_first_available_variant.price | money }}
-    {%- else -%}
-      {{ product.price | money }}
-    {%- endif -%}
-  </span>
-  {%- if is_available -%}
-    <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
-      <input type="hidden" name="id"
-             value="{{ product.selected_or_first_available_variant.id }}"
-             class="nb-variant-input" data-product="{{ product.id }}">
-      <input type="hidden" name="quantity" value="1">
-      <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
-    </form>
-  {%- else -%}
-    <button class="nb-btn nb-btn--disabled nb-btn--sm" disabled>Sold Out</button>
-  {%- endif -%}
-</div>
-
+            <span class="nb-food-card__price">₹280</span>
+            <button type="button" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+          </div>
         </div>
       </div>
-    {%- endfor -%}
+
+      <div class="nb-food-card">
+        <div class="nb-food-card__image">
+          <div class="nb-food-card__image-placeholder">🥩</div>
+          <span class="nb-badge nb-badge--available">⚡ 30-45m</span>
+        </div>
+        <div class="nb-food-card__body">
+          <div>
+            <h3 class="nb-food-card__title">Mutton Dum Biryani</h3>
+            <p class="nb-food-card__desc">Rich, tender mutton chunks dum-cooked with layered saffron basmati rice.</p>
+          </div>
+          <div class="nb-food-card__bottom">
+            <span class="nb-food-card__price">₹360</span>
+            <button type="button" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+          </div>
+        </div>
+      </div>
+    {% endif %}
   </div>
 </div>
 
@@ -90,7 +131,6 @@
 <script>
 (function() {
   function initInstantDelivery() {
-    // Variant pill selection
     document.querySelectorAll('.nb-variant-selector').forEach(function(selector) {
       var productId = selector.dataset.productId;
       selector.querySelectorAll('.nb-variant-pill').forEach(function(pill) {

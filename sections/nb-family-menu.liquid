@@ -1,53 +1,110 @@
 {% comment %} NIAMAT BIRYANI — Family Orders / Menu Section {% endcomment %}
+{% render 'food-card-styles' %}
 
 <div class="nb-instant-section">
   <div class="nb-section-header">
-    <h2>🍛 Full Menu — Pre-Order</h2>
-    <p>1 Kg+ portions · Bulk & family orders · Book via WhatsApp</p>
+    <h2>👑 Family Feast — 1 Kg & Bulk Pre-Orders</h2>
+    <p>1 Kg+ portions · Prepared fresh in authentic handis · Scheduled delivery</p>
   </div>
 
-  {%- assign menu_collection = collections[section.settings.collection] | default: collections['family-orders'] -%}
+  {% liquid
+    assign menu_collection = collection
+    if menu_collection == blank or menu_collection.products.size == 0
+      assign menu_collection = collections[section.settings.collection]
+    endif
+    if menu_collection == blank or menu_collection.products.size == 0
+      assign menu_collection = collections['family-orders']
+    endif
+    if menu_collection == blank or menu_collection.products.size == 0
+      assign menu_collection = collections['all']
+    endif
+  %}
+
   <div class="nb-food-grid">
-    {%- for product in menu_collection.products limit: 48 -%}
+    {% if menu_collection != blank and menu_collection.products.size > 0 %}
+      {% for product in menu_collection.products limit: 48 %}
+        <div class="nb-food-card nb-food-card--preorder">
+          <div class="nb-food-card__image">
+            {% if product.featured_media %}
+              <img src="{{ product.featured_media | image_url: width: 260 }}"
+                   alt="{{ product.featured_media.alt | escape }}"
+                   width="130" height="130" loading="lazy" />
+            {% else %}
+              <div class="nb-food-card__image-placeholder">👑</div>
+            {% endif %}
+            <span class="nb-badge nb-badge--preorder">1 Kg+ Handi</span>
+          </div>
+
+          <div class="nb-food-card__body">
+            <div>
+              <h3 class="nb-food-card__title">{{ product.title }}</h3>
+              {% if product.description != blank %}
+                <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 60 }}</p>
+              {% endif %}
+              <div class="nb-food-card__meta">
+                <span class="nb-meta-tag">🕐 Timed Slot</span>
+                <span class="nb-meta-tag">Serves 4-5</span>
+              </div>
+            </div>
+            <div class="nb-food-card__bottom">
+              <span class="nb-food-card__price">
+                {% if product.price_varies %}
+                  From {{ product.price_min | money }}
+                {% else %}
+                  {{ product.price | money }}
+                {% endif %}
+              </span>
+              <a href="/pages/family-feast" class="nb-btn nb-btn--outline nb-btn--sm">
+                Pre-Order →
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <!-- Fallback Demo Family Handi Cards -->
       <div class="nb-food-card nb-food-card--preorder">
         <div class="nb-food-card__image">
-          {%- if product.featured_media -%}
-            <img src="{{ product.featured_media | image_url: width: 260 }}"
-                 alt="{{ product.featured_media.alt | escape }}"
-                 width="130" height="130" loading="lazy">
-          {%- else -%}
-            <div class="nb-food-card__image-placeholder">🍛</div>
-          {%- endif -%}
-          <span class="nb-badge nb-badge--preorder">Pre-Order</span>
+          <div class="nb-food-card__image-placeholder">👑</div>
+          <span class="nb-badge nb-badge--preorder">1 Kg Handi</span>
         </div>
-
         <div class="nb-food-card__body">
           <div>
-            <h3 class="nb-food-card__title">{{ product.title }}</h3>
-            {%- if product.description != blank -%}
-              <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 60 }}</p>
-            {%- endif -%}
+            <h3 class="nb-food-card__title">1 Kg Chicken Dum Biryani Handi</h3>
+            <p class="nb-food-card__desc">Serves 4–5 people. Prepared fresh for your specified delivery slot in authentic copper handi.</p>
             <div class="nb-food-card__meta">
-              <span class="nb-meta-tag">🕐 Pre-Order</span>
-              <span class="nb-meta-tag">1 Kg+</span>
+              <span class="nb-meta-tag">🕐 Timed Slot</span>
+              <span class="nb-meta-tag">Serves 4-5</span>
             </div>
           </div>
           <div class="nb-food-card__bottom">
-            <span class="nb-food-card__price">
-              {%- if product.price_varies -%}
-                From {{ product.price_min | money }}
-              {%- else -%}
-                {{ product.price | money }}
-              {%- endif -%}
-            </span>
-            <a href="/pages/family-feast" class="nb-btn nb-btn--outline nb-btn--sm">
-              Pre-Order →
-            </a>
+            <span class="nb-food-card__price">₹1,100</span>
+            <a href="/pages/family-feast" class="nb-btn nb-btn--outline nb-btn--sm">Pre-Order →</a>
           </div>
-
         </div>
       </div>
-    {%- endfor -%}
+
+      <div class="nb-food-card nb-food-card--preorder">
+        <div class="nb-food-card__image">
+          <div class="nb-food-card__image-placeholder">👑</div>
+          <span class="nb-badge nb-badge--preorder">1 Kg Handi</span>
+        </div>
+        <div class="nb-food-card__body">
+          <div>
+            <h3 class="nb-food-card__title">1 Kg Mutton Dum Biryani Handi</h3>
+            <p class="nb-food-card__desc">Serves 4–5 people. Tender mutton chunks dum-cooked in saffron basmati rice.</p>
+            <div class="nb-food-card__meta">
+              <span class="nb-meta-tag">🕐 Timed Slot</span>
+              <span class="nb-meta-tag">Serves 4-5</span>
+            </div>
+          </div>
+          <div class="nb-food-card__bottom">
+            <span class="nb-food-card__price">₹1,450</span>
+            <a href="/pages/family-feast" class="nb-btn nb-btn--outline nb-btn--sm">Pre-Order →</a>
+          </div>
+        </div>
+      </div>
+    {% endif %}
   </div>
 </div>
 
@@ -60,8 +117,7 @@
     {
       "type": "collection",
       "id": "collection",
-      "label": "Collection",
-      "info": "Select the collection to display (e.g. Family Orders)"
+      "label": "Collection"
     }
   ],
   "presets": [
