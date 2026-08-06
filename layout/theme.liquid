@@ -517,21 +517,7 @@
         data-product-transition="{{ settings.transition_to_main_product }}"
         data-template="{{ template }}"
       >
-        {% if template.name == 'index' or template == 'index' %}
-          {% section 'nb-hero' %}
-          {% section 'nb-kitchen-status' %}
-          {% section 'nb-order-experience' %}
-          {% section 'nb-today-available' %}
-          {% section 'nb-why-choose-us' %}
-          {% section 'nb-signature-menu' %}
-          {% section 'nb-family-gatherings' %}
-          {% section 'nb-delivery-areas' %}
-          {% section 'nb-customer-reviews' %}
-          {% section 'nb-faq-accordion' %}
-          {% section 'nb-final-cta' %}
-        {% else %}
-          {{ content_for_layout }}
-        {% endif %}
+        {{ content_for_layout }}
       </main>
 
       <footer>
