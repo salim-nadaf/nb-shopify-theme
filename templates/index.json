@@ -1,18 +1,227 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "nb_homepage_main": {
       "type": "nb-homepage",
-      "name": "Niamat Restaurant Homepage",
-      "settings": {}
+      "settings": {
+        "show_status": true,
+        "status_text": "Kitchen Open - Lunch 12-3 PM, Dinner 6-9 PM",
+        "show_hero": true,
+        "hero_heading": "Real Biryani. Made Fresh. Delivered to Your Door.",
+        "hero_subheading": "Slow-cooked dum biryani from our cloud kitchen. Order now for delivery in 45-60 minutes.",
+        "hero_btn1_text": "Order Now",
+        "hero_btn1_url": "/pages/start-your-order",
+        "hero_btn2_text": "See Full Menu",
+        "hero_btn2_url": "/collections/instant-delivery",
+        "show_today": true,
+        "today_heading": "What's Ready Today",
+        "today_subheading": "Fresh batches coming hot out of the handi for fast dispatch.",
+        "today_cta_text": "Order Instant Items",
+        "today_cta_url": "/collections/instant-delivery",
+        "show_family": true,
+        "family_heading": "Feeding a Crowd?",
+        "family_subheading": "Planning a party, family gathering or office lunch? Pre-order 1 Kg to 10 Kg handis with scheduled delivery.",
+        "family_cta_text": "Plan Family Order",
+        "family_cta_url": "/pages/family-feast",
+        "show_cta": true,
+        "final_heading": "Ready to Order?",
+        "final_subheading": "Experience authentic dum biryani freshly prepared for your appetite.",
+        "final_cta_text": "Start Your Order",
+        "final_cta_url": "/pages/start-your-order"
+      },
+      "blocks": {
+        "order_way_1": {
+          "type": "order_way",
+          "settings": {
+            "badge": "Fast 30-45m",
+            "title": "Instant Delivery",
+            "description": "Single & double portions prepared in fresh batches for quick dispatch.",
+            "cta_text": "Order Instant Delivery",
+            "cta_url": "/collections/instant-delivery"
+          }
+        },
+        "order_way_2": {
+          "type": "order_way",
+          "settings": {
+            "badge": "1 Kg to 10 Kg Handi",
+            "title": "Family Pre-Orders",
+            "description": "Custom handi catering for weekend family lunches, celebrations & gatherings.",
+            "cta_text": "Plan Family Feast",
+            "cta_url": "/pages/family-feast"
+          }
+        },
+        "today_badge_1": {
+          "type": "today_badge",
+          "settings": {
+            "icon": "🍗",
+            "label": "Chicken Dum Biryani Ready"
+          }
+        },
+        "today_badge_2": {
+          "type": "today_badge",
+          "settings": {
+            "icon": "🥩",
+            "label": "Mutton Dum Biryani Ready"
+          }
+        },
+        "today_badge_3": {
+          "type": "today_badge",
+          "settings": {
+            "icon": "🍢",
+            "label": "Chicken Tikka Kebab Ready"
+          }
+        },
+        "why_point_1": {
+          "type": "why_point",
+          "settings": {
+            "icon": "🍲",
+            "title": "Slow-Cooked Dum",
+            "body": "Prepared fresh in authentic sealed copper handis for supreme flavor."
+          }
+        },
+        "why_point_2": {
+          "type": "why_point",
+          "settings": {
+            "icon": "🌙",
+            "title": "100% Halal",
+            "body": "All meats sourced certified halal and prepared under strict hygiene standards."
+          }
+        },
+        "why_point_3": {
+          "type": "why_point",
+          "settings": {
+            "icon": "🚀",
+            "title": "Fast Local Delivery",
+            "body": "Hot & fresh dispatch across Kalyan West, East, and nearby areas."
+          }
+        },
+        "why_point_4": {
+          "type": "why_point",
+          "settings": {
+            "icon": "👨‍👩‍👧‍👦",
+            "title": "Family Friendly",
+            "body": "Portions sized perfectly for daily cravings as well as big family celebrations."
+          }
+        },
+        "menu_item_1": {
+          "type": "menu_item",
+          "settings": {
+            "name": "Chicken Dum Biryani",
+            "description": "Tender chicken marinated in aromatic spices and slow-cooked with basmati rice.",
+            "price": "Rs. 280"
+          }
+        },
+        "menu_item_2": {
+          "type": "menu_item",
+          "settings": {
+            "name": "Mutton Dum Biryani",
+            "description": "Juicy mutton pieces dum-cooked in rich saffron rice.",
+            "price": "Rs. 360"
+          }
+        },
+        "menu_item_3": {
+          "type": "menu_item",
+          "settings": {
+            "name": "Chicken Tikka Starter",
+            "description": "Smokey tandoori chicken tikka cooked over charcoal.",
+            "price": "Rs. 240"
+          }
+        },
+        "delivery_zone_1": {
+          "type": "delivery_zone",
+          "settings": {
+            "zone_name": "Kalyan West",
+            "eta": "30-45 mins",
+            "delivery_fee": "Free over Rs. 500"
+          }
+        },
+        "delivery_zone_2": {
+          "type": "delivery_zone",
+          "settings": {
+            "zone_name": "Kalyan East & Shahad",
+            "eta": "35-50 mins",
+            "delivery_fee": "Free over Rs. 500"
+          }
+        },
+        "delivery_zone_3": {
+          "type": "delivery_zone",
+          "settings": {
+            "zone_name": "Khadakpada & Adharwadi",
+            "eta": "30-40 mins",
+            "delivery_fee": "Free over Rs. 500"
+          }
+        },
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": "5/5 Stars",
+            "review_text": "The biryani arrived piping hot! Super tender meat and rice was perfectly seasoned.",
+            "author": "Sumaiya N.",
+            "location": "Kalyan West"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": "5/5 Stars",
+            "review_text": "Ordered 2 Kg Mutton Biryani for family lunch. Arrived right on time. Everyone loved it!",
+            "author": "Rahul M.",
+            "location": "Khadakpada"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": "5/5 Stars",
+            "review_text": "Best biryani in Kalyan. Hygienic packaging and quick delivery.",
+            "author": "Imran K.",
+            "location": "Kalyan East"
+          }
+        },
+        "faq_item_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How fast is delivery?",
+            "answer": "Instant delivery orders are prepared fresh and dispatched promptly within 45 to 60 minutes."
+          }
+        },
+        "faq_item_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Which locations do you cover?",
+            "answer": "We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and Dombivli select areas."
+          }
+        },
+        "faq_item_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is the food 100% Halal?",
+            "answer": "Yes, all meats used at Biryani Palace by Niamat are 100% certified halal."
+          }
+        }
+      },
+      "block_order": [
+        "order_way_1",
+        "order_way_2",
+        "today_badge_1",
+        "today_badge_2",
+        "today_badge_3",
+        "why_point_1",
+        "why_point_2",
+        "why_point_3",
+        "why_point_4",
+        "menu_item_1",
+        "menu_item_2",
+        "menu_item_3",
+        "delivery_zone_1",
+        "delivery_zone_2",
+        "delivery_zone_3",
+        "review_1",
+        "review_2",
+        "review_3",
+        "faq_item_1",
+        "faq_item_2",
+        "faq_item_3"
+      ]
     }
   },
   "order": [
