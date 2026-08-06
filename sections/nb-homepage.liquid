@@ -1,98 +1,98 @@
 {% comment %} NIAMAT BIRYANI — Original Homepage Section {% endcomment %}
-{% render 'food-card-styles' %}
 
-<div class="nb-home">
-
+<section class="nb-home">
   <!-- ① KITCHEN STATUS -->
   {% if section.settings.show_status != false %}
-  <div class="nb-status-bar">
-    <div class="nb-status-bar__inner">
-      <span class="nb-status-dot"></span>
-      <span class="nb-status-text">
-        {{ section.settings.status_text | default: "⚡ Kitchen Open — Fresh Batches Ready for Instant Delivery & Pre-Order" }}
-      </span>
+    <div class="nb-status-bar">
+      <div class="nb-status-bar__inner">
+        <span class="nb-status-dot"></span>
+        <span class="nb-status-text">
+          {{ section.settings.status_text | default: "⚡ Kitchen Open — Fresh Batches Ready for Instant Delivery & Pre-Order" }}
+        </span>
+      </div>
     </div>
-  </div>
   {% endif %}
 
   <!-- ② HERO MEDIA -->
   {% if section.settings.show_hero != false %}
-  <div class="nb-hero-media">
-    {% if section.settings.hero_video != blank %}
-      <video autoplay muted loop playsinline class="nb-hero-media__video">
-        <source src="{{ section.settings.hero_video }}">
-      </video>
-    {% elsif section.settings.hero_image != blank %}
-      <img src="{{ section.settings.hero_image | image_url: width: 1400 }}"
-           alt="{{ section.settings.hero_title | escape }}"
-           class="nb-hero-media__img">
-    {% endif %}
-    <div class="nb-hero-media__overlay">
-      <h2 class="nb-hero-media__title">
-        {{ section.settings.hero_title | default: "Authentic Hyderabadi Dum Biryani" }}
-      </h2>
-      <p class="nb-hero-media__sub">
-        {{ section.settings.hero_subtitle | default: "Freshly prepared for every service with premium ingredients, delivered across Kalyan & nearby areas." }}
-      </p>
-      <a href="{{ section.settings.hero_btn_link | default: '/collections/instant-delivery' }}" class="nb-btn nb-btn--gold nb-btn--lg">
-        {{ section.settings.hero_btn_text | default: "Order Instant Delivery" }}
-      </a>
+    <div class="nb-hero-media">
+      {% if section.settings.hero_video != blank %}
+        <video autoplay muted loop playsinline class="nb-hero-media__video">
+          <source src="{{ section.settings.hero_video }}" type="video/mp4" />
+        </video>
+      {% elsif section.settings.hero_image != blank %}
+        <img src="{{ section.settings.hero_image | image_url: width: 1400 }}"
+             alt="{{ section.settings.hero_title | escape }}"
+             class="nb-hero-media__img"
+             loading="lazy"
+             width="1400"
+             height="600" />
+      {% endif %}
+      <div class="nb-hero-media__overlay">
+        <h2 class="nb-hero-media__title">
+          {{ section.settings.hero_title | default: "Authentic Hyderabadi Dum Biryani" }}
+        </h2>
+        <p class="nb-hero-media__sub">
+          {{ section.settings.hero_subtitle | default: "Freshly prepared for every service with premium ingredients, delivered across Kalyan & nearby areas." }}
+        </p>
+        <a href="{{ section.settings.hero_btn_link | default: '/collections/instant-delivery' }}" class="nb-btn nb-btn--gold nb-btn--lg">
+          {{ section.settings.hero_btn_text | default: "Order Instant Delivery" }}
+        </a>
+      </div>
     </div>
-  </div>
   {% endif %}
 
   <!-- ③ ORDER YOUR WAY -->
   {% if section.settings.show_ways != false %}
-  <div class="nb-order-ways">
-    <h2 class="nb-section-title">
-      {{ section.settings.ways_title | default: "How Would You Like to Order?" }}
-    </h2>
-    <p class="nb-section-sub">{{ section.settings.ways_subtitle | default: "Choose instant delivery for today's cravings or advance booking for family gatherings." }}</p>
-    <div class="nb-ways-grid">
-      <a href="{{ section.settings.instant_link | default: '/collections/instant-delivery' }}" class="nb-way-card">
-        <div class="nb-way-card__icon">⚡</div>
-        <div class="nb-way-card__body">
-          <h3>{{ section.settings.instant_title | default: "Instant Delivery" }}</h3>
-          <p>{{ section.settings.instant_desc | default: "Ready in 30–60 minutes for today's lunch & dinner." }}</p>
-          <span class="nb-way-card__cta">
-            {{ section.settings.instant_cta | default: "Order Now →" }}
-          </span>
-        </div>
-      </a>
-      <a href="{{ section.settings.family_link | default: '/pages/family-feast' }}" class="nb-way-card">
-        <div class="nb-way-card__icon">👑</div>
-        <div class="nb-way-card__body">
-          <h3>{{ section.settings.family_title | default: "Family Feast (1 Kg+)" }}</h3>
-          <p>{{ section.settings.family_desc | default: "Pre-order 1 Kg and above for weekend family meals & events." }}</p>
-          <span class="nb-way-card__cta nb-way-card__cta--outline">
-            {{ section.settings.family_cta | default: "Plan Family Order →" }}
-          </span>
-        </div>
-      </a>
+    <div class="nb-order-ways">
+      <h2 class="nb-section-title">
+        {{ section.settings.ways_title | default: "How Would You Like to Order?" }}
+      </h2>
+      <p class="nb-section-sub">{{ section.settings.ways_subtitle | default: "Choose instant delivery for today's cravings or advance booking for family gatherings." }}</p>
+      <div class="nb-ways-grid">
+        <a href="{{ section.settings.instant_link | default: '/collections/instant-delivery' }}" class="nb-way-card">
+          <div class="nb-way-card__icon">⚡</div>
+          <div class="nb-way-card__body">
+            <h3>{{ section.settings.instant_title | default: "Instant Delivery" }}</h3>
+            <p>{{ section.settings.instant_desc | default: "Ready in 30–60 minutes for today's lunch & dinner." }}</p>
+            <span class="nb-way-card__cta">
+              {{ section.settings.instant_cta | default: "Order Now →" }}
+            </span>
+          </div>
+        </a>
+        <a href="{{ section.settings.family_link | default: '/pages/family-feast' }}" class="nb-way-card">
+          <div class="nb-way-card__icon">👑</div>
+          <div class="nb-way-card__body">
+            <h3>{{ section.settings.family_title | default: "Family Feast (1 Kg+)" }}</h3>
+            <p>{{ section.settings.family_desc | default: "Pre-order 1 Kg and above for weekend family meals & events." }}</p>
+            <span class="nb-way-card__cta nb-way-card__cta--outline">
+              {{ section.settings.family_cta | default: "Plan Family Order →" }}
+            </span>
+          </div>
+        </a>
+      </div>
     </div>
-  </div>
   {% endif %}
 
   <!-- ④ TODAY'S KITCHEN -->
   {% if section.settings.show_today != false %}
-  <div class="nb-today">
-    <div class="nb-today__inner">
-      <div class="nb-today__text">
-        <span class="nb-today__label">Fresh Dum Batches</span>
-        <h2>{{ section.settings.today_title | default: "Available Today" }}</h2>
-        <p>{{ section.settings.today_desc | default: "Freshly prepared portions available right now for instant delivery across Kalyan." }}</p>
-        <a href="{{ section.settings.today_btn_link | default: '/collections/instant-delivery' }}" class="nb-btn nb-btn--gold">
-          {{ section.settings.today_btn_text | default: "Explore Instant Menu" }}
-        </a>
+    <div class="nb-today">
+      <div class="nb-today__inner">
+        <div class="nb-today__text">
+          <span class="nb-today__label">Fresh Dum Batches</span>
+          <h2>{{ section.settings.today_title | default: "Available Today" }}</h2>
+          <p>{{ section.settings.today_desc | default: "Freshly prepared portions available right now for instant delivery across Kalyan." }}</p>
+          <a href="{{ section.settings.today_btn_link | default: '/collections/instant-delivery' }}" class="nb-btn nb-btn--gold">
+            {{ section.settings.today_btn_text | default: "Explore Instant Menu" }}
+          </a>
+        </div>
       </div>
     </div>
-  </div>
   {% endif %}
-
-</div>
+</section>
 
 <style>
-.nb-home { background: #FFFAF4; color: #2C1810; padding-bottom: 60px; }
+.nb-home { background: #FFFAF4; color: #2C1810; padding-bottom: 60px; display: block; }
 .nb-status-bar { background: #2C1810; padding: 12px 20px; text-align: center; }
 .nb-status-bar__inner { display: inline-flex; align-items: center; gap: 8px; }
 .nb-status-dot { width: 8px; height: 8px; background: #2e7d32; border-radius: 50%; display: inline-block; }
@@ -124,6 +124,9 @@
 .nb-today__text h2 { font-size: 1.5rem; font-weight: 800; color: #2C1810; margin: 6px 0 10px; }
 .nb-today__text p { font-size: 0.88rem; color: #7A5C4A; margin: 0 0 20px; }
 
+.nb-btn { font-size: 0.82rem; font-weight: 700; padding: 8px 16px; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; display: inline-block; white-space: nowrap; transition: background 0.15s ease; }
+.nb-btn--gold { background: #C8922A; color: #fff; }
+.nb-btn--gold:hover { background: #A67520; color: #fff; }
 .nb-btn--lg { padding: 12px 24px; font-size: 0.95rem; }
 </style>
 
