@@ -17,7 +17,7 @@
           "settings": {
             "badge": "Fast 30-45m",
             "title": "Instant Delivery",
-            "description": "Single & double portions prepared in fresh batches for quick dispatch.",
+            "description": "Freshly prepared portions available today.\n\nPerfect for lunch, dinner and everyday cravings.",
             "cta_text": "Order Instant Delivery",
             "cta_url": "/collections/instant-delivery"
           }
@@ -27,7 +27,7 @@
           "settings": {
             "badge": "1 Kg to 10 Kg Handi",
             "title": "Family Pre-Orders",
-            "description": "Custom handi catering for weekend family lunches, celebrations & gatherings.",
+            "description": "Planning a gathering?\n\nPre-order larger quantities with your preferred delivery schedule.",
             "cta_text": "Plan Family Feast",
             "cta_url": "/pages/family-feast"
           }
@@ -36,21 +36,14 @@
           "type": "today_badge",
           "settings": {
             "icon": "🍗",
-            "label": "Chicken Dum Biryani Ready"
+            "label": "Alishaan Tandoori Biryani Ready"
           }
         },
         "today_badge_2": {
           "type": "today_badge",
           "settings": {
             "icon": "🥩",
-            "label": "Mutton Dum Biryani Ready"
-          }
-        },
-        "today_badge_3": {
-          "type": "today_badge",
-          "settings": {
-            "icon": "🍢",
-            "label": "Chicken Tikka Kebab Ready"
+            "label": "Ustaadi Murgh Dum Biryani Ready"
           }
         },
         "why_point_1": {
@@ -58,7 +51,7 @@
           "settings": {
             "icon": "🍲",
             "title": "Slow-Cooked Dum",
-            "body": "Prepared fresh in authentic sealed copper handis for supreme flavor."
+            "body": "Prepared fresh on coal based dum style, in the supervison of our Ustaad."
           }
         },
         "why_point_2": {
@@ -66,7 +59,7 @@
           "settings": {
             "icon": "🌙",
             "title": "100% Halal",
-            "body": "All meats sourced certified halal and prepared under strict hygiene standards."
+            "body": "All meats sourced halal and prepared under strict hygiene standards."
           }
         },
         "why_point_3": {
@@ -88,25 +81,28 @@
         "menu_item_1": {
           "type": "menu_item",
           "settings": {
-            "name": "Chicken Dum Biryani",
-            "description": "Tender chicken marinated in aromatic spices and slow-cooked with basmati rice.",
-            "price": "Rs. 280"
+            "image": "shopify://shop_images/ustaadi-murgh-dum.webp",
+            "name": "Ustaadi Murgh Dum Biryani",
+            "description": "Tender chicken marinated in aromatic spices and slow-cooked classic with basmati rice.",
+            "price": "₹999/Kg"
           }
         },
         "menu_item_2": {
           "type": "menu_item",
           "settings": {
-            "name": "Mutton Dum Biryani",
-            "description": "Juicy mutton pieces dum-cooked in rich saffron rice.",
-            "price": "Rs. 360"
+            "image": "shopify://shop_images/gosht-e-dum-mazedaar.webp",
+            "name": "Gosht-e-Dum Mazedaar",
+            "description": "Juicy mutton pieces dum-cooked in rich basmari rice.",
+            "price": "₹1,599/Kg"
           }
         },
         "menu_item_3": {
           "type": "menu_item",
           "settings": {
-            "name": "Chicken Tikka Starter",
-            "description": "Smokey tandoori chicken tikka cooked over charcoal.",
-            "price": "Rs. 240"
+            "image": "shopify://shop_images/shahi-murgh-rolls.webp",
+            "name": "Shahi Murgh Rolls",
+            "description": "Cheese filled chicken kebab rolls, fried and bursting with spice.",
+            "price": "₹549 (12 pcs)"
           }
         },
         "delivery_zone_1": {
@@ -178,7 +174,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Is the food 100% Halal?",
-            "answer": "Yes, all meats used at Biryani Palace by Niamat are 100% certified halal."
+            "answer": "Yes, all meats used at Biryani Palace by Niamat are 100% halal."
           }
         }
       },
@@ -187,7 +183,6 @@
         "order_way_2",
         "today_badge_1",
         "today_badge_2",
-        "today_badge_3",
         "why_point_1",
         "why_point_2",
         "why_point_3",
@@ -231,7 +226,7 @@
         "hero_video_url": "https://cdn.shopify.com/videos/c/o/v/d9d77b9d67f2417b8243214b4f77fd47.mp4",
         "show_today": true,
         "today_heading": "What's Ready Today",
-        "today_subheading": "Fresh batches coming hot out of the handi for fast dispatch.",
+        "today_subheading": "Freshly prepared items currently available for instant delivery.",
         "today_cta_text": "Order Instant Items",
         "today_cta_url": "/collections/instant-delivery",
         "show_family": true,
@@ -241,9 +236,9 @@
         "family_cta_url": "/pages/family-feast",
         "show_cta": true,
         "final_heading": "Ready to Order?",
-        "final_subheading": "Experience authentic dum biryani freshly prepared for your appetite.",
+        "final_subheading": "Experience our ustaad's biryani freshly prepared for your appetite.",
         "final_cta_text": "Start Your Order",
-        "final_cta_url": "/pages/start-your-order"
+        "final_cta_url": "shopify://pages/family-feast"
       }
     }
   },
