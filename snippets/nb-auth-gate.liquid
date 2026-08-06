@@ -284,7 +284,30 @@ function nbAuthSaveName() {
   var phone = localStorage.getItem('nb_phone') || '';
   var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
 
-  // Save to Shopify cart attributes & Order Note
+  // 1. Instant background lead push to Shopify Admin Customers database
+  try {
+    var phone10 = phone.replace(/\D/g, '').slice(-10);
+    if (phone10.length === 10) {
+      var leadEmail = 'customer_' + phone10 + '@niamatbiryani.com';
+      var leadFormData = new FormData();
+      leadFormData.append('form_type', 'customer');
+      leadFormData.append('utf8', '✓');
+      leadFormData.append('contact[email]', leadEmail);
+      leadFormData.append('contact[phone]', phone);
+      leadFormData.append('contact[first_name]', name);
+      leadFormData.append('contact[tags]', 'AuthGateLead, PreCheckoutLead');
+      if (promoConsent) {
+        leadFormData.append('contact[accepts_marketing]', 'true');
+      }
+
+      fetch('/contact#contact_form', {
+        method: 'POST',
+        body: leadFormData
+      }).catch(function() {});
+    }
+  } catch(e) {}
+
+  // 2. Save to Shopify cart attributes & Order Note
   fetch('/cart/update.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
