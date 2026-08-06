@@ -1,236 +1,724 @@
-{% comment %} NIAMAT BIRYANI — Mobile-First Food Restaurant Homepage {% endcomment %}
+{% comment %}
+  NIAMAT BIRYANI — Behrouz-Inspired Royal Mobile-First Restaurant Homepage
+  100% HTML Validated & Fully Customizable in Shopify Theme Editor
+{% endcomment %}
 {% render 'food-card-styles' %}
 
-<section class="nb-home">
-  <!-- ① LIVE KITCHEN STATUS DOCK -->
+<section class="nb-behrouz-home" style="--nb-bg: {{ section.settings.color_page_bg | default: '#FFFAF4' }}; --nb-dark: {{ section.settings.color_dark_bg | default: '#1E100A' }}; --nb-gold: {{ section.settings.color_accent_gold | default: '#C8922A' }};">
+
+  <!-- ① KITCHEN STATUS BAR -->
   {% if section.settings.show_status != false %}
-  <div class="nb-status-header">
-    <div class="nb-status-header__inner">
-      <span class="nb-pulse-live"></span>
-      <span class="nb-status-title">Kitchen Open & Fresh Batches Ready</span>
+  <div class="nb-b-status">
+    <div class="nb-b-status__inner">
+      <div class="nb-b-status__live">
+        <span class="nb-b-pulse"></span>
+        <span>Kitchen Status: <strong>{{ section.settings.status_title | default: "Open" }}</strong></span>
+      </div>
+      <span class="nb-b-status__prep">{{ section.settings.status_prep | default: "⏱️ Est. Prep: 30–60 Mins" }}</span>
     </div>
-    <span class="nb-prep-time-tag">⏱️ 30–45 Mins</span>
   </div>
   {% endif %}
 
-  <!-- ② RESTAURANT BRAND HERO -->
+  <!-- ② ROYAL HERO BANNER -->
   {% if section.settings.show_hero != false %}
-  <div class="nb-food-hero">
-    {% if section.settings.hero_video != blank %}
-      <video autoplay muted loop playsinline class="nb-food-hero__video">
-        <source src="{{ section.settings.hero_video }}" type="video/mp4" />
+  <div class="nb-b-hero">
+    {% if section.settings.hero_video_url != blank %}
+      <video autoplay muted loop playsinline class="nb-b-hero__video">
+        <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
       </video>
+      <div class="nb-b-hero__overlay"></div>
     {% elsif section.settings.hero_image != blank %}
-      <img src="{{ section.settings.hero_image | image_url: width: 1200 }}"
-           alt="{{ section.settings.hero_title | escape }}"
-           class="nb-food-hero__img"
-           loading="lazy"
-           width="1200"
-           height="600" />
+      <div class="nb-b-hero__img" style="background-image: url('{{ section.settings.hero_image | image_url: width: 1400 }}');"></div>
+      <div class="nb-b-hero__overlay"></div>
+    {% else %}
+      <div class="nb-b-hero__glow"></div>
     {% endif %}
-    <div class="nb-food-hero__overlay">
-      <span class="nb-food-hero__badge">⚡ Kalyan & Nearby Delivery</span>
-      <h1 class="nb-food-hero__title">{{ section.settings.hero_title | default: "Biryani Palace by Niamat" }}</h1>
-      <p class="nb-food-hero__subtitle">{{ section.settings.hero_subtitle | default: "Freshly prepared dum biryani cooked in authentic handis for every service." }}</p>
-      
-      <div class="nb-food-hero__ctas">
-        <a href="{{ section.settings.hero_btn_link | default: '/collections/instant-delivery' }}" class="nb-btn-gold">
-          <span>⚡ Order Instant Delivery</span>
+
+    <div class="nb-b-container nb-b-hero__content">
+      <div class="nb-b-hero__badge-wrap">
+        <span class="nb-b-hero__badge">{{ section.settings.hero_badge | default: "⚡ Authentic Hyderabadi Dum Biryani" }}</span>
+      </div>
+      <h1 class="nb-b-hero__headline">{{ section.settings.hero_title | default: "Premium Dum Biryani, Freshly Prepared for Every Occasion" }}</h1>
+      <p class="nb-b-hero__subheading">{{ section.settings.hero_subtitle | default: "Whether you're craving a quick meal or planning a family gathering, enjoy freshly prepared biryani made with carefully selected ingredients and delivered across Kalyan and nearby areas." }}</p>
+
+      <div class="nb-b-hero__actions">
+        <a href="{{ section.settings.hero_btn1_link | default: '/collections/instant-delivery' }}" class="nb-b-btn-gold">
+          <span>{{ section.settings.hero_btn1_text | default: "⚡ Order Instant Delivery" }}</span>
         </a>
-        <a href="/pages/family-feast" class="nb-btn-glass">
-          <span>👑 Plan Family Feast (1 Kg+)</span>
+        <a href="{{ section.settings.hero_btn2_link | default: '/pages/family-feast' }}" class="nb-b-btn-glass">
+          <span>{{ section.settings.hero_btn2_text | default: "👑 Plan a Family Order" }}</span>
         </a>
+      </div>
+
+      <div class="nb-b-hero__trust">
+        {{ section.settings.hero_trust_text | default: "✓ Freshly Prepared &nbsp;•&nbsp; ✓ 100% Halal &nbsp;•&nbsp; ✓ Secure Online Payments" }}
       </div>
     </div>
   </div>
   {% endif %}
 
-  <!-- ③ MOBILE DINING EXPERIENCE SWITCHER -->
-  {% if section.settings.show_ways != false %}
-  <div class="nb-exp-container">
-    <div class="nb-exp-switcher">
-      <a href="/collections/instant-delivery" class="nb-exp-tab active">
-        <span class="nb-exp-tab__icon">⚡</span>
-        <span class="nb-exp-tab__text">
-          <strong>Instant Delivery</strong>
-          <small>Ready in 30-45m</small>
-        </span>
-      </a>
-      <a href="/pages/family-feast" class="nb-exp-tab">
-        <span class="nb-exp-tab__icon">👑</span>
-        <span class="nb-exp-tab__text">
-          <strong>Family Feast</strong>
-          <small>1 Kg & Bulk Pre-Orders</small>
-        </span>
-      </a>
+  <!-- ③ CHOOSE YOUR DINING EXPERIENCE (DUAL BEHAVIOR GATE) -->
+  {% if section.settings.show_exp != false %}
+  <div class="nb-b-section">
+    <div class="nb-b-container">
+      <div class="nb-b-head text-center">
+        <span class="nb-b-subhead">Tailored Dining</span>
+        <h2 class="nb-b-title">{{ section.settings.exp_title | default: "How Would You Like to Order?" }}</h2>
+      </div>
+
+      <div class="nb-b-exp-grid">
+        <!-- Instant Delivery Card -->
+        <div class="nb-b-exp-card nb-b-exp-card--instant">
+          <div class="nb-b-exp-card__header">
+            <span class="nb-b-tag">⚡ Today's Craving</span>
+            <div class="nb-b-exp-icon">🍛</div>
+          </div>
+          <h3 class="nb-b-exp-card__title">{{ section.settings.instant_card_title | default: "Instant Delivery" }}</h3>
+          <p class="nb-b-exp-card__desc">{{ section.settings.instant_card_desc | default: "Freshly prepared portions available today. Ready in approximately 30–60 minutes." }}</p>
+          <div class="nb-b-exp-card__meta">
+            <span>🚀 30–60 Min Delivery</span>
+            <span>📍 Kalyan & Nearby</span>
+          </div>
+          <a href="{{ section.settings.instant_card_link | default: '/collections/instant-delivery' }}" class="nb-b-btn-gold nb-b-btn-full">
+            {{ section.settings.instant_card_cta | default: "Order Now" }}
+          </a>
+        </div>
+
+        <!-- Family Orders Card -->
+        <div class="nb-b-exp-card nb-b-exp-card--family">
+          <div class="nb-b-exp-card__header">
+            <span class="nb-b-tag gold">👑 Gatherings & Parties</span>
+            <div class="nb-b-exp-icon">👨‍👩‍👧‍👦</div>
+          </div>
+          <h3 class="nb-b-exp-card__title">{{ section.settings.family_card_title | default: "Family Orders" }}</h3>
+          <p class="nb-b-exp-card__desc">{{ section.settings.family_card_desc | default: "Planning a gathering? Pre-order 1 Kg and above with your preferred delivery schedule." }}</p>
+          <div class="nb-b-exp-card__meta">
+            <span>📦 1 Kg – 10 Kg+ Quantities</span>
+            <span>📅 Scheduled Delivery</span>
+          </div>
+          <a href="{{ section.settings.family_card_link | default: '/pages/family-feast' }}" class="nb-b-btn-glass nb-b-btn-full">
+            {{ section.settings.family_card_cta | default: "Plan Family Order" }}
+          </a>
+        </div>
+      </div>
     </div>
   </div>
   {% endif %}
 
-  <!-- ④ TODAY'S FRESH Dum BATCHES (FOOD APP STYLE CARDS) -->
+  <!-- ④ TODAY'S AVAILABLE (INSTANT DELIVERY FOOD CARDS) -->
   {% if section.settings.show_today != false %}
-  <div class="nb-menu-section">
-    <div class="nb-menu-section__head">
-      <div>
-        <span class="nb-menu-badge">Available Today</span>
-        <h2 class="nb-menu-title">{{ section.settings.today_title | default: "Signature Fresh Batches" }}</h2>
+  <div class="nb-b-section nb-b-section--alt">
+    <div class="nb-b-container">
+      <div class="nb-b-head flex-between">
+        <div>
+          <span class="nb-b-subhead">Fresh Dum Batches</span>
+          <h2 class="nb-b-title">{{ section.settings.today_title | default: "Available Today" }}</h2>
+          <p class="nb-b-desc">{{ section.settings.today_desc | default: "Freshly prepared items currently available for instant delivery." }}</p>
+        </div>
+        <a href="/collections/instant-delivery" class="nb-b-link desktop-only">View All Available →</a>
       </div>
-      <a href="/collections/instant-delivery" class="nb-menu-link">View Menu →</a>
-    </div>
 
-    {% assign instant_coll = collections[section.settings.today_collection] | default: collections['instant-delivery'] %}
-    <div class="nb-food-cards-list">
-      {% if instant_coll != blank and instant_coll.products.size > 0 %}
-        {% for product in instant_coll.products limit: 6 %}
-          {% liquid
-            assign first_variant = product.selected_or_first_available_variant
-            assign is_available = first_variant.available
-          %}
-          <div class="nb-food-card-row">
-            <div class="nb-food-card-row__img">
-              {% if product.featured_media %}
-                <img src="{{ product.featured_media | image_url: width: 250 }}" alt="{{ product.title | escape }}" loading="lazy" width="100" height="100" />
-              {% else %}
-                <div class="nb-food-card-row__placeholder">🍛</div>
-              {% endif %}
-              <span class="nb-veg-nonveg-badge">🍗 Non-Veg</span>
-            </div>
-            <div class="nb-food-card-row__content">
-              <h3 class="nb-food-card-row__title">{{ product.title }}</h3>
-              <p class="nb-food-card-row__desc">{{ product.description | strip_html | truncate: 60 }}</p>
-              
-              <div class="nb-food-card-row__bottom">
-                <span class="nb-food-card-row__price">{{ first_variant.price | money }}</span>
-                
-                {% if is_available %}
-                  <form action="/cart/add" method="post" class="nb-quick-form">
-                    <input type="hidden" name="id" value="{{ first_variant.id }}" />
-                    <input type="hidden" name="quantity" value="1" />
-                    <button type="submit" class="nb-add-btn">ADD +</button>
-                  </form>
+      {% assign instant_coll = collections[section.settings.today_collection] | default: collections['instant-delivery'] %}
+      <div class="nb-food-grid">
+        {% if instant_coll != blank and instant_coll.products.size > 0 %}
+          {% for product in instant_coll.products limit: section.settings.products_to_show | default: 6 %}
+            {% liquid
+              assign first_variant = product.selected_or_first_available_variant
+              assign is_available = first_variant.available
+            %}
+            <div class="nb-food-card {% unless is_available %}nb-food-card--soldout{% endunless %}">
+              <div class="nb-food-card__image">
+                {% if product.featured_media %}
+                  <img src="{{ product.featured_media | image_url: width: 300 }}" alt="{{ product.title | escape }}" loading="lazy" width="130" height="130" />
                 {% else %}
-                  <span class="nb-sold-tag">Sold Out</span>
+                  <div class="nb-food-card__image-placeholder">🍛</div>
                 {% endif %}
+                {% if is_available %}
+                  <span class="nb-badge nb-badge--available">⚡ Available Now</span>
+                {% else %}
+                  <span class="nb-badge nb-badge--soldout">Sold Out</span>
+                {% endif %}
+              </div>
+
+              <div class="nb-food-card__body">
+                <div>
+                  <h3 class="nb-food-card__title">{{ product.title }}</h3>
+                  {% if product.description != blank %}
+                    <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 65 }}</p>
+                  {% endif %}
+                </div>
+
+                {% if product.variants.size > 1 %}
+                  <div class="nb-variant-selector" data-product-id="{{ product.id }}">
+                    {% for variant in product.variants %}
+                      <span class="nb-variant-pill {% if forloop.first %}active{% endif %}"
+                            data-variant-id="{{ variant.id }}"
+                            data-price="{{ variant.price | money }}"
+                            data-available="{{ variant.available }}">
+                        {{ variant.title }}
+                      </span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <div class="nb-food-card__bottom">
+                  <div>
+                    <span class="nb-food-card__price" data-price-display="{{ product.id }}">
+                      {{ first_variant.price | money }}
+                    </span>
+                    <span class="nb-prep-time">⏱️ 30-60m</span>
+                  </div>
+
+                  {% if is_available %}
+                    <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
+                      <input type="hidden" name="id" value="{{ first_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
+                      <input type="hidden" name="quantity" value="1" />
+                      <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+                    </form>
+                  {% else %}
+                    <button type="button" class="nb-btn nb-btn--disabled nb-btn--sm" disabled>Sold Out</button>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <!-- Demo Food Card -->
+          <div class="nb-food-card">
+            <div class="nb-food-card__image">
+              <div class="nb-food-card__image-placeholder">🍗</div>
+              <span class="nb-badge nb-badge--available">⚡ Available Now</span>
+            </div>
+            <div class="nb-food-card__body">
+              <div>
+                <h3 class="nb-food-card__title">Chicken Dum Biryani</h3>
+                <p class="nb-food-card__desc">Tender chicken marinated in aromatic spices and layered with premium basmati rice.</p>
+              </div>
+              <div class="nb-food-card__bottom">
+                <div>
+                  <span class="nb-food-card__price">₹280</span>
+                  <span class="nb-prep-time">⏱️ 30-60m</span>
+                </div>
+                <a href="/collections/instant-delivery" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</a>
               </div>
             </div>
           </div>
-        {% endfor %}
-      {% else %}
-        <!-- Demo Food Card 1 -->
-        <div class="nb-food-card-row">
-          <div class="nb-food-card-row__img">
-            <div class="nb-food-card-row__placeholder">🍗</div>
-            <span class="nb-veg-nonveg-badge">🍗 Non-Veg</span>
-          </div>
-          <div class="nb-food-card-row__content">
-            <h3 class="nb-food-card-row__title">Chicken Dum Biryani</h3>
-            <p class="nb-food-card-row__desc">Tender chicken pieces marinated in aromatic spices and slow-cooked with basmati rice.</p>
-            <div class="nb-food-card-row__bottom">
-              <span class="nb-food-card-row__price">₹280</span>
-              <a href="/collections/instant-delivery" class="nb-add-btn">ORDER +</a>
-            </div>
-          </div>
-        </div>
+        {% endif %}
+      </div>
 
-        <!-- Demo Food Card 2 -->
-        <div class="nb-food-card-row">
-          <div class="nb-food-card-row__img">
-            <div class="nb-food-card-row__placeholder">🥩</div>
-            <span class="nb-veg-nonveg-badge">🥩 Non-Veg</span>
-          </div>
-          <div class="nb-food-card-row__content">
-            <h3 class="nb-food-card-row__title">Mutton Dum Biryani</h3>
-            <p class="nb-food-card-row__desc">Rich, tender mutton chunks dum-cooked with layered saffron basmati rice.</p>
-            <div class="nb-food-card-row__bottom">
-              <span class="nb-food-card-row__price">₹360</span>
-              <a href="/collections/instant-delivery" class="nb-add-btn">ORDER +</a>
-            </div>
-          </div>
-        </div>
-      {% endif %}
+      <div class="text-center mobile-only mt-16">
+        <a href="/collections/instant-delivery" class="nb-b-btn-gold">View Full Instant Menu →</a>
+      </div>
     </div>
   </div>
   {% endif %}
 
-  <!-- ⑤ RESTAURANT TRUST & REASONS -->
-  <div class="nb-trust-strip">
-    <div class="nb-trust-item">
-      <span>🔥</span>
-      <strong>Fresh Dum Prep</strong>
+  <!-- ⑤ WHY CHOOSE US (4 PILLARS) -->
+  {% if section.settings.show_reasons != false %}
+  <div class="nb-b-section">
+    <div class="nb-b-container">
+      <div class="nb-b-head text-center">
+        <span class="nb-b-subhead">Our Commitment</span>
+        <h2 class="nb-b-title">{{ section.settings.reasons_title | default: "Why Customers Choose Biryani Palace by Niamat" }}</h2>
+      </div>
+
+      <div class="nb-b-reasons-grid">
+        <div class="nb-b-reason-card">
+          <div class="nb-b-reason-icon">🍲</div>
+          <h4>Freshly Prepared</h4>
+          <p>Prepared for every service using carefully selected ingredients.</p>
+        </div>
+
+        <div class="nb-b-reason-card">
+          <div class="nb-b-reason-icon">🌙</div>
+          <h4>100% Halal</h4>
+          <p>Prepared following halal practices.</p>
+        </div>
+
+        <div class="nb-b-reason-card">
+          <div class="nb-b-reason-icon">🔒</div>
+          <h4>Secure Online Ordering</h4>
+          <p>Fast and secure online checkout.</p>
+        </div>
+
+        <div class="nb-b-reason-card">
+          <div class="nb-b-reason-icon">👨‍👩‍👧‍👦</div>
+          <h4>Family Focused</h4>
+          <p>Perfect for everyday meals and family gatherings.</p>
+        </div>
+      </div>
     </div>
-    <div class="nb-trust-item">
-      <span>🌙</span>
-      <strong>100% Halal</strong>
+  </div>
+  {% endif %}
+
+  <!-- ⑥ SIGNATURE COLLECTION BANNER -->
+  {% if section.settings.show_signature != false %}
+  <div class="nb-b-section nb-b-section--dark-banner">
+    <div class="nb-b-container">
+      <div class="nb-b-banner-box">
+        <span class="nb-b-subhead gold">Full Culinary Range</span>
+        <h2>{{ section.settings.sig_title | default: "Explore Our Signature Menu" }}</h2>
+        <p>{{ section.settings.sig_desc | default: "Discover our complete range of biryanis, starters and sides." }}</p>
+        <a href="{{ section.settings.sig_btn_link | default: '/collections/all' }}" class="nb-b-btn-gold">
+          {{ section.settings.sig_btn_text | default: "View Full Menu" }}
+        </a>
+      </div>
     </div>
-    <div class="nb-trust-item">
-      <span>🚀</span>
-      <strong>30-45m Express</strong>
+  </div>
+  {% endif %}
+
+  <!-- ⑦ FAMILY GATHERINGS & EVENTS -->
+  {% if section.settings.show_family != false %}
+  <div class="nb-b-section nb-b-section--alt">
+    <div class="nb-b-container">
+      <div class="nb-b-family-card">
+        <div class="nb-b-family-content">
+          <span class="nb-b-subhead">Advance Catering</span>
+          <h2 class="nb-b-title">{{ section.settings.family_title | default: "Made for Family Gatherings" }}</h2>
+          <p class="nb-b-desc">{{ section.settings.family_desc | default: "Planning a celebration, office lunch or weekend family meal? Pre-order your preferred quantity and delivery time." }}</p>
+
+          <ul class="nb-b-family-list">
+            <li>✓ Custom Portioning (1 Kg Serves 4–5 People)</li>
+            <li>✓ Timed Slots Guaranteed Fresh from Handi</li>
+            <li>✓ Special Handi Packaging Included</li>
+          </ul>
+
+          <a href="{{ section.settings.family_btn_link | default: '/pages/family-feast' }}" class="nb-b-btn-glass">
+            {{ section.settings.family_btn_text | default: "Book Family Order" }}
+          </a>
+        </div>
+        <div class="nb-b-family-visual">
+          <div class="nb-b-crown-icon">👑</div>
+          <h3>Handi Family Feast</h3>
+          <p>1 Kg, 2 Kg & Bulk Packs</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ⑧ WHERE WE DELIVER (DELIVERY AREAS) -->
+  {% if section.settings.show_delivery != false %}
+  <div class="nb-b-section">
+    <div class="nb-b-container">
+      <div class="nb-b-delivery-box">
+        <div class="nb-b-del-icon">📍</div>
+        <h2 class="nb-b-title">{{ section.settings.delivery_title | default: "Where We Deliver" }}</h2>
+        <p class="nb-b-desc">{{ section.settings.delivery_desc | default: "Serving Kalyan and selected nearby areas. Delivery availability and charges are confirmed during checkout based on your location." }}</p>
+
+        <div class="nb-b-area-pills">
+          <span class="nb-b-area-pill">Kalyan West</span>
+          <span class="nb-b-area-pill">Kalyan East</span>
+          <span class="nb-b-area-pill">Khadakpada</span>
+          <span class="nb-b-area-pill">Adharwadi</span>
+          <span class="nb-b-area-pill">Shahad</span>
+          <span class="nb-b-area-pill">Dombivli (Select Areas)</span>
+        </div>
+
+        <button type="button" class="nb-b-btn-gold" onclick="nbOpenDeliveryModal()">Check Delivery Availability</button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ⑨ CUSTOMER REVIEWS (GOOGLE VERIFIED) -->
+  {% if section.settings.show_reviews != false %}
+  <div class="nb-b-section nb-b-section--alt">
+    <div class="nb-b-container">
+      <div class="nb-b-head text-center">
+        <span class="nb-b-subhead">Verified Reviews</span>
+        <h2 class="nb-b-title">{{ section.settings.reviews_title | default: "Loved by Our Customers" }}</h2>
+        <p class="nb-b-desc">Read genuine Google Reviews from customers who have enjoyed our food.</p>
+      </div>
+
+      <div class="nb-b-reviews-grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'review' %}
+            <div class="nb-b-review-card" {{ block.shopify_attributes }}>
+              <div class="nb-b-review-stars">★★★★★</div>
+              <p class="nb-b-review-text">"{{ block.settings.text }}"</p>
+              <div class="nb-b-review-author">
+                <strong>{{ block.settings.author }}</strong>
+                <span>Google Verified Review</span>
+              </div>
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="nb-b-review-card">
+            <div class="nb-b-review-stars">★★★★★</div>
+            <p class="nb-b-review-text">"The Chicken Dum Biryani from Niamat Biryani is authentic and rich in flavor! Meat was super tender, rice perfectly spiced. Best in Kalyan!"</p>
+            <div class="nb-b-review-author">
+              <strong>Sumaiya N.</strong>
+              <span>Google Verified Review</span>
+            </div>
+          </div>
+          <div class="nb-b-review-card">
+            <div class="nb-b-review-stars">★★★★★</div>
+            <p class="nb-b-review-text">"Ordered 2 Kg Mutton Biryani for a family weekend lunch. It arrived piping hot right on schedule. Everyone loved the taste!"</p>
+            <div class="nb-b-review-author">
+              <strong>Rahul M.</strong>
+              <span>Google Verified Review</span>
+            </div>
+          </div>
+          <div class="nb-b-review-card">
+            <div class="nb-b-review-stars">★★★★★</div>
+            <p class="nb-b-review-text">"Clean, 100% halal, and extremely hygienic packaging. Fast instant delivery within 35 minutes."</p>
+            <div class="nb-b-review-author">
+              <strong>Imran K.</strong>
+              <span>Google Verified Review</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ⑩ FREQUENTLY ASKED QUESTIONS (ACCORDION) -->
+  {% if section.settings.show_faq != false %}
+  <div class="nb-b-section">
+    <div class="nb-b-container">
+      <div class="nb-b-head text-center">
+        <span class="nb-b-subhead">Help & Info</span>
+        <h2 class="nb-b-title">{{ section.settings.faq_title | default: "Frequently Asked Questions" }}</h2>
+      </div>
+
+      <div class="nb-b-faq-accordion">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq' %}
+            <details class="nb-b-faq-item" {{ block.shopify_attributes }}>
+              <summary class="nb-b-faq-question">
+                <span>{{ block.settings.question }}</span>
+                <span class="nb-b-faq-icon">+</span>
+              </summary>
+              <div class="nb-b-faq-answer">
+                <p>{{ block.settings.answer }}</p>
+              </div>
+            </details>
+          {% endif %}
+        {% else %}
+          <details class="nb-b-faq-item">
+            <summary class="nb-b-faq-question">
+              <span>How fast is Instant Delivery?</span>
+              <span class="nb-b-faq-icon">+</span>
+            </summary>
+            <div class="nb-b-faq-answer">
+              <p>Instant Delivery orders are prepared fresh and dispatched promptly. Most orders arrive within 30 to 60 minutes depending on your location in Kalyan.</p>
+            </div>
+          </details>
+          <details class="nb-b-faq-item">
+            <summary class="nb-b-faq-question">
+              <span>Which areas do you deliver to?</span>
+              <span class="nb-b-faq-icon">+</span>
+            </summary>
+            <div class="nb-b-faq-answer">
+              <p>We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and surrounding locations.</p>
+            </div>
+          </details>
+          <details class="nb-b-faq-item">
+            <summary class="nb-b-faq-question">
+              <span>What payment methods are supported?</span>
+              <span class="nb-b-faq-icon">+</span>
+            </summary>
+            <div class="nb-b-faq-answer">
+              <p>We support all major online payment options including Google Pay, PhonePe, Paytm, Credit/Debit Cards, Net Banking, and Cash on Delivery.</p>
+            </div>
+          </details>
+          <details class="nb-b-faq-item">
+            <summary class="nb-b-faq-question">
+              <span>Is the food prepared fresh for every order?</span>
+              <span class="nb-b-faq-icon">+</span>
+            </summary>
+            <div class="nb-b-faq-answer">
+              <p>Yes, absolutely. We prepare our biryanis in fresh dum batches throughout the day to ensure authentic aroma, moisture, and flavor in every portion.</p>
+            </div>
+          </details>
+          <details class="nb-b-faq-item">
+            <summary class="nb-b-faq-question">
+              <span>Is the meat 100% Halal certified?</span>
+              <span class="nb-b-faq-icon">+</span>
+            </summary>
+            <div class="nb-b-faq-answer">
+              <p>Yes. All meats used at Biryani Palace by Niamat are 100% halal certified and handled following strict hygiene protocols.</p>
+            </div>
+          </details>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- ⑪ FINAL CALL TO ACTION -->
+  {% if section.settings.show_final_cta != false %}
+  <div class="nb-b-section nb-b-section--final-cta">
+    <div class="nb-b-container">
+      <div class="nb-b-final-box">
+        <h2>{{ section.settings.final_cta_title | default: "Ready to Enjoy Freshly Prepared Biryani?" }}</h2>
+        <p>{{ section.settings.final_cta_desc | default: "Choose Instant Delivery for today's cravings or plan your next family gathering with our advance ordering service." }}</p>
+        <div class="nb-b-final-actions">
+          <a href="{{ section.settings.final_btn1_link | default: '/collections/instant-delivery' }}" class="nb-b-btn-gold">
+            {{ section.settings.final_btn1_text | default: "Order Instant Delivery" }}
+          </a>
+          <a href="{{ section.settings.final_btn2_link | default: '/pages/family-feast' }}" class="nb-b-btn-glass">
+            {{ section.settings.final_btn2_text | default: "Plan Family Order" }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- DELIVERY AVAILABILITY MODAL -->
+  <div id="nb-b-delivery-modal" class="nb-b-modal-overlay">
+    <div class="nb-b-modal-box">
+      <button type="button" class="nb-b-modal-close" onclick="nbCloseDeliveryModal()">×</button>
+      <h3>📍 Delivery Coverage</h3>
+      <p>We deliver freshly prepared Dum Biryani across:</p>
+      <ul class="nb-b-modal-list">
+        <li>✓ Kalyan West (30–45 mins)</li>
+        <li>✓ Kalyan East (35–50 mins)</li>
+        <li>✓ Khadakpada & Adharwadi (30–40 mins)</li>
+        <li>✓ Shahad & Titwala Road (40–60 mins)</li>
+        <li>✓ Dombivli (Select Pincodes)</li>
+      </ul>
+      <p class="nb-b-modal-note">Exact delivery time & fee confirmed automatically at checkout.</p>
+      <button type="button" class="nb-b-btn-gold nb-b-btn-full" onclick="nbCloseDeliveryModal()">Got it!</button>
     </div>
   </div>
 
   <style>
-  .nb-home { background: #FFFAF4; color: #2C1810; padding-bottom: 40px; display: block; overflow-x: hidden; }
-  
-  .nb-status-header { background: #1E100A; color: #FDF6EC; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; border-bottom: 1px solid rgba(200,146,42,0.3); }
-  .nb-status-header__inner { display: flex; align-items: center; gap: 8px; font-weight: 700; }
-  .nb-pulse-live { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2); }
-  .nb-prep-time-tag { background: rgba(200,146,42,0.2); color: #C8922A; font-weight: 700; padding: 2px 8px; border-radius: 12px; font-size: 0.72rem; }
+  .nb-behrouz-home { background: var(--nb-bg, #FFFAF4); color: #2C1810; display: block; overflow-x: hidden; font-family: inherit; }
+  .nb-b-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+  .text-center { text-align: center; }
+  .flex-between { display: flex; justify-content: space-between; align-items: flex-end; }
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+  .mt-16 { margin-top: 16px; }
 
-  .nb-food-hero { position: relative; background: linear-gradient(135deg, #1E100A 0%, #2C1810 100%); color: #fff; padding: 32px 16px 36px; text-align: center; overflow: hidden; }
-  .nb-food-hero__video, .nb-food-hero__img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
-  .nb-food-hero__overlay { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; }
-  .nb-food-hero__badge { display: inline-block; background: rgba(200,146,42,0.25); border: 1px solid rgba(200,146,42,0.4); color: #FDF6EC; font-size: 0.72rem; font-weight: 700; padding: 3px 12px; border-radius: 20px; margin-bottom: 10px; }
-  .nb-food-hero__title { font-size: 1.8rem; font-weight: 800; color: #FFFDF7; margin: 0 0 8px; line-height: 1.2; }
-  .nb-food-hero__subtitle { font-size: 0.85rem; color: #E2D5C5; margin: 0 0 20px; line-height: 1.4; }
-  .nb-food-hero__ctas { display: flex; flex-direction: column; gap: 10px; }
-  @media (min-width: 600px) { .nb-food-hero__ctas { flex-direction: row; } .nb-food-hero__ctas a { flex: 1; } }
+  @media (min-width: 768px) {
+    .nb-b-container { padding: 0 24px; }
+    .desktop-only { display: inline-block; }
+    .mobile-only { display: none; }
+  }
 
-  .nb-btn-gold { background: #C8922A; color: #fff !important; font-weight: 700; font-size: 0.88rem; padding: 12px 18px; border-radius: 10px; text-decoration: none; text-align: center; display: block; border: none; }
-  .nb-btn-glass { background: rgba(255,250,244,0.1); border: 1.5px solid rgba(200,146,42,0.4); color: #FDF6EC !important; font-weight: 700; font-size: 0.88rem; padding: 12px 18px; border-radius: 10px; text-decoration: none; text-align: center; display: block; }
+  /* KITCHEN STATUS */
+  .nb-b-status { background: #1E100A; color: #FDF6EC; padding: 12px 16px; border-bottom: 1px solid rgba(200, 146, 42, 0.3); }
+  .nb-b-status__inner { max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.82rem; }
+  .nb-b-status__live { display: flex; align-items: center; gap: 8px; }
+  .nb-b-pulse { width: 9px; height: 9px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); animation: nbPulseGreen 1.8s infinite; }
+  @keyframes nbPulseGreen { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); } }
+  .nb-b-status__prep { background: rgba(200, 146, 42, 0.2); color: #C8922A; font-weight: 700; padding: 3px 10px; border-radius: 14px; font-size: 0.75rem; border: 1px solid rgba(200, 146, 42, 0.3); }
 
-  .nb-exp-container { padding: 16px; max-width: 650px; margin: 0 auto; }
-  .nb-exp-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #FDF6EC; border: 1px solid rgba(200,146,42,0.25); padding: 6px; border-radius: 14px; }
-  .nb-exp-tab { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 10px; text-decoration: none; color: #2C1810; background: transparent; transition: all 0.2s; }
-  .nb-exp-tab.active { background: #FFF; box-shadow: 0 2px 10px rgba(44,24,16,0.08); border: 1px solid rgba(200,146,42,0.3); }
-  .nb-exp-tab__icon { font-size: 1.4rem; }
-  .nb-exp-tab__text strong { display: block; font-size: 0.82rem; line-height: 1.1; color: #2C1810; }
-  .nb-exp-tab__text small { font-size: 0.68rem; color: #7A5C4A; }
+  /* HERO BANNER */
+  .nb-b-hero { position: relative; background: linear-gradient(135deg, #160B07 0%, #2C1810 60%, #3D2015 100%); color: #fff; padding: 44px 16px 52px; text-align: center; overflow: hidden; }
+  .nb-b-hero__img { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-size: cover; background-position: center; z-index: 1; }
+  .nb-b-hero__video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+  .nb-b-hero__overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, 0.75); z-index: 2; }
+  .nb-b-hero__glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 340px; height: 340px; background: radial-gradient(circle, rgba(200, 146, 42, 0.3) 0%, transparent 70%); pointer-events: none; z-index: 1; }
+  .nb-b-hero__content { position: relative; z-index: 3; }
+  .nb-b-hero__badge { display: inline-block; background: rgba(200, 146, 42, 0.2); border: 1px solid rgba(200, 146, 42, 0.45); color: #FDF6EC; font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; }
+  .nb-b-hero__headline { font-size: 1.7rem; font-weight: 800; line-height: 1.25; color: #FFFDF7; margin: 0 0 12px; letter-spacing: -0.3px; }
+  .nb-b-hero__subheading { font-size: 0.88rem; line-height: 1.5; color: #E2D5C5; max-width: 650px; margin: 0 auto 24px; }
+  .nb-b-hero__actions { display: flex; flex-direction: column; gap: 12px; max-width: 380px; margin: 0 auto 22px; }
+  .nb-b-hero__trust { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.76rem; color: #C8922A; font-weight: 600; flex-wrap: wrap; }
 
-  .nb-menu-section { padding: 16px; max-width: 650px; margin: 0 auto; }
-  .nb-menu-section__head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 14px; }
-  .nb-menu-badge { font-size: 0.7rem; font-weight: 700; color: #C8922A; text-transform: uppercase; letter-spacing: 0.5px; }
-  .nb-menu-title { font-size: 1.25rem; font-weight: 800; color: #2C1810; margin: 2px 0 0; }
-  .nb-menu-link { font-size: 0.8rem; font-weight: 700; color: #C8922A; text-decoration: none; }
+  @media (min-width: 768px) {
+    .nb-b-hero { padding: 76px 24px 84px; }
+    .nb-b-hero__headline { font-size: 2.6rem; }
+    .nb-b-hero__subheading { font-size: 1.02rem; }
+    .nb-b-hero__actions { flex-direction: row; max-width: 500px; justify-content: center; }
+    .nb-b-hero__actions a { flex: 1; }
+  }
 
-  .nb-food-cards-list { display: flex; flex-direction: column; gap: 12px; }
-  .nb-food-card-row { display: flex; gap: 12px; background: #FFFDF7; border: 1px solid rgba(200,146,42,0.22); border-radius: 14px; padding: 12px; align-items: center; box-shadow: 0 2px 8px rgba(44,24,16,0.04); }
-  .nb-food-card-row__img { position: relative; width: 90px; height: 90px; flex-shrink: 0; border-radius: 10px; overflow: hidden; background: #F5ECD7; }
-  .nb-food-card-row__img img { width: 100%; height: 100%; object-fit: cover; }
-  .nb-food-card-row__placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
-  .nb-veg-nonveg-badge { position: absolute; bottom: 4px; left: 4px; font-size: 8px; font-weight: 700; background: rgba(30,16,10,0.85); color: #FFFDF7; padding: 1px 4px; border-radius: 4px; }
-  .nb-food-card-row__content { flex: 1; min-width: 0; }
-  .nb-food-card-row__title { font-size: 0.92rem; font-weight: 800; color: #2C1810; margin: 0 0 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .nb-food-card-row__desc { font-size: 0.74rem; color: #7A5C4A; margin: 0 0 8px; line-height: 1.3; }
-  .nb-food-card-row__bottom { display: flex; justify-content: space-between; align-items: center; }
-  .nb-food-card-row__price { font-size: 0.95rem; font-weight: 800; color: #2C1810; }
-  .nb-add-btn { background: #C8922A; color: #FFF !important; font-weight: 800; font-size: 0.75rem; padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
-  .nb-sold-tag { font-size: 0.72rem; color: #888; font-weight: 700; }
+  /* BUTTONS */
+  .nb-b-btn-gold { background: #C8922A; color: #fff !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(200, 146, 42, 0.25); }
+  .nb-b-btn-gold:hover { background: #A67520; transform: translateY(-2px); }
+  .nb-b-btn-glass { background: rgba(255, 250, 244, 0.08); border: 1.5px solid rgba(200, 146, 42, 0.4); color: #FDF6EC !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+  .nb-b-btn-glass:hover { background: rgba(200, 146, 42, 0.2); border-color: #C8922A; color: #fff !important; }
+  .nb-b-btn-full { width: 100%; box-sizing: border-box; text-align: center; }
 
-  .nb-trust-strip { display: flex; justify-content: space-around; background: #FDF6EC; border-top: 1px solid rgba(200,146,42,0.15); border-bottom: 1px solid rgba(200,146,42,0.15); padding: 14px 10px; max-width: 650px; margin: 20px auto 0; }
-  .nb-trust-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #2C1810; }
-  .nb-trust-item span { font-size: 1rem; }
+  /* SECTIONS COMMON */
+  .nb-b-section { padding: 36px 0; }
+  .nb-b-section--alt { background: #FDF6EC; }
+  .nb-b-section--dark-banner { background: linear-gradient(135deg, #1E100A 0%, #2C1810 100%); color: #fff; text-align: center; }
+  .nb-b-head { margin-bottom: 22px; }
+  .nb-b-subhead { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #C8922A; margin-bottom: 4px; }
+  .nb-b-subhead.gold { color: #FDF6EC; background: rgba(200, 146, 42, 0.25); padding: 3px 10px; border-radius: 12px; }
+  .nb-b-title { font-size: 1.35rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+  .nb-b-section--dark-banner .nb-b-title { color: #FFFDF7; }
+  .nb-b-desc { font-size: 0.85rem; color: #7A5C4A; margin: 0; }
+  .nb-b-link { color: #C8922A; font-weight: 700; font-size: 0.86rem; text-decoration: none; }
+
+  @media (min-width: 768px) {
+    .nb-b-section { padding: 56px 0; }
+    .nb-b-title { font-size: 1.8rem; }
+    .nb-b-desc { font-size: 0.92rem; }
+  }
+
+  /* EXPERIENCE DUAL CARDS */
+  .nb-b-exp-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  .nb-b-exp-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.22); border-radius: 16px; padding: 22px 18px; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+  .nb-b-exp-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44, 24, 16, 0.08); }
+  .nb-b-exp-card--family { background: #FFFDF7; }
+  .nb-b-exp-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .nb-b-tag { font-size: 0.72rem; font-weight: 700; background: rgba(200, 146, 42, 0.12); color: #C8922A; padding: 3px 10px; border-radius: 20px; }
+  .nb-b-tag.gold { background: #1E100A; color: #FDF6EC; }
+  .nb-b-exp-icon { font-size: 2rem; }
+  .nb-b-exp-card__title { font-size: 1.15rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+  .nb-b-exp-card__desc { font-size: 0.84rem; color: #7A5C4A; margin: 0 0 14px; line-height: 1.45; flex: 1; }
+  .nb-b-exp-card__meta { display: flex; gap: 10px; font-size: 0.74rem; font-weight: 600; color: #C8922A; margin-bottom: 16px; flex-wrap: wrap; }
+
+  @media (min-width: 768px) {
+    .nb-b-exp-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .nb-b-exp-card { padding: 28px 24px; }
+  }
+
+  /* REASONS GRID */
+  .nb-b-reasons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .nb-b-reason-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 14px; padding: 16px 14px; text-align: center; }
+  .nb-b-reason-icon { font-size: 1.8rem; margin-bottom: 6px; }
+  .nb-b-reason-card h4 { font-size: 0.9rem; font-weight: 700; color: #2C1810; margin: 0 0 4px; }
+  .nb-b-reason-card p { font-size: 0.76rem; color: #7A5C4A; margin: 0; line-height: 1.35; }
+
+  @media (min-width: 768px) {
+    .nb-b-reasons-grid { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .nb-b-reason-card { padding: 22px 16px; }
+  }
+
+  /* DARK BANNER */
+  .nb-b-banner-box { background: linear-gradient(135deg, #1E100A 0%, #2C1810 100%); border-radius: 20px; padding: 36px 20px; text-align: center; color: #fff; max-width: 650px; margin: 0 auto; }
+  .nb-b-banner-box h2 { font-size: 1.5rem; font-weight: 800; color: #FFFDF7; margin: 8px 0 10px; }
+  .nb-b-banner-box p { font-size: 0.86rem; color: #E2D5C5; margin: 0 0 20px; }
+
+  /* FAMILY CARD */
+  .nb-b-family-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 20px; }
+  .nb-b-family-list { list-style: none; padding: 0; margin: 14px 0 20px; font-size: 0.84rem; color: #2C1810; font-weight: 600; display: flex; flex-direction: column; gap: 8px; }
+  .nb-b-family-visual { background: linear-gradient(135deg, #FDF6EC 0%, #F5ECD7 100%); border: 1px solid rgba(200, 146, 42, 0.25); border-radius: 14px; padding: 24px 18px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .nb-b-crown-icon { font-size: 2.8rem; margin-bottom: 6px; }
+  .nb-b-family-visual h3 { font-size: 1.05rem; font-weight: 800; color: #2C1810; margin: 0 0 4px; }
+  .nb-b-family-visual p { font-size: 0.78rem; color: #C8922A; font-weight: 700; margin: 0; }
+
+  @media (min-width: 768px) {
+    .nb-b-family-card { flex-direction: row; align-items: center; padding: 36px; }
+    .nb-b-family-content { flex: 1; }
+    .nb-b-family-visual { width: 250px; flex-shrink: 0; padding: 32px 20px; }
+  }
+
+  /* DELIVERY BOX */
+  .nb-b-delivery-box { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 18px; padding: 28px 18px; text-align: center; max-width: 650px; margin: 0 auto; }
+  .nb-b-del-icon { font-size: 2.2rem; margin-bottom: 6px; }
+  .nb-b-area-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0 22px; }
+  .nb-b-area-pill { font-size: 0.76rem; font-weight: 600; background: rgba(200, 146, 42, 0.1); color: #2C1810; padding: 4px 11px; border-radius: 20px; border: 1px solid rgba(200, 146, 42, 0.2); }
+
+  /* REVIEWS */
+  .nb-b-reviews-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .nb-b-review-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+  .nb-b-review-stars { color: #f59e0b; font-size: 1rem; margin-bottom: 6px; letter-spacing: 2px; }
+  .nb-b-review-text { font-size: 0.83rem; color: #2C1810; line-height: 1.45; margin: 0 0 12px; font-style: italic; }
+  .nb-b-review-author strong { display: block; font-size: 0.83rem; color: #2C1810; }
+  .nb-b-review-author span { font-size: 0.7rem; color: #16a34a; font-weight: 600; }
+
+  @media (min-width: 768px) {
+    .nb-b-reviews-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  }
+
+  /* FAQ ACCORDION */
+  .nb-b-faq-accordion { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+  .nb-b-faq-item { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 12px; overflow: hidden; }
+  .nb-b-faq-question { padding: 14px 18px; font-size: 0.9rem; font-weight: 700; color: #2C1810; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+  .nb-b-faq-question::-webkit-details-marker { display: none; }
+  .nb-b-faq-icon { font-size: 1.1rem; color: #C8922A; transition: transform 0.2s; }
+  .nb-b-faq-item[open] .nb-b-faq-icon { transform: rotate(45deg); }
+  .nb-b-faq-answer { padding: 0 18px 14px; font-size: 0.83rem; color: #7A5C4A; line-height: 1.45; }
+  .nb-b-faq-answer p { margin: 0; }
+
+  /* FINAL CTA */
+  .nb-b-final-box { background: linear-gradient(135deg, #160B07 0%, #2C1810 100%); border-radius: 18px; padding: 36px 18px; text-align: center; color: #fff; max-width: 750px; margin: 0 auto; }
+  .nb-b-final-box h2 { font-size: 1.5rem; font-weight: 800; color: #FFFDF7; margin: 0 0 10px; }
+  .nb-b-final-box p { font-size: 0.86rem; color: #E2D5C5; max-width: 520px; margin: 0 auto 22px; }
+  .nb-b-final-actions { display: flex; flex-direction: column; gap: 10px; max-width: 380px; margin: 0 auto; }
+
+  @media (min-width: 768px) {
+    .nb-b-final-box { padding: 50px 36px; }
+    .nb-b-final-box h2 { font-size: 2.1rem; }
+    .nb-b-final-actions { flex-direction: row; max-width: 460px; }
+    .nb-b-final-actions a { flex: 1; }
+  }
+
+  /* MODAL */
+  .nb-b-modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center; padding: 16px; }
+  .nb-b-modal-overlay.active { display: flex; }
+  .nb-b-modal-box { background: #FFFDF7; border: 1px solid #C8922A; border-radius: 16px; padding: 22px; max-width: 400px; width: 100%; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+  .nb-b-modal-close { position: absolute; top: 10px; right: 14px; background: none; border: none; font-size: 1.5rem; color: #2C1810; cursor: pointer; line-height: 1; }
+  .nb-b-modal-box h3 { font-size: 1.15rem; font-weight: 800; color: #2C1810; margin: 0 0 8px; }
+  .nb-b-modal-box p { font-size: 0.83rem; color: #7A5C4A; margin: 0 0 10px; }
+  .nb-b-modal-list { list-style: none; padding: 0; margin: 0 0 14px; display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #2C1810; }
+  .nb-b-modal-note { font-size: 0.76rem !important; font-style: italic; color: #C8922A !important; }
   </style>
+
+  <script>
+  function nbOpenDeliveryModal() {
+    var modal = document.getElementById('nb-b-delivery-modal');
+    if (modal) modal.classList.add('active');
+  }
+  function nbCloseDeliveryModal() {
+    var modal = document.getElementById('nb-b-delivery-modal');
+    if (modal) modal.classList.remove('active');
+  }
+  </script>
 </section>
 
 {% schema %}
 {
-  "name": "Niamat Restaurant Homepage",
+  "name": "Niamat Behrouz Homepage",
   "settings": [
+    {
+      "type": "header",
+      "content": "Colors & Style"
+    },
+    {
+      "type": "color",
+      "id": "color_page_bg",
+      "label": "Page Background Color",
+      "default": "#FFFAF4"
+    },
+    {
+      "type": "color",
+      "id": "color_dark_bg",
+      "label": "Dark Background Color",
+      "default": "#1E100A"
+    },
+    {
+      "type": "color",
+      "id": "color_accent_gold",
+      "label": "Accent Gold Color",
+      "default": "#C8922A"
+    },
+    {
+      "type": "header",
+      "content": "1. Kitchen Status"
+    },
     {
       "type": "checkbox",
       "id": "show_status",
-      "label": "Show Live Kitchen Status Header",
+      "label": "Show Kitchen Status Bar",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "status_title",
+      "label": "Status Text",
+      "default": "Open"
+    },
+    {
+      "type": "text",
+      "id": "status_prep",
+      "label": "Prep Time Badge",
+      "default": "⏱️ Est. Prep: 30–60 Mins"
+    },
+    {
+      "type": "header",
+      "content": "2. Hero Banner"
     },
     {
       "type": "checkbox",
@@ -240,59 +728,432 @@
     },
     {
       "type": "text",
+      "id": "hero_badge",
+      "label": "Hero Badge",
+      "default": "⚡ Authentic Hyderabadi Dum Biryani"
+    },
+    {
+      "type": "text",
       "id": "hero_title",
-      "label": "Hero Title",
-      "default": "Biryani Palace by Niamat"
+      "label": "Hero Headline",
+      "default": "Premium Dum Biryani, Freshly Prepared for Every Occasion"
     },
     {
       "type": "textarea",
       "id": "hero_subtitle",
       "label": "Hero Subtitle",
-      "default": "Freshly prepared dum biryani cooked in authentic handis for every service."
+      "default": "Whether you're craving a quick meal or planning a family gathering, enjoy freshly prepared biryani made with carefully selected ingredients and delivered across Kalyan and nearby areas."
     },
     {
       "type": "text",
-      "id": "hero_btn_link",
-      "label": "Instant Delivery Link",
+      "id": "hero_btn1_text",
+      "label": "Primary Button Text",
+      "default": "⚡ Order Instant Delivery"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn1_link",
+      "label": "Primary Button Link",
       "default": "/collections/instant-delivery"
+    },
+    {
+      "type": "text",
+      "id": "hero_btn2_text",
+      "label": "Secondary Button Text",
+      "default": "👑 Plan a Family Order"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn2_link",
+      "label": "Secondary Button Link",
+      "default": "/pages/family-feast"
+    },
+    {
+      "type": "text",
+      "id": "hero_trust_text",
+      "label": "Trust Line",
+      "default": "✓ Freshly Prepared • ✓ 100% Halal • ✓ Secure Online Payments"
     },
     {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Hero Image"
+      "label": "Hero Background Image"
     },
     {
       "type": "text",
-      "id": "hero_video",
-      "label": "Hero Video (MP4)"
+      "id": "hero_video_url",
+      "label": "Hero Background Video URL (MP4)"
+    },
+    {
+      "type": "header",
+      "content": "3. Choose Experience"
     },
     {
       "type": "checkbox",
-      "id": "show_ways",
-      "label": "Show Experience Switcher",
+      "id": "show_exp",
+      "label": "Show Experience Cards",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "exp_title",
+      "label": "Section Heading",
+      "default": "How Would You Like to Order?"
+    },
+    {
+      "type": "text",
+      "id": "instant_card_title",
+      "label": "Instant Card Title",
+      "default": "Instant Delivery"
+    },
+    {
+      "type": "textarea",
+      "id": "instant_card_desc",
+      "label": "Instant Card Description",
+      "default": "Freshly prepared portions available today. Ready in approximately 30–60 minutes."
+    },
+    {
+      "type": "text",
+      "id": "instant_card_cta",
+      "label": "Instant Card Button",
+      "default": "Order Now"
+    },
+    {
+      "type": "url",
+      "id": "instant_card_link",
+      "label": "Instant Card Link",
+      "default": "/collections/instant-delivery"
+    },
+    {
+      "type": "text",
+      "id": "family_card_title",
+      "label": "Family Card Title",
+      "default": "Family Orders"
+    },
+    {
+      "type": "textarea",
+      "id": "family_card_desc",
+      "label": "Family Card Description",
+      "default": "Planning a gathering? Pre-order 1 Kg and above with your preferred delivery schedule."
+    },
+    {
+      "type": "text",
+      "id": "family_card_cta",
+      "label": "Family Card Button",
+      "default": "Plan Family Order"
+    },
+    {
+      "type": "url",
+      "id": "family_card_link",
+      "label": "Family Card Link",
+      "default": "/pages/family-feast"
+    },
+    {
+      "type": "header",
+      "content": "4. Available Today"
     },
     {
       "type": "checkbox",
       "id": "show_today",
-      "label": "Show Available Today Food Cards",
+      "label": "Show Available Today Section",
       "default": true
     },
     {
       "type": "text",
       "id": "today_title",
-      "label": "Food Cards Heading",
-      "default": "Signature Fresh Batches"
+      "label": "Section Title",
+      "default": "Available Today"
+    },
+    {
+      "type": "textarea",
+      "id": "today_desc",
+      "label": "Section Subtitle",
+      "default": "Freshly prepared items currently available for instant delivery."
     },
     {
       "type": "collection",
       "id": "today_collection",
       "label": "Instant Delivery Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Products to Show",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "5. Why Choose Us"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reasons",
+      "label": "Show Why Choose Us Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reasons_title",
+      "label": "Section Title",
+      "default": "Why Customers Choose Biryani Palace by Niamat"
+    },
+    {
+      "type": "header",
+      "content": "6. Signature Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_signature",
+      "label": "Show Signature Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sig_title",
+      "label": "Banner Title",
+      "default": "Explore Our Signature Menu"
+    },
+    {
+      "type": "textarea",
+      "id": "sig_desc",
+      "label": "Banner Description",
+      "default": "Discover our complete range of biryanis, starters and sides."
+    },
+    {
+      "type": "text",
+      "id": "sig_btn_text",
+      "label": "Button Text",
+      "default": "View Full Menu"
+    },
+    {
+      "type": "url",
+      "id": "sig_btn_link",
+      "label": "Button Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "header",
+      "content": "7. Family Gatherings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_family",
+      "label": "Show Family Gatherings Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "family_title",
+      "label": "Section Title",
+      "default": "Made for Family Gatherings"
+    },
+    {
+      "type": "textarea",
+      "id": "family_desc",
+      "label": "Section Description",
+      "default": "Planning a celebration, office lunch or weekend family meal? Pre-order your preferred quantity and delivery time."
+    },
+    {
+      "type": "text",
+      "id": "family_btn_text",
+      "label": "Button Text",
+      "default": "Book Family Order"
+    },
+    {
+      "type": "url",
+      "id": "family_btn_link",
+      "label": "Button Link",
+      "default": "/pages/family-feast"
+    },
+    {
+      "type": "header",
+      "content": "8. Delivery Areas"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_delivery",
+      "label": "Show Delivery Areas Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "delivery_title",
+      "label": "Section Title",
+      "default": "Where We Deliver"
+    },
+    {
+      "type": "textarea",
+      "id": "delivery_desc",
+      "label": "Section Description",
+      "default": "Serving Kalyan and selected nearby areas. Delivery availability and charges are confirmed during checkout based on your location."
+    },
+    {
+      "type": "header",
+      "content": "9. Customer Reviews"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Show Reviews Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "reviews_title",
+      "label": "Section Title",
+      "default": "Loved by Our Customers"
+    },
+    {
+      "type": "header",
+      "content": "10. FAQ Accordion"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_faq",
+      "label": "Show FAQ Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Section Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "header",
+      "content": "11. Final CTA"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_final_cta",
+      "label": "Show Final CTA Section",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "final_cta_title",
+      "label": "CTA Title",
+      "default": "Ready to Enjoy Freshly Prepared Biryani?"
+    },
+    {
+      "type": "textarea",
+      "id": "final_cta_desc",
+      "label": "CTA Description",
+      "default": "Choose Instant Delivery for today's cravings or plan your next family gathering with our advance ordering service."
+    },
+    {
+      "type": "text",
+      "id": "final_btn1_text",
+      "label": "Primary Button Text",
+      "default": "Order Instant Delivery"
+    },
+    {
+      "type": "url",
+      "id": "final_btn1_link",
+      "label": "Primary Button Link",
+      "default": "/collections/instant-delivery"
+    },
+    {
+      "type": "text",
+      "id": "final_btn2_text",
+      "label": "Secondary Button Text",
+      "default": "Plan Family Order"
+    },
+    {
+      "type": "url",
+      "id": "final_btn2_link",
+      "label": "Secondary Button Link",
+      "default": "/pages/family-feast"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Customer Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sumaiya N."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review Text",
+          "default": "The Chicken Dum Biryani from Niamat Biryani is authentic and rich in flavor! Meat was super tender, rice perfectly spiced."
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How fast is Instant Delivery?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Instant Delivery orders are prepared fresh and dispatched promptly. Most orders arrive within 30 to 60 minutes."
+        }
+      ]
     }
   ],
   "presets": [
     {
-      "name": "Niamat Restaurant Homepage"
+      "name": "Niamat Behrouz Homepage",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "author": "Sumaiya N.",
+            "text": "The Chicken Dum Biryani from Niamat Biryani is authentic and rich in flavor! Meat was super tender, rice perfectly spiced. Best in Kalyan!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Rahul M.",
+            "text": "Ordered 2 Kg Mutton Biryani for a family weekend lunch. It arrived piping hot right on schedule. Everyone loved the taste!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Imran K.",
+            "text": "Clean, 100% halal, and extremely hygienic packaging. Fast instant delivery within 35 minutes."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How fast is Instant Delivery?",
+            "answer": "Instant Delivery orders are prepared fresh and dispatched promptly. Most orders arrive within 30 to 60 minutes depending on your location in Kalyan."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Which areas do you deliver to?",
+            "answer": "We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and surrounding locations."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What payment methods are supported?",
+            "answer": "We support all major online payment options including Google Pay, PhonePe, Paytm, Credit/Debit Cards, Net Banking, and Cash on Delivery."
+          }
+        }
+      ]
     }
   ]
 }
