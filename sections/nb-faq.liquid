@@ -1,0 +1,162 @@
+{% comment %} NIAMAT BIRYANI — FAQ Accordion Section {% endcomment %}
+{% liquid
+  assign faq_title = section.settings.faq_title
+  if faq_title == blank
+    assign faq_title = 'Frequently Asked Questions'
+  endif
+%}
+
+<div class="nb-b-section">
+  <div class="nb-b-container">
+    <div class="nb-b-head text-center">
+      <span class="nb-b-subhead">Help & Info</span>
+      <h2 class="nb-b-title">{{ faq_title }}</h2>
+    </div>
+
+    <div class="nb-b-faq-accordion">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq' %}
+          <details class="nb-b-faq-item" {{ block.shopify_attributes }}>
+            <summary class="nb-b-faq-question">
+              <span>{{ block.settings.question }}</span>
+              <span class="nb-b-faq-icon">+</span>
+            </summary>
+            <div class="nb-b-faq-answer">
+              <p>{{ block.settings.answer }}</p>
+            </div>
+          </details>
+        {% endif %}
+      {% else %}
+        <details class="nb-b-faq-item">
+          <summary class="nb-b-faq-question">
+            <span>How fast is Instant Delivery?</span>
+            <span class="nb-b-faq-icon">+</span>
+          </summary>
+          <div class="nb-b-faq-answer">
+            <p>Instant Delivery orders are prepared fresh and dispatched promptly. Most orders arrive within 30 to 60 minutes depending on your location in Kalyan.</p>
+          </div>
+        </details>
+        <details class="nb-b-faq-item">
+          <summary class="nb-b-faq-question">
+            <span>Which areas do you deliver to?</span>
+            <span class="nb-b-faq-icon">+</span>
+          </summary>
+          <div class="nb-b-faq-answer">
+            <p>We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and surrounding locations.</p>
+          </div>
+        </details>
+        <details class="nb-b-faq-item">
+          <summary class="nb-b-faq-question">
+            <span>What payment methods are supported?</span>
+            <span class="nb-b-faq-icon">+</span>
+          </summary>
+          <div class="nb-b-faq-answer">
+            <p>We support all major online payment options including Google Pay, PhonePe, Paytm, Credit/Debit Cards, Net Banking, and Cash on Delivery.</p>
+          </div>
+        </details>
+        <details class="nb-b-faq-item">
+          <summary class="nb-b-faq-question">
+            <span>Is the food prepared fresh for every order?</span>
+            <span class="nb-b-faq-icon">+</span>
+          </summary>
+          <div class="nb-b-faq-answer">
+            <p>Yes, absolutely. We prepare our biryanis in fresh dum batches throughout the day to ensure authentic aroma, moisture, and flavor in every portion.</p>
+          </div>
+        </details>
+        <details class="nb-b-faq-item">
+          <summary class="nb-b-faq-question">
+            <span>Is the meat 100% Halal certified?</span>
+            <span class="nb-b-faq-icon">+</span>
+          </summary>
+          <div class="nb-b-faq-answer">
+            <p>Yes. All meats used at Biryani Palace by Niamat are 100% halal certified and handled following strict hygiene protocols.</p>
+          </div>
+        </details>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-b-section { padding: 36px 0; }
+.nb-b-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.text-center { text-align: center; }
+.nb-b-head { margin-bottom: 22px; }
+.nb-b-subhead { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #C8922A; margin-bottom: 4px; }
+.nb-b-title { font-size: 1.35rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+.nb-b-faq-accordion { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+.nb-b-faq-item { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 12px; overflow: hidden; }
+.nb-b-faq-question { padding: 14px 18px; font-size: 0.9rem; font-weight: 700; color: #2C1810; cursor: pointer; display: flex; justify-content: space-between; align-items: center; list-style: none; }
+.nb-b-faq-question::-webkit-details-marker { display: none; }
+.nb-b-faq-icon { font-size: 1.1rem; color: #C8922A; transition: transform 0.2s; }
+.nb-b-faq-item[open] .nb-b-faq-icon { transform: rotate(45deg); }
+.nb-b-faq-answer { padding: 0 18px 14px; font-size: 0.83rem; color: #7A5C4A; line-height: 1.45; }
+.nb-b-faq-answer p { margin: 0; }
+
+@media (min-width: 768px) {
+  .nb-b-section { padding: 56px 0; }
+  .nb-b-title { font-size: 1.8rem; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "FAQ Accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Section Title",
+      "default": "Frequently Asked Questions"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How fast is Instant Delivery?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Instant Delivery orders are prepared fresh and dispatched promptly."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Accordion",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "How fast is Instant Delivery?",
+            "answer": "Instant Delivery orders are prepared fresh and dispatched promptly. Most orders arrive within 30 to 60 minutes depending on your location in Kalyan."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Which areas do you deliver to?",
+            "answer": "We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and surrounding locations."
+          }
+        },
+        {
+          "type": "faq",
+          "settings": {
+            "question": "What payment methods are supported?",
+            "answer": "We support all major online payment options including Google Pay, PhonePe, Paytm, Credit/Debit Cards, Net Banking, and Cash on Delivery."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

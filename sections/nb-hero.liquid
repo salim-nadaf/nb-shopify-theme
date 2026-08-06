@@ -1,0 +1,174 @@
+{% comment %} NIAMAT BIRYANI — Royal Hero Banner Section {% endcomment %}
+{% liquid
+  assign hero_badge = section.settings.hero_badge
+  if hero_badge == blank
+    assign hero_badge = '⚡ Authentic Hyderabadi Dum Biryani'
+  endif
+
+  assign hero_title = section.settings.hero_title
+  if hero_title == blank
+    assign hero_title = 'Premium Dum Biryani, Freshly Prepared for Every Occasion'
+  endif
+
+  assign hero_subtitle = section.settings.hero_subtitle
+  if hero_subtitle == blank
+    assign hero_subtitle = 'Whether you craving a quick meal or planning a family gathering, enjoy freshly prepared biryani made with carefully selected ingredients and delivered across Kalyan and nearby areas.'
+  endif
+
+  assign hero_btn1_text = section.settings.hero_btn1_text
+  if hero_btn1_text == blank
+    assign hero_btn1_text = '⚡ Order Instant Delivery'
+  endif
+
+  assign hero_btn1_link = section.settings.hero_btn1_link
+  if hero_btn1_link == blank
+    assign hero_btn1_link = '/collections/instant-delivery'
+  endif
+
+  assign hero_btn2_text = section.settings.hero_btn2_text
+  if hero_btn2_text == blank
+    assign hero_btn2_text = '👑 Plan a Family Order'
+  endif
+
+  assign hero_btn2_link = section.settings.hero_btn2_link
+  if hero_btn2_link == blank
+    assign hero_btn2_link = '/pages/family-feast'
+  endif
+
+  assign hero_trust_text = section.settings.hero_trust_text
+  if hero_trust_text == blank
+    assign hero_trust_text = '✓ Freshly Prepared • ✓ 100% Halal • ✓ Secure Online Payments'
+  endif
+%}
+
+<div class="nb-b-hero">
+  {% if section.settings.hero_video_url != blank %}
+    <video autoplay muted loop playsinline class="nb-b-hero__video">
+      <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
+    </video>
+    <div class="nb-b-hero__overlay"></div>
+  {% elsif section.settings.hero_image != blank %}
+    <div class="nb-b-hero__img" style="background-image: url('{{ section.settings.hero_image | image_url: width: 1400 }}');"></div>
+    <div class="nb-b-hero__overlay"></div>
+  {% else %}
+    <div class="nb-b-hero__glow"></div>
+  {% endif %}
+
+  <div class="nb-b-container nb-b-hero__content">
+    <div class="nb-b-hero__badge-wrap">
+      <span class="nb-b-hero__badge">{{ hero_badge }}</span>
+    </div>
+    <h1 class="nb-b-hero__headline">{{ hero_title }}</h1>
+    <p class="nb-b-hero__subheading">{{ hero_subtitle }}</p>
+
+    <div class="nb-b-hero__actions">
+      <a href="{{ hero_btn1_link }}" class="nb-b-btn-gold">
+        <span>{{ hero_btn1_text }}</span>
+      </a>
+      <a href="{{ hero_btn2_link }}" class="nb-b-btn-glass">
+        <span>{{ hero_btn2_text }}</span>
+      </a>
+    </div>
+
+    <div class="nb-b-hero__trust">
+      {{ hero_trust_text }}
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-b-hero { position: relative; background: linear-gradient(135deg, #160B07 0%, #2C1810 60%, #3D2015 100%); color: #fff; padding: 44px 16px 52px; text-align: center; overflow: hidden; }
+.nb-b-hero__img { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-size: cover; background-position: center; z-index: 1; }
+.nb-b-hero__video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.nb-b-hero__overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, 0.75); z-index: 2; }
+.nb-b-hero__glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 340px; height: 340px; background: radial-gradient(circle, rgba(200, 146, 42, 0.3) 0%, transparent 70%); pointer-events: none; z-index: 1; }
+.nb-b-hero__content { position: relative; z-index: 3; max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.nb-b-hero__badge { display: inline-block; background: rgba(200, 146, 42, 0.2); border: 1px solid rgba(200, 146, 42, 0.45); color: #FDF6EC; font-size: 0.78rem; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; }
+.nb-b-hero__headline { font-size: 1.7rem; font-weight: 800; line-height: 1.25; color: #FFFDF7; margin: 0 0 12px; letter-spacing: -0.3px; }
+.nb-b-hero__subheading { font-size: 0.88rem; line-height: 1.5; color: #E2D5C5; max-width: 650px; margin: 0 auto 24px; }
+.nb-b-hero__actions { display: flex; flex-direction: column; gap: 12px; max-width: 380px; margin: 0 auto 22px; }
+.nb-b-hero__trust { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.76rem; color: #C8922A; font-weight: 600; flex-wrap: wrap; }
+.nb-b-btn-gold { background: #C8922A; color: #fff !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(200, 146, 42, 0.25); }
+.nb-b-btn-gold:hover { background: #A67520; transform: translateY(-2px); }
+.nb-b-btn-glass { background: rgba(255, 250, 244, 0.08); border: 1.5px solid rgba(200, 146, 42, 0.4); color: #FDF6EC !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+.nb-b-btn-glass:hover { background: rgba(200, 146, 42, 0.2); border-color: #C8922A; color: #fff !important; }
+
+@media (min-width: 768px) {
+  .nb-b-hero { padding: 76px 24px 84px; }
+  .nb-b-hero__headline { font-size: 2.6rem; }
+  .nb-b-hero__subheading { font-size: 1.02rem; }
+  .nb-b-hero__actions { flex-direction: row; max-width: 500px; justify-content: center; }
+  .nb-b-hero__actions a { flex: 1; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Royal Hero Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "hero_badge",
+      "label": "Hero Badge",
+      "default": "⚡ Authentic Hyderabadi Dum Biryani"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Headline",
+      "default": "Premium Dum Biryani, Freshly Prepared for Every Occasion"
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Hero Subtitle",
+      "default": "Whether you're craving a quick meal or planning a family gathering, enjoy freshly prepared biryani made with carefully selected ingredients and delivered across Kalyan and nearby areas."
+    },
+    {
+      "type": "text",
+      "id": "hero_btn1_text",
+      "label": "Primary Button Text",
+      "default": "⚡ Order Instant Delivery"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn1_link",
+      "label": "Primary Button Link",
+      "default": "/collections/instant-delivery"
+    },
+    {
+      "type": "text",
+      "id": "hero_btn2_text",
+      "label": "Secondary Button Text",
+      "default": "👑 Plan a Family Order"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn2_link",
+      "label": "Secondary Button Link",
+      "default": "/pages/family-feast"
+    },
+    {
+      "type": "text",
+      "id": "hero_trust_text",
+      "label": "Trust Line",
+      "default": "✓ Freshly Prepared • ✓ 100% Halal • ✓ Secure Online Payments"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_video_url",
+      "label": "Hero Background Video URL (MP4)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Royal Hero Banner"
+    }
+  ]
+}
+{% endschema %}

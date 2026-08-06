@@ -1,0 +1,82 @@
+{% comment %} NIAMAT BIRYANI — Why Choose Us (4 Pillars) Section {% endcomment %}
+{% liquid
+  assign reasons_title = section.settings.reasons_title
+  if reasons_title == blank
+    assign reasons_title = 'Why Customers Choose Biryani Palace by Niamat'
+  endif
+%}
+
+<div class="nb-b-section">
+  <div class="nb-b-container">
+    <div class="nb-b-head text-center">
+      <span class="nb-b-subhead">Our Commitment</span>
+      <h2 class="nb-b-title">{{ reasons_title }}</h2>
+    </div>
+
+    <div class="nb-b-reasons-grid">
+      <div class="nb-b-reason-card">
+        <div class="nb-b-reason-icon">🍲</div>
+        <h4>Freshly Prepared</h4>
+        <p>Prepared for every service using carefully selected ingredients.</p>
+      </div>
+
+      <div class="nb-b-reason-card">
+        <div class="nb-b-reason-icon">🌙</div>
+        <h4>100% Halal</h4>
+        <p>Prepared following halal practices.</p>
+      </div>
+
+      <div class="nb-b-reason-card">
+        <div class="nb-b-reason-icon">🔒</div>
+        <h4>Secure Online Ordering</h4>
+        <p>Fast and secure online checkout.</p>
+      </div>
+
+      <div class="nb-b-reason-card">
+        <div class="nb-b-reason-icon">👨‍👩‍👧‍👦</div>
+        <h4>Family Focused</h4>
+        <p>Perfect for everyday meals and family gatherings.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-b-section { padding: 36px 0; }
+.nb-b-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.text-center { text-align: center; }
+.nb-b-head { margin-bottom: 22px; }
+.nb-b-subhead { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #C8922A; margin-bottom: 4px; }
+.nb-b-title { font-size: 1.35rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+.nb-b-reasons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.nb-b-reason-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 14px; padding: 16px 14px; text-align: center; }
+.nb-b-reason-icon { font-size: 1.8rem; margin-bottom: 6px; }
+.nb-b-reason-card h4 { font-size: 0.9rem; font-weight: 700; color: #2C1810; margin: 0 0 4px; }
+.nb-b-reason-card p { font-size: 0.76rem; color: #7A5C4A; margin: 0; line-height: 1.35; }
+
+@media (min-width: 768px) {
+  .nb-b-section { padding: 56px 0; }
+  .nb-b-title { font-size: 1.8rem; }
+  .nb-b-reasons-grid { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .nb-b-reason-card { padding: 22px 16px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Why Choose Us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "reasons_title",
+      "label": "Section Title",
+      "default": "Why Customers Choose Biryani Palace by Niamat"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Choose Us"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,108 @@
+{% comment %} NIAMAT BIRYANI — Delivery Areas Section {% endcomment %}
+{% liquid
+  assign delivery_title = section.settings.delivery_title
+  if delivery_title == blank
+    assign delivery_title = 'Where We Deliver'
+  endif
+
+  assign delivery_desc = section.settings.delivery_desc
+  if delivery_desc == blank
+    assign delivery_desc = 'Serving Kalyan and selected nearby areas. Delivery availability and charges are confirmed during checkout based on your location.'
+  endif
+%}
+
+<div class="nb-b-section">
+  <div class="nb-b-container">
+    <div class="nb-b-delivery-box">
+      <div class="nb-b-del-icon">📍</div>
+      <h2 class="nb-b-title">{{ delivery_title }}</h2>
+      <p class="nb-b-desc">{{ delivery_desc }}</p>
+
+      <div class="nb-b-area-pills">
+        <span class="nb-b-area-pill">Kalyan West</span>
+        <span class="nb-b-area-pill">Kalyan East</span>
+        <span class="nb-b-area-pill">Khadakpada</span>
+        <span class="nb-b-area-pill">Adharwadi</span>
+        <span class="nb-b-area-pill">Shahad</span>
+        <span class="nb-b-area-pill">Dombivli (Select Areas)</span>
+      </div>
+
+      <button type="button" class="nb-b-btn-gold" onclick="nbOpenDeliveryModal()">Check Delivery Availability</button>
+    </div>
+  </div>
+</div>
+
+<!-- DELIVERY AVAILABILITY MODAL -->
+<div id="nb-b-delivery-modal" class="nb-b-modal-overlay">
+  <div class="nb-b-modal-box">
+    <button type="button" class="nb-b-modal-close" onclick="nbCloseDeliveryModal()">×</button>
+    <h3>📍 Delivery Coverage</h3>
+    <p>We deliver freshly prepared Dum Biryani across:</p>
+    <ul class="nb-b-modal-list">
+      <li>✓ Kalyan West (30–45 mins)</li>
+      <li>✓ Kalyan East (35–50 mins)</li>
+      <li>✓ Khadakpada & Adharwadi (30–40 mins)</li>
+      <li>✓ Shahad & Titwala Road (40–60 mins)</li>
+      <li>✓ Dombivli (Select Pincodes)</li>
+    </ul>
+    <p class="nb-b-modal-note">Exact delivery time & fee confirmed automatically at checkout.</p>
+    <button type="button" class="nb-b-btn-gold nb-b-btn-full" onclick="nbCloseDeliveryModal()">Got it!</button>
+  </div>
+</div>
+
+<style>
+.nb-b-section { padding: 36px 0; }
+.nb-b-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.nb-b-delivery-box { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 18px; padding: 28px 18px; text-align: center; max-width: 650px; margin: 0 auto; }
+.nb-b-del-icon { font-size: 2.2rem; margin-bottom: 6px; }
+.nb-b-title { font-size: 1.35rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+.nb-b-desc { font-size: 0.85rem; color: #7A5C4A; margin: 0; }
+.nb-b-area-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0 22px; }
+.nb-b-area-pill { font-size: 0.76rem; font-weight: 600; background: rgba(200, 146, 42, 0.1); color: #2C1810; padding: 4px 11px; border-radius: 20px; border: 1px solid rgba(200, 146, 42, 0.2); }
+.nb-b-btn-gold { background: #C8922A; color: #fff !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.nb-b-btn-full { width: 100%; box-sizing: border-box; text-align: center; }
+.nb-b-modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); z-index: 99999; align-items: center; justify-content: center; padding: 16px; }
+.nb-b-modal-overlay.active { display: flex; }
+.nb-b-modal-box { background: #FFFDF7; border: 1px solid #C8922A; border-radius: 16px; padding: 22px; max-width: 400px; width: 100%; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+.nb-b-modal-close { position: absolute; top: 10px; right: 14px; background: none; border: none; font-size: 1.5rem; color: #2C1810; cursor: pointer; line-height: 1; }
+.nb-b-modal-box h3 { font-size: 1.15rem; font-weight: 800; color: #2C1810; margin: 0 0 8px; }
+.nb-b-modal-box p { font-size: 0.83rem; color: #7A5C4A; margin: 0 0 10px; }
+.nb-b-modal-list { list-style: none; padding: 0; margin: 0 0 14px; display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem; font-weight: 600; color: #2C1810; }
+.nb-b-modal-note { font-size: 0.76rem !important; font-style: italic; color: #C8922A !important; }
+</style>
+
+<script>
+function nbOpenDeliveryModal() {
+  var modal = document.getElementById('nb-b-delivery-modal');
+  if (modal) modal.classList.add('active');
+}
+function nbCloseDeliveryModal() {
+  var modal = document.getElementById('nb-b-delivery-modal');
+  if (modal) modal.classList.remove('active');
+}
+</script>
+
+{% schema %}
+{
+  "name": "Delivery Areas",
+  "settings": [
+    {
+      "type": "text",
+      "id": "delivery_title",
+      "label": "Section Title",
+      "default": "Where We Deliver"
+    },
+    {
+      "type": "textarea",
+      "id": "delivery_desc",
+      "label": "Section Description",
+      "default": "Serving Kalyan and selected nearby areas. Delivery availability and charges are confirmed during checkout based on your location."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Delivery Areas"
+    }
+  ]
+}
+{% endschema %}

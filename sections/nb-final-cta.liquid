@@ -1,0 +1,117 @@
+{% comment %} NIAMAT BIRYANI — Final Call To Action Section {% endcomment %}
+{% liquid
+  assign final_cta_title = section.settings.final_cta_title
+  if final_cta_title == blank
+    assign final_cta_title = 'Ready to Enjoy Freshly Prepared Biryani?'
+  endif
+
+  assign final_cta_desc = section.settings.final_cta_desc
+  if final_cta_desc == blank
+    assign final_cta_desc = 'Choose Instant Delivery for today cravings or plan your next family gathering with our advance ordering service.'
+  endif
+
+  assign final_btn1_text = section.settings.final_btn1_text
+  if final_btn1_text == blank
+    assign final_btn1_text = 'Order Instant Delivery'
+  endif
+
+  assign final_btn1_link = section.settings.final_btn1_link
+  if final_btn1_link == blank
+    assign final_btn1_link = '/collections/instant-delivery'
+  endif
+
+  assign final_btn2_text = section.settings.final_btn2_text
+  if final_btn2_text == blank
+    assign final_btn2_text = 'Plan Family Order'
+  endif
+
+  assign final_btn2_link = section.settings.final_btn2_link
+  if final_btn2_link == blank
+    assign final_btn2_link = '/pages/family-feast'
+  endif
+%}
+
+<div class="nb-b-section nb-b-section--final-cta">
+  <div class="nb-b-container">
+    <div class="nb-b-final-box">
+      <h2>{{ final_cta_title }}</h2>
+      <p>{{ final_cta_desc }}</p>
+      <div class="nb-b-final-actions">
+        <a href="{{ final_btn1_link }}" class="nb-b-btn-gold">
+          {{ final_btn1_text }}
+        </a>
+        <a href="{{ final_btn2_link }}" class="nb-b-btn-glass">
+          {{ final_btn2_text }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-b-section { padding: 36px 0; }
+.nb-b-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.nb-b-final-box { background: linear-gradient(135deg, #160B07 0%, #2C1810 100%); border-radius: 18px; padding: 36px 18px; text-align: center; color: #fff; max-width: 750px; margin: 0 auto; }
+.nb-b-final-box h2 { font-size: 1.5rem; font-weight: 800; color: #FFFDF7; margin: 0 0 10px; }
+.nb-b-final-box p { font-size: 0.86rem; color: #E2D5C5; max-width: 520px; margin: 0 auto 22px; }
+.nb-b-final-actions { display: flex; flex-direction: column; gap: 10px; max-width: 380px; margin: 0 auto; }
+.nb-b-btn-gold { background: #C8922A; color: #fff !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.nb-b-btn-glass { background: rgba(255, 250, 244, 0.08); border: 1.5px solid rgba(200, 146, 42, 0.4); color: #FDF6EC !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+
+@media (min-width: 768px) {
+  .nb-b-section { padding: 56px 0; }
+  .nb-b-final-box { padding: 50px 36px; }
+  .nb-b-final-box h2 { font-size: 2.1rem; }
+  .nb-b-final-actions { flex-direction: row; max-width: 460px; }
+  .nb-b-final-actions a { flex: 1; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Final Call to Action",
+  "settings": [
+    {
+      "type": "text",
+      "id": "final_cta_title",
+      "label": "CTA Title",
+      "default": "Ready to Enjoy Freshly Prepared Biryani?"
+    },
+    {
+      "type": "textarea",
+      "id": "final_cta_desc",
+      "label": "CTA Description",
+      "default": "Choose Instant Delivery for today's cravings or plan your next family gathering with our advance ordering service."
+    },
+    {
+      "type": "text",
+      "id": "final_btn1_text",
+      "label": "Primary Button Text",
+      "default": "Order Instant Delivery"
+    },
+    {
+      "type": "url",
+      "id": "final_btn1_link",
+      "label": "Primary Button Link",
+      "default": "/collections/instant-delivery"
+    },
+    {
+      "type": "text",
+      "id": "final_btn2_text",
+      "label": "Secondary Button Text",
+      "default": "Plan Family Order"
+    },
+    {
+      "type": "url",
+      "id": "final_btn2_link",
+      "label": "Secondary Button Link",
+      "default": "/pages/family-feast"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Final Call to Action"
+    }
+  ]
+}
+{% endschema %}

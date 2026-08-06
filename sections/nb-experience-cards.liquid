@@ -1,0 +1,189 @@
+{% comment %} NIAMAT BIRYANI — Choose Experience Dual Cards Section {% endcomment %}
+{% liquid
+  assign exp_title = section.settings.exp_title
+  if exp_title == blank
+    assign exp_title = 'How Would You Like to Order?'
+  endif
+
+  assign instant_card_title = section.settings.instant_card_title
+  if instant_card_title == blank
+    assign instant_card_title = 'Instant Delivery'
+  endif
+
+  assign instant_card_desc = section.settings.instant_card_desc
+  if instant_card_desc == blank
+    assign instant_card_desc = 'Freshly prepared portions available today. Ready in approximately 30–60 minutes.'
+  endif
+
+  assign instant_card_cta = section.settings.instant_card_cta
+  if instant_card_cta == blank
+    assign instant_card_cta = 'Order Now'
+  endif
+
+  assign instant_card_link = section.settings.instant_card_link
+  if instant_card_link == blank
+    assign instant_card_link = '/collections/instant-delivery'
+  endif
+
+  assign family_card_title = section.settings.family_card_title
+  if family_card_title == blank
+    assign family_card_title = 'Family Orders'
+  endif
+
+  assign family_card_desc = section.settings.family_card_desc
+  if family_card_desc == blank
+    assign family_card_desc = 'Planning a gathering? Pre-order 1 Kg and above with your preferred delivery schedule.'
+  endif
+
+  assign family_card_cta = section.settings.family_card_cta
+  if family_card_cta == blank
+    assign family_card_cta = 'Plan Family Order'
+  endif
+
+  assign family_card_link = section.settings.family_card_link
+  if family_card_link == blank
+    assign family_card_link = '/pages/family-feast'
+  endif
+%}
+
+<div class="nb-b-section">
+  <div class="nb-b-container">
+    <div class="nb-b-head text-center">
+      <span class="nb-b-subhead">Tailored Dining</span>
+      <h2 class="nb-b-title">{{ exp_title }}</h2>
+    </div>
+
+    <div class="nb-b-exp-grid">
+      <!-- Instant Delivery Card -->
+      <div class="nb-b-exp-card nb-b-exp-card--instant">
+        <div class="nb-b-exp-card__header">
+          <span class="nb-b-tag">⚡ Today's Craving</span>
+          <div class="nb-b-exp-icon">🍛</div>
+        </div>
+        <h3 class="nb-b-exp-card__title">{{ instant_card_title }}</h3>
+        <p class="nb-b-exp-card__desc">{{ instant_card_desc }}</p>
+        <div class="nb-b-exp-card__meta">
+          <span>🚀 30–60 Min Delivery</span>
+          <span>📍 Kalyan & Nearby</span>
+        </div>
+        <a href="{{ instant_card_link }}" class="nb-b-btn-gold nb-b-btn-full">
+          {{ instant_card_cta }}
+        </a>
+      </div>
+
+      <!-- Family Orders Card -->
+      <div class="nb-b-exp-card nb-b-exp-card--family">
+        <div class="nb-b-exp-card__header">
+          <span class="nb-b-tag gold">👑 Gatherings & Parties</span>
+          <div class="nb-b-exp-icon">👨‍👩‍👧‍👦</div>
+        </div>
+        <h3 class="nb-b-exp-card__title">{{ family_card_title }}</h3>
+        <p class="nb-b-exp-card__desc">{{ family_card_desc }}</p>
+        <div class="nb-b-exp-card__meta">
+          <span>📦 1 Kg – 10 Kg+ Quantities</span>
+          <span>📅 Scheduled Delivery</span>
+        </div>
+        <a href="{{ family_card_link }}" class="nb-b-btn-glass nb-b-btn-full">
+          {{ family_card_cta }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-b-section { padding: 36px 0; }
+.nb-b-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.text-center { text-align: center; }
+.nb-b-head { margin-bottom: 22px; }
+.nb-b-subhead { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #C8922A; margin-bottom: 4px; }
+.nb-b-title { font-size: 1.35rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+.nb-b-exp-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.nb-b-exp-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.22); border-radius: 16px; padding: 22px 18px; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+.nb-b-exp-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44, 24, 16, 0.08); }
+.nb-b-exp-card--family { background: #FFFDF7; }
+.nb-b-exp-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.nb-b-tag { font-size: 0.72rem; font-weight: 700; background: rgba(200, 146, 42, 0.12); color: #C8922A; padding: 3px 10px; border-radius: 20px; }
+.nb-b-tag.gold { background: #1E100A; color: #FDF6EC; }
+.nb-b-exp-icon { font-size: 2rem; }
+.nb-b-exp-card__title { font-size: 1.15rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+.nb-b-exp-card__desc { font-size: 0.84rem; color: #7A5C4A; margin: 0 0 14px; line-height: 1.45; flex: 1; }
+.nb-b-exp-card__meta { display: flex; gap: 10px; font-size: 0.74rem; font-weight: 600; color: #C8922A; margin-bottom: 16px; flex-wrap: wrap; }
+.nb-b-btn-gold { background: #C8922A; color: #fff !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.nb-b-btn-glass { background: #1E100A; border: 1.5px solid rgba(200, 146, 42, 0.4); color: #FDF6EC !important; font-weight: 700; font-size: 0.9rem; padding: 13px 20px; border-radius: 12px; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.nb-b-btn-full { width: 100%; box-sizing: border-box; text-align: center; }
+
+@media (min-width: 768px) {
+  .nb-b-section { padding: 56px 0; }
+  .nb-b-title { font-size: 1.8rem; }
+  .nb-b-exp-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .nb-b-exp-card { padding: 28px 24px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Choose Dining Experience",
+  "settings": [
+    {
+      "type": "text",
+      "id": "exp_title",
+      "label": "Section Heading",
+      "default": "How Would You Like to Order?"
+    },
+    {
+      "type": "text",
+      "id": "instant_card_title",
+      "label": "Instant Card Title",
+      "default": "Instant Delivery"
+    },
+    {
+      "type": "textarea",
+      "id": "instant_card_desc",
+      "label": "Instant Card Description",
+      "default": "Freshly prepared portions available today. Ready in approximately 30–60 minutes."
+    },
+    {
+      "type": "text",
+      "id": "instant_card_cta",
+      "label": "Instant Card Button",
+      "default": "Order Now"
+    },
+    {
+      "type": "url",
+      "id": "instant_card_link",
+      "label": "Instant Card Link",
+      "default": "/collections/instant-delivery"
+    },
+    {
+      "type": "text",
+      "id": "family_card_title",
+      "label": "Family Card Title",
+      "default": "Family Orders"
+    },
+    {
+      "type": "textarea",
+      "id": "family_card_desc",
+      "label": "Family Card Description",
+      "default": "Planning a gathering? Pre-order 1 Kg and above with your preferred delivery schedule."
+    },
+    {
+      "type": "text",
+      "id": "family_card_cta",
+      "label": "Family Card Button",
+      "default": "Plan Family Order"
+    },
+    {
+      "type": "url",
+      "id": "family_card_link",
+      "label": "Family Card Link",
+      "default": "/pages/family-feast"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Choose Dining Experience"
+    }
+  ]
+}
+{% endschema %}

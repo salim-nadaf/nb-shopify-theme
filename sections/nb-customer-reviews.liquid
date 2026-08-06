@@ -1,0 +1,142 @@
+{% comment %} NIAMAT BIRYANI — Customer Reviews Section {% endcomment %}
+{% liquid
+  assign reviews_title = section.settings.reviews_title
+  if reviews_title == blank
+    assign reviews_title = 'Loved by Our Customers'
+  endif
+%}
+
+<div class="nb-b-section nb-b-section--alt">
+  <div class="nb-b-container">
+    <div class="nb-b-head text-center">
+      <span class="nb-b-subhead">Verified Reviews</span>
+      <h2 class="nb-b-title">{{ reviews_title }}</h2>
+      <p class="nb-b-desc">Read genuine Google Reviews from customers who have enjoyed our food.</p>
+    </div>
+
+    <div class="nb-b-reviews-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'review' %}
+          <div class="nb-b-review-card" {{ block.shopify_attributes }}>
+            <div class="nb-b-review-stars">★★★★★</div>
+            <p class="nb-b-review-text">"{{ block.settings.text }}"</p>
+            <div class="nb-b-review-author">
+              <strong>{{ block.settings.author }}</strong>
+              <span>Google Verified Review</span>
+            </div>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="nb-b-review-card">
+          <div class="nb-b-review-stars">★★★★★</div>
+          <p class="nb-b-review-text">"The Chicken Dum Biryani from Niamat Biryani is authentic and rich in flavor! Meat was super tender, rice perfectly spiced. Best in Kalyan!"</p>
+          <div class="nb-b-review-author">
+            <strong>Sumaiya N.</strong>
+            <span>Google Verified Review</span>
+          </div>
+        </div>
+        <div class="nb-b-review-card">
+          <div class="nb-b-review-stars">★★★★★</div>
+          <p class="nb-b-review-text">"Ordered 2 Kg Mutton Biryani for a family weekend lunch. It arrived piping hot right on schedule. Everyone loved the taste!"</p>
+          <div class="nb-b-review-author">
+            <strong>Rahul M.</strong>
+            <span>Google Verified Review</span>
+          </div>
+        </div>
+        <div class="nb-b-review-card">
+          <div class="nb-b-review-stars">★★★★★</div>
+          <p class="nb-b-review-text">"Clean, 100% halal, and extremely hygienic packaging. Fast instant delivery within 35 minutes."</p>
+          <div class="nb-b-review-author">
+            <strong>Imran K.</strong>
+            <span>Google Verified Review</span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-b-section { padding: 36px 0; }
+.nb-b-section--alt { background: #FDF6EC; }
+.nb-b-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.text-center { text-align: center; }
+.nb-b-head { margin-bottom: 22px; }
+.nb-b-subhead { display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #C8922A; margin-bottom: 4px; }
+.nb-b-title { font-size: 1.35rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; }
+.nb-b-desc { font-size: 0.85rem; color: #7A5C4A; margin: 0; }
+.nb-b-reviews-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.nb-b-review-card { background: #FFF; border: 1px solid rgba(200, 146, 42, 0.2); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+.nb-b-review-stars { color: #f59e0b; font-size: 1rem; margin-bottom: 6px; letter-spacing: 2px; }
+.nb-b-review-text { font-size: 0.83rem; color: #2C1810; line-height: 1.45; margin: 0 0 12px; font-style: italic; }
+.nb-b-review-author strong { display: block; font-size: 0.83rem; color: #2C1810; }
+.nb-b-review-author span { font-size: 0.7rem; color: #16a34a; font-weight: 600; }
+
+@media (min-width: 768px) {
+  .nb-b-section { padding: 56px 0; }
+  .nb-b-title { font-size: 1.8rem; }
+  .nb-b-reviews-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "reviews_title",
+      "label": "Section Title",
+      "default": "Loved by Our Customers"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Customer Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sumaiya N."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review Text",
+          "default": "The Chicken Dum Biryani from Niamat Biryani is authentic and rich in flavor!"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "author": "Sumaiya N.",
+            "text": "The Chicken Dum Biryani from Niamat Biryani is authentic and rich in flavor! Meat was super tender, rice perfectly spiced. Best in Kalyan!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Rahul M.",
+            "text": "Ordered 2 Kg Mutton Biryani for a family weekend lunch. It arrived piping hot right on schedule. Everyone loved the taste!"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Imran K.",
+            "text": "Clean, 100% halal, and extremely hygienic packaging. Fast instant delivery within 35 minutes."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
