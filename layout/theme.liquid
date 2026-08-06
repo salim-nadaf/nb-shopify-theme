@@ -23,6 +23,10 @@
       >
     {% endif %}
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     {%- render 'meta-tags' -%}
     {%- render 'stylesheets' -%}
     {%- render 'fonts' -%}
@@ -37,16 +41,30 @@
     {{ content_for_header }}
 
     <style>
-    /* ===== BIRYANI PALACE — FOOD APP MASTER STYLES ===== */
+    /* ===== NIAMAT BIRYANI PALACE — ULTRA-PREMIUM STOREWIDE MASTER STYLES ===== */
+
+    h1, h2, h3, h4, h5, h6,
+    .heading, .title, .card__title,
+    .product__title, .collection__title,
+    .page-title, .header__heading-text,
+    .header__menu-item, .nb-section-header h2 {
+      font-family: 'Playfair Display', Georgia, serif !important;
+      letter-spacing: -0.01em !important;
+    }
+
+    body, p, span, a, input, select, textarea, button, label, td, th {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+    }
 
     body {
-      background-color: #FDF6EC !important;
+      background-color: #FFFAF4 !important;
       color: #2C1810 !important;
     }
 
     header, .header, .header-wrapper, header-component {
-      background-color: #2C1810 !important;
+      background: linear-gradient(135deg, #1E100A 0%, #2C1810 100%) !important;
       border-bottom: 2px solid #C8922A !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25) !important;
     }
     .header a, .header__heading-link, nav a,
     .header__menu-item, header-component a {
@@ -56,21 +74,30 @@
     .page-wrapper, main, #MainContent,
     .color-background-1, .color-background-2,
     .gradient {
-      background-color: #FDF6EC !important;
+      background-color: #FFFAF4 !important;
     }
 
+    /* STOREWIDE GLOSSY SHIMMER BUTTONS */
     .button--primary,
     .product-form__submit,
-    .btn-primary {
-      background: #C8922A !important;
+    .btn-primary,
+    .nb-btn-gold,
+    .cart__checkout-button {
+      background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
       color: #FFFFFF !important;
       font-weight: 700 !important;
-      border-radius: 10px !important;
+      border-radius: 12px !important;
       border: none !important;
+      box-shadow: 0 6px 20px rgba(200,146,42,0.35), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     .button--primary:hover,
-    .product-form__submit:hover {
-      background: #A67520 !important;
+    .product-form__submit:hover,
+    .btn-primary:hover,
+    .nb-btn-gold:hover,
+    .cart__checkout-button:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: 0 10px 25px rgba(200,146,42,0.45) !important;
     }
 
     .product-form__submit[name="add"] { font-size: 0 !important; }
