@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "nb_homepage_top": {
@@ -185,20 +176,24 @@
     "nb_google_reviews": {
       "type": "nb-google-reviews",
       "blocks": {
+        "judge_me_reviews_review_widget_embedded": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
         "judge_me_reviews_cards_carousel_embedded": {
           "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
-            "show_sample_reviews": false,
-            "reviews_selection": "featured_reviews",
+            "show_sample_reviews": true,
+            "reviews_selection": "all_reviews",
             "products": [],
             "filter_pinned": false,
-            "filter_featured": true,
+            "filter_featured": false,
             "filter_custom_tags": "",
             "star_rating": "all",
             "show_review_media": true,
             "display_order": "media_first",
             "no_image_fallback": "review_text_only",
-            "max_reviews": 4,
+            "max_reviews": 10,
             "review_length": "medium",
             "text_size": "medium",
             "image_ratio": "1",
@@ -222,6 +217,7 @@
         }
       },
       "block_order": [
+        "judge_me_reviews_review_widget_embedded",
         "judge_me_reviews_cards_carousel_embedded"
       ],
       "settings": {
@@ -235,29 +231,93 @@
         "faq_item_1": {
           "type": "faq_item",
           "settings": {
-            "question": "How fast is delivery?",
-            "answer": "Instant delivery orders are prepared fresh and dispatched promptly within 45 to 60 minutes."
+            "question": "Do you provide disposable plates and cutlery with your Biryani orders?",
+            "answer": "We can provide a serving spoon with your order on request; however, disposable plates are not provided."
           }
         },
         "faq_item_2": {
           "type": "faq_item",
           "settings": {
-            "question": "Which locations do you cover?",
-            "answer": "We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and Dombivli select areas."
+            "question": "What are the minimum order quantities and available portion sizes for Biryani?",
+            "answer": "The minimum quantity for pre-order is 1 kg. We offer a half kg option (sufficient for 3-4 people) for Alishaan Tandoor or Dum Biryani, subject to availability."
           }
         },
         "faq_item_3": {
           "type": "faq_item",
           "settings": {
-            "question": "Is the food 100% Halal?",
-            "answer": "Yes, all meats used at Biryani Palace by Niamat are 100% halal."
+            "question": "How many varieties of biryani and kebabs do you have, and what is the minimum order for kebabs?",
+            "answer": "We offer around 10 varieties of biryani and 4 varieties of kebabs. The minimum order for kebabs is 12 pieces."
+          }
+        },
+        "faq_item_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How many portions are there in 1 kg Biryani?",
+            "answer": "1 kg Biryani contains 6-7 generous portions."
+          }
+        },
+        "faq_item_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer any special deals for family orders?",
+            "answer": "Our popular 2 KG Family Biryani @ ₹2099 includes freshly prepared, generous portions & FREE raita."
+          }
+        },
+        "faq_item_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your pricing?",
+            "answer": "Our pricing for 1 Kg Chicken Dum Biryani starts at ₹999/Kg and Mutton Dum Biryani at ₹1,599/Kg (both include FREE raita and serve 6-7 people). We also offer 2 Kg Family Deals @ ₹2,099, and Kebabs starting at ₹549 for 12 pieces."
+          }
+        },
+        "faq_item_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What are the recommended quantities for large groups?",
+            "answer": "For large events and family gatherings, we recommend 7 kg for 40 people and 9 kg for 50 people."
+          }
+        },
+        "faq_item_8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is the exact location of Biryani Palace?",
+            "answer": "Biryani Palace is a delivery-only cloud kitchen operated from Raunak City, Sector 2, Kalyan-West, Maharashtra 421301."
+          }
+        },
+        "faq_item_9": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer dine-in services?",
+            "answer": "We offer delivery services only. Our minimum pre-order quantity starts from 1 kg."
+          }
+        },
+        "faq_item_10": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you charge for delivery?",
+            "answer": "Delivery is FREE within Kalyan for orders above ₹799 or any 1 KG Biryani. Otherwise, delivery charges apply based on your exact location."
+          }
+        },
+        "faq_item_11": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How is the biryani made and what are the portion proportions?",
+            "answer": "Our biryani is prepared using 1 kg chicken + 1 kg rice proportion. 1 KG is usually enough for 6-7 people, and 2 KG works well for 10–12 people."
           }
         }
       },
       "block_order": [
         "faq_item_1",
         "faq_item_2",
-        "faq_item_3"
+        "faq_item_3",
+        "faq_item_4",
+        "faq_item_5",
+        "faq_item_6",
+        "faq_item_7",
+        "faq_item_8",
+        "faq_item_9",
+        "faq_item_10",
+        "faq_item_11"
       ],
       "settings": {
         "color_page_bg": "#fffaf4",
