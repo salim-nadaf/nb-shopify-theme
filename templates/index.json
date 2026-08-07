@@ -205,7 +205,7 @@
             "show_review_media": true,
             "display_order": "media_first",
             "no_image_fallback": "review_text_only",
-            "max_reviews": 5,
+            "max_reviews": 4,
             "review_length": "medium",
             "text_size": "medium",
             "image_ratio": "1",
