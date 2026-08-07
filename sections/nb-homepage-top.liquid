@@ -176,7 +176,11 @@
       {% endif %}
 
       <div class="nb-hero-content">
-        <h1 class="nb-hero-title">{{ hero_heading }}</h1>
+        {% assign hero_title_rendered = hero_heading %}
+        {% if hero_heading contains 'Biryani Worth Gathering For.' %}
+          {% assign hero_title_rendered = hero_heading | replace: 'Biryani Worth Gathering For.', '<span class="nb-gold-highlight">Biryani Worth Gathering For.</span>' %}
+        {% endif %}
+        <h1 class="nb-hero-title">{{ hero_title_rendered }}</h1>
         <p class="nb-hero-sub">{{ hero_subheading }}</p>
 
         <div class="nb-hero-buttons">
@@ -366,15 +370,20 @@
 .nb-status-inner { display: flex; align-items: center; justify-content: center; gap: 8px; }
 .nb-pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #22c55e; }
 
+.nb-gold-highlight { color: #C8922A !important; font-weight: 800; }
+.nb-hero-title .nb-gold-highlight { color: #F3C669 !important; text-shadow: 0 0 14px rgba(243,198,105,0.4); }
+
 .nb-hero-banner { position: relative; background: linear-gradient(135deg, #160B07 0%, var(--nb-dark-bg) 100%) !important; color: #fff; padding: var(--nb-padding) 16px; min-height: var(--nb-hero-height); display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
 .nb-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 .nb-hero-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 .nb-hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, var(--nb-overlay-opac)) !important; z-index: 2; }
 .nb-hero-glow { position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 350px; height: 350px; background: radial-gradient(circle, rgba(200,146,42,0.35) 0%, transparent 70%); pointer-events: none; z-index: 1; }
-.nb-hero-content { position: relative; z-index: 3; max-width: 720px; margin: 0 auto; }
-.nb-hero-title { font-family: 'Playfair Display', Georgia, serif !important; font-size: 2rem; font-weight: 800; color: #FFFDF7 !important; margin: 0 0 14px; line-height: 1.22; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-.nb-hero-sub { font-size: 0.95rem; color: #E2D5C5 !important; margin: 0 0 26px; line-height: 1.55; }
-.nb-hero-buttons { display: flex; flex-direction: column; gap: 14px; max-width: 400px; margin: 0 auto; }
+.nb-hero-content { position: relative; z-index: 3; max-width: 760px; margin: 0 auto; text-align: center; }
+.nb-hero-title { font-family: 'Playfair Display', Georgia, serif !important; font-size: 2rem; font-weight: 800; color: #FFFDF7 !important; margin: 0 0 14px; line-height: 1.22; text-shadow: 0 2px 10px rgba(0,0,0,0.5); text-align: center; }
+.nb-hero-sub { font-size: 0.95rem; color: #E2D5C5 !important; margin: 0 0 26px; line-height: 1.55; text-align: center; }
+.nb-hero-buttons { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; max-width: 440px; margin: 0 auto; text-align: center; }
+.nb-hero-buttons .nb-btn-gold,
+.nb-hero-buttons .nb-btn-outline { width: 100%; max-width: 280px; justify-content: center; text-align: center; box-sizing: border-box; }
 
 .nb-btn-gold { background: linear-gradient(135deg, #D49E35 0%, var(--nb-btn1-bg) 60%, #B07C1C 100%) !important; color: var(--nb-btn1-text) !important; font-weight: 700; font-size: 0.92rem; padding: 14px 24px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(200,146,42,0.35), inset 0 1px 0 rgba(255,255,255,0.3) !important; }
 .nb-btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(200,146,42,0.45) !important; }
@@ -430,7 +439,9 @@
   .nb-grid-2 { grid-template-columns: 1fr 1fr; gap: 24px; }
   .nb-grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
   .nb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
-  .nb-hero-buttons { flex-direction: row; max-width: 500px; }
+  .nb-hero-buttons { flex-direction: row; justify-content: center; align-items: center; max-width: 520px; margin: 0 auto; }
+  .nb-hero-buttons .nb-btn-gold,
+  .nb-hero-buttons .nb-btn-outline { width: auto; min-width: 200px; }
   .nb-section-header h2 { font-size: 2.2rem; }
   .nb-hero-title { font-size: 3rem; }
   .nb-family-banner { flex-direction: row; text-align: left; padding: 36px 44px; }

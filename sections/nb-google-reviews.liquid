@@ -6,7 +6,11 @@
   <div class="nb-container">
     <div class="nb-section-header">
       <span class="nb-tag-badge">{{ section.settings.tag_badge | default: 'GOOGLE REVIEWS' }}</span>
-      <h2>{{ section.settings.title | default: 'Loved by Biryani Enthusiasts Across Kalyan' }}</h2>
+      {% assign reviews_title_rendered = section.settings.title | default: 'Loved by Biryani Enthusiasts Across Kalyan' %}
+      {% if reviews_title_rendered contains 'Biryani Enthusiasts' %}
+        {% assign reviews_title_rendered = reviews_title_rendered | replace: 'Biryani Enthusiasts', '<span class="nb-gold-highlight">Biryani Enthusiasts</span>' %}
+      {% endif %}
+      <h2>{{ reviews_title_rendered }}</h2>
     </div>
 
     <!-- JUDGE.ME APP BLOCKS & NATIVE WIDGET CONTAINERS -->
@@ -19,6 +23,7 @@
 </div>
 
 <style>
+.nb-gold-highlight { color: #C8922A !important; font-weight: 800; }
 .nb-google-reviews-section { background-color: #FDF6EC; padding: 40px 0 !important; text-align: center; width: 100%; }
 .nb-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
 .nb-section-header { margin-bottom: 28px !important; text-align: center; }

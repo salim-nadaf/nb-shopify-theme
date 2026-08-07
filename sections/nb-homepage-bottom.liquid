@@ -91,9 +91,15 @@
     <div class="nb-final-cta-wrap">
       <div class="nb-container">
         <div class="nb-final-box">
-          <h2>{{ final_heading }}</h2>
+          {% assign final_title_rendered = final_heading %}
+          {% if final_heading contains 'Order?' %}
+            {% assign final_title_rendered = final_heading | replace: 'Order?', '<span class="nb-gold-highlight">Order?</span>' %}
+          {% endif %}
+          <h2>{{ final_title_rendered }}</h2>
           <p>{{ final_subheading }}</p>
-          <a href="{{ final_cta_url }}" class="nb-btn-gold nb-btn-lg">{{ final_cta_text }}</a>
+          <div class="nb-final-btn-wrap">
+            <a href="{{ final_cta_url }}" class="nb-btn-gold nb-btn-lg">{{ final_cta_text }}</a>
+          </div>
         </div>
       </div>
     </div>
@@ -118,12 +124,16 @@
 .nb-faq-plus { color: var(--nb-gold) !important; font-size: 1.3rem; font-weight: 800; }
 .nb-faq-body { padding: 0 20px 18px; font-size: 0.88rem; color: var(--nb-text-muted) !important; line-height: 1.55; }
 
-.nb-final-cta-wrap { background: linear-gradient(135deg, #1E100A 0%, #361C10 100%) !important; color: #FFF; padding: 48px 16px; text-align: center; border-top: 2px solid var(--nb-gold); }
-.nb-final-box { max-width: 600px; margin: 0 auto; }
-.nb-final-box h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 2rem; font-weight: 800; color: #FFFDF7 !important; margin: 0 0 10px; }
-.nb-final-box p { font-size: 0.95rem; color: #E2D5C5 !important; margin: 0 0 24px; }
+.nb-gold-highlight { color: #C8922A !important; font-weight: 800; }
+.nb-final-box .nb-gold-highlight { color: #F3C669 !important; text-shadow: 0 0 12px rgba(243,198,105,0.35); }
 
-.nb-btn-gold { background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important; color: #FFFFFF !important; font-weight: 700; font-size: 0.92rem; padding: 14px 24px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+.nb-final-cta-wrap { background: linear-gradient(135deg, #1E100A 0%, #361C10 100%) !important; color: #FFF; padding: 48px 16px; text-align: center; border-top: 2px solid var(--nb-gold); }
+.nb-final-box { max-width: 600px; margin: 0 auto; text-align: center; }
+.nb-final-box h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 2rem; font-weight: 800; color: #FFFDF7 !important; margin: 0 0 10px; text-align: center; }
+.nb-final-box p { font-size: 0.95rem; color: #E2D5C5 !important; margin: 0 0 24px; text-align: center; }
+.nb-final-btn-wrap { display: flex; justify-content: center; align-items: center; width: 100%; text-align: center; }
+
+.nb-btn-gold { background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important; color: #FFFFFF !important; font-weight: 700; font-size: 0.92rem; padding: 14px 24px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-align: center; }
 .nb-btn-lg { font-size: 1.05rem; padding: 16px 32px; }
 
 @media (min-width: 768px) {
