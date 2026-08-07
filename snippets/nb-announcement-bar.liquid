@@ -1,0 +1,119 @@
+{% comment %}
+  NIAMAT BIRYANI — Rotating Marquee Announcement Bar (Above Header)
+{% endcomment %}
+
+<div id="nb-announcement-bar">
+  <div class="nb-announcement-track">
+    <div class="nb-announcement-content">
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">🚚</span> Free Delivery on orders above <strong>₹799</strong> within Kalyan
+      </span>
+      <span class="nb-ann-divider">•</span>
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">🍲</span> 1 Kg Pre-Order includes <strong>FREE Raita & Free Delivery</strong> in Kalyan
+      </span>
+      <span class="nb-ann-divider">•</span>
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">🔥</span> Authentic Dum Biryani by Niamat — Delivered <strong>Hot & Fresh</strong>
+      </span>
+      <span class="nb-ann-divider">•</span>
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">👑</span> 2 Kg Family Biryani @ <strong>₹2,099</strong> — Serves 10-12 People
+      </span>
+      <span class="nb-ann-divider">•</span>
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">🌙</span> <strong>100% Halal</strong> Sourced Meat & 25+ Years Ustaad Heritage
+      </span>
+      <span class="nb-ann-divider">•</span>
+    </div>
+    <div class="nb-announcement-content" aria-hidden="true">
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">🚚</span> Free Delivery on orders above <strong>₹799</strong> within Kalyan
+      </span>
+      <span class="nb-ann-divider">•</span>
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">🍲</span> 1 Kg Pre-Order includes <strong>FREE Raita & Free Delivery</strong> in Kalyan
+      </span>
+      <span class="nb-ann-divider">•</span>
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">🔥</span> Authentic Dum Biryani by Niamat — Delivered <strong>Hot & Fresh</strong>
+      </span>
+      <span class="nb-ann-divider">•</span>
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">👑</span> 2 Kg Family Biryani @ <strong>₹2,099</strong> — Serves 10-12 People
+      </span>
+      <span class="nb-ann-divider">•</span>
+      <span class="nb-ann-item">
+        <span class="nb-ann-icon">🌙</span> <strong>100% Halal</strong> Sourced Meat & 25+ Years Ustaad Heritage
+      </span>
+      <span class="nb-ann-divider">•</span>
+    </div>
+  </div>
+</div>
+
+<style>
+#nb-announcement-bar {
+  background: linear-gradient(90deg, #160B07 0%, #2C1810 50%, #160B07 100%) !important;
+  color: #FFFDF7 !important;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.4) !important;
+  font-size: 0.82rem;
+  font-weight: 600;
+  height: 38px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.nb-announcement-track {
+  display: flex;
+  width: max-content;
+  animation: nbMarqueeRotate 28s linear infinite;
+}
+
+#nb-announcement-bar:hover .nb-announcement-track {
+  animation-play-state: paused;
+}
+
+.nb-announcement-content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: 20px;
+  padding-right: 20px;
+}
+
+.nb-ann-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #FDF6EC;
+}
+
+.nb-ann-item strong {
+  color: #F3C669 !important;
+  font-weight: 700;
+}
+
+.nb-ann-icon {
+  font-size: 0.95rem;
+}
+
+.nb-ann-divider {
+  color: #C8922A;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+@keyframes nbMarqueeRotate {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (max-width: 767px) {
+  #nb-announcement-bar { font-size: 0.78rem; height: 34px; }
+  .nb-announcement-track { animation-duration: 22s; }
+}
+</style>
