@@ -129,33 +129,6 @@
             "delivery_fee": "Free above ₹799"
           }
         },
-        "review_1": {
-          "type": "review",
-          "settings": {
-            "rating": "5/5 Stars",
-            "review_text": "The biryani arrived piping hot! Super tender meat and rice was perfectly seasoned.",
-            "author": "Sumaiya N.",
-            "location": "Kalyan West"
-          }
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {
-            "rating": "5/5 Stars",
-            "review_text": "Ordered 2 Kg Mutton Biryani for family lunch. Arrived right on time. Everyone loved it!",
-            "author": "Rahul M.",
-            "location": "Khadakpada"
-          }
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {
-            "rating": "5/5 Stars",
-            "review_text": "Best biryani in Kalyan. Hygienic packaging and quick delivery.",
-            "author": "Imran K.",
-            "location": "Kalyan East"
-          }
-        },
         "faq_item_1": {
           "type": "faq_item",
           "settings": {
@@ -193,9 +166,6 @@
         "delivery_zone_1",
         "delivery_zone_2",
         "delivery_zone_3",
-        "review_1",
-        "review_2",
-        "review_3",
         "faq_item_1",
         "faq_item_2",
         "faq_item_3"

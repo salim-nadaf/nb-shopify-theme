@@ -367,7 +367,7 @@
     </div>
   </div>
 
-  <!-- 9. CUSTOMER REVIEWS & JUDGE.ME INTEGRATION -->
+  <!-- 9. GOOGLE REVIEWS & JUDGE.ME APP BLOCKS -->
   <div class="nb-section-block">
     <div class="nb-container">
       <div class="nb-section-header">
@@ -375,24 +375,10 @@
         <h2>Loved by Biryani Enthusiasts Across Kalyan</h2>
       </div>
 
-      <!-- JUDGE.ME NATIVE APP CAROUSEL CONTAINER -->
-      <div class="nb-judgeme-container" style="margin-bottom: 20px;">
+      <!-- SHOPIFY NATIVE APP BLOCK & JUDGE.ME CONTAINER -->
+      <div class="nb-app-blocks-container">
+        {% content_for 'blocks' %}
         <div class="jdgm-carousel-wrapper" data-auto-install="true"></div>
-      </div>
-
-      <div class="nb-grid-3">
-        {% for block in section.blocks %}
-          {% if block.type == 'review' %}
-            <div class="nb-review-card" {{ block.shopify_attributes }}>
-              <div class="nb-stars">Rating: {{ block.settings.rating }}</div>
-              <p>"{{ block.settings.review_text }}"</p>
-              <div class="nb-reviewer">
-                <strong>{{ block.settings.author }}</strong>
-                <span>{{ block.settings.location }}</span>
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
       </div>
     </div>
   </div>
@@ -973,34 +959,7 @@
       ]
     },
     {
-      "type": "review",
-      "name": "Customer Review",
-      "settings": [
-        {
-          "type": "text",
-          "id": "rating",
-          "label": "Rating Text",
-          "default": "5/5 Stars"
-        },
-        {
-          "type": "textarea",
-          "id": "review_text",
-          "label": "Review Text",
-          "default": "The biryani was piping hot, rice was fragrant and chicken super tender. Best dum biryani in Kalyan!"
-        },
-        {
-          "type": "text",
-          "id": "author",
-          "label": "Author Name",
-          "default": "Sumaiya N."
-        },
-        {
-          "type": "text",
-          "id": "location",
-          "label": "Location",
-          "default": "Kalyan West"
-        }
-      ]
+      "type": "@app"
     },
     {
       "type": "faq_item",
