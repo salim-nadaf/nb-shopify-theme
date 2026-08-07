@@ -1,0 +1,135 @@
+{% comment %}
+  NIAMAT BIRYANI — Custom Reviews Section with Judge.me & Visible Star Ratings
+{% endcomment %}
+
+{% liquid
+  assign tag_badge = section.settings.tag_badge
+  if tag_badge == blank
+    assign tag_badge = 'GOOGLE REVIEWS'
+  endif
+
+  assign title = section.settings.title
+  if title == blank
+    assign title = 'Loved by Biryani Enthusiasts Across Kalyan'
+  endif
+%}
+
+<div class="nb-reviews-section">
+  <div class="nb-container">
+    <div class="nb-section-header">
+      <span class="nb-tag-badge">{{ tag_badge }}</span>
+      <h2>{{ title }}</h2>
+    </div>
+
+    <!-- JUDGE.ME CAROUSEL CONTAINER -->
+    <div class="nb-judgeme-wrapper" style="margin-bottom: 24px;">
+      <div class="jdgm-carousel-wrapper" data-auto-install="true"></div>
+      {% content_for 'blocks' %}
+    </div>
+
+    <!-- FEATURED REVIEWS CARDS WITH STAR RATINGS -->
+    <div class="nb-grid-3">
+      {% for block in section.blocks %}
+        {% if block.type == 'review' %}
+          <div class="nb-review-card" {{ block.shopify_attributes }}>
+            <div class="nb-review-stars">
+              <span class="nb-stars-gold">★★★★★</span>
+              <span class="nb-rating-score">{{ block.settings.rating | default: '5/5 Stars' }}</span>
+            </div>
+            <p class="nb-review-body">"{{ block.settings.review_text }}"</p>
+            <div class="nb-review-author">
+              <strong>{{ block.settings.author }}</strong>
+              <span>📍 {{ block.settings.location }}</span>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-reviews-section { background-color: #FDF6EC; padding: 40px 0; }
+.nb-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.nb-section-header { margin-bottom: 28px; text-align: center; }
+.nb-tag-badge { display: inline-block; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #C8922A !important; margin-bottom: 6px; }
+.nb-section-header h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.8rem; font-weight: 800; color: #2C1810 !important; margin: 0 0 6px; }
+
+.nb-grid-3 { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.nb-review-card { background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(253,246,236,0.95) 100%); border: 1px solid rgba(200,146,42,0.25); border-top: 3px solid #C8922A; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 8px 25px -8px rgba(44,24,16,0.08); transition: transform 0.25s ease; }
+.nb-review-card:hover { transform: translateY(-4px); }
+.nb-review-stars { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.nb-stars-gold { color: #C8922A; font-size: 1.15rem; letter-spacing: 2px; }
+.nb-rating-score { font-size: 0.78rem; font-weight: 700; background: rgba(200,146,42,0.12); color: #C8922A; padding: 3px 9px; border-radius: 12px; }
+.nb-review-body { font-size: 0.88rem; color: #2C1810; margin: 0 0 16px; line-height: 1.5; font-style: italic; flex: 1; }
+.nb-review-author { display: flex; flex-direction: column; font-size: 0.82rem; border-top: 1px dashed rgba(200,146,42,0.25); padding-top: 10px; }
+.nb-review-author strong { color: #2C1810; font-weight: 700; }
+.nb-review-author span { color: #7A5C4A; font-size: 0.76rem; margin-top: 2px; }
+
+@media (min-width: 768px) {
+  .nb-grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 22px; }
+  .nb-section-header h2 { font-size: 2.2rem; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag_badge",
+      "label": "Tag Badge",
+      "default": "GOOGLE REVIEWS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Loved by Biryani Enthusiasts Across Kalyan"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "review",
+      "name": "Review Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "rating",
+          "label": "Rating Text",
+          "default": "5/5 Stars"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "The biryani arrived piping hot! Super tender meat and rice was perfectly seasoned."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sumaiya N."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Kalyan West"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Reviews"
+    }
+  ]
+}
+{% endschema %}
