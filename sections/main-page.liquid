@@ -6,7 +6,9 @@
   endif
 %}
 
-{% if page.handle == 'about-us' or page.handle == 'about' or page.title contains 'About' or page.title contains 'Story' %}
+{% if page.handle == 'contact' or page.handle == 'contact-us' or page.title contains 'Contact' %}
+  {% render 'nb-contact-snippet' %}
+{% elsif page.handle == 'about-us' or page.handle == 'about' or page.title contains 'About' or page.title contains 'Story' %}
   {% render 'nb-our-story-snippet' %}
 {% else %}
   <div
