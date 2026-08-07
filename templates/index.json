@@ -110,7 +110,7 @@
           "settings": {
             "zone_name": "Kalyan West",
             "eta": "30-45 mins",
-            "delivery_fee": "Free over Rs. 500"
+            "delivery_fee": "Free above ₹799"
           }
         },
         "delivery_zone_2": {
@@ -118,7 +118,7 @@
           "settings": {
             "zone_name": "Kalyan East & Shahad",
             "eta": "35-50 mins",
-            "delivery_fee": "Free over Rs. 500"
+            "delivery_fee": "Free above ₹799"
           }
         },
         "delivery_zone_3": {
@@ -126,7 +126,7 @@
           "settings": {
             "zone_name": "Khadakpada & Adharwadi",
             "eta": "30-40 mins",
-            "delivery_fee": "Free over Rs. 500"
+            "delivery_fee": "Free above ₹799"
           }
         },
         "review_1": {
