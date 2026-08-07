@@ -28,8 +28,8 @@
             "badge": "1 Kg to 10 Kg Handi",
             "title": "Family Pre-Orders",
             "description": "Planning a gathering?\n\nPre-order larger quantities with your preferred delivery schedule.",
-            "cta_text": "Plan Family Feast",
-            "cta_url": "/pages/family-feast"
+            "cta_text": "Plan Family Orders",
+            "cta_url": "/pages/family-orders"
           }
         },
         "today_badge_1": {
@@ -180,9 +180,9 @@
         "today_cta_url": "/collections/instant-delivery",
         "show_family": true,
         "family_heading": "Feeding a Crowd?",
-        "family_subheading": "Planning a party, family gathering or office lunch? Pre-order 1 Kg to 10 Kg handis with scheduled delivery.",
-        "family_cta_text": "Plan Family Order",
-        "family_cta_url": "/pages/family-feast"
+        "family_subheading": "Planning a party, family gathering or office event? Pre-order 5 Kg to 15 Kg+ catering packages with scheduled delivery.",
+        "family_cta_text": "Plan Bulk Order",
+        "family_cta_url": "/pages/bulk-orders"
       }
     },
     "nb_google_reviews": {
