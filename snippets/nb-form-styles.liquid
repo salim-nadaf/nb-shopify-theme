@@ -5,7 +5,31 @@
 <style>
 /* ===== SHOPIFY FORMS APP & PRE-ORDER FORM CENTER ALIGNMENT & BRAND STYLING ===== */
 
-/* Form Wrapper Centering */
+/* Center Page Container & Text on Pages */
+.template-page .section-content-wrapper,
+.template-page .page-width-content,
+.template-page #MainContent,
+div[class*="page-content"],
+div[class*="main-page"] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 800px !important;
+  width: 100% !important;
+}
+
+.template-page h1,
+.template-page .page-title,
+.template-page p,
+.template-page div {
+  text-align: center !important;
+}
+
+/* Form Container Centering */
 shopify-form,
 .shopify-form,
 [data-shopify-form],
@@ -16,12 +40,14 @@ div[id*="shopify-form"],
 div[class*="form-builder"],
 div[class*="form-app"],
 form[action*="contact"],
-form[action*="form"] {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 auto 30px !important;
+form[action*="form"],
+iframe[src*="form"],
+iframe[src*="shopify"],
+iframe[id*="form"],
+iframe[class*="form"],
+.px-form-builder {
+  display: block !important;
+  margin: 24px auto !important;
   text-align: center !important;
   max-width: 680px !important;
   width: 100% !important;
@@ -36,7 +62,9 @@ shopify-form form,
 div[class*="shopify-form"] form,
 div[class*="form-builder"] form,
 div[class*="form-app"] form,
-.shopify-app-block-content {
+.shopify-app-block-content,
+form[action*="contact"],
+.px-form-builder form {
   background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
   border: 1px solid rgba(200, 146, 42, 0.32) !important;
   border-top: 5px solid #C8922A !important;
@@ -47,6 +75,19 @@ div[class*="form-app"] form,
   width: 100% !important;
   box-sizing: border-box !important;
   text-align: left !important;
+}
+
+/* Frame styling for App IFrames */
+iframe[src*="form"],
+iframe[src*="shopify"],
+iframe[id*="form"],
+iframe[class*="form"] {
+  background: #FFFDF7 !important;
+  border: 1px solid rgba(200, 146, 42, 0.32) !important;
+  border-top: 5px solid #C8922A !important;
+  border-radius: 24px !important;
+  padding: 16px !important;
+  box-shadow: 0 16px 40px -10px rgba(44, 24, 16, 0.12) !important;
 }
 
 /* Headings & Subheadings */
@@ -92,7 +133,8 @@ shopify-form input, shopify-form select, shopify-form textarea,
 .shopify-form input, .shopify-form select, .shopify-form textarea,
 [data-shopify-form] input, [data-shopify-form] select, [data-shopify-form] textarea,
 div[class*="shopify-form"] input, div[class*="shopify-form"] select, div[class*="shopify-form"] textarea,
-div[class*="form-builder"] input, div[class*="form-builder"] select, div[class*="form-builder"] textarea {
+div[class*="form-builder"] input, div[class*="form-builder"] select, div[class*="form-builder"] textarea,
+form[action*="contact"] input, form[action*="contact"] textarea, form[action*="contact"] select {
   background-color: #FFFFFF !important;
   color: #2C1810 !important;
   border: 1px solid rgba(200, 146, 42, 0.35) !important;
@@ -109,7 +151,8 @@ div[class*="form-builder"] input, div[class*="form-builder"] select, div[class*=
 
 shopify-form input:focus, shopify-form select:focus, shopify-form textarea:focus,
 .shopify-form input:focus, .shopify-form select:focus, .shopify-form textarea:focus,
-div[class*="shopify-form"] input:focus, div[class*="form-builder"] input:focus {
+div[class*="shopify-form"] input:focus, div[class*="form-builder"] input:focus,
+form[action*="contact"] input:focus {
   border-color: #C8922A !important;
   box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.22) !important;
   background-color: #FFFDF9 !important;
@@ -121,7 +164,7 @@ shopify-form button[type="submit"], shopify-form input[type="submit"],
 [data-shopify-form] button[type="submit"], [data-shopify-form] input[type="submit"],
 div[class*="shopify-form"] button, div[class*="shopify-form"] input[type="submit"],
 div[class*="form-builder"] button, div[class*="form-builder"] input[type="submit"],
-div[class*="form-app"] button {
+div[class*="form-app"] button, form[action*="contact"] button[type="submit"] {
   background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
   color: #FFFFFF !important;
   font-weight: 700 !important;
@@ -154,7 +197,7 @@ div[class*="shopify-form"] button:hover {
 </style>
 
 <script>
-  // Dynamic Shadow DOM & App Form Styler
+  // Dynamic Shadow DOM & App Form Styler & Centering Engine
   (function nbStyleShopifyForms() {
     function applyStylesToShadow(shadowRoot) {
       if (!shadowRoot) return;
@@ -163,7 +206,14 @@ div[class*="shopify-form"] button:hover {
         styleEl = document.createElement('style');
         styleEl.id = 'nb-form-style';
         styleEl.textContent = `
-          form, .form-container, .shopify-form-wrapper {
+          :host {
+            display: block !important;
+            margin: 0 auto !important;
+            max-width: 680px !important;
+            width: 100% !important;
+            text-align: center !important;
+          }
+          form, .form-container, .shopify-form-wrapper, div[class*="form"] {
             background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
             border: 1px solid rgba(200, 146, 42, 0.32) !important;
             border-top: 5px solid #C8922A !important;
@@ -173,6 +223,7 @@ div[class*="shopify-form"] button:hover {
             margin: 0 auto !important;
             max-width: 680px !important;
             width: 100% !important;
+            box-sizing: border-box !important;
           }
           h1, h2, h3, .heading { font-family: 'Playfair Display', Georgia, serif !important; color: #2C1810 !important; text-align: center !important; }
           p, span, label { font-family: 'Inter', system-ui, sans-serif !important; }
@@ -182,6 +233,9 @@ div[class*="shopify-form"] button:hover {
             border-radius: 12px !important;
             padding: 14px 16px !important;
             color: #2C1810 !important;
+            font-family: 'Inter', system-ui, sans-serif !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
           }
           button[type="submit"], input[type="submit"], .submit-button {
             background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
@@ -193,6 +247,7 @@ div[class*="shopify-form"] button:hover {
             padding: 14px 32px !important;
             margin: 16px auto 0 !important;
             display: block !important;
+            min-width: 200px !important;
           }
         `;
         shadowRoot.appendChild(styleEl);
@@ -200,8 +255,12 @@ div[class*="shopify-form"] button:hover {
     }
 
     function checkAndStyleForms() {
-      const formHosts = document.querySelectorAll('shopify-form, [data-shopify-form], div[class*="shopify-form"]');
+      const formHosts = document.querySelectorAll('shopify-form, [data-shopify-form], div[class*="shopify-form"], iframe[src*="form"]');
       formHosts.forEach(host => {
+        host.style.marginLeft = 'auto';
+        host.style.marginRight = 'auto';
+        host.style.maxWidth = '680px';
+        host.style.width = '100%';
         if (host.shadowRoot) {
           applyStylesToShadow(host.shadowRoot);
         }
@@ -213,6 +272,6 @@ div[class*="shopify-form"] button:hover {
     } else {
       checkAndStyleForms();
     }
-    setInterval(checkAndStyleForms, 1500);
+    setInterval(checkAndStyleForms, 1000);
   })();
 </script>
