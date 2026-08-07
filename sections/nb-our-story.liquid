@@ -1,0 +1,321 @@
+{% comment %}
+  NIAMAT BIRYANI — Our Story / About Us Section
+{% endcomment %}
+
+{% liquid
+  assign page_bg = section.settings.color_page_bg
+  if page_bg == blank or page_bg == 'rgba(0,0,0,0)'
+    assign page_bg = '#FFFAF4'
+  endif
+
+  assign alt_bg = section.settings.color_alt_bg
+  if alt_bg == blank or alt_bg == 'rgba(0,0,0,0)'
+    assign alt_bg = '#FDF6EC'
+  endif
+
+  assign gold_color = section.settings.color_accent_gold
+  if gold_color == blank or gold_color == 'rgba(0,0,0,0)'
+    assign gold_color = '#C8922A'
+  endif
+
+  assign text_dark = section.settings.color_text_dark
+  if text_dark == blank or text_dark == 'rgba(0,0,0,0)'
+    assign text_dark = '#2C1810'
+  endif
+
+  assign text_muted = section.settings.color_text_muted
+  if text_muted == blank or text_muted == 'rgba(0,0,0,0)'
+    assign text_muted = '#7A5C4A'
+  endif
+%}
+
+<div class="nb-our-story-section" style="
+  --nb-page-bg: {{ page_bg }};
+  --nb-alt-bg: {{ alt_bg }};
+  --nb-gold: {{ gold_color }};
+  --nb-text-dark: {{ text_dark }};
+  --nb-text-muted: {{ text_muted }};
+">
+  <div class="nb-container">
+
+    <!-- HEADER -->
+    <div class="nb-section-header">
+      <span class="nb-tag-badge">{{ section.settings.badge_text | default: 'OUR STORY' }}</span>
+      <h2>{{ section.settings.heading | default: 'Our Story' }}</h2>
+      <p class="nb-story-subheading"><em>{{ section.settings.subheading | default: 'Every journey begins with a single step.' }}</em></p>
+    </div>
+
+    <!-- MAIN STORY CONTAINER -->
+    <div class="nb-story-content-wrap">
+
+      <!-- INTRO LEAD CARD -->
+      <div class="nb-story-lead-card">
+        <p class="nb-story-lead">
+          Biryani Palace by Niamat was born from a dream that had been in our hearts long before it became a business.
+        </p>
+      </div>
+
+      <!-- STORY PARAGRAPHS -->
+      <div class="nb-story-paragraphs">
+        <div class="nb-story-block">
+          <p>
+            During the COVID-19 pandemic, we were given something that many of us rarely have—time to pause, reflect, and explore new possibilities. It was during that period that our founder, <strong>Salim Nadaf</strong>, decided to pursue a lifelong dream of building something meaningful through entrepreneurship.
+          </p>
+        </div>
+
+        <div class="nb-story-block">
+          <p>
+            While exploring different business opportunities, we discovered the world of cloud kitchens. We were fortunate to learn from experienced industry mentors, whose guidance provided a strong foundation in food entrepreneurship, customer experience, branding, and operational excellence.
+          </p>
+        </div>
+
+        <!-- HIGHLIGHT CALLOUT CARD (STAAD & FOUNDER) -->
+        <div class="nb-story-highlight-box">
+          <div class="nb-highlight-quote">
+            "Behind every biryani we serve is the expertise of our Ustaad, who brings more than 25 years of experience in the art of traditional biryani cooking."
+          </div>
+          <p class="nb-highlight-sub">
+            His craftsmanship, combined with our commitment to continuous learning and modern customer experience, is what defines every meal we prepare.
+          </p>
+        </div>
+
+        <div class="nb-story-block">
+          <p>
+            Over the past five years, we've continued to learn, experiment, improve, and grow. The journey is still unfolding, and we know there is much more to achieve. Every customer, every order, and every piece of feedback motivates us to become better than we were yesterday.
+          </p>
+        </div>
+
+        <div class="nb-story-block">
+          <p>
+            At Biryani Palace by Niamat, we don't believe in shortcuts or exaggerated promises. We believe in preparing good food with care, serving our customers honestly, and building trust one order at a time.
+          </p>
+        </div>
+
+        <!-- CLOSING CARD -->
+        <div class="nb-story-closing-box">
+          <p class="nb-closing-text">
+            Whether it's your first order or your fiftieth, we hope every meal reminds you why you chose us.
+          </p>
+          <div class="nb-closing-thanks">
+            Thank you for being part of our journey.
+          </div>
+          <div class="nb-story-cta-wrap">
+            <a href="{{ section.settings.cta_url | default: '/collections/instant-delivery' }}" class="nb-btn-gold nb-btn-lg">
+              {{ section.settings.cta_text | default: 'Explore Our Menu' }}
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<style>
+.nb-our-story-section {
+  background-color: var(--nb-page-bg) !important;
+  color: var(--nb-text-dark) !important;
+  padding: 56px 0 !important;
+  width: 100%;
+}
+.nb-container { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+
+.nb-section-header { text-align: center; margin-bottom: 36px; }
+.nb-tag-badge { display: inline-block; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--nb-gold) !important; margin-bottom: 8px; }
+.nb-section-header h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 2.3rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 0 0 8px; letter-spacing: -0.01em; }
+.nb-story-subheading { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.15rem; color: var(--nb-gold) !important; margin: 0; }
+
+.nb-story-content-wrap { display: flex; flex-direction: column; gap: 24px; }
+
+/* LEAD CARD */
+.nb-story-lead-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
+  border: 1px solid rgba(200, 146, 42, 0.25) !important;
+  border-top: 4px solid var(--nb-gold) !important;
+  border-radius: 20px;
+  padding: 28px 32px;
+  box-shadow: 0 10px 30px -12px rgba(44, 24, 16, 0.08) !important;
+  text-align: center;
+}
+.nb-story-lead {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--nb-text-dark) !important;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* PARAGRAPH BLOCKS */
+.nb-story-paragraphs { display: flex; flex-direction: column; gap: 20px; }
+.nb-story-block {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(200, 146, 42, 0.18) !important;
+  border-radius: 16px;
+  padding: 22px 26px;
+  box-shadow: 0 6px 20px -8px rgba(44, 24, 16, 0.05) !important;
+  transition: all 0.25s ease;
+}
+.nb-story-block:hover {
+  transform: translateY(-2px);
+  border-color: rgba(200, 146, 42, 0.35) !important;
+  box-shadow: 0 10px 25px -8px rgba(200, 146, 42, 0.15) !important;
+}
+.nb-story-block p {
+  font-size: 0.96rem;
+  color: var(--nb-text-dark) !important;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* HIGHLIGHT BOX */
+.nb-story-highlight-box {
+  background: linear-gradient(135deg, #1E100A 0%, #361C10 100%) !important;
+  color: #FFFFFF !important;
+  border: 2px solid var(--nb-gold) !important;
+  border-radius: 20px;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.3) !important;
+}
+.nb-highlight-quote {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #FFF0B3 !important;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+.nb-highlight-sub {
+  font-size: 0.92rem;
+  color: #E2D5C5 !important;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* CLOSING BOX */
+.nb-story-closing-box {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
+  border: 1px solid rgba(200, 146, 42, 0.28) !important;
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 10px 30px -12px rgba(44, 24, 16, 0.08) !important;
+}
+.nb-closing-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--nb-text-dark) !important;
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+.nb-closing-thanks {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--nb-gold) !important;
+  margin-bottom: 24px;
+}
+.nb-story-cta-wrap { display: flex; justify-content: center; align-items: center; }
+
+.nb-btn-gold {
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 14px 28px;
+  border-radius: 12px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(200,146,42,0.35) !important;
+  transition: all 0.25s ease;
+}
+.nb-btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(200,146,42,0.45) !important; }
+
+@media (min-width: 768px) {
+  .nb-section-header h2 { font-size: 2.8rem; }
+  .nb-story-subheading { font-size: 1.3rem; }
+  .nb-story-lead { font-size: 1.35rem; }
+  .nb-story-block p { font-size: 1.02rem; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Our Story (About Us)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Tag Badge",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Every journey begins with a single step."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Explore Our Menu"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA Button URL"
+    },
+    {
+      "type": "color",
+      "id": "color_page_bg",
+      "label": "Page Background",
+      "default": "#FFFAF4"
+    },
+    {
+      "type": "color",
+      "id": "color_alt_bg",
+      "label": "Alternate Background",
+      "default": "#FDF6EC"
+    },
+    {
+      "type": "color",
+      "id": "color_accent_gold",
+      "label": "Accent Gold Color",
+      "default": "#C8922A"
+    },
+    {
+      "type": "color",
+      "id": "color_text_dark",
+      "label": "Primary Text Color",
+      "default": "#2C1810"
+    },
+    {
+      "type": "color",
+      "id": "color_text_muted",
+      "label": "Muted Text Color",
+      "default": "#7A5C4A"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Story (About Us)"
+    }
+  ]
+}
+{% endschema %}
