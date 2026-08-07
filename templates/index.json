@@ -173,49 +173,37 @@
         "family_cta_url": "/pages/family-feast"
       }
     },
-    "nb_reviews_header": {
-      "type": "nb-reviews-header",
+    "nb_google_reviews": {
+      "type": "nb-google-reviews",
       "blocks": {
         "judge_me_reviews_review_widget_embedded": {
           "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {}
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_review_widget_embedded"
-      ],
-      "settings": {
-        "tag_badge": "GOOGLE REVIEWS",
-        "title": "Loved by Biryani Enthusiasts Across Kalyan"
-      }
-    },
-    "1786133444a280be23": {
-      "type": "_blocks",
-      "blocks": {
-        "judge_me_reviews_cards_carousel_BxHcx6": {
+        },
+        "judge_me_reviews_cards_carousel_embedded": {
           "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
             "show_sample_reviews": true,
-            "reviews_selection": "featured_reviews",
+            "reviews_selection": "all_reviews",
             "products": [],
             "filter_pinned": false,
-            "filter_featured": true,
+            "filter_featured": false,
             "filter_custom_tags": "",
             "star_rating": "all",
             "show_review_media": true,
             "display_order": "media_first",
             "no_image_fallback": "review_text_only",
-            "max_reviews": 4,
+            "max_reviews": 10,
             "review_length": "medium",
             "text_size": "medium",
             "image_ratio": "1",
             "reviews_shown": 5,
             "show_reviewer_name": true,
             "show_product_name": true,
-            "hide_arrows_mobile": true,
+            "hide_arrows_mobile": false,
             "arrows_position": "bottom",
             "max_width": 1100,
-            "corner_styling": "extra_round",
+            "corner_styling": "soft",
             "header_text_color": "#2c1810",
             "text_color": "#2c1810",
             "card_color": "#ffffff",
@@ -229,21 +217,12 @@
         }
       },
       "block_order": [
-        "judge_me_reviews_cards_carousel_BxHcx6"
+        "judge_me_reviews_review_widget_embedded",
+        "judge_me_reviews_cards_carousel_embedded"
       ],
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 0,
-        "section_width": "page-width",
-        "background_color": "#fdf6ec",
-        "padding-block-start": 0,
-        "padding-block-end": 20
+        "tag_badge": "GOOGLE REVIEWS",
+        "title": "Loved by Biryani Enthusiasts Across Kalyan"
       }
     },
     "nb_homepage_bottom": {
@@ -293,8 +272,7 @@
   },
   "order": [
     "nb_homepage_top",
-    "nb_reviews_header",
-    "1786133444a280be23",
+    "nb_google_reviews",
     "nb_homepage_bottom"
   ]
 }
