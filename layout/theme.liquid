@@ -557,6 +557,12 @@
     {% render 'theme-drawer' %}
     {% render 'search-modal' %}
 
+    {%- for block in settings.blocks -%}
+      {%- if block.disabled == false -%}
+        {%- render block -%}
+      {%- endif -%}
+    {%- endfor -%}
+
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
