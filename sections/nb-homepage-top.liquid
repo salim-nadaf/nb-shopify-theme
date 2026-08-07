@@ -1,0 +1,824 @@
+{% comment %}
+  NIAMAT BIRYANI — Homepage Top Section (Kitchen Status to Delivery Areas)
+{% endcomment %}
+
+{% liquid
+  assign page_bg = section.settings.color_page_bg
+  if page_bg == blank or page_bg == 'rgba(0,0,0,0)'
+    assign page_bg = '#FFFAF4'
+  endif
+
+  assign dark_bg = section.settings.color_dark_bg
+  if dark_bg == blank or dark_bg == 'rgba(0,0,0,0)'
+    assign dark_bg = '#1E100A'
+  endif
+
+  assign card_bg = section.settings.color_card_bg
+  if card_bg == blank or card_bg == 'rgba(0,0,0,0)'
+    assign card_bg = '#FFFFFF'
+  endif
+
+  assign alt_bg = section.settings.color_alt_bg
+  if alt_bg == blank or alt_bg == 'rgba(0,0,0,0)'
+    assign alt_bg = '#FDF6EC'
+  endif
+
+  assign gold_color = section.settings.color_accent_gold
+  if gold_color == blank or gold_color == 'rgba(0,0,0,0)'
+    assign gold_color = '#C8922A'
+  endif
+
+  assign text_dark = section.settings.color_text_dark
+  if text_dark == blank or text_dark == 'rgba(0,0,0,0)'
+    assign text_dark = '#2C1810'
+  endif
+
+  assign text_muted = section.settings.color_text_muted
+  if text_muted == blank or text_muted == 'rgba(0,0,0,0)'
+    assign text_muted = '#7A5C4A'
+  endif
+
+  assign status_bg = section.settings.color_status_bg
+  if status_bg == blank or status_bg == 'rgba(0,0,0,0)'
+    assign status_bg = '#1E100A'
+  endif
+
+  assign btn1_bg = section.settings.color_btn1_bg
+  if btn1_bg == blank or btn1_bg == 'rgba(0,0,0,0)'
+    assign btn1_bg = '#C8922A'
+  endif
+
+  assign btn1_text = section.settings.color_btn1_text
+  if btn1_text == blank or btn1_text == 'rgba(0,0,0,0)'
+    assign btn1_text = '#FFFFFF'
+  endif
+
+  assign pad_val = section.settings.section_padding | default: 40
+  assign hero_h_val = section.settings.hero_min_height | default: 400
+  assign opac_raw = section.settings.hero_overlay_opacity | default: 75
+  assign opac_val = opac_raw | divided_by: 100.0
+
+  assign status_text = section.settings.status_text
+  if status_text == blank
+    assign status_text = 'Kitchen Open - Lunch 12-3 PM, Dinner 6-9 PM'
+  endif
+
+  assign hero_heading = section.settings.hero_heading
+  if hero_heading == blank
+    assign hero_heading = 'Real Biryani. Made Fresh. Delivered to Your Door.'
+  endif
+
+  assign hero_subheading = section.settings.hero_subheading
+  if hero_subheading == blank
+    assign hero_subheading = 'Slow-cooked dum biryani from our cloud kitchen. Order now for delivery in 45-60 minutes.'
+  endif
+
+  assign hero_btn1_text = section.settings.hero_btn1_text
+  if hero_btn1_text == blank
+    assign hero_btn1_text = 'Order Now'
+  endif
+
+  assign hero_btn1_url = section.settings.hero_btn1_url
+  if hero_btn1_url == blank
+    assign hero_btn1_url = '/pages/start-your-order'
+  endif
+
+  assign hero_btn2_text = section.settings.hero_btn2_text
+  if hero_btn2_text == blank
+    assign hero_btn2_text = 'See Full Menu'
+  endif
+
+  assign hero_btn2_url = section.settings.hero_btn2_url
+  if hero_btn2_url == blank
+    assign hero_btn2_url = '/collections/instant-delivery'
+  endif
+
+  assign today_heading = section.settings.today_heading
+  if today_heading == blank
+    assign today_heading = "What's Ready Today"
+  endif
+
+  assign today_subheading = section.settings.today_subheading
+  if today_subheading == blank
+    assign today_subheading = 'Fresh batches coming hot out of the handi for fast dispatch.'
+  endif
+
+  assign today_cta_text = section.settings.today_cta_text
+  if today_cta_text == blank
+    assign today_cta_text = 'Order Instant Items'
+  endif
+
+  assign today_cta_url = section.settings.today_cta_url
+  if today_cta_url == blank
+    assign today_cta_url = '/collections/instant-delivery'
+  endif
+
+  assign family_heading = section.settings.family_heading
+  if family_heading == blank
+    assign family_heading = 'Feeding a Crowd?'
+  endif
+
+  assign family_subheading = section.settings.family_subheading
+  if family_subheading == blank
+    assign family_subheading = 'Planning a party, family gathering or office lunch? Pre-order 1 Kg to 10 Kg handis with scheduled delivery.'
+  endif
+
+  assign family_cta_text = section.settings.family_cta_text
+  if family_cta_text == blank
+    assign family_cta_text = 'Plan Family Order'
+  endif
+
+  assign family_cta_url = section.settings.family_cta_url
+  if family_cta_url == blank
+    assign family_cta_url = '/pages/family-feast'
+  endif
+%}
+
+<div class="nb-homepage-wrapper" style="
+  --nb-page-bg: {{ page_bg }};
+  --nb-dark-bg: {{ dark_bg }};
+  --nb-card-bg: {{ card_bg }};
+  --nb-alt-bg: {{ alt_bg }};
+  --nb-gold: {{ gold_color }};
+  --nb-text-dark: {{ text_dark }};
+  --nb-text-muted: {{ text_muted }};
+  --nb-status-bg: {{ status_bg }};
+  --nb-btn1-bg: {{ btn1_bg }};
+  --nb-btn1-text: {{ btn1_text }};
+  --nb-padding: {{ pad_val }}px;
+  --nb-hero-height: {{ hero_h_val }}px;
+  --nb-overlay-opac: {{ opac_val }};
+">
+
+  <!-- 1. STATUS BAR -->
+  {% unless section.settings.show_status == false %}
+    <div class="nb-status-bar">
+      <div class="nb-status-inner">
+        <span class="nb-pulse-dot"></span>
+        <span>{{ status_text }}</span>
+      </div>
+    </div>
+  {% endunless %}
+
+  <!-- 2. HERO BANNER -->
+  {% unless section.settings.show_hero == false %}
+    <div class="nb-hero-banner">
+      {% if section.settings.hero_video_url != blank %}
+        <video autoplay muted loop playsinline class="nb-hero-bg">
+          <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
+        </video>
+        <div class="nb-hero-overlay"></div>
+      {% elsif section.settings.hero_image != blank %}
+        <img src="{{ section.settings.hero_image | image_url: width: 1400 }}" alt="Biryani Palace" class="nb-hero-bg-img" width="1400" height="700" loading="eager" />
+        <div class="nb-hero-overlay"></div>
+      {% else %}
+        <div class="nb-hero-glow"></div>
+      {% endif %}
+
+      <div class="nb-hero-content">
+        <h1 class="nb-hero-title">{{ hero_heading }}</h1>
+        <p class="nb-hero-sub">{{ hero_subheading }}</p>
+
+        <div class="nb-hero-buttons">
+          <a href="{{ hero_btn1_url }}" class="nb-btn-gold">{{ hero_btn1_text }}</a>
+          <a href="{{ hero_btn2_url }}" class="nb-btn-outline">{{ hero_btn2_text }}</a>
+        </div>
+      </div>
+    </div>
+  {% endunless %}
+
+  <!-- 3. ORDER YOUR WAY (2 CARDS) -->
+  <div class="nb-section-block">
+    <div class="nb-container">
+      <div class="nb-section-header">
+        <span class="nb-tag-badge">Delivery Options</span>
+        <h2>Order Your Way</h2>
+      </div>
+
+      <div class="nb-grid-2">
+        {% for block in section.blocks %}
+          {% if block.type == 'order_way' %}
+            <div class="nb-card nb-card-exp" {{ block.shopify_attributes }}>
+              <div class="nb-card-top">
+                <span class="nb-chip">{{ block.settings.badge }}</span>
+              </div>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.description }}</p>
+              <a href="{{ block.settings.cta_url | default: '/collections/instant-delivery' }}" class="nb-btn-gold nb-w-full">
+                {{ block.settings.cta_text }}
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. TODAY'S KITCHEN -->
+  {% unless section.settings.show_today == false %}
+    <div class="nb-section-block nb-bg-alt">
+      <div class="nb-container">
+        <div class="nb-section-header flex-between">
+          <div>
+            <span class="nb-tag-badge">Fresh Batches</span>
+            <h2>{{ today_heading }}</h2>
+            <p>{{ today_subheading }}</p>
+          </div>
+          <a href="{{ today_cta_url }}" class="nb-btn-gold">{{ today_cta_text }}</a>
+        </div>
+
+        <div class="nb-badges-row">
+          {% for block in section.blocks %}
+            {% if block.type == 'today_badge' %}
+              <div class="nb-badge-pill" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.icon }}</span>
+                <strong>{{ block.settings.label }}</strong>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endunless %}
+
+  <!-- 5. WHY CHOOSE US (4 POINTS) -->
+  <div class="nb-section-block">
+    <div class="nb-container">
+      <div class="nb-section-header">
+        <span class="nb-tag-badge">Our Quality</span>
+        <h2>Why Customers Choose Biryani Palace</h2>
+      </div>
+
+      <div class="nb-grid-4">
+        {% for block in section.blocks %}
+          {% if block.type == 'why_point' %}
+            <div class="nb-why-box" {{ block.shopify_attributes }}>
+              <div class="nb-why-icon">{{ block.settings.icon }}</div>
+              <h4>{{ block.settings.title }}</h4>
+              <p>{{ block.settings.body }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. SIGNATURE MENU (DISH CARDS) -->
+  <div class="nb-section-block nb-bg-alt">
+    <div class="nb-container">
+      <div class="nb-section-header">
+        <span class="nb-tag-badge">House Specialties</span>
+        <h2>Signature Dum Biryanis & Starters</h2>
+      </div>
+
+      <div class="nb-grid-3">
+        {% for block in section.blocks %}
+          {% if block.type == 'menu_item' %}
+            <div class="nb-dish-card" {{ block.shopify_attributes }}>
+              <div class="nb-dish-img-wrap">
+                {% if block.settings.image != blank %}
+                  <img src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ block.settings.name }}" width="300" height="200" loading="lazy" />
+                {% else %}
+                  <div class="nb-dish-placeholder">🍛</div>
+                {% endif %}
+              </div>
+              <div class="nb-dish-content">
+                <div class="nb-dish-header">
+                  <h4>{{ block.settings.name }}</h4>
+                  <span class="nb-dish-price">{{ block.settings.price }}</span>
+                </div>
+                <p>{{ block.settings.description }}</p>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. FAMILY ORDERS -->
+  {% unless section.settings.show_family == false %}
+    <div class="nb-section-block">
+      <div class="nb-container">
+        <div class="nb-family-banner">
+          <div class="nb-family-text">
+            <span class="nb-tag-badge">Bulk & Catering</span>
+            <h2>{{ family_heading }}</h2>
+            <p>{{ family_subheading }}</p>
+            <a href="{{ family_cta_url }}" class="nb-btn-gold">{{ family_cta_text }}</a>
+          </div>
+          <div class="nb-family-media">
+            {% if section.settings.family_image != blank %}
+              <img src="{{ section.settings.family_image | image_url: width: 500 }}" alt="Family Feast" width="500" height="350" loading="lazy" />
+            {% else %}
+              <div class="nb-family-box">
+                <span class="nb-crown">👑</span>
+                <h3>Handi Family Feast</h3>
+                <p>1 Kg to 10 Kg Packs</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endunless %}
+
+  <!-- 8. DELIVERY AREAS -->
+  <div class="nb-section-block nb-bg-alt">
+    <div class="nb-container">
+      <div class="nb-section-header">
+        <span class="nb-tag-badge">Coverage</span>
+        <h2>Where We Deliver</h2>
+      </div>
+
+      <div class="nb-grid-3">
+        {% for block in section.blocks %}
+          {% if block.type == 'delivery_zone' %}
+            <div class="nb-zone-card" {{ block.shopify_attributes }}>
+              <div class="nb-zone-icon">📍</div>
+              <h4>{{ block.settings.zone_name }}</h4>
+              <p>ETA: {{ block.settings.eta }}</p>
+              <span class="nb-zone-fee">Fee: {{ block.settings.delivery_fee }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap');
+
+.nb-homepage-wrapper { background-color: var(--nb-page-bg) !important; color: var(--nb-text-dark) !important; font-family: inherit; width: 100%; overflow-x: hidden; }
+.nb-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.nb-section-block { padding: var(--nb-padding) 0 !important; }
+.nb-bg-alt { background-color: var(--nb-alt-bg) !important; }
+
+.nb-section-header { margin-bottom: 28px; text-align: center; position: relative; }
+.nb-section-header.flex-between { display: flex; justify-content: space-between; align-items: flex-end; text-align: left; }
+.nb-tag-badge { display: inline-block; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--nb-gold) !important; margin-bottom: 6px; }
+.nb-section-header h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.7rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 0 0 6px; letter-spacing: -0.01em; }
+.nb-section-header p { font-size: 0.9rem; color: var(--nb-text-muted) !important; margin: 0; }
+
+.nb-status-bar { background-color: var(--nb-status-bg) !important; color: #FDF6EC; padding: 12px 16px; text-align: center; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid rgba(200,146,42,0.3); }
+.nb-status-inner { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.nb-pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #22c55e; }
+
+.nb-hero-banner { position: relative; background: linear-gradient(135deg, #160B07 0%, var(--nb-dark-bg) 100%) !important; color: #fff; padding: var(--nb-padding) 16px; min-height: var(--nb-hero-height); display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+.nb-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.nb-hero-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.nb-hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, var(--nb-overlay-opac)) !important; z-index: 2; }
+.nb-hero-glow { position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 350px; height: 350px; background: radial-gradient(circle, rgba(200,146,42,0.35) 0%, transparent 70%); pointer-events: none; z-index: 1; }
+.nb-hero-content { position: relative; z-index: 3; max-width: 720px; margin: 0 auto; }
+.nb-hero-title { font-family: 'Playfair Display', Georgia, serif !important; font-size: 2rem; font-weight: 800; color: #FFFDF7 !important; margin: 0 0 14px; line-height: 1.22; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+.nb-hero-sub { font-size: 0.95rem; color: #E2D5C5 !important; margin: 0 0 26px; line-height: 1.55; }
+.nb-hero-buttons { display: flex; flex-direction: column; gap: 14px; max-width: 400px; margin: 0 auto; }
+
+.nb-btn-gold { background: linear-gradient(135deg, #D49E35 0%, var(--nb-btn1-bg) 60%, #B07C1C 100%) !important; color: var(--nb-btn1-text) !important; font-weight: 700; font-size: 0.92rem; padding: 14px 24px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(200,146,42,0.35), inset 0 1px 0 rgba(255,255,255,0.3) !important; }
+.nb-btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(200,146,42,0.45) !important; }
+.nb-btn-outline { background: rgba(255,250,244,0.1); border: 1.5px solid rgba(200,146,42,0.5); color: #FDF6EC !important; font-weight: 700; font-size: 0.92rem; padding: 14px 24px; border-radius: 12px; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); transition: all 0.25s ease; }
+.nb-btn-outline:hover { background: rgba(255,250,244,0.2); border-color: #C8922A; }
+.nb-w-full { width: 100%; box-sizing: border-box; text-align: center; }
+
+.nb-grid-2 { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.nb-grid-3 { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.nb-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.nb-card { background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(253,246,236,0.95) 100%) !important; border: 1px solid rgba(200,146,42,0.28) !important; border-top: 3px solid var(--nb-gold) !important; border-radius: 18px; padding: 24px 20px; display: flex; flex-direction: column; box-shadow: 0 10px 30px -10px rgba(44,24,16,0.08), inset 0 1px 1px rgba(255,255,255,0.9) !important; transition: all 0.25s ease; }
+.nb-card-exp h3 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.3rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 10px 0 8px; }
+.nb-card-exp p { font-size: 0.86rem; color: var(--nb-text-muted) !important; margin: 0 0 18px; flex: 1; line-height: 1.5; }
+.nb-chip { font-size: 0.74rem; font-weight: 700; background: rgba(200,146,42,0.15); color: var(--nb-gold) !important; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(200,146,42,0.3); }
+
+.nb-badges-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 20px; }
+.nb-badge-pill { background-color: var(--nb-card-bg) !important; border: 1px solid rgba(200,146,42,0.3); border-radius: 25px; padding: 9px 18px; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--nb-text-dark) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.04) !important; }
+
+.nb-why-box { background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(253,246,236,0.95) 100%) !important; border: 1px solid rgba(200,146,42,0.22) !important; border-radius: 16px; padding: 20px 16px; text-align: center; box-shadow: 0 8px 25px -8px rgba(44,24,16,0.06) !important; transition: all 0.25s ease; }
+.nb-why-icon { font-size: 2.2rem; margin-bottom: 10px; }
+.nb-why-box h4 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 0.98rem; font-weight: 700; color: var(--nb-text-dark) !important; margin: 0 0 6px; }
+.nb-why-box p { font-size: 0.8rem; color: var(--nb-text-muted) !important; margin: 0; line-height: 1.45; }
+
+.nb-dish-card { background-color: var(--nb-card-bg) !important; border: 1px solid rgba(200,146,42,0.25) !important; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px -10px rgba(44,24,16,0.08) !important; transition: all 0.25s ease; }
+.nb-dish-img-wrap { width: 100%; height: 170px; background: #F5ECD7; overflow: hidden; position: relative; }
+.nb-dish-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.nb-dish-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.2rem; }
+.nb-dish-content { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+.nb-dish-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.nb-dish-header h4 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.05rem; font-weight: 700; color: var(--nb-text-dark) !important; margin: 0; }
+.nb-dish-price { font-size: 1.05rem; font-weight: 800; color: var(--nb-gold) !important; }
+.nb-dish-content p { font-size: 0.82rem; color: var(--nb-text-muted) !important; margin: 0; line-height: 1.45; }
+
+.nb-family-banner { background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(253,246,236,0.95) 100%) !important; border: 1px solid rgba(200,146,42,0.3) !important; border-left: 4px solid var(--nb-gold) !important; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 24px; align-items: center; box-shadow: 0 12px 35px -10px rgba(44,24,16,0.1) !important; }
+.nb-family-text { flex: 1; }
+.nb-family-text h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.55rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 6px 0 10px; }
+.nb-family-text p { font-size: 0.9rem; color: var(--nb-text-muted) !important; margin: 0 0 20px; line-height: 1.5; }
+.nb-family-media { width: 100%; max-width: 320px; }
+.nb-family-media img { width: 100%; height: auto; border-radius: 14px; }
+.nb-family-box { background: rgba(200,146,42,0.12); border: 2px dashed rgba(200,146,42,0.4); border-radius: 16px; padding: 30px 20px; text-align: center; }
+.nb-family-box .nb-crown { font-size: 2.2rem; display: block; margin-bottom: 6px; }
+.nb-family-box h3 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.2rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 0 0 4px; }
+.nb-family-box p { font-size: 0.85rem; color: var(--nb-gold) !important; font-weight: 700; margin: 0; }
+
+.nb-zone-card { background: var(--nb-card-bg) !important; border: 1px solid rgba(200,146,42,0.25) !important; border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 8px 25px -8px rgba(44,24,16,0.06) !important; }
+.nb-zone-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.nb-zone-card h4 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.05rem; font-weight: 700; color: var(--nb-text-dark) !important; margin: 0 0 6px; }
+.nb-zone-card p { font-size: 0.82rem; color: var(--nb-text-muted) !important; margin: 0 0 8px; }
+.nb-zone-fee { display: inline-block; font-size: 0.76rem; font-weight: 700; color: var(--nb-gold) !important; background: rgba(200,146,42,0.12); padding: 3px 10px; border-radius: 12px; }
+
+@media (min-width: 768px) {
+  .nb-grid-2 { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .nb-grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .nb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+  .nb-hero-buttons { flex-direction: row; max-width: 500px; }
+  .nb-section-header h2 { font-size: 2.2rem; }
+  .nb-hero-title { font-size: 3rem; }
+  .nb-family-banner { flex-direction: row; text-align: left; padding: 36px 44px; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Homepage (Hero-Delivery)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Theme Colors & Styling"
+    },
+    {
+      "type": "color",
+      "id": "color_page_bg",
+      "label": "Page Background Color",
+      "default": "#FFFAF4"
+    },
+    {
+      "type": "color",
+      "id": "color_dark_bg",
+      "label": "Dark Background Color",
+      "default": "#1E100A"
+    },
+    {
+      "type": "color",
+      "id": "color_card_bg",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_alt_bg",
+      "label": "Alternate Section Background",
+      "default": "#FDF6EC"
+    },
+    {
+      "type": "color",
+      "id": "color_accent_gold",
+      "label": "Accent Gold Color",
+      "default": "#C8922A"
+    },
+    {
+      "type": "color",
+      "id": "color_text_dark",
+      "label": "Primary Text Color",
+      "default": "#2C1810"
+    },
+    {
+      "type": "color",
+      "id": "color_text_muted",
+      "label": "Muted Text Color",
+      "default": "#7A5C4A"
+    },
+    {
+      "type": "color",
+      "id": "color_status_bg",
+      "label": "Status Bar Background",
+      "default": "#1E100A"
+    },
+    {
+      "type": "color",
+      "id": "color_btn1_bg",
+      "label": "Primary CTA Button BG",
+      "default": "#C8922A"
+    },
+    {
+      "type": "color",
+      "id": "color_btn1_text",
+      "label": "Primary CTA Button Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Layout, Height & Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Vertical Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "hero_min_height",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Hero Banner Minimum Height",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "hero_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Hero Video Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Status Bar Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_status",
+      "label": "Show Kitchen Status Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "status_text",
+      "label": "Status Bar Text",
+      "default": "Kitchen Open - Lunch 12-3 PM, Dinner 6-9 PM"
+    },
+    {
+      "type": "header",
+      "content": "Hero Banner Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero",
+      "label": "Show Hero Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Hero Heading",
+      "default": "More Than a Meal. A Biryani Worth Gathering For."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subheading",
+      "label": "Hero Subheading",
+      "default": "From quick cravings to family feasts, enjoy freshly prepared biryani delivered across Kalyan."
+    },
+    {
+      "type": "text",
+      "id": "hero_btn1_text",
+      "label": "Button 1 Text",
+      "default": "Order Now"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn1_url",
+      "label": "Button 1 Link"
+    },
+    {
+      "type": "text",
+      "id": "hero_btn2_text",
+      "label": "Button 2 Text",
+      "default": "See Full Menu"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn2_url",
+      "label": "Button 2 Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_video_url",
+      "label": "Hero Background Video MP4 URL"
+    },
+    {
+      "type": "header",
+      "content": "Today's Kitchen Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_today",
+      "label": "Show Today's Kitchen",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "today_heading",
+      "label": "Section Heading",
+      "default": "What's Ready Today"
+    },
+    {
+      "type": "textarea",
+      "id": "today_subheading",
+      "label": "Section Subheading",
+      "default": "Freshly prepared items currently available for instant delivery."
+    },
+    {
+      "type": "text",
+      "id": "today_cta_text",
+      "label": "CTA Button Text",
+      "default": "Order Instant Items"
+    },
+    {
+      "type": "url",
+      "id": "today_cta_url",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Family Orders Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_family",
+      "label": "Show Family Orders",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "family_heading",
+      "label": "Family Heading",
+      "default": "Feeding a Crowd?"
+    },
+    {
+      "type": "textarea",
+      "id": "family_subheading",
+      "label": "Family Subheading",
+      "default": "Planning a party, family gathering or office lunch?"
+    },
+    {
+      "type": "text",
+      "id": "family_cta_text",
+      "label": "Family CTA Text",
+      "default": "Plan Family Order"
+    },
+    {
+      "type": "url",
+      "id": "family_cta_url",
+      "label": "Family CTA Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "family_image",
+      "label": "Family Banner Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "order_way",
+      "name": "Order Way Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Text",
+          "default": "Instant Delivery"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Instant Orders (30-60 Mins)"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Fresh biryani ready for fast delivery."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button Text",
+          "default": "Order Instant Delivery"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Button Link"
+        }
+      ]
+    },
+    {
+      "type": "today_badge",
+      "name": "Today Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "🍗"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Chicken Dum Biryani"
+        }
+      ]
+    },
+    {
+      "type": "why_point",
+      "name": "Why Choose Point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "🔥"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Fresh Dum Batches"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body",
+          "default": "Cooked fresh in small batches."
+        }
+      ]
+    },
+    {
+      "type": "menu_item",
+      "name": "Signature Dish Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Dish Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Dish Name",
+          "default": "Chicken Dum Biryani"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Tender chicken marinated in spices."
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "₹280"
+        }
+      ]
+    },
+    {
+      "type": "delivery_zone",
+      "name": "Delivery Zone",
+      "settings": [
+        {
+          "type": "text",
+          "id": "zone_name",
+          "label": "Zone Name",
+          "default": "Kalyan West"
+        },
+        {
+          "type": "text",
+          "id": "eta",
+          "label": "ETA Time",
+          "default": "30-45 mins"
+        },
+        {
+          "type": "text",
+          "id": "delivery_fee",
+          "label": "Delivery Fee",
+          "default": "Free above ₹799"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage (Hero-Delivery)"
+    }
+  ]
+}
+{% endschema %}

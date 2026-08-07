@@ -1,0 +1,51 @@
+{% comment %}
+  NIAMAT BIRYANI — Google Reviews Header Section (Placed above Judge.me section)
+{% endcomment %}
+
+<div class="nb-reviews-header-section">
+  <div class="nb-container">
+    <div class="nb-section-header">
+      <span class="nb-tag-badge">{{ section.settings.tag_badge | default: 'GOOGLE REVIEWS' }}</span>
+      <h2>{{ section.settings.title | default: 'Loved by Biryani Enthusiasts Across Kalyan' }}</h2>
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-reviews-header-section { background-color: #FDF6EC; padding: 36px 0 0; text-align: center; }
+.nb-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.nb-section-header { margin-bottom: 0; }
+.nb-tag-badge { display: inline-block; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #C8922A !important; margin-bottom: 6px; }
+.nb-section-header h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.8rem; font-weight: 800; color: #2C1810 !important; margin: 0; }
+
+@media (min-width: 768px) {
+  .nb-section-header h2 { font-size: 2.2rem; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Reviews Header",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag_badge",
+      "label": "Tag Badge",
+      "default": "GOOGLE REVIEWS"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Loved by Biryani Enthusiasts Across Kalyan"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews Header"
+    }
+  ]
+}
+{% endschema %}
