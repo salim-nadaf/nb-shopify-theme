@@ -125,12 +125,12 @@
 
   assign family_cta_text = section.settings.family_cta_text
   if family_cta_text == blank
-    assign family_cta_text = 'Plan Family Order'
+    assign family_cta_text = 'Plan Bulk Order'
   endif
 
   assign family_cta_url = section.settings.family_cta_url
   if family_cta_url == blank
-    assign family_cta_url = '/pages/family-orders'
+    assign family_cta_url = '/pages/bulk-orders'
   endif
 %}
 
@@ -348,9 +348,9 @@
               <img src="{{ section.settings.family_image | image_url: width: 500 }}" alt="Family Feast" width="500" height="350" loading="lazy" />
             {% else %}
               <div class="nb-family-box">
-                <span class="nb-crown">👑</span>
-                <h3>Handi Family Feast</h3>
-                <p>1 Kg to 10 Kg Packs</p>
+                <span class="nb-crown">🎉</span>
+                <h3>Bulk & Event Catering</h3>
+                <p>5 Kg to 50+ Kg Handi Packs</p>
               </div>
             {% endif %}
           </div>

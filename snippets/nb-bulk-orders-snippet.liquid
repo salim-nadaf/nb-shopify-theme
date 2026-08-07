@@ -1,0 +1,486 @@
+{% comment %}
+  NIAMAT BIRYANI — Bulk Orders & Catering Page Snippet
+{% endcomment %}
+
+<div class="nb-bulk-container">
+  <div class="nb-bulk-header">
+    <span class="nb-pill-badge">🎉 BULK & EVENT CATERING</span>
+    <h1>Bulk Orders & Catering</h1>
+    <p class="nb-bulk-sub">
+      Host unforgettable celebrations with Niamat's freshly prepared bulk biryani handis. Crafted by our 25+ year Ustaad for corporate lunches, weddings, family gatherings, and large parties across Kalyan & nearby areas.
+    </p>
+
+    <div class="nb-notice-box">
+      <span>⏰ Minimum 12 to 24-hour advance notice required for large bulk catering orders.</span>
+      <span>🚚 Customized delivery & setup available across Kalyan, Ulhasnagar, Dombivli, Ambernath, Thane & nearby cities.</span>
+    </div>
+  </div>
+
+  <!-- BULK CATERING PACKAGES OVERVIEW -->
+  <div class="nb-bulk-packages-grid">
+    <div class="nb-bulk-package-card">
+      <div class="nb-pkg-icon">📦</div>
+      <h3>Mini Event Pack</h3>
+      <span class="nb-pkg-size">5 Kg to 10 Kg Handis</span>
+      <p>Ideal for intimate birthday parties, family get-togethers, and small team celebrations. Serves 30–60 guests.</p>
+      <ul class="nb-pkg-features">
+        <li>✓ Prepared fresh in copper handis</li>
+        <li>✓ Includes Raita & Salan</li>
+        <li>✓ Scheduled timed delivery</li>
+      </ul>
+    </div>
+
+    <div class="nb-bulk-package-card nb-pkg-featured">
+      <div class="nb-pkg-badge">MOST POPULAR</div>
+      <div class="nb-pkg-icon">👑</div>
+      <h3>Grand Party Feast</h3>
+      <span class="nb-pkg-size">15 Kg to 25 Kg Handis</span>
+      <p>Perfect for large family celebrations, festive gatherings, and corporate events. Serves 90–150 guests.</p>
+      <ul class="nb-pkg-features">
+        <li>✓ Choice of Chicken, Mutton & Veg</li>
+        <li>✓ Free Kebab platter included</li>
+        <li>✓ Priority slot dispatch</li>
+      </ul>
+    </div>
+
+    <div class="nb-bulk-package-card">
+      <div class="nb-pkg-icon">🏰</div>
+      <h3>Weddings & Galas</h3>
+      <span class="nb-pkg-size">30 Kg to 100+ Kg</span>
+      <p>Comprehensive bulk catering for weddings, grand receptions, and major corporate conventions. Serves 200+ guests.</p>
+      <ul class="nb-pkg-features">
+        <li>✓ Custom menu curation</li>
+        <li>✓ Live counter & serving staff options</li>
+        <li>✓ Dedicated catering coordinator</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CENTERED LUXURY BULK ORDER FORM -->
+  <div class="nb-bulk-form-card">
+    <div class="nb-card-badge">✨ BULK ORDER ENQUIRY FORM</div>
+    <h2>Request a Catering Quote</h2>
+    <p class="nb-card-subtitle">Fill in your event details below. Salim Nadaf & the Niamat team will contact you promptly to finalize menu & pricing.</p>
+
+    {% form 'contact', id: 'nb-bulk-catering-form' %}
+      {% if form.posted_successfully? %}
+        <div class="nb-form-success">
+          <span class="nb-success-icon">🎉</span>
+          <h3>Bulk Order Request Submitted!</h3>
+          <p>Thank you! Our bulk catering manager will reach out via WhatsApp/Phone shortly with custom package options and pricing.</p>
+        </div>
+      {% else %}
+        {% if form.errors %}
+          <div class="nb-form-error">
+            <p>Please complete all required fields to submit your enquiry.</p>
+          </div>
+        {% endif %}
+
+        <div class="nb-form-group">
+          <label for="nb-bulk-name">Your Full Name *</label>
+          <input type="text" id="nb-bulk-name" name="contact[Name]" placeholder="Enter your full name" required />
+        </div>
+
+        <div class="nb-form-grid">
+          <div class="nb-form-group">
+            <label for="nb-bulk-phone">WhatsApp / Phone Number *</label>
+            <input type="tel" id="nb-bulk-phone" name="contact[Phone]" placeholder="e.g. +91 98765 43210" required />
+          </div>
+          <div class="nb-form-group">
+            <label for="nb-bulk-email">Email Address</label>
+            <input type="email" id="nb-bulk-email" name="contact[email]" placeholder="yourname@gmail.com" />
+          </div>
+        </div>
+
+        <div class="nb-form-grid">
+          <div class="nb-form-group">
+            <label for="nb-bulk-date">Event Date *</label>
+            <input type="date" id="nb-bulk-date" name="contact[Event Date]" required />
+          </div>
+          <div class="nb-form-group">
+            <label for="nb-bulk-type">Event Type *</label>
+            <select id="nb-bulk-type" name="contact[Event Type]" required>
+              <option value="">Select Event Type</option>
+              <option value="Wedding / Reception">Wedding / Reception</option>
+              <option value="Birthday / Anniversary">Birthday / Anniversary</option>
+              <option value="Corporate Event / Office Lunch">Corporate Event / Office Lunch</option>
+              <option value="House Party / Family Gathering">House Party / Family Gathering</option>
+              <option value="Festival / Community Feast">Festival / Community Feast</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="nb-form-grid">
+          <div class="nb-form-group">
+            <label for="nb-bulk-guests">Estimated Guests / Quantity *</label>
+            <select id="nb-bulk-guests" name="contact[Quantity / Guests]" required>
+              <option value="">Select Quantity / Guest Count</option>
+              <option value="5 Kg Handi (30-35 Guests)">5 Kg Handi (30-35 Guests)</option>
+              <option value="10 Kg Handi (60-70 Guests)">10 Kg Handi (60-70 Guests)</option>
+              <option value="15 Kg - 25 Kg (90-150 Guests)">15 Kg - 25 Kg (90-150 Guests)</option>
+              <option value="30 Kg - 50 Kg (200-350 Guests)">30 Kg - 50 Kg (200-350 Guests)</option>
+              <option value="50+ Kg Large Event (400+ Guests)">50+ Kg Large Event (400+ Guests)</option>
+            </select>
+          </div>
+          <div class="nb-form-group">
+            <label for="nb-bulk-menu">Preferred Menu Selection *</label>
+            <select id="nb-bulk-menu" name="contact[Menu Selection]" required>
+              <option value="">Choose Menu Type</option>
+              <option value="Chicken Dum Biryani Special">Chicken Dum Biryani Special</option>
+              <option value="Mutton Dum Biryani Special">Mutton Dum Biryani Special</option>
+              <option value="Mixed (Chicken + Mutton + Kebabs)">Mixed (Chicken + Mutton + Kebabs)</option>
+              <option value="Veg Dum Biryani Bulk">Veg Dum Biryani Bulk</option>
+              <option value="Custom Full Catering Setup">Custom Full Catering Setup</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="nb-form-group">
+          <label for="nb-bulk-address">Event Venue / Delivery Address *</label>
+          <textarea id="nb-bulk-address" name="contact[Venue Address]" rows="3" placeholder="Enter complete venue address, landmark, and city (Kalyan, Dombivli, Thane, etc.)" required></textarea>
+        </div>
+
+        <div class="nb-form-group">
+          <label for="nb-bulk-notes">Additional Requests / Customizations</label>
+          <textarea id="nb-bulk-notes" name="contact[Custom Requirements]" rows="2" placeholder="e.g., Live counter request, specific spice level, additional sides..."></textarea>
+        </div>
+
+        <button type="submit" class="nb-submit-btn">
+          Request Bulk Catering Quote →
+        </button>
+      {% endif %}
+    {% endform %}
+
+    <!-- WHATSAPP DIRECT OPTION -->
+    <div class="nb-whatsapp-divider">
+      <span>NEED IMMEDIATE CATERING ASSISTANCE?</span>
+    </div>
+    <a href="https://wa.me/919920042456?text=Hi%20Niamat%20Biryani!%20I%20want%20to%20enquire%20about%20Bulk%20Orders%20%26%20Catering%20for%20my%20event." target="_blank" rel="noopener" class="nb-whatsapp-btn">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+      Chat with Catering Manager on WhatsApp
+    </a>
+  </div>
+</div>
+
+<style>
+.nb-bulk-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 16px 80px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.nb-bulk-header {
+  margin-bottom: 40px;
+}
+
+.nb-pill-badge {
+  display: inline-block;
+  background: rgba(200, 146, 42, 0.12);
+  color: #C8922A !important;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+}
+
+.nb-bulk-header h1 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 2.7rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  margin: 0 0 16px;
+}
+
+.nb-bulk-sub {
+  font-size: 1.05rem;
+  color: #5C4033 !important;
+  line-height: 1.6;
+  max-width: 760px;
+  margin: 0 auto 24px;
+}
+
+.nb-notice-box {
+  background: #FFFDF7;
+  border: 1px dashed rgba(200, 146, 42, 0.4);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #7A5C4A;
+  text-align: center;
+  max-width: 740px;
+  margin: 0 auto;
+}
+
+.nb-bulk-packages-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 48px;
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .nb-bulk-packages-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.nb-bulk-package-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 146, 42, 0.25);
+  border-radius: 18px;
+  padding: 24px 20px;
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.05);
+  position: relative;
+  transition: transform 0.25s ease;
+}
+
+.nb-bulk-package-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(200, 146, 42, 0.15);
+}
+
+.nb-pkg-featured {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 100%);
+  border: 2px solid #C8922A !important;
+}
+
+.nb-pkg-badge {
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  background: #C8922A;
+  color: #FFFFFF;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+}
+
+.nb-pkg-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.nb-bulk-package-card h3 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.2rem !important;
+  color: #2C1810 !important;
+  margin: 0 0 4px;
+}
+
+.nb-pkg-size {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #C8922A;
+  margin-bottom: 10px;
+}
+
+.nb-bulk-package-card p {
+  font-size: 0.85rem;
+  color: #6B4E3D;
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+
+.nb-pkg-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8rem;
+  color: #2C1810;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nb-bulk-form-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
+  border: 1px solid rgba(200, 146, 42, 0.32) !important;
+  border-top: 5px solid #C8922A !important;
+  border-radius: 24px !important;
+  padding: 42px 36px !important;
+  box-shadow: 0 16px 40px -10px rgba(44, 24, 16, 0.12), 0 4px 12px rgba(200, 146, 42, 0.08) !important;
+  margin: 0 auto !important;
+  text-align: left;
+  max-width: 740px;
+  box-sizing: border-box;
+}
+
+.nb-card-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%);
+  color: #F3C669 !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.nb-bulk-form-card h2 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.9rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.nb-card-subtitle {
+  font-size: 0.92rem;
+  color: #7A5C4A !important;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.nb-form-group {
+  margin-bottom: 20px;
+}
+
+.nb-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .nb-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.nb-bulk-form-card label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2C1810 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.nb-bulk-form-card input,
+.nb-bulk-form-card select,
+.nb-bulk-form-card textarea {
+  width: 100%;
+  background: #FFFFFF !important;
+  color: #2C1810 !important;
+  border: 1px solid rgba(200, 146, 42, 0.35) !important;
+  border-radius: 12px !important;
+  padding: 14px 16px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.95rem !important;
+  box-sizing: border-box !important;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.nb-bulk-form-card input:focus,
+.nb-bulk-form-card select:focus,
+.nb-bulk-form-card textarea:focus {
+  border-color: #C8922A !important;
+  box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.2) !important;
+  background: #FFFDF9 !important;
+}
+
+.nb-submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  padding: 16px 28px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 6px 20px rgba(200,146,42,0.35), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+  transition: all 0.25s ease !important;
+  margin-top: 10px;
+}
+
+.nb-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(200,146,42,0.45) !important;
+}
+
+.nb-whatsapp-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 28px 0 18px;
+  color: #8C6A54;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.nb-whatsapp-divider::before,
+.nb-whatsapp-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.25);
+}
+
+.nb-whatsapp-divider span {
+  padding: 0 12px;
+}
+
+.nb-whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: #25D366 !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.98rem;
+  padding: 14px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.nb-whatsapp-btn:hover {
+  background: #20BA5A !important;
+  transform: translateY(-2px);
+}
+
+.nb-form-success {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.nb-success-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.nb-form-success h3 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.6rem;
+  color: #2C1810;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 767px) {
+  .nb-bulk-container { padding: 24px 12px 60px; }
+  .nb-bulk-header h1 { font-size: 2rem !important; }
+  .nb-bulk-form-card { padding: 28px 20px !important; }
+}
+</style>
