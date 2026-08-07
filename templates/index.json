@@ -1,7 +1,7 @@
 {
   "sections": {
-    "nb_homepage_top": {
-      "type": "nb-homepage-top",
+    "nb_homepage_main": {
+      "type": "nb-homepage",
       "blocks": {
         "order_way_1": {
           "type": "order_way",
@@ -119,6 +119,27 @@
             "eta": "30-40 mins",
             "delivery_fee": "Free above ₹799"
           }
+        },
+        "faq_item_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How fast is delivery?",
+            "answer": "Instant delivery orders are prepared fresh and dispatched promptly within 45 to 60 minutes."
+          }
+        },
+        "faq_item_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Which locations do you cover?",
+            "answer": "We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and Dombivli select areas."
+          }
+        },
+        "faq_item_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is the food 100% Halal?",
+            "answer": "Yes, all meats used at Biryani Palace by Niamat are 100% halal."
+          }
         }
       },
       "block_order": [
@@ -135,7 +156,10 @@
         "menu_item_3",
         "delivery_zone_1",
         "delivery_zone_2",
-        "delivery_zone_3"
+        "delivery_zone_3",
+        "faq_item_1",
+        "faq_item_2",
+        "faq_item_3"
       ],
       "settings": {
         "color_page_bg": "#fffaf4",
@@ -170,7 +194,12 @@
         "family_heading": "Feeding a Crowd?",
         "family_subheading": "Planning a party, family gathering or office lunch? Pre-order 1 Kg to 10 Kg handis with scheduled delivery.",
         "family_cta_text": "Plan Family Order",
-        "family_cta_url": "/pages/family-feast"
+        "family_cta_url": "/pages/family-feast",
+        "show_cta": true,
+        "final_heading": "Ready to Order?",
+        "final_subheading": "Experience our ustaad's biryani freshly prepared for your appetite.",
+        "final_cta_text": "Start Your Order",
+        "final_cta_url": "shopify://collections/instant-delivery"
       }
     },
     "17861317634f7e8356": {
@@ -179,7 +208,7 @@
         "judge_me_reviews_testimonials_carousel_WVUP4c": {
           "type": "shopify://apps/judge-me-reviews/blocks/testimonials_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
-            "show_sample_reviews": true,
+            "show_sample_reviews": false,
             "reviews_selection": "all_reviews",
             "products": [],
             "filter_pinned": false,
@@ -226,55 +255,10 @@
         "section_width": "page-width",
         "background_color": "#fdf6ec"
       }
-    },
-    "nb_homepage_bottom": {
-      "type": "nb-homepage-bottom",
-      "blocks": {
-        "faq_item_1": {
-          "type": "faq_item",
-          "settings": {
-            "question": "How fast is delivery?",
-            "answer": "Instant delivery orders are prepared fresh and dispatched promptly within 45 to 60 minutes."
-          }
-        },
-        "faq_item_2": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Which locations do you cover?",
-            "answer": "We deliver across Kalyan West, Kalyan East, Khadakpada, Adharwadi, Shahad, and Dombivli select areas."
-          }
-        },
-        "faq_item_3": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Is the food 100% Halal?",
-            "answer": "Yes, all meats used at Biryani Palace by Niamat are 100% halal."
-          }
-        }
-      },
-      "block_order": [
-        "faq_item_1",
-        "faq_item_2",
-        "faq_item_3"
-      ],
-      "settings": {
-        "color_page_bg": "#fffaf4",
-        "color_alt_bg": "#fdf6ec",
-        "color_accent_gold": "#c8922a",
-        "color_text_dark": "#2c1810",
-        "color_text_muted": "#7a5c4a",
-        "section_padding": 40,
-        "show_cta": true,
-        "final_heading": "Ready to Order?",
-        "final_subheading": "Experience our ustaad's biryani freshly prepared for your appetite.",
-        "final_cta_text": "Start Your Order",
-        "final_cta_url": "shopify://collections/instant-delivery"
-      }
     }
   },
   "order": [
-    "nb_homepage_top",
-    "17861317634f7e8356",
-    "nb_homepage_bottom"
+    "nb_homepage_main",
+    "17861317634f7e8356"
   ]
 }
