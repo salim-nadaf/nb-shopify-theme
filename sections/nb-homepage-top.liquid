@@ -370,16 +370,32 @@
 .nb-status-inner { display: flex; align-items: center; justify-content: center; gap: 8px; }
 .nb-pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #22c55e; }
 
-.nb-gold-highlight { color: #C8922A !important; font-weight: 800; }
-.nb-hero-title .nb-gold-highlight { color: #F3C669 !important; text-shadow: 0 0 14px rgba(243,198,105,0.4); }
+.nb-gold-highlight {
+  background: linear-gradient(135deg, #FFE082 0%, #E6AC3C 40%, #C8922A 75%, #A06D14 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+  font-weight: 800 !important;
+  display: inline;
+}
+
+.nb-hero-title .nb-gold-highlight {
+  background: linear-gradient(135deg, #FFF5CC 0%, #F8D675 30%, #E6B33D 65%, #C88E1C 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+  filter: drop-shadow(0 2px 12px rgba(230, 179, 61, 0.45));
+}
 
 .nb-hero-banner { position: relative; background: linear-gradient(135deg, #160B07 0%, var(--nb-dark-bg) 100%) !important; color: #fff; padding: var(--nb-padding) 16px; min-height: var(--nb-hero-height); display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
 .nb-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 .nb-hero-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 .nb-hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, var(--nb-overlay-opac)) !important; z-index: 2; }
-.nb-hero-glow { position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 350px; height: 350px; background: radial-gradient(circle, rgba(200,146,42,0.35) 0%, transparent 70%); pointer-events: none; z-index: 1; }
-.nb-hero-content { position: relative; z-index: 3; max-width: 760px; margin: 0 auto; text-align: center; }
-.nb-hero-title { font-family: 'Playfair Display', Georgia, serif !important; font-size: 2rem; font-weight: 800; color: #FFFDF7 !important; margin: 0 0 14px; line-height: 1.22; text-shadow: 0 2px 10px rgba(0,0,0,0.5); text-align: center; }
+.nb-hero-glow { position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(230,179,61,0.38) 0%, transparent 70%); pointer-events: none; z-index: 1; }
+.nb-hero-content { position: relative; z-index: 3; max-width: 780px; margin: 0 auto; text-align: center; }
+.nb-hero-title { font-family: 'Inter', system-ui, -apple-system, sans-serif !important; font-size: 2.1rem; font-weight: 800; color: #FFFFFF !important; margin: 0 0 16px; line-height: 1.18; letter-spacing: -0.025em !important; text-shadow: 0 4px 20px rgba(0,0,0,0.6); text-align: center; }
 .nb-hero-sub { font-size: 0.95rem; color: #E2D5C5 !important; margin: 0 0 26px; line-height: 1.55; text-align: center; }
 .nb-hero-buttons { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; max-width: 440px; margin: 0 auto; text-align: center; }
 .nb-hero-buttons .nb-btn-gold,
