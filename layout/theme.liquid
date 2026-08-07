@@ -559,6 +559,34 @@
         {{ content_for_layout }}
       </main>
 
+      <div id="nb-bulk-orders-template" style="display:none !important;" aria-hidden="true">
+        {% render 'nb-bulk-orders-snippet' %}
+      </div>
+      <div id="nb-family-orders-template" style="display:none !important;" aria-hidden="true">
+        {% render 'nb-family-orders-snippet' %}
+      </div>
+
+      <script>
+        (function nbPageFallbackEngine() {
+          var path = window.location.pathname.toLowerCase();
+          if (path.includes('bulk-orders') || path.includes('/pages/bulk')) {
+            var template = document.getElementById('nb-bulk-orders-template');
+            var mainContent = document.getElementById('MainContent');
+            if (template && mainContent) {
+              mainContent.innerHTML = template.innerHTML;
+              document.title = "Bulk Catering Packages — Biryani Palace by Niamat";
+            }
+          } else if (path.includes('family-orders') || path.includes('/pages/family-orders') || path.includes('family-feast')) {
+            var template = document.getElementById('nb-family-orders-template');
+            var mainContent = document.getElementById('MainContent');
+            if (template && mainContent) {
+              mainContent.innerHTML = template.innerHTML;
+              document.title = "Family Orders — Biryani Palace by Niamat";
+            }
+          }
+        })();
+      </script>
+
       <footer>
         {% sections 'footer-group' %}
       </footer>
