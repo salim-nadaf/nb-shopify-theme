@@ -42,7 +42,42 @@
 .nb-judgeme-content .jdgm-widget,
 .nb-judgeme-content .jdgm-rev-widg,
 .nb-judgeme-content .jdgm-carousel-wrapper { width: 100% !important; display: block !important; }
-.nb-judgeme-content .jdgm-star { color: #C8922A !important; }
+
+/* MATCH ALL HOMEPAGE CARDS ON JUDGE.ME REVIEW CARDS */
+.nb-judgeme-content .jdgm-carousel-item,
+.nb-judgeme-content .jdgm-carousel__item,
+.nb-judgeme-content .jdgm-rev__card,
+.nb-judgeme-content .jdgm-rev-widg__item,
+.nb-judgeme-content .jdgm-card,
+.nb-judgeme-content .jdgm-testimonial-card,
+.nb-judgeme-content [class*="jdgm-carousel-item"],
+.nb-judgeme-content [class*="jdgm-card"] {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
+  border: 1px solid rgba(200, 146, 42, 0.28) !important;
+  border-top: 4px solid #C8922A !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  box-shadow: 0 10px 30px -12px rgba(44, 24, 16, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.nb-judgeme-content .jdgm-carousel-item:hover,
+.nb-judgeme-content .jdgm-carousel__item:hover,
+.nb-judgeme-content .jdgm-rev__card:hover,
+.nb-judgeme-content .jdgm-rev-widg__item:hover,
+.nb-judgeme-content .jdgm-card:hover,
+.nb-judgeme-content .jdgm-testimonial-card:hover,
+.nb-judgeme-content [class*="jdgm-carousel-item"]:hover,
+.nb-judgeme-content [class*="jdgm-card"]:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(200, 146, 42, 0.5) !important;
+  box-shadow: 0 18px 40px -10px rgba(200, 146, 42, 0.25), inset 0 1px 1px rgba(255, 255, 255, 1) !important;
+}
+
+.nb-judgeme-content .jdgm-star,
+.nb-judgeme-content .jdgm-rev-widg__summary-stars .jdgm-star {
+  color: #C8922A !important;
+}
 
 @media (min-width: 768px) {
   .nb-section-header h2 { font-size: 2.2rem; }
