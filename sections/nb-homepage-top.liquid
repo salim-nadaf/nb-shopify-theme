@@ -362,11 +362,12 @@
   {% endunless %}
 
   <!-- 8. DELIVERY AREAS -->
-  <div class="nb-section-block nb-bg-alt">
+  <div class="nb-section-block nb-bg-alt" style="padding: 52px 0 !important; margin: 32px 0 !important;">
     <div class="nb-container">
       <div class="nb-section-header">
         <span class="nb-tag-badge">Coverage</span>
         <h2>Where We Deliver</h2>
+        <p>Hot & fresh dispatch across Kalyan, Ulhasnagar, Dombivli East & nearby areas</p>
       </div>
 
       <div class="nb-grid-3">
@@ -376,10 +377,14 @@
               <div class="nb-zone-icon">📍</div>
               <h4>{{ block.settings.zone_name }}</h4>
               <p>ETA: {{ block.settings.eta }}</p>
-              <span class="nb-zone-fee">Fee: {{ block.settings.delivery_fee }}</span>
+              <span class="nb-zone-fee">{{ block.settings.delivery_fee }}</span>
             </div>
           {% endif %}
         {% endfor %}
+      </div>
+
+      <div class="nb-delivery-policy-note" style="margin-top: 24px; background: #FFFDF7; border: 1px dashed rgba(200,146,42,0.4); border-radius: 14px; padding: 14px 20px; text-align: center; font-size: 0.88rem; color: #7A5C4A;">
+        <strong>💡 Delivery Policy:</strong> FREE Delivery on all 1 Kg+ orders or within 5 kms radius. For orders beyond 5 kms, delivery charges will be calculated and confirmed upon dispatch.
       </div>
     </div>
   </div>
@@ -391,7 +396,7 @@
 
 .nb-homepage-wrapper { background-color: var(--nb-page-bg) !important; color: var(--nb-text-dark) !important; font-family: inherit; width: 100%; overflow-x: hidden; }
 .nb-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
-.nb-section-block { padding: var(--nb-padding) 0 !important; }
+.nb-section-block { padding: 48px 0 !important; margin-bottom: 24px !important; }
 .nb-bg-alt { background-color: var(--nb-alt-bg) !important; }
 
 .nb-section-header { margin-bottom: 28px; text-align: center; position: relative; }

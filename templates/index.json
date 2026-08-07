@@ -110,7 +110,7 @@
           "settings": {
             "zone_name": "Kalyan West",
             "eta": "30-45 mins",
-            "delivery_fee": "Free above ₹799"
+            "delivery_fee": "FREE on 1 Kg+ or within 5 km"
           }
         },
         "delivery_zone_2": {
@@ -118,15 +118,15 @@
           "settings": {
             "zone_name": "Kalyan East & Shahad",
             "eta": "35-50 mins",
-            "delivery_fee": "Free above ₹799"
+            "delivery_fee": "FREE on 1 Kg+ orders"
           }
         },
         "delivery_zone_3": {
           "type": "delivery_zone",
           "settings": {
-            "zone_name": "Khadakpada & Adharwadi",
-            "eta": "30-40 mins",
-            "delivery_fee": "Free above ₹799"
+            "zone_name": "Ulhasnagar & Dombivli East",
+            "eta": "40-60 mins",
+            "delivery_fee": "Scheduled Dispatch"
           }
         }
       },
