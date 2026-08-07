@@ -163,17 +163,49 @@
   <!-- 2. HERO BANNER -->
   {% unless section.settings.show_hero == false %}
     <div class="nb-hero-banner">
-      {% if section.settings.hero_video_url != blank %}
-        <video autoplay muted loop playsinline class="nb-hero-bg">
-          <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
-        </video>
-        <div class="nb-hero-overlay"></div>
-      {% elsif section.settings.hero_image != blank %}
-        <img src="{{ section.settings.hero_image | image_url: width: 1400 }}" alt="Biryani Palace" class="nb-hero-bg-img" width="1400" height="700" loading="eager" />
-        <div class="nb-hero-overlay"></div>
-      {% else %}
-        <div class="nb-hero-glow"></div>
-      {% endif %}
+
+      <!-- MOBILE HERO MEDIA (Shown on screens < 768px) -->
+      <div class="nb-hero-mobile-media">
+        {% assign mob_video = section.settings.hero_mobile_video_url %}
+        {% if mob_video == blank %}
+          {% assign mob_video = section.settings.hero_video_url %}
+        {% endif %}
+
+        {% if mob_video != blank %}
+          <video autoplay muted loop playsinline class="nb-hero-bg">
+            <source src="{{ mob_video }}" type="video/mp4" />
+          </video>
+        {% elsif section.settings.hero_mobile_image != blank %}
+          <img src="{{ section.settings.hero_mobile_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" />
+        {% elsif section.settings.hero_desktop_image != blank %}
+          <img src="{{ section.settings.hero_desktop_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" />
+        {% elsif section.settings.hero_image != blank %}
+          <img src="{{ section.settings.hero_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" />
+        {% else %}
+          <div class="nb-hero-glow"></div>
+        {% endif %}
+      </div>
+
+      <!-- DESKTOP HERO MEDIA (Shown on screens >= 768px) -->
+      <div class="nb-hero-desktop-media">
+        {% if section.settings.hero_desktop_image != blank %}
+          <img src="{{ section.settings.hero_desktop_image | image_url: width: 1800 }}" alt="Biryani Palace Desktop" class="nb-hero-bg-img" width="1800" height="900" loading="eager" />
+        {% elsif section.settings.hero_desktop_video_url != blank %}
+          <video autoplay muted loop playsinline class="nb-hero-bg">
+            <source src="{{ section.settings.hero_desktop_video_url }}" type="video/mp4" />
+          </video>
+        {% elsif section.settings.hero_image != blank %}
+          <img src="{{ section.settings.hero_image | image_url: width: 1800 }}" alt="Biryani Palace Desktop" class="nb-hero-bg-img" width="1800" height="900" loading="eager" />
+        {% elsif section.settings.hero_video_url != blank %}
+          <video autoplay muted loop playsinline class="nb-hero-bg">
+            <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
+          </video>
+        {% else %}
+          <div class="nb-hero-glow"></div>
+        {% endif %}
+      </div>
+
+      <div class="nb-hero-overlay"></div>
 
       <div class="nb-hero-content">
         {% assign hero_title_rendered = hero_heading %}
@@ -390,6 +422,8 @@
 }
 
 .nb-hero-banner { position: relative; background: linear-gradient(135deg, #160B07 0%, var(--nb-dark-bg) 100%) !important; color: #fff; padding: var(--nb-padding) 16px; min-height: var(--nb-hero-height); display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+.nb-hero-mobile-media { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+.nb-hero-desktop-media { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 .nb-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 .nb-hero-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 .nb-hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, var(--nb-overlay-opac)) !important; z-index: 2; }
@@ -504,6 +538,8 @@
 .nb-zone-fee { display: inline-block; font-size: 0.76rem; font-weight: 700; color: var(--nb-gold) !important; background: rgba(200,146,42,0.12); padding: 3px 10px; border-radius: 12px; position: relative; z-index: 2; }
 
 @media (min-width: 768px) {
+  .nb-hero-mobile-media { display: none !important; }
+  .nb-hero-desktop-media { display: block !important; }
   .nb-grid-2 { grid-template-columns: 1fr 1fr; gap: 24px; }
   .nb-grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
   .nb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
@@ -681,14 +717,39 @@
       "label": "Button 2 Link"
     },
     {
+      "type": "header",
+      "content": "Desktop & Mobile Hero Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_desktop_image",
+      "label": "Desktop Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_desktop_video_url",
+      "label": "Desktop Hero Video MP4 URL (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "hero_mobile_video_url",
+      "label": "Mobile Hero Video MP4 URL",
+      "default": "https://cdn.shopify.com/videos/c/o/v/d9d77b9d67f2417b8243214b4f77fd47.mp4"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_mobile_image",
+      "label": "Mobile Hero Fallback Image"
+    },
+    {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Hero Background Image"
+      "label": "Legacy Hero Background Image"
     },
     {
       "type": "text",
       "id": "hero_video_url",
-      "label": "Hero Background Video MP4 URL"
+      "label": "Legacy Hero Video MP4 URL"
     },
     {
       "type": "header",
