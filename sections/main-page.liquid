@@ -10,6 +10,8 @@
   {% render 'nb-contact-snippet' %}
 {% elsif page.handle == 'about-us' or page.handle == 'about' or page.title contains 'About' or page.title contains 'Story' %}
   {% render 'nb-our-story-snippet' %}
+{% elsif page.handle == 'family-orders' or page.handle == 'family-feast' or page.title contains 'Family' %}
+  {% render 'nb-family-orders-snippet' %}
 {% else %}
   <div
     class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"

@@ -549,7 +549,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // ── Pre-Order buttons handler ──
   document.addEventListener('click', function(e) {
-    var btn = e.target.closest('a[href="/pages/family-feast"]');
+    var btn = e.target.closest('a[href="/pages/family-orders"], a[href="/pages/family-feast"]');
     if (!btn) return;
     var phone = localStorage.getItem('nb_phone');
     var name  = localStorage.getItem('nb_name');
