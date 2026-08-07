@@ -109,7 +109,7 @@
           "type": "delivery_zone",
           "settings": {
             "zone_name": "Kalyan West",
-            "eta": "30-45 mins",
+            "eta": "Pre-Orders Only (Min 3 Hours Notice)",
             "delivery_fee": "FREE on 1 Kg+ or within 5 km"
           }
         },
@@ -117,16 +117,16 @@
           "type": "delivery_zone",
           "settings": {
             "zone_name": "Kalyan East & Shahad",
-            "eta": "35-50 mins",
-            "delivery_fee": "FREE on 1 Kg+ orders"
+            "eta": "Pre-Orders Only (Min 3 Hours Notice)",
+            "delivery_fee": "FREE on 1 Kg+ Orders"
           }
         },
         "delivery_zone_3": {
           "type": "delivery_zone",
           "settings": {
             "zone_name": "Ulhasnagar & Dombivli East",
-            "eta": "40-60 mins",
-            "delivery_fee": "Scheduled Dispatch"
+            "eta": "Scheduled Pre-Orders (Min 3 Hours Notice)",
+            "delivery_fee": "Location-Based Charges"
           }
         }
       },
