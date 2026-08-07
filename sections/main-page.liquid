@@ -14,6 +14,8 @@
   {% render 'nb-family-orders-snippet' %}
 {% elsif page.handle == 'bulk-orders' or page.title contains 'Bulk' or page.title contains 'Catering' %}
   {% render 'nb-bulk-orders-snippet' %}
+{% elsif page.handle == 'biryani-calculator' or page.title contains 'Calculator' %}
+  {% render 'nb-biryani-calculator-snippet' %}
 {% else %}
   <div
     class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"

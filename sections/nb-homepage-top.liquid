@@ -341,7 +341,10 @@
             <span class="nb-tag-badge">Bulk & Catering</span>
             <h2>{{ family_heading }}</h2>
             <p>{{ family_subheading }}</p>
-            <a href="{{ family_cta_url }}" class="nb-btn-gold">{{ family_cta_text }}</a>
+            <div class="nb-family-btns" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px;">
+              <a href="{{ family_cta_url }}" class="nb-btn-gold">{{ family_cta_text }}</a>
+              <a href="/pages/biryani-calculator" class="nb-btn-gold" style="background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%) !important; color: #F3C669 !important; border: 1px solid rgba(200,146,42,0.4) !important;">Biryani Calculator 🧮</a>
+            </div>
           </div>
           <div class="nb-family-media">
             {% if section.settings.family_image != blank %}

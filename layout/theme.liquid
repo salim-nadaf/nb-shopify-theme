@@ -562,6 +562,9 @@
       <div id="nb-bulk-orders-template" style="display:none !important;" aria-hidden="true">
         {% render 'nb-bulk-orders-snippet' %}
       </div>
+      <div id="nb-biryani-calculator-template" style="display:none !important;" aria-hidden="true">
+        {% render 'nb-biryani-calculator-snippet' %}
+      </div>
       <div id="nb-family-orders-template" style="display:none !important;" aria-hidden="true">
         {% render 'nb-family-orders-snippet' %}
       </div>
@@ -575,6 +578,13 @@
             if (template && mainContent) {
               mainContent.innerHTML = template.innerHTML;
               document.title = "Bulk Catering Packages — Biryani Palace by Niamat";
+            }
+          } else if (path.includes('biryani-calculator') || path.includes('calculator')) {
+            var template = document.getElementById('nb-biryani-calculator-template');
+            var mainContent = document.getElementById('MainContent');
+            if (template && mainContent) {
+              mainContent.innerHTML = template.innerHTML;
+              document.title = "Biryani Quantity Calculator — Biryani Palace by Niamat";
             }
           } else if (path.includes('family-orders') || path.includes('/pages/family-orders') || path.includes('family-feast')) {
             var template = document.getElementById('nb-family-orders-template');

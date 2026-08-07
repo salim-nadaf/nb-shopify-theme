@@ -1,0 +1,729 @@
+{% comment %}
+  NIAMAT BIRYANI — Interactive Biryani Quantity Calculator Snippet
+{% endcomment %}
+
+<div class="nb-calc-container">
+  <div class="nb-calc-header">
+    <span class="nb-pill-badge">🧮 BIRYANI QUANTITY CALCULATOR</span>
+    <h1>How Much Biryani Do You Need?</h1>
+    <p class="nb-calc-sub">
+      Planning a family gathering, house party, or corporate event? Use our interactive calculator to estimate the exact quantity of biryani and starters needed for your guests.
+    </p>
+  </div>
+
+  <div class="nb-calc-layout">
+    <!-- INPUT CONTROLS CARD -->
+    <div class="nb-calc-card nb-calc-inputs-card">
+      <div class="nb-card-header">
+        <span class="nb-step-num">1</span>
+        <h2>Enter Event Details</h2>
+      </div>
+
+      <!-- 1. GUEST COUNT -->
+      <div class="nb-calc-group">
+        <label for="nb-guest-input">Number of Guests</label>
+        <div class="nb-guest-control">
+          <button type="button" id="nb-guest-minus" class="nb-guest-btn">−</button>
+          <input type="number" id="nb-guest-input" min="5" max="500" value="25" />
+          <button type="button" id="nb-guest-plus" class="nb-guest-btn">+</button>
+        </div>
+        <input type="range" id="nb-guest-slider" min="5" max="200" value="25" step="5" class="nb-range-slider" />
+        <div class="nb-slider-labels">
+          <span>5 Guests</span>
+          <span>50 Guests</span>
+          <span>100 Guests</span>
+          <span>200+ Guests</span>
+        </div>
+      </div>
+
+      <!-- 2. APPETITE LEVEL -->
+      <div class="nb-calc-group">
+        <label>Appetite Level</label>
+        <div class="nb-radio-grid nb-grid-3">
+          <label class="nb-radio-card">
+            <input type="radio" name="nb_appetite" value="light" />
+            <div class="nb-radio-content">
+              <span class="nb-radio-icon">🍲</span>
+              <strong>Light</strong>
+              <small>1 Kg = 7 Guests</small>
+            </div>
+          </label>
+          <label class="nb-radio-card active">
+            <input type="radio" name="nb_appetite" value="standard" checked />
+            <div class="nb-radio-content">
+              <span class="nb-radio-icon">🍚</span>
+              <strong>Standard</strong>
+              <small>1 Kg = 6 Guests</small>
+            </div>
+          </label>
+          <label class="nb-radio-card">
+            <input type="radio" name="nb_appetite" value="heavy" />
+            <div class="nb-radio-content">
+              <span class="nb-radio-icon">🍗</span>
+              <strong>Heavy</strong>
+              <small>1 Kg = 5 Guests</small>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- 3. DIETARY PREFERENCE -->
+      <div class="nb-calc-group">
+        <label>Dietary Preference</label>
+        <div class="nb-radio-grid nb-grid-3">
+          <label class="nb-radio-card active">
+            <input type="radio" name="nb_diet" value="nonveg" checked />
+            <div class="nb-radio-content">
+              <span class="nb-radio-icon">🍖</span>
+              <strong>100% Non-Veg</strong>
+              <small>Chicken / Mutton</small>
+            </div>
+          </label>
+          <label class="nb-radio-card">
+            <input type="radio" name="nb_diet" value="mixed" />
+            <div class="nb-radio-content">
+              <span class="nb-radio-icon">🍱</span>
+              <strong>Mixed Feast</strong>
+              <small>70% Non-Veg / 30% Veg</small>
+            </div>
+          </label>
+          <label class="nb-radio-card">
+            <input type="radio" name="nb_diet" value="veg" />
+            <div class="nb-radio-content">
+              <span class="nb-radio-icon">🥗</span>
+              <strong>100% Veg</strong>
+              <small>Veg Dum Biryani</small>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- 4. INCLUDE STARTERS/KEBABS -->
+      <div class="nb-calc-group">
+        <label class="nb-checkbox-label">
+          <input type="checkbox" id="nb-include-kebabs" checked />
+          <span>Include recommended Kebab Starters calculation</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- RESULT DISPLAY CARD -->
+    <div class="nb-calc-card nb-calc-results-card">
+      <div class="nb-card-header">
+        <span class="nb-step-num">2</span>
+        <h2>Estimated Portion Requirement</h2>
+      </div>
+
+      <div class="nb-result-hero">
+        <span class="nb-result-label">TOTAL BIRYANI NEEDED</span>
+        <div class="nb-result-kg-display">
+          <span id="nb-calc-total-kg">4.5</span> <small>KG</small>
+        </div>
+        <div class="nb-result-servings-tag" id="nb-calc-servings-text">
+          Serves ~25 Guests (Standard Portion)
+        </div>
+      </div>
+
+      <!-- PORTION BREAKDOWN GRID -->
+      <div class="nb-breakdown-box">
+        <h3>Itemized Breakdown</h3>
+        <div class="nb-breakdown-row" id="nb-row-nonveg">
+          <span>🍗 Non-Veg Biryani (Chicken/Mutton):</span>
+          <strong id="nb-calc-nonveg-kg">4.5 Kg</strong>
+        </div>
+        <div class="nb-breakdown-row" id="nb-row-veg" style="display:none;">
+          <span>🥗 Veg Dum Biryani:</span>
+          <strong id="nb-calc-veg-kg">0 Kg</strong>
+        </div>
+        <div class="nb-breakdown-row">
+          <span>🥣 Complimentary Raita:</span>
+          <strong id="nb-calc-raita">Included Free</strong>
+        </div>
+        <div class="nb-breakdown-row" id="nb-row-kebabs">
+          <span>🍢 Recommended Kebabs:</span>
+          <strong id="nb-calc-kebabs">48 Pieces (4 Packs)</strong>
+        </div>
+      </div>
+
+      <!-- RECOMMENDED PACKAGE SUGGESTION -->
+      <div class="nb-rec-package" id="nb-rec-package-box">
+        <span class="nb-rec-badge">RECOMMENDED CATERING PLAN</span>
+        <h4 id="nb-rec-pkg-name">The Mehmaan Plan [5 Kg]</h4>
+        <p id="nb-rec-pkg-desc">Includes 1 Biryani + 1 Starter + 1 Gravy + Complimentary Dessert @ ₹4,499</p>
+      </div>
+
+      <!-- ACTION BUTTONS -->
+      <div class="nb-calc-actions">
+        <a href="#" id="nb-calc-wa-btn" target="_blank" rel="noopener" class="nb-wa-calc-btn">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+          Book Calculated Quantity on WhatsApp
+        </a>
+        <a href="/pages/bulk-orders" class="nb-outline-calc-btn">
+          Explore All Catering Packages →
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-calc-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 16px 80px;
+  box-sizing: border-box;
+}
+
+.nb-calc-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.nb-pill-badge {
+  display: inline-block;
+  background: rgba(200, 146, 42, 0.12);
+  color: #C8922A !important;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+}
+
+.nb-calc-header h1 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 2.6rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  margin: 0 0 14px;
+}
+
+.nb-calc-sub {
+  font-size: 1.05rem;
+  color: #5C4033 !important;
+  line-height: 1.6;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.nb-calc-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+
+@media (min-width: 840px) {
+  .nb-calc-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.nb-calc-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 146, 42, 0.28);
+  border-radius: 24px;
+  padding: 32px 28px;
+  box-shadow: 0 12px 36px rgba(44, 24, 16, 0.07);
+}
+
+.nb-calc-results-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF6EC 100%);
+  border: 2px solid #C8922A;
+}
+
+.nb-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.2);
+  padding-bottom: 14px;
+}
+
+.nb-step-num {
+  width: 28px;
+  height: 28px;
+  background: #2C1810;
+  color: #F3C669;
+  font-size: 0.85rem;
+  font-weight: 800;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nb-card-header h2 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.35rem !important;
+  color: #2C1810 !important;
+  margin: 0;
+}
+
+.nb-calc-group {
+  margin-bottom: 24px;
+}
+
+.nb-calc-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #2C1810 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.nb-guest-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.nb-guest-btn {
+  width: 44px;
+  height: 44px;
+  background: #FDF6EC;
+  border: 1px solid rgba(200, 146, 42, 0.4);
+  color: #2C1810;
+  font-size: 1.4rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nb-guest-btn:hover {
+  background: #C8922A;
+  color: #FFFFFF;
+}
+
+#nb-guest-input {
+  flex: 1;
+  text-align: center;
+  font-size: 1.5rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  border: 2px solid #C8922A !important;
+  border-radius: 12px !important;
+  padding: 8px !important;
+}
+
+.nb-range-slider {
+  width: 100%;
+  accent-color: #C8922A;
+  cursor: pointer;
+}
+
+.nb-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #7A5C4A;
+  margin-top: 4px;
+}
+
+.nb-radio-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.nb-grid-3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.nb-radio-card {
+  position: relative;
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  border-radius: 14px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nb-radio-card input {
+  position: absolute;
+  opacity: 0;
+}
+
+.nb-radio-card.active {
+  background: #FDF6EC;
+  border: 2px solid #C8922A;
+  box-shadow: 0 4px 12px rgba(200, 146, 42, 0.15);
+}
+
+.nb-radio-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.nb-radio-icon {
+  font-size: 1.3rem;
+  margin-bottom: 2px;
+}
+
+.nb-radio-content strong {
+  font-size: 0.8rem;
+  color: #2C1810;
+}
+
+.nb-radio-content small {
+  font-size: 0.68rem;
+  color: #7A5C4A;
+}
+
+.nb-checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  font-size: 0.88rem !important;
+}
+
+.nb-checkbox-label input {
+  width: 18px;
+  height: 18px;
+  accent-color: #C8922A;
+}
+
+/* RESULTS CARD STYLES */
+.nb-result-hero {
+  background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%);
+  border-radius: 18px;
+  padding: 24px;
+  text-align: center;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.2);
+}
+
+.nb-result-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #F3C669;
+}
+
+.nb-result-kg-display {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #F3C669;
+  line-height: 1;
+  margin: 8px 0;
+}
+
+.nb-result-kg-display small {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.nb-result-servings-tag {
+  font-size: 0.85rem;
+  color: #E6D2C4;
+}
+
+.nb-breakdown-box {
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 146, 42, 0.25);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.nb-breakdown-box h3 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #2C1810;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px;
+}
+
+.nb-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: #5C4033;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(200, 146, 42, 0.2);
+}
+
+.nb-breakdown-row:last-child {
+  border-bottom: none;
+}
+
+.nb-breakdown-row strong {
+  color: #2C1810;
+}
+
+.nb-rec-package {
+  background: #FFFDF7;
+  border: 1px solid #C8922A;
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.nb-rec-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #C8922A;
+}
+
+.nb-rec-package h4 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.15rem !important;
+  color: #2C1810 !important;
+  margin: 4px 0 2px;
+}
+
+.nb-rec-package p {
+  font-size: 0.82rem;
+  color: #7A5C4A;
+  margin: 0;
+}
+
+.nb-calc-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nb-wa-calc-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: #25D366 !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 15px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  transition: all 0.25s ease;
+}
+
+.nb-wa-calc-btn:hover {
+  background: #20BA5A !important;
+  transform: translateY(-2px);
+}
+
+.nb-outline-calc-btn {
+  display: block;
+  text-align: center;
+  background: transparent;
+  color: #2C1810 !important;
+  border: 1px solid rgba(200, 146, 42, 0.4);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 12px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.nb-outline-calc-btn:hover {
+  border-color: #C8922A;
+  background: rgba(200, 146, 42, 0.08);
+}
+
+@media (max-width: 600px) {
+  .nb-calc-container { padding: 24px 12px 60px; }
+  .nb-calc-header h1 { font-size: 2rem !important; }
+  .nb-grid-3 { grid-template-columns: 1fr; }
+  .nb-calc-card { padding: 24px 16px; }
+}
+</style>
+
+<script>
+(function initBiryaniCalculator() {
+  function setupCalculator() {
+    var guestInput = document.getElementById('nb-guest-input');
+    var guestSlider = document.getElementById('nb-guest-slider');
+    var minusBtn = document.getElementById('nb-guest-minus');
+    var plusBtn = document.getElementById('nb-guest-plus');
+    var appetiteRadios = document.getElementsByName('nb_appetite');
+    var dietRadios = document.getElementsByName('nb_diet');
+    var includeKebabsCheckbox = document.getElementById('nb-include-kebabs');
+
+    if (!guestInput) return;
+
+    function calculate() {
+      var guests = parseInt(guestInput.value) || 25;
+      if (guests < 1) guests = 1;
+
+      // Appetite Ratio (Guests per Kg)
+      var guestsPerKg = 6; // Standard
+      var appetiteType = 'Standard';
+      for (var i = 0; i < appetiteRadios.length; i++) {
+        if (appetiteRadios[i].checked) {
+          if (appetiteRadios[i].value === 'light') { guestsPerKg = 7; appetiteType = 'Light'; }
+          if (appetiteRadios[i].value === 'standard') { guestsPerKg = 6; appetiteType = 'Standard'; }
+          if (appetiteRadios[i].value === 'heavy') { guestsPerKg = 5; appetiteType = 'Heavy'; }
+          appetiteRadios[i].closest('.nb-radio-card').classList.add('active');
+        } else {
+          appetiteRadios[i].closest('.nb-radio-card').classList.remove('active');
+        }
+      }
+
+      // Total Raw Kg Needed
+      var rawKg = guests / guestsPerKg;
+      // Round up to nearest 0.5 Kg
+      var totalKg = Math.ceil(rawKg * 2) / 2;
+      if (totalKg < 1) totalKg = 1;
+
+      // Dietary Preference
+      var dietType = '100% Non-Veg';
+      var nonVegKg = totalKg;
+      var vegKg = 0;
+
+      for (var j = 0; j < dietRadios.length; j++) {
+        if (dietRadios[j].checked) {
+          var val = dietRadios[j].value;
+          dietRadios[j].closest('.nb-radio-card').classList.add('active');
+          if (val === 'nonveg') {
+            dietType = '100% Non-Veg';
+            nonVegKg = totalKg;
+            vegKg = 0;
+          } else if (val === 'veg') {
+            dietType = '100% Veg';
+            nonVegKg = 0;
+            vegKg = totalKg;
+          } else if (val === 'mixed') {
+            dietType = 'Mixed (70% Non-Veg / 30% Veg)';
+            nonVegKg = Math.ceil(totalKg * 0.7 * 2) / 2;
+            vegKg = Math.max(1, totalKg - nonVegKg);
+          }
+        } else {
+          dietRadios[j].closest('.nb-radio-card').classList.remove('active');
+        }
+      }
+
+      // Update Displays
+      document.getElementById('nb-calc-total-kg').innerText = totalKg;
+      document.getElementById('nb-calc-servings-text').innerText = "Serves ~" + guests + " Guests (" + appetiteType + " Portion)";
+
+      var nonvegRow = document.getElementById('nb-row-nonveg');
+      var vegRow = document.getElementById('nb-row-veg');
+      
+      if (nonVegKg > 0) {
+        nonvegRow.style.display = 'flex';
+        document.getElementById('nb-calc-nonveg-kg').innerText = nonVegKg + ' Kg';
+      } else {
+        nonvegRow.style.display = 'none';
+      }
+
+      if (vegKg > 0) {
+        vegRow.style.display = 'flex';
+        document.getElementById('nb-calc-veg-kg').innerText = vegKg + ' Kg';
+      } else {
+        vegRow.style.display = 'none';
+      }
+
+      // Kebabs calculation (2 pcs per guest)
+      var kebabsRow = document.getElementById('nb-row-kebabs');
+      var totalKebabs = guests * 2;
+      var kebabPacks = Math.ceil(totalKebabs / 12);
+      if (includeKebabsCheckbox && includeKebabsCheckbox.checked) {
+        kebabsRow.style.display = 'flex';
+        document.getElementById('nb-calc-kebabs').innerText = (kebabPacks * 12) + " Pcs (" + kebabPacks + " Packs)";
+      } else {
+        kebabsRow.style.display = 'none';
+      }
+
+      // Recommended Catering Package logic
+      var pkgNameEl = document.getElementById('nb-rec-pkg-name');
+      var pkgDescEl = document.getElementById('nb-rec-pkg-desc');
+
+      if (totalKg <= 5) {
+        pkgNameEl.innerText = "The Mehmaan Plan [5 Kg]";
+        pkgDescEl.innerText = "1 Biryani + 1 Starter + 1 Gravy + Complimentary Dessert @ ₹4,499";
+      } else if (totalKg <= 10) {
+        pkgNameEl.innerText = "The Shaahi Dawat [10 Kg]";
+        pkgDescEl.innerText = "2 Biryani Flavors + 1 Gravy + 1 Starter + Free Gulab Jamun/Drinks @ ₹8,999";
+      } else if (totalKg <= 15) {
+        pkgNameEl.innerText = "The Royal Baithak [15 Kg]";
+        pkgDescEl.innerText = "3 Biryanis + 1 Gravy + 2 Starters + Free Dessert & Drinks @ ₹13,999";
+      } else {
+        pkgNameEl.innerText = "Custom Grand Event Feast [" + totalKg + " Kg]";
+        pkgDescEl.innerText = "Tailored menu, live counter options & dedicated coordinator for large gatherings";
+      }
+
+      // WhatsApp Pre-filled URL
+      var waMsg = "Hi Niamat Biryani! I calculated my biryani requirement on your website calculator:%0A" +
+                  "👥 Guests: " + guests + "%0A" +
+                  "🍚 Appetite: " + appetiteType + "%0A" +
+                  "🍗 Diet: " + dietType + "%0A" +
+                  "📦 Total Biryani Needed: " + totalKg + " Kg";
+
+      if (nonVegKg > 0 && vegKg > 0) {
+        waMsg += " (" + nonVegKg + " Kg Non-Veg + " + vegKg + " Kg Veg)";
+      }
+      if (includeKebabsCheckbox && includeKebabsCheckbox.checked) {
+        waMsg += "%0A🍢 Kebabs: " + (kebabPacks * 12) + " Pcs";
+      }
+      waMsg += "%0A%0APlease confirm pricing and availability for my event date.";
+
+      var waBtn = document.getElementById('nb-calc-wa-btn');
+      if (waBtn) {
+        waBtn.href = "https://wa.me/919167682582?text=" + waMsg;
+      }
+    }
+
+    // Event Listeners
+    guestInput.addEventListener('input', function() {
+      guestSlider.value = guestInput.value;
+      calculate();
+    });
+    guestSlider.addEventListener('input', function() {
+      guestInput.value = guestSlider.value;
+      calculate();
+    });
+    minusBtn.addEventListener('click', function() {
+      var v = parseInt(guestInput.value) || 25;
+      if (v > 5) {
+        guestInput.value = v - 5;
+        guestSlider.value = guestInput.value;
+        calculate();
+      }
+    });
+    plusBtn.addEventListener('click', function() {
+      var v = parseInt(guestInput.value) || 25;
+      guestInput.value = v + 5;
+      guestSlider.value = guestInput.value;
+      calculate();
+    });
+
+    for (var i = 0; i < appetiteRadios.length; i++) {
+      appetiteRadios[i].addEventListener('change', calculate);
+    }
+    for (var j = 0; j < dietRadios.length; j++) {
+      dietRadios[j].addEventListener('change', calculate);
+    }
+    if (includeKebabsCheckbox) {
+      includeKebabsCheckbox.addEventListener('change', calculate);
+    }
+
+    calculate();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupCalculator);
+  } else {
+    setupCalculator();
+  }
+})();
+</script>

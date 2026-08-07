@@ -8,6 +8,8 @@
 
 {% if request.path contains 'bulk-orders' or request.path contains 'bulk' %}
   {% render 'nb-bulk-orders-snippet' %}
+{% elsif request.path contains 'biryani-calculator' or request.path contains 'calculator' %}
+  {% render 'nb-biryani-calculator-snippet' %}
 {% elsif request.path contains 'family-orders' or request.path contains 'family-feast' %}
   {% render 'nb-family-orders-snippet' %}
 {% else %}
