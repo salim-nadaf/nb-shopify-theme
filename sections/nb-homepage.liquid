@@ -367,12 +367,17 @@
     </div>
   </div>
 
-  <!-- 9. CUSTOMER REVIEWS -->
+  <!-- 9. CUSTOMER REVIEWS & JUDGE.ME INTEGRATION -->
   <div class="nb-section-block">
     <div class="nb-container">
       <div class="nb-section-header">
-        <span class="nb-tag-badge">Verified Feedback</span>
-        <h2>Loved by Our Diners</h2>
+        <span class="nb-tag-badge">Google Reviews</span>
+        <h2>Loved by Biryani Enthusiasts Across Kalyan</h2>
+      </div>
+
+      <!-- JUDGE.ME APP WIDGET EMBED -->
+      <div class="nb-judgeme-container" style="margin-bottom: 20px;">
+        {% render 'judgeme_widgets', widget_type: 'judgeme_featured_carousel', concierge_install: true %}
       </div>
 
       <div class="nb-grid-3">
