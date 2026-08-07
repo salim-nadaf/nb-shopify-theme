@@ -173,47 +173,6 @@
         "family_cta_url": "/pages/family-feast"
       }
     },
-    "nb_reviews": {
-      "type": "nb-reviews",
-      "blocks": {
-        "review_1": {
-          "type": "review",
-          "settings": {
-            "rating": "5/5 Stars",
-            "review_text": "The biryani arrived piping hot! Super tender meat and rice was perfectly seasoned.",
-            "author": "Sumaiya N.",
-            "location": "Kalyan West"
-          }
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {
-            "rating": "5/5 Stars",
-            "review_text": "Ordered 2 Kg Mutton Biryani for family lunch. Arrived right on time. Everyone loved it!",
-            "author": "Rahul M.",
-            "location": "Khadakpada"
-          }
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {
-            "rating": "5/5 Stars",
-            "review_text": "Best biryani in Kalyan. Hygienic packaging and quick delivery.",
-            "author": "Imran K.",
-            "location": "Kalyan East"
-          }
-        }
-      },
-      "block_order": [
-        "review_1",
-        "review_2",
-        "review_3"
-      ],
-      "settings": {
-        "tag_badge": "Google Reviews",
-        "title": "Loved by Biryani Enthusiasts Across Kalyan"
-      }
-    },
     "17861317634f7e8356": {
       "type": "_blocks",
       "blocks": {
@@ -221,7 +180,7 @@
           "type": "shopify://apps/judge-me-reviews/blocks/testimonials_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
             "show_sample_reviews": true,
-            "reviews_selection": "featured_reviews",
+            "reviews_selection": "all_reviews",
             "products": [],
             "filter_pinned": false,
             "filter_featured": false,
@@ -246,7 +205,7 @@
             "border_color": "#c8922a",
             "show_drop_shadow": true,
             "transition_speed": 5,
-            "header_text": "Loved by Biryani Enthusiasts Across Kalyan",
+            "header_text": "Google Reviews",
             "show_average_rating": true,
             "rating_display": "default"
           }
@@ -315,7 +274,6 @@
   },
   "order": [
     "nb_homepage_top",
-    "nb_reviews",
     "17861317634f7e8356",
     "nb_homepage_bottom"
   ]
