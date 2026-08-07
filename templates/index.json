@@ -158,7 +158,7 @@
         "color_btn1_bg": "#c8922a",
         "color_btn1_text": "#ffffff",
         "section_padding": 40,
-        "hero_min_height": 500,
+        "hero_min_height": 800,
         "hero_overlay_opacity": 60,
         "show_status": false,
         "status_text": "Kitchen Open - Lunch 12-3 PM, Dinner 6-9 PM",
