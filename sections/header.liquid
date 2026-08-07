@@ -366,6 +366,7 @@
   <div
     class="header__underlay header__underlay-open"
   ></div>
+  {% render 'nb-announcement-bar' %}
   {%- if request.page_type == 'index' -%}
     <h1 class="visually-hidden">{{ shop.name }}</h1>
   {%- endif -%}
