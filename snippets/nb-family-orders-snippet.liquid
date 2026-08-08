@@ -112,35 +112,95 @@
         var form = document.getElementById('nb-family-preorder-form');
         if (form) {
           form.addEventListener('submit', function(e) {
-            var name = document.getElementById('nb-name') ? document.getElementById('nb-name').value : '';
-            var phone = document.getElementById('nb-phone') ? document.getElementById('nb-phone').value : '';
+            e.preventDefault();
+
+            var btn = form.querySelector('.nb-submit-btn');
+            if (btn) {
+              btn.disabled = true;
+              btn.innerHTML = 'Submitting Request... ⏳';
+            }
+
+            var name = document.getElementById('nb-name') ? document.getElementById('nb-name').value.trim() : '';
+            var phone = document.getElementById('nb-phone') ? document.getElementById('nb-phone').value.trim() : '';
             var emailEl = document.getElementById('nb-email');
             var email = emailEl ? emailEl.value.trim() : '';
             var date = document.getElementById('nb-date') ? document.getElementById('nb-date').value : '';
             var time = document.getElementById('nb-time') ? document.getElementById('nb-time').value : '';
             var item = document.getElementById('nb-item') ? document.getElementById('nb-item').value : '';
-            var address = document.getElementById('nb-address') ? document.getElementById('nb-address').value : '';
-            var notes = document.getElementById('nb-notes') ? document.getElementById('nb-notes').value : '';
+            var address = document.getElementById('nb-address') ? document.getElementById('nb-address').value.trim() : '';
+            var notes = document.getElementById('nb-notes') ? document.getElementById('nb-notes').value.trim() : '';
 
             if (!email || email === '') {
               var cleanPhone = phone.replace(/[^0-9]/g, '') || Date.now();
-              emailEl.value = 'preorder+' + cleanPhone + '@niamatbiryani.in';
+              email = 'preorder+' + cleanPhone + '@niamatbiryani.in';
+              if (emailEl) emailEl.value = email;
             }
 
-            var bodyHidden = document.getElementById('nb-family-body-hidden');
-            if (bodyHidden) {
-              bodyHidden.value = [
-                '=== FAMILY PRE-ORDER DETAILS ===',
-                'Name: ' + name,
-                'Phone/WhatsApp: ' + phone,
-                'Email: ' + (email || emailEl.value),
-                'Preferred Date: ' + date,
-                'Time Slot: ' + time,
-                'Order Selection: ' + item,
-                'Delivery Address: ' + address,
-                'Special Notes: ' + (notes || 'None')
-              ].join('\n');
-            }
+            var bodyDetails = [
+              '=== FAMILY PRE-ORDER DETAILS ===',
+              'Customer Name: ' + name,
+              'WhatsApp / Phone: ' + phone,
+              'Email Address: ' + email,
+              'Preferred Date: ' + date,
+              'Time Slot: ' + time,
+              'Order Selection: ' + item,
+              'Delivery Address: ' + address,
+              'Special Notes: ' + (notes || 'None')
+            ].join('\n');
+
+            var formData = new FormData();
+            formData.append('form_type', 'contact');
+            formData.append('utf8', '✓');
+            formData.append('contact[Name]', name);
+            formData.append('contact[Phone]', phone);
+            formData.append('contact[email]', email);
+            formData.append('contact[body]', bodyDetails);
+
+            fetch('/contact', {
+              method: 'POST',
+              body: formData
+            })
+            .then(function() {
+              var card = document.querySelector('.nb-preorder-card');
+              if (card) {
+                var waMsg = encodeURIComponent(
+                  "Hi Niamat Biryani! I just submitted a Pre-Order Request on your website:\n\n" +
+                  "Name: " + name + "\n" +
+                  "Phone: " + phone + "\n" +
+                  "Date: " + date + "\n" +
+                  "Slot: " + time + "\n" +
+                  "Order: " + item + "\n" +
+                  "Address: " + address
+                );
+                
+                card.innerHTML = '\
+                  <div class="nb-form-success" style="padding: 40px 20px; text-align: center;">\
+                    <span class="nb-success-icon" style="font-size: 3.5rem; display: block; margin-bottom: 16px;">🎉</span>\
+                    <h3 style="font-family: \'Playfair Display\', Georgia, serif; font-size: 2rem; color: #2C1810; margin-bottom: 12px;">Pre-Order Request Received!</h3>\
+                    <p style="font-size: 1.02rem; color: #5C4033; max-width: 520px; margin: 0 auto 24px; line-height: 1.6;">\
+                      Thank you, <strong>' + name + '</strong>! Your pre-order details have been registered. Salim Nadaf & the Niamat Biryani team will review your order and contact you shortly.\
+                    </p>\
+                    <div style="background: #FFFDF7; border: 1px dashed rgba(200,146,42,0.4); padding: 18px; border-radius: 16px; margin-bottom: 24px; text-align: left; font-size: 0.9rem; color: #5C4033;">\
+                      <div style="font-weight: 700; color: #C8922A; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;">📋 Order Summary:</div>\
+                      <div><strong>Item:</strong> ' + item + '</div>\
+                      <div><strong>Date & Slot:</strong> ' + date + ' | ' + time + '</div>\
+                      <div><strong>Phone:</strong> ' + phone + '</div>\
+                      <div><strong>Delivery Address:</strong> ' + address + '</div>\
+                    </div>\
+                    <a href="https://wa.me/919920042456?text=' + waMsg + '" target="_blank" rel="noopener" class="nb-whatsapp-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 380px; margin: 0 auto; background: #25D366; color: #fff; font-weight: 700; padding: 15px 24px; border-radius: 12px; text-decoration: none;">\
+                      <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>\
+                      Confirm & Chat on WhatsApp →\
+                    </a>\
+                  </div>';
+              }
+            })
+            .catch(function(err) {
+              console.error('Submission error:', err);
+              if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = 'Submit Pre-Order Request →';
+              }
+            });
           });
         }
       })();
