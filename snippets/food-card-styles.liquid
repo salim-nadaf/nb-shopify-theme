@@ -284,178 +284,199 @@
 #nb-mobile-dock a { color: #FDF6EC !important; font-size: 10px; font-weight: 600; }
 #nb-mobile-dock a:hover, #nb-mobile-dock a:active { color: #C8922A !important; }
 #nb-mobile-dock svg { stroke: #FDF6EC !important; }
-#nb-mobile-dock a:hover svg { stroke: #C8922A !important; }
-
-/* ===== BUCKET BIRYANI SECTION STYLES ===== */
+#nb-mobile-dock a:hover svg { stroke: #C8922A !important; }/* ===== BUCKET BIRYANI SECTION STYLES — ULTRA PREMIUM & COMPACT ===== */
 .nb-bucket-biryani-section {
-  padding: 48px 16px;
-  background: linear-gradient(180deg, #FFFDF7 0%, #FFF8EF 100%);
-  border-top: 1px solid rgba(200, 146, 42, 0.2);
-  border-bottom: 1px solid rgba(200, 146, 42, 0.2);
-  margin: 32px 0;
+  padding: 40px 16px !important;
+  background: linear-gradient(180deg, #FFFDF7 0%, #FFF8EF 100%) !important;
+  border-top: 1px solid rgba(200, 146, 42, 0.2) !important;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.2) !important;
+  margin: 32px auto !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
 
-.nb-bucket-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 20px;
+.nb-bucket-container {
+  max-width: 1160px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }
 
-@media (min-width: 580px) {
+.nb-bucket-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 991px) {
   .nb-bucket-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
   }
 }
 
-@media (min-width: 992px) {
+@media (max-width: 480px) {
   .nb-bucket-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(1, 1fr) !important;
+    gap: 14px !important;
   }
 }
 
 .nb-bucket-card {
-  background: #FFFFFF;
-  border: 1px solid rgba(200, 146, 42, 0.25);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.06);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(200, 146, 42, 0.22) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.06) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .nb-bucket-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 28px rgba(44, 24, 16, 0.12);
-  border-color: #C8922A;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.12) !important;
+  border-color: #C8922A !important;
 }
 
 .nb-bucket-img-wrap {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  background: #F8F1E5;
+  position: relative !important;
+  width: 100% !important;
+  height: 190px !important;
+  max-height: 190px !important;
+  overflow: hidden !important;
+  background: #F8F1E5 !important;
+}
+
+@media (max-width: 768px) {
+  .nb-bucket-img-wrap {
+    height: 160px !important;
+    max-height: 160px !important;
+  }
 }
 
 .nb-bucket-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transition: transform 0.3s ease !important;
 }
 
 .nb-bucket-card:hover .nb-bucket-img-wrap img {
-  transform: scale(1.05);
+  transform: scale(1.06) !important;
 }
 
 .nb-bucket-badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 20px;
-  color: #FFFFFF;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  z-index: 2;
+  position: absolute !important;
+  top: 8px !important;
+  left: 8px !important;
+  font-size: 0.68rem !important;
+  font-weight: 800 !important;
+  padding: 3px 8px !important;
+  border-radius: 14px !important;
+  color: #FFFFFF !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  z-index: 2 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25) !important;
 }
 
-.nb-badge-musttry { background: linear-gradient(135deg, #E67E22 0%, #D35400 100%); }
-.nb-badge-bestseller { background: linear-gradient(135deg, #C8922A 0%, #996B13 100%); }
-.nb-badge-popular { background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%); }
-.nb-badge-royal { background: linear-gradient(135deg, #8E44AD 0%, #6C3483 100%); }
+.nb-badge-musttry { background: linear-gradient(135deg, #E67E22 0%, #D35400 100%) !important; }
+.nb-badge-bestseller { background: linear-gradient(135deg, #C8922A 0%, #996B13 100%) !important; }
+.nb-badge-popular { background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%) !important; }
+.nb-badge-royal { background: linear-gradient(135deg, #8E44AD 0%, #6C3483 100%) !important; }
 
 .nb-bucket-portion {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(44, 24, 16, 0.85);
-  color: #FDF6EC;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-  z-index: 2;
+  position: absolute !important;
+  bottom: 8px !important;
+  right: 8px !important;
+  background: rgba(44, 24, 16, 0.88) !important;
+  color: #FDF6EC !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 10px !important;
+  backdrop-filter: blur(4px) !important;
+  z-index: 2 !important;
+  border: 1px solid rgba(200, 146, 42, 0.3) !important;
 }
 
 .nb-bucket-body {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  justify-content: space-between;
+  padding: 14px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-grow: 1 !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
 }
 
 .nb-bucket-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-  margin-bottom: 8px;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  gap: 6px !important;
 }
 
 .nb-bucket-header h3 {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 1.05rem !important;
+  font-size: 1rem !important;
   font-weight: 800 !important;
   color: #2C1810 !important;
-  margin: 0;
-  line-height: 1.25;
+  margin: 0 !important;
+  line-height: 1.25 !important;
 }
 
 .nb-bucket-price {
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: #C8922A;
-  white-space: nowrap;
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  color: #C8922A !important;
+  white-space: nowrap !important;
 }
 
 .nb-bucket-desc {
-  font-size: 0.8rem;
-  color: #66554B;
-  line-height: 1.4;
-  margin: 0 0 12px;
+  font-size: 0.78rem !important;
+  color: #66554B !important;
+  line-height: 1.35 !important;
+  margin: 0 !important;
 }
 
 .nb-bucket-features {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
+  display: flex !important;
+  gap: 4px !important;
+  flex-wrap: wrap !important;
 }
 
 .nb-bucket-features span {
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #2C1810;
-  background: #F7EFE2;
-  padding: 3px 8px;
-  border-radius: 8px;
-  border: 1px solid rgba(200, 146, 42, 0.2);
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+  color: #2C1810 !important;
+  background: #F7EFE2 !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(200, 146, 42, 0.2) !important;
 }
 
 .nb-btn-bucket {
-  display: block;
-  text-align: center;
-  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%);
+  display: block !important;
+  text-align: center !important;
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
   color: #FFFFFF !important;
-  font-size: 0.82rem;
-  font-weight: 700;
-  padding: 9px 10px;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 3px 10px rgba(200, 146, 42, 0.25);
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  padding: 8px 10px !important;
+  border-radius: 10px !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 3px 8px rgba(200, 146, 42, 0.25) !important;
 }
 
 .nb-btn-bucket:hover {
-  background: linear-gradient(135deg, #E2A73E 0%, #D49E35 100%);
-  box-shadow: 0 5px 14px rgba(200, 146, 42, 0.4);
+  background: linear-gradient(135deg, #E2A73E 0%, #D49E35 100%) !important;
+  box-shadow: 0 5px 12px rgba(200, 146, 42, 0.4) !important;
 }
-</style>
+</style>yle>
