@@ -3,6 +3,12 @@
 
 <div class="nb-family-menu-wrapper">
 
+  <!-- PAGE HEADER & DESCRIPTION -->
+  <div class="nb-menu-page-header">
+    <h2>👑 Family Orders & Pre-Order Menu</h2>
+    <p class="nb-menu-header-sub">Min. 1 Kg portion handis · Prepared fresh on order · Scheduled Kalyan delivery</p>
+  </div>
+
   <!-- CATEGORY QUICK NAV SCROLLER -->
   <div class="nb-cat-nav-scroll">
     <a href="#cat-bestsellers" class="nb-cat-pill active">🏆 Best Sellers</a>
@@ -180,14 +186,32 @@
   overflow-x: hidden !important;
 }
 
+/* Page Header & Description */
+.nb-menu-page-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.nb-menu-page-header h2 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  margin: 0 0 6px !important;
+}
+.nb-menu-header-sub {
+  font-size: 0.92rem;
+  color: #7A5C4A;
+  margin: 0;
+}
+
 /* Category Quick Navigation Scroller — Non-overlapping & responsive */
 .nb-cat-nav-scroll {
   display: flex;
   gap: 10px;
   overflow-x: auto;
   padding: 8px 4px 16px;
-  margin-top: 10px;
-  margin-bottom: 28px;
+  margin-top: 0;
+  margin-bottom: 32px !important;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   position: relative;
@@ -236,7 +260,7 @@
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
-  margin-top: 10px;
+  margin-top: 0 !important;
 }
 
 .nb-category-header {
