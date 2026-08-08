@@ -35,11 +35,94 @@
             <span class="nb-badge nb-badge--preorder">1 Kg+ Handi</span>
           </div>
 
+          {% liquid
+            assign title_lower = product.title | downcase
+            assign item_badge = ''
+            assign badge_class = ''
+            assign badge_icon = ''
+
+            if title_lower contains 'hyderabadi mutton dum'
+              assign item_badge = 'Popular'
+              assign badge_class = 'nb-tag--popular'
+              assign badge_icon = '🔥'
+            elsif title_lower contains 'gosht-e-dum' or title_lower contains 'gosht e dum'
+              assign item_badge = 'Must try'
+              assign badge_class = 'nb-tag--musttry'
+              assign badge_icon = '⭐'
+            elsif title_lower contains 'hyderabadi murgh dum'
+              assign item_badge = 'Popular'
+              assign badge_class = 'nb-tag--popular'
+              assign badge_icon = '🔥'
+            elsif title_lower contains 'ustaadi murgh dum'
+              assign item_badge = "Chef's special"
+              assign badge_class = 'nb-tag--chef'
+              assign badge_icon = '👨‍🍳'
+            elsif title_lower contains 'zam-zam' or title_lower contains 'zam zam' or title_lower contains 'zamzam'
+              assign item_badge = 'Must try'
+              assign badge_class = 'nb-tag--musttry'
+              assign badge_icon = '⭐'
+            elsif title_lower contains 'nayaabi italiano'
+              assign item_badge = 'Must try'
+              assign badge_class = 'nb-tag--musttry'
+              assign badge_icon = '⭐'
+            elsif title_lower contains 'makhmali malai' or title_lower contains 'makhmali'
+              assign item_badge = 'Best seller'
+              assign badge_class = 'nb-tag--bestseller'
+              assign badge_icon = '🏆'
+            elsif title_lower contains 'banjara'
+              assign item_badge = 'New'
+              assign badge_class = 'nb-tag--new'
+              assign badge_icon = '✨'
+            elsif title_lower contains 'boneless lazzat'
+              assign item_badge = 'Best seller'
+              assign badge_class = 'nb-tag--bestseller'
+              assign badge_icon = '🏆'
+            elsif title_lower contains 'lababdaar seekh'
+              assign item_badge = 'Best seller'
+              assign badge_class = 'nb-tag--bestseller'
+              assign badge_icon = '🏆'
+            elsif title_lower contains 'lazzat-e-tikka' or title_lower contains 'lazzat e tikka'
+              assign item_badge = 'Best seller'
+              assign badge_class = 'nb-tag--bestseller'
+              assign badge_icon = '🏆'
+            elsif title_lower contains 'alishaan tandoori'
+              assign item_badge = 'Popular'
+              assign badge_class = 'nb-tag--popular'
+              assign badge_icon = '🔥'
+            elsif title_lower contains 'paneer'
+              assign item_badge = 'Must try'
+              assign badge_class = 'nb-tag--musttry'
+              assign badge_icon = '⭐'
+            elsif title_lower contains 'sabz tikka'
+              assign item_badge = 'Best seller'
+              assign badge_class = 'nb-tag--bestseller'
+              assign badge_icon = '🏆'
+            elsif title_lower contains 'nawabi veg'
+              assign item_badge = "Chef's special"
+              assign badge_class = 'nb-tag--chef'
+              assign badge_icon = '👨‍🍳'
+            elsif title_lower contains 'nazaakat'
+              assign item_badge = 'New'
+              assign badge_class = 'nb-tag--new'
+              assign badge_icon = '✨'
+            elsif title_lower contains 'dhan-e-shikori' or title_lower contains 'dhan e shikori'
+              assign item_badge = 'New'
+              assign badge_class = 'nb-tag--new'
+              assign badge_icon = '✨'
+            elsif title_lower contains 'sabziyon'
+              assign item_badge = 'New'
+              assign badge_class = 'nb-tag--new'
+              assign badge_icon = '✨'
+            endif
+          %}
+
           <div class="nb-food-card__body">
             <div>
               <h3 class="nb-food-card__title">
                 {{ product.title }}
-                {% render 'nb-item-badge', product: product %}
+                {% if item_badge != blank %}
+                  <span class="nb-item-badge {{ badge_class }}">{{ badge_icon }} {{ item_badge }}</span>
+                {% endif %}
               </h3>
               {% if product.description != blank %}
                 <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 60 }}</p>
