@@ -23,16 +23,18 @@
       {% render 'spacing-style', settings: section.settings %}
     "
   >
-    {% if page.handle == 'contact' or page.handle == 'contact-us' or page.title contains 'Contact' %}
+    {% if page.handle == 'contact' or page.handle == 'contact-us' %}
       {% render 'nb-contact-snippet' %}
-    {% elsif page.handle == 'about-us' or page.handle == 'about' or page.title contains 'About' or page.title contains 'Story' %}
+    {% elsif page.handle == 'about-us' or page.handle == 'about' %}
       {% render 'nb-our-story-snippet' %}
-    {% elsif page.handle == 'family-orders' or page.handle == 'family-feast' or page.title contains 'Family' %}
-      {% render 'nb-family-orders-snippet' %}
-    {% elsif page.handle == 'bulk-orders' or page.title contains 'Bulk' or page.title contains 'Catering' %}
-      {% render 'nb-bulk-orders-snippet' %}
-    {% elsif page.handle == 'biryani-calculator' or page.title contains 'Calculator' %}
+    {% elsif page.handle == 'biryani-calculator' %}
       {% render 'nb-biryani-calculator-snippet' %}
+    {% else %}
+      {% if page.content != blank %}
+        <div class="rte">
+          {{ page.content }}
+        </div>
+      {% endif %}
     {% endif %}
 
     <!-- FULL THEME EDITOR APP BLOCKS & CUSTOM FORM BLOCKS SUPPORT -->
