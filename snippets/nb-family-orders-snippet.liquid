@@ -14,139 +14,21 @@
       <span>⏰ Minimum 3-hour advance notice required for pre-orders.</span>
       <span>🚚 Delivery within Kalyan, Ulhasnagar, Dombivli, Ambernath & nearby areas confirmed upon order placement.</span>
     </div>
-  </div>
-
-  <!-- LUXURY CENTERED PRE-ORDER FORM CARD WITH EMBEDDED APP FORM 1095347 -->
+    <!-- LUXURY CENTERED PRE-ORDER FORM CARD FOR FORM APP 1095347 -->
   <div class="nb-preorder-card">
     <div class="nb-card-badge">✨ PRE-ORDER FORM</div>
     <h2>Pre-Order Details</h2>
     <p class="nb-card-subtitle">Complete the form below to reserve your 1 Kg+ Biryani or Family Feast.</p>
 
-    <!-- SHOPIFY FORMS APP & EMBEDDED FORM 1095347 -->
-    <shopify-form form-id="1095347"></shopify-form>
-    <div class="px-form-builder" id="px-form-builder-1095347" data-form-id="1095347"></div>
-    <div class="shopify-app-block" data-form-id="1095347" data-id="1095347"></div>
-    <div id="form-builder-1095347" data-form-id="1095347"></div>
-    <div class="hulk-form" data-id="1095347"></div>
-
-    {% form 'contact', id: 'nb-family-preorder-form' %}
-      <input type="hidden" name="contact[body]" id="nb-family-body-hidden" value="Family Pre-Order Request" />
-      
-      {% if form.posted_successfully? %}
-        <div class="nb-form-success">
-          <span class="nb-success-icon">🎉</span>
-          <h3>Pre-Order Request Received!</h3>
-          <p>Thank you! Salim Nadaf & the Niamat Biryani team will review your order details and contact you shortly via WhatsApp/Phone to confirm your delivery slot.</p>
-        </div>
-      {% else %}
-        {% if form.errors %}
-          <div class="nb-form-error">
-            <p>Please fix the highlighted fields below to submit your pre-order.</p>
-          </div>
-        {% endif %}
-
-        <div class="nb-form-group">
-          <label for="nb-name">Full Name *</label>
-          <input type="text" id="nb-name" name="contact[Name]" placeholder="Enter your full name" required />
-        </div>
-
-        <div class="nb-form-grid">
-          <div class="nb-form-group">
-            <label for="nb-phone">WhatsApp / Phone Number *</label>
-            <input type="tel" id="nb-phone" name="contact[Phone]" placeholder="e.g. +91 98765 43210" required />
-          </div>
-          <div class="nb-form-group">
-            <label for="nb-email">Email Address</label>
-            <input type="email" id="nb-email" name="contact[email]" placeholder="yourname@gmail.com" />
-          </div>
-        </div>
-
-        <div class="nb-form-grid">
-          <div class="nb-form-group">
-            <label for="nb-date">Preferred Delivery Date *</label>
-            <input type="date" id="nb-date" name="contact[Preferred Date]" required />
-          </div>
-          <div class="nb-form-group">
-            <label for="nb-time">Preferred Delivery Time *</label>
-            <select id="nb-time" name="contact[Preferred Time Slot]" required>
-              <option value="">Select Delivery Slot</option>
-              <option value="12:30 PM - 1:30 PM (Lunch)">12:30 PM - 1:30 PM (Lunch)</option>
-              <option value="1:30 PM - 2:30 PM (Lunch)">1:30 PM - 2:30 PM (Lunch)</option>
-              <option value="2:30 PM - 3:30 PM (Lunch)">2:30 PM - 3:30 PM (Lunch)</option>
-              <option value="7:30 PM - 8:30 PM (Dinner)">7:30 PM - 8:30 PM (Dinner)</option>
-              <option value="8:30 PM - 9:30 PM (Dinner)">8:30 PM - 9:30 PM (Dinner)</option>
-              <option value="9:30 PM - 10:30 PM (Dinner)">9:30 PM - 10:30 PM (Dinner)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="nb-form-group">
-          <label for="nb-item">Biryani & Order Selection *</label>
-          <select id="nb-item" name="contact[Biryani Order]" required>
-            <option value="">Choose Biryani / Special Deal</option>
-            <option value="2 KG Family Biryani Feast @ ₹2,099 (Serves 10-12)">👑 2 KG Family Biryani Feast @ ₹2,099 (Serves 10-12)</option>
-            <option value="1 KG Chicken Dum Biryani Handi (Serves 6-7)">🍗 1 KG Chicken Dum Biryani Handi (Serves 6-7)</option>
-            <option value="1 KG Mutton Dum Biryani Handi (Serves 6-7)">🥩 1 KG Mutton Dum Biryani Handi (Serves 6-7)</option>
-            <option value="1 KG Veg Dum Biryani Handi (Starts ₹849)">🥦 1 KG Veg Dum Biryani Handi (Starts ₹849)</option>
-            <option value="Kebab Box (12 Pieces Minimum)">🍢 Kebab Platter (12 Pieces Minimum)</option>
-            <option value="Custom Bulk / Event Pre-Order">🎉 Custom Bulk / Event Pre-Order</option>
-          </select>
-        </div>
-
-        <div class="nb-form-group">
-          <label for="nb-address">Delivery Address / Area in Kalyan *</label>
-          <textarea id="nb-address" name="contact[Delivery Address]" rows="3" placeholder="Enter house no, street, landmark, and area (e.g. West Kalyan, Khadakpada, etc.)" required></textarea>
-        </div>
-
-        <div class="nb-form-group">
-          <label for="nb-notes">Special Instructions (Optional)</label>
-          <textarea id="nb-notes" name="contact[Special Notes]" rows="2" placeholder="e.g., Spice preference, additional raita, extra spoons..."></textarea>
-        </div>
-
-        <button type="submit" class="nb-submit-btn">
-          Submit Pre-Order Request →
-        </button>
-      {% endif %}
-    {% endform %}
-
-    <script>
-      (function initFamilyFormSubmit() {
-        var form = document.getElementById('nb-family-preorder-form');
-        if (form) {
-          form.addEventListener('submit', function(e) {
-            var name = document.getElementById('nb-name') ? document.getElementById('nb-name').value : '';
-            var phone = document.getElementById('nb-phone') ? document.getElementById('nb-phone').value : '';
-            var emailEl = document.getElementById('nb-email');
-            var email = emailEl ? emailEl.value.trim() : '';
-            var date = document.getElementById('nb-date') ? document.getElementById('nb-date').value : '';
-            var time = document.getElementById('nb-time') ? document.getElementById('nb-time').value : '';
-            var item = document.getElementById('nb-item') ? document.getElementById('nb-item').value : '';
-            var address = document.getElementById('nb-address') ? document.getElementById('nb-address').value : '';
-            var notes = document.getElementById('nb-notes') ? document.getElementById('nb-notes').value : '';
-
-            if (!email || email === '') {
-              var cleanPhone = phone.replace(/[^0-9]/g, '') || Date.now();
-              emailEl.value = 'preorder+' + cleanPhone + '@niamatbiryani.in';
-            }
-
-            var bodyHidden = document.getElementById('nb-family-body-hidden');
-            if (bodyHidden) {
-              bodyHidden.value = [
-                '=== FAMILY PRE-ORDER DETAILS ===',
-                'Name: ' + name,
-                'Phone/WhatsApp: ' + phone,
-                'Email: ' + (email || emailEl.value),
-                'Preferred Date: ' + date,
-                'Time Slot: ' + time,
-                'Order Selection: ' + item,
-                'Delivery Address: ' + address,
-                'Special Notes: ' + (notes || 'None')
-              ].join('\n');
-            }
-          });
-        }
-      })();
-    </script>
+    <!-- FORM APP 1095347 EMBED CONTAINERS -->
+    <div id="nb-app-form-1095347-primary" class="nb-app-form-host">
+      <shopify-form form-id="1095347"></shopify-form>
+      <div class="px-form-builder" id="px-form-builder-1095347" data-form-id="1095347"></div>
+      <div class="shopify-app-block" data-form-id="1095347" data-id="1095347"></div>
+      <div id="form-builder-1095347" data-form-id="1095347"></div>
+      <div class="hulk-form-template" data-id="1095347" data-form-id="1095347"></div>
+      <div class="form-builder-embed" data-id="1095347"></div>
+    </div>
 
     <!-- WHATSAPP FAST OPTION -->
     <div class="nb-whatsapp-divider">
