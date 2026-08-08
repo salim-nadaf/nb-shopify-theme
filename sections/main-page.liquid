@@ -6,38 +6,39 @@
   endif
 %}
 
-{% if page.handle == 'contact' or page.handle == 'contact-us' or page.title contains 'Contact' %}
-  {% render 'nb-contact-snippet' %}
-{% elsif page.handle == 'about-us' or page.handle == 'about' or page.title contains 'About' or page.title contains 'Story' %}
-  {% render 'nb-our-story-snippet' %}
-{% elsif page.handle == 'family-orders' or page.handle == 'family-feast' or page.title contains 'Family' %}
-  {% render 'nb-family-orders-snippet' %}
-{% elsif page.handle == 'bulk-orders' or page.title contains 'Bulk' or page.title contains 'Catering' %}
-  {% render 'nb-bulk-orders-snippet' %}
-{% elsif page.handle == 'biryani-calculator' or page.title contains 'Calculator' %}
-  {% render 'nb-biryani-calculator-snippet' %}
-{% else %}
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+<div class="section page-width-content{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
   <div
-    class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
-  ></div>
-  <div class="section page-width-content{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}">
-    <div
-      class="
-        spacing-style
-        layout-panel-flex
-        layout-panel-flex--column
-        section-content-wrapper
-        mobile-column
-      "
-      style="
-        {% render 'layout-panel-style', settings: section.settings %}
-        {% render 'spacing-style', settings: section.settings %}
-      "
-    >
-      {% content_for 'blocks' %}
-    </div>
+    class="
+      spacing-style
+      layout-panel-flex
+      layout-panel-flex--column
+      section-content-wrapper
+      mobile-column
+    "
+    style="
+      {% render 'layout-panel-style', settings: section.settings %}
+      {% render 'spacing-style', settings: section.settings %}
+    "
+  >
+    {% if page.handle == 'contact' or page.handle == 'contact-us' or page.title contains 'Contact' %}
+      {% render 'nb-contact-snippet' %}
+    {% elsif page.handle == 'about-us' or page.handle == 'about' or page.title contains 'About' or page.title contains 'Story' %}
+      {% render 'nb-our-story-snippet' %}
+    {% elsif page.handle == 'family-orders' or page.handle == 'family-feast' or page.title contains 'Family' %}
+      {% render 'nb-family-orders-snippet' %}
+    {% elsif page.handle == 'bulk-orders' or page.title contains 'Bulk' or page.title contains 'Catering' %}
+      {% render 'nb-bulk-orders-snippet' %}
+    {% elsif page.handle == 'biryani-calculator' or page.title contains 'Calculator' %}
+      {% render 'nb-biryani-calculator-snippet' %}
+    {% endif %}
+
+    <!-- FULL THEME EDITOR APP BLOCKS & CUSTOM FORM BLOCKS SUPPORT -->
+    {% content_for 'blocks' %}
   </div>
-{% endif %}
+</div>
 
 {% schema %}
 {

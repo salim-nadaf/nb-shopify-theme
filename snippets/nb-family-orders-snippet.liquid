@@ -104,138 +104,65 @@
   margin: 0 auto;
 }
 
-.nb-preorder-card {
-  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
-  border: 1px solid rgba(200, 146, 42, 0.32) !important;
-  border-top: 5px solid #C8922A !important;
-  border-radius: 24px !important;
-  padding: 42px 36px !important;
-  box-shadow: 0 16px 40px -10px rgba(44, 24, 16, 0.12), 0 4px 12px rgba(200, 146, 42, 0.08) !important;
-  margin: 0 auto 40px !important;
-  text-align: left;
-  max-width: 700px;
+.nb-family-orders-container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 16px 80px;
+  text-align: center;
   box-sizing: border-box;
-  position: relative;
 }
 
-.nb-card-badge {
+.nb-family-orders-header {
+  margin-bottom: 36px;
+}
+
+.nb-pill-badge {
   display: inline-block;
-  background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%);
-  color: #F3C669 !important;
-  font-size: 0.72rem;
+  background: rgba(200, 146, 42, 0.12);
+  color: #C8922A !important;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 1px;
-  padding: 4px 12px;
-  border-radius: 12px;
+  padding: 6px 16px;
+  border-radius: 20px;
   margin-bottom: 12px;
+  border: 1px solid rgba(200, 146, 42, 0.3);
 }
 
-.nb-preorder-card h2 {
+.nb-family-orders-header h1 {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 1.9rem !important;
+  font-size: 2.6rem !important;
   font-weight: 800 !important;
   color: #2C1810 !important;
-  margin: 0 0 6px;
-  text-align: center;
+  margin: 0 0 16px;
 }
 
-.nb-card-subtitle {
-  font-size: 0.92rem;
-  color: #7A5C4A !important;
-  text-align: center;
-  margin-bottom: 28px;
+.nb-family-sub {
+  font-size: 1.02rem;
+  color: #5C4033 !important;
+  line-height: 1.6;
+  max-width: 720px;
+  margin: 0 auto 24px;
 }
 
-.nb-form-group {
-  margin-bottom: 20px;
-}
-
-.nb-form-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-@media (min-width: 600px) {
-  .nb-form-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.nb-preorder-card label {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #2C1810 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 8px;
-}
-
-.nb-preorder-card input,
-.nb-preorder-card select,
-.nb-preorder-card textarea {
-  width: 100%;
-  background: #FFFFFF !important;
-  color: #2C1810 !important;
-  border: 1px solid rgba(200, 146, 42, 0.35) !important;
-  border-radius: 12px !important;
-  padding: 14px 16px !important;
-  font-family: 'Inter', system-ui, sans-serif !important;
-  font-size: 0.95rem !important;
-  box-sizing: border-box !important;
-  outline: none;
-  transition: all 0.25s ease;
-}
-
-.nb-preorder-card input:focus,
-.nb-preorder-card select:focus,
-.nb-preorder-card textarea:focus {
-  border-color: #C8922A !important;
-  box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.2) !important;
-  background: #FFFDF9 !important;
-}
-
-.nb-submit-btn {
-  width: 100%;
-  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
-  color: #FFFFFF !important;
-  font-weight: 700 !important;
-  font-size: 1.05rem !important;
-  padding: 16px 28px !important;
-  border-radius: 12px !important;
-  border: none !important;
-  cursor: pointer !important;
-  box-shadow: 0 6px 20px rgba(200,146,42,0.35), inset 0 1px 0 rgba(255,255,255,0.3) !important;
-  transition: all 0.25s ease !important;
-  margin-top: 10px;
-}
-
-.nb-submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(200,146,42,0.45) !important;
-}
-
-.nb-whatsapp-divider {
+.nb-notice-box {
+  background: #FFFDF7;
+  border: 1px dashed rgba(200, 146, 42, 0.4);
+  border-radius: 14px;
+  padding: 16px 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #7A5C4A;
   text-align: center;
-  margin: 28px 0 18px;
-  color: #8C6A54;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 1px;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.nb-whatsapp-divider::before,
-.nb-whatsapp-divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid rgba(200, 146, 42, 0.25);
-}
-
-.nb-whatsapp-divider span {
-  padding: 0 12px;
+.nb-family-actions {
+  margin: 24px auto 36px;
+  max-width: 360px;
 }
 
 .nb-whatsapp-btn {
@@ -261,32 +188,13 @@
   transform: translateY(-2px);
 }
 
-.nb-form-success {
-  text-align: center;
-  padding: 30px 20px;
-}
-
-.nb-success-icon {
-  font-size: 3rem;
-  display: block;
-  margin-bottom: 12px;
-}
-
-.nb-form-success h3 {
-  font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 1.6rem;
-  color: #2C1810;
-  margin-bottom: 10px;
-}
-
 .nb-page-app-content {
-  margin-top: 40px;
+  margin-top: 30px;
   text-align: center;
 }
 
 @media (max-width: 767px) {
   .nb-family-orders-container { padding: 24px 12px 60px; }
   .nb-family-orders-header h1 { font-size: 2rem !important; }
-  .nb-preorder-card { padding: 28px 20px !important; }
 }
 </style>
