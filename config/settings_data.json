@@ -70,7 +70,7 @@
     "quick_add_background": "#c8922a",
     "quick_add_text": "#ffffff",
     "show_second_image_on_hover": false,
-    "empty_state_collection": "featured-products-4",
+    "empty_state_collection": "instant-delivery",
     "product_corner_radius": 16,
     "card_corner_radius": 16,
     "variant_swatch_width": 24,
