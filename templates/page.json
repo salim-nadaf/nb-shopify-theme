@@ -18,21 +18,9 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
-    },
-    "custom_liquid_Wy4den": {
-      "type": "custom-liquid",
-      "name": "t:names.custom_liquid",
-      "settings": {
-        "custom_liquid": "<shopify-form form-id=\"1095347\"></shopify-form>",
-        "background_color": "",
-        "section_width": "page-width",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
     }
   },
   "order": [
-    "main",
-    "custom_liquid_Wy4den"
+    "main"
   ]
 }
