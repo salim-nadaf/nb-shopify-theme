@@ -639,5 +639,14 @@
     <span>Cart</span>
   </a>
 </div>
+
+  <!-- SHOPIFY FORMS CUSTOM ELEMENT & APP EMBED SUPPORT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.Shopify && window.Shopify.loadFeatures) {
+        window.Shopify.loadFeatures([{ name: 'shopify-forms', version: '1.0' }]);
+      }
+    });
+  </script>
   </body>
 </html>
