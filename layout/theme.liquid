@@ -534,7 +534,26 @@
       .nb-food-card__image {
         width: 90px !important;
         height: 90px !important;
+        position: relative !important;
+        overflow: hidden !important;
+        border-radius: 10px !important;
         flex-shrink: 0 !important;
+      }
+      .nb-badge,
+      span.nb-badge,
+      .nb-food-card .nb-badge {
+        top: 3px !important;
+        left: 3px !important;
+        font-size: 0.50rem !important;
+        font-weight: 800 !important;
+        padding: 2px 4px !important;
+        border-radius: 5px !important;
+        letter-spacing: 0.1px !important;
+        max-width: calc(100% - 6px) !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35) !important;
       }
       .nb-food-card__title { font-size: 0.88rem !important; }
     }
