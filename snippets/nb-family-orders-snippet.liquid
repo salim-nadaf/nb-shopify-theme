@@ -22,9 +22,15 @@
     <h2>Pre-Order Details</h2>
     <p class="nb-card-subtitle">Complete the form below to reserve your 1 Kg+ Biryani or Family Feast.</p>
 
-    <!-- SHOPIFY FORMS APP 1095347 EMBED SUPPORT -->
-    <shopify-form form-id="1095347"></shopify-form>
-    <div class="px-form-builder" id="px-form-builder-1095347" data-form-id="1095347"></div>
+    <!-- SHOPIFY FORMS APP EMBED & PAGE CONTENT SUPPORT -->
+    <div class="nb-shopify-forms-app-wrapper" style="margin-bottom: 24px;">
+      {% if page.content != blank %}
+        <div class="page-content-forms">{{ page.content }}</div>
+      {% endif %}
+      <shopify-form form-id="1095347"></shopify-form>
+      <div class="shopify-forms-embed" data-form-id="1095347"></div>
+      <div class="px-form-builder" id="px-form-builder-1095347" data-form-id="1095347"></div>
+    </div>
 
     <!-- DIRECT RELIABLE PRE-ORDER FORM (RECORDS 100% IN SHOPIFY ADMIN -> CUSTOMERS) -->
     {% form 'contact', id: 'nb-family-preorder-form', action: '/contact#nb-family-preorder-form' %}

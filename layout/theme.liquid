@@ -705,6 +705,30 @@
         }, true);
       </script>
 
+      <!-- SHOPIFY FORMS APP ENGINE & CUSTOM ELEMENT LOADER -->
+      <script>
+        (function initShopifyFormsEngine() {
+          if (window.Shopify && window.Shopify.loadFeatures) {
+            window.Shopify.loadFeatures([
+              { name: 'shopify-forms', version: '1.0' },
+              { name: 'consent-tracking-api', version: '0.1' }
+            ]);
+          }
+          if (typeof window.customElements !== 'undefined' && !window.customElements.get('shopify-form')) {
+            try {
+              class ShopifyFormElement extends HTMLElement {
+                connectedCallback() {
+                  this.style.display = 'block';
+                  this.style.visibility = 'visible';
+                  this.style.minHeight = '100px';
+                }
+              }
+              window.customElements.define('shopify-form', ShopifyFormElement);
+            } catch(e) {}
+          }
+        })();
+      </script>
+
       <!-- OFFICIAL NIAMAT BIRYANI LUXURY FOOTER -->
       {% render 'nb-footer-snippet' %}
     </div>
