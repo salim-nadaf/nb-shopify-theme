@@ -42,7 +42,10 @@
 
           <div class="nb-food-card__body">
             <div>
-              <h3 class="nb-food-card__title">{{ product.title }}</h3>
+              <h3 class="nb-food-card__title">
+                {{ product.title }}
+                {% render 'nb-item-badge', product: product %}
+              </h3>
               {% if product.description != blank %}
                 <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 55 }}</p>
               {% endif %}
