@@ -41,7 +41,7 @@
       {% assign count = 0 %}
       {% for product in all_prods_sorted %}
         {% assign title_lower = product.title | downcase %}
-        {% if title_lower contains 'makhmali malai' or title_lower contains 'boneless lazzat' or title_lower contains 'lababdaar seekh' or title_lower contains 'lazzat-e-tikka' or title_lower contains 'lazzat e tikka' or title_lower contains 'sabz tikka' %}
+        {% if title_lower contains 'makhmali malai' or title_lower contains 'boneless lazzat' or title_lower contains 'lababdaar seekh' or title_lower contains 'lazzat-e-tikka' or title_lower contains 'lazzat e tikka' or title_lower contains 'sabz tikka' or title_lower contains 'alishaan' %}
           {% render 'food-card-horizontal', product: product %}
           {% assign count = count | plus: 1 %}
         {% endif %}
@@ -95,7 +95,7 @@
     <div class="nb-food-grid">
       {% for product in all_prods_sorted %}
         {% assign title_lower = product.title | downcase %}
-        {% if title_lower contains 'boneless lazzat' or title_lower contains 'lababdaar seekh' or title_lower contains 'lazzat-e-tikka' or title_lower contains 'lazzat e tikka' or title_lower contains 'alishaan tandoori' %}
+        {% if title_lower contains 'boneless lazzat' or title_lower contains 'lababdaar seekh' or title_lower contains 'lazzat-e-tikka' or title_lower contains 'lazzat e tikka' or title_lower contains 'alishaan' %}
           {% render 'food-card-horizontal', product: product %}
         {% endif %}
       {% endfor %}
