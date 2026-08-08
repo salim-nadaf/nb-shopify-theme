@@ -47,41 +47,47 @@
   font-size: 2.5rem;
 }
 
-/* Badges */
+/* Badges on Image Thumbnail */
 .nb-badge {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 20px;
-  letter-spacing: 0.3px;
+  position: absolute !important;
+  top: 6px !important;
+  left: 6px !important;
+  z-index: 5 !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  padding: 3px 8px !important;
+  border-radius: 10px !important;
+  letter-spacing: 0.4px !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28) !important;
+  line-height: 1.2 !important;
 }
-.nb-badge--available { background: #C8922A; color: #fff; }
-.nb-badge--preorder { background: #2C1810; color: #FDF6EC; }
-.nb-badge--soldout { background: #999; color: #fff; }
+.nb-badge--available { background: #C8922A !important; color: #ffffff !important; }
+.nb-badge--preorder { background: #2C1810 !important; color: #FDF6EC !important; }
+.nb-badge--soldout { background: #757575 !important; color: #ffffff !important; }
 
 /* Item Tags & Badges */
-.nb-item-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 12px;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  margin-left: 6px;
-  vertical-align: middle;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+.nb-tag--popular { background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%) !important; color: #FFFFFF !important; }
+.nb-tag--musttry { background: linear-gradient(135deg, #E65100 0%, #BF360C 100%) !important; color: #FFFFFF !important; }
+.nb-tag--bestseller { background: linear-gradient(135deg, #D81B60 0%, #AD1457 100%) !important; color: #FFFFFF !important; }
+.nb-tag--chef { background: linear-gradient(135deg, #8E24AA 0%, #6A1B9A 100%) !important; color: #FFFFFF !important; }
+.nb-tag--new { background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%) !important; color: #FFFFFF !important; }
+
+@media (max-width: 768px) {
+  .nb-food-card__image {
+    width: 95px !important;
+    height: 95px !important;
+    overflow: visible !important;
+  }
+  .nb-badge {
+    top: 4px !important;
+    left: 4px !important;
+    font-size: 0.58rem !important;
+    padding: 2.5px 6px !important;
+    border-radius: 8px !important;
+  }
 }
-.nb-tag--popular { background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%); color: #FFFFFF; }
-.nb-tag--musttry { background: linear-gradient(135deg, #E65100 0%, #BF360C 100%); color: #FFFFFF; }
-.nb-tag--bestseller { background: linear-gradient(135deg, #D81B60 0%, #AD1457 100%); color: #FFFFFF; }
-.nb-tag--chef { background: linear-gradient(135deg, #8E24AA 0%, #6A1B9A 100%); color: #FFFFFF; }
-.nb-tag--new { background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%); color: #FFFFFF; }
 
 /* Body */
 .nb-food-card__body {
