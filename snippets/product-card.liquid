@@ -78,10 +78,28 @@
     view-event-payload="{{ product | standard_event_data: 'view', context: product_view_context | escape }}"
   {%- endunless -%}
 >
+{% liquid
+  assign dest_url = variant_to_link.url
+  if product != blank
+    assign is_instant = false
+    for col in product.collections
+      if col.handle == 'instant-delivery'
+        assign is_instant = true
+      endif
+    endfor
+
+    assign title_check = product.title | downcase
+    if is_instant or title_check contains 'single' or title_check contains 'half' or title_check contains 'double' or title_check contains 'instant'
+      assign dest_url = '/collections/instant-delivery'
+    else
+      assign dest_url = '/pages/family-orders'
+    endif
+  endif
+%}
   <a
     id="{{ product_card_id | md5 }}"
     {% unless onboarding %}
-      href="{{ variant_to_link.url }}"
+      href="{{ dest_url }}"
     {% endunless %}
     class="product-card__link"
     ref="productCardLink"

@@ -108,16 +108,27 @@ span.nb-badge,
 
 @media (max-width: 768px) {
   .nb-food-card__image {
-    width: 95px !important;
-    height: 95px !important;
-    overflow: visible !important;
+    width: 90px !important;
+    height: 90px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 10px !important;
   }
-  .nb-badge {
+  .nb-badge,
+  span.nb-badge,
+  .nb-food-card .nb-badge {
     top: 4px !important;
     left: 4px !important;
-    font-size: 0.58rem !important;
-    padding: 2.5px 6px !important;
-    border-radius: 8px !important;
+    font-size: 0.52rem !important;
+    font-weight: 800 !important;
+    padding: 2px 5px !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.1px !important;
+    max-width: calc(100% - 8px) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
   }
 }
 

@@ -670,6 +670,22 @@
         })();
       </script>
 
+      <!-- GLOBAL PRODUCT LINK INTERCEPTOR -->
+      <script>
+        document.addEventListener('click', function(e) {
+          var a = e.target.closest('a[href*="/products/"]');
+          if (a && !a.classList.contains('nb-allow-product-page')) {
+            var href = (a.getAttribute('href') || '').toLowerCase();
+            var text = (a.innerText || a.textContent || '').toLowerCase();
+            if (href.includes('single') || href.includes('half') || href.includes('double') || href.includes('instant') || text.includes('single') || text.includes('half') || text.includes('instant')) {
+              a.href = '/collections/instant-delivery';
+            } else {
+              a.href = '/pages/family-orders';
+            }
+          }
+        }, true);
+      </script>
+
       <!-- OFFICIAL NIAMAT BIRYANI LUXURY FOOTER -->
       {% render 'nb-footer-snippet' %}
     </div>
