@@ -29,9 +29,9 @@
     assign badge_class = 'nb-tag--popular'
     assign badge_icon = '🔥'
   elsif title_lower contains 'ustaadi murgh dum'
-    assign item_badge = "Chef's special"
+    assign item_badge = 'Classic'
     assign badge_class = 'nb-tag--chef'
-    assign badge_icon = '👨‍🍳'
+    assign badge_icon = '👑'
   elsif title_lower contains 'zam-zam' or title_lower contains 'zam zam' or title_lower contains 'zamzam'
     assign item_badge = 'Must try'
     assign badge_class = 'nb-tag--musttry'
@@ -41,7 +41,7 @@
     assign badge_class = 'nb-tag--musttry'
     assign badge_icon = '⭐'
   elsif title_lower contains 'makhmali malai' or title_lower contains 'makhmali'
-    assign item_badge = 'Best seller'
+    assign item_badge = 'Bestseller'
     assign badge_class = 'nb-tag--bestseller'
     assign badge_icon = '🏆'
   elsif title_lower contains 'banjara'
@@ -49,19 +49,19 @@
     assign badge_class = 'nb-tag--new'
     assign badge_icon = '✨'
   elsif title_lower contains 'boneless lazzat'
-    assign item_badge = 'Best seller'
+    assign item_badge = 'Bestseller'
     assign badge_class = 'nb-tag--bestseller'
     assign badge_icon = '🏆'
   elsif title_lower contains 'lababdaar seekh'
-    assign item_badge = 'Best seller'
+    assign item_badge = 'Bestseller'
     assign badge_class = 'nb-tag--bestseller'
     assign badge_icon = '🏆'
   elsif title_lower contains 'lazzat-e-tikka' or title_lower contains 'lazzat e tikka'
-    assign item_badge = 'Best seller'
+    assign item_badge = 'Bestseller'
     assign badge_class = 'nb-tag--bestseller'
     assign badge_icon = '🏆'
   elsif title_lower contains 'alishaan'
-    assign item_badge = 'Best seller'
+    assign item_badge = 'Bestseller'
     assign badge_class = 'nb-tag--bestseller'
     assign badge_icon = '🏆'
   elsif title_lower contains 'paneer'
@@ -69,13 +69,13 @@
     assign badge_class = 'nb-tag--musttry'
     assign badge_icon = '⭐'
   elsif title_lower contains 'sabz tikka'
-    assign item_badge = 'Best seller'
+    assign item_badge = 'Bestseller'
     assign badge_class = 'nb-tag--bestseller'
     assign badge_icon = '🏆'
   elsif title_lower contains 'nawabi veg'
-    assign item_badge = "Chef's special"
+    assign item_badge = 'Classic'
     assign badge_class = 'nb-tag--chef'
-    assign badge_icon = '👨‍🍳'
+    assign badge_icon = '👑'
   elsif title_lower contains 'nazaakat'
     assign item_badge = 'New'
     assign badge_class = 'nb-tag--new'
@@ -123,8 +123,7 @@
       {%- endif -%}
       <div class="nb-food-card__meta">
         {%- if is_preorder -%}
-          <span class="nb-meta-tag">🕐 Pre-Order</span>
-          <span class="nb-meta-tag">1 Kg+</span>
+          <span class="nb-meta-tag">Min. 1 Kg Required</span>
         {%- else -%}
           <span class="nb-meta-tag">⚡ 30-60 mins</span>
         {%- endif -%}
