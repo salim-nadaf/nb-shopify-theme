@@ -298,13 +298,25 @@
 
     h1, h2, h3, h4 { color: #2C1810 !important; }
 
-    footer, .footer {
-      background: #2C1810 !important;
+    footer, .footer, #footer-group {
+      background: #1E100A !important;
       color: #FDF6EC !important;
       border-top: 2px solid #C8922A !important;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
     }
     footer a, .footer a,
     footer p, .footer p { color: #FDF6EC !important; }
+
+    @media (max-width: 768px) {
+      html, body {
+        background-color: #1E100A !important;
+      }
+      .page-wrapper {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+      }
+    }
 
     .variant-pills__input:checked + .variant-pills__label {
       background: #C8922A !important;
@@ -631,14 +643,13 @@
             if (template && mainContent) {
               mainContent.innerHTML = template.innerHTML;
             }
-          }
         })();
       </script>
 
+      <footer id="footer-group">
+        {% sections 'footer-group' %}
+      </footer>
     </div>
-
-    <!-- NIAMAT BIRYANI: Luxury Footer -->
-    {% render 'nb-footer-snippet' %}
 
     {% render 'cart-drawer', render_wrapper: true %}
     {% render 'theme-drawer' %}
