@@ -590,16 +590,15 @@
             var mainContent = document.getElementById('MainContent');
             if (template && mainContent) {
               mainContent.innerHTML = template.innerHTML;
-              document.title = "Family Orders — Biryani Palace by Niamat";
             }
           }
         })();
       </script>
 
-      <footer>
-        {% render 'nb-footer-snippet' %}
-      </footer>
     </div>
+
+    <!-- NIAMAT BIRYANI: Luxury Footer -->
+    {% render 'nb-footer-snippet' %}
 
     {% render 'cart-drawer', render_wrapper: true %}
     {% render 'theme-drawer' %}

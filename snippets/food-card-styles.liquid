@@ -51,32 +51,60 @@
   font-size: 2.5rem;
 }
 
-/* Badges on Image Thumbnail */
-.nb-badge {
+/* Badges on Image Thumbnail — POPPING HIGH CONTRAST */
+.nb-badge,
+span.nb-badge,
+.nb-food-card .nb-badge {
   position: absolute !important;
   top: 6px !important;
   left: 6px !important;
-  z-index: 5 !important;
-  font-size: 0.65rem !important;
+  z-index: 10 !important;
+  font-size: 0.68rem !important;
   font-weight: 800 !important;
-  padding: 3px 8px !important;
+  padding: 3px 9px !important;
   border-radius: 10px !important;
   letter-spacing: 0.4px !important;
   text-transform: uppercase !important;
   white-space: nowrap !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35) !important;
   line-height: 1.2 !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
 }
 .nb-badge--available { background: #C8922A !important; color: #ffffff !important; }
 .nb-badge--preorder { background: #2C1810 !important; color: #FDF6EC !important; }
 .nb-badge--soldout { background: #757575 !important; color: #ffffff !important; }
 
-/* Item Tags & Badges */
-.nb-tag--popular { background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%) !important; color: #FFFFFF !important; }
-.nb-tag--musttry { background: linear-gradient(135deg, #E65100 0%, #BF360C 100%) !important; color: #FFFFFF !important; }
-.nb-tag--bestseller { background: linear-gradient(135deg, #D81B60 0%, #AD1457 100%) !important; color: #FFFFFF !important; }
-.nb-tag--chef { background: linear-gradient(135deg, #8E24AA 0%, #6A1B9A 100%) !important; color: #FFFFFF !important; }
-.nb-tag--new { background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%) !important; color: #FFFFFF !important; }
+/* Item Tags & Badges — Vibrant Gradient Pills */
+.nb-tag--musttry, .nb-badge-musttry {
+  background: linear-gradient(135deg, #FF6B00 0%, #D35400 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+.nb-tag--bestseller, .nb-badge-bestseller {
+  background: linear-gradient(135deg, #D49E35 0%, #B07C1C 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+.nb-tag--popular, .nb-badge-popular {
+  background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+.nb-tag--chef, .nb-badge-royal {
+  background: linear-gradient(135deg, #8E44AD 0%, #6C3483 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
+
+.nb-tag--new {
+  background: linear-gradient(135deg, #27AE60 0%, #1E8449 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+}
 
 @media (max-width: 768px) {
   .nb-food-card__image {
