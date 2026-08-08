@@ -23,6 +23,8 @@
     <p class="nb-card-subtitle">Complete the form below to reserve your 1 Kg+ Biryani or Family Feast.</p>
 
     {% form 'contact', id: 'nb-family-preorder-form' %}
+      <input type="hidden" name="contact[body]" id="nb-family-body-hidden" value="Family Pre-Order Request" />
+      
       {% if form.posted_successfully? %}
         <div class="nb-form-success">
           <span class="nb-success-icon">🎉</span>
@@ -100,6 +102,45 @@
       {% endif %}
     {% endform %}
 
+    <script>
+      (function initFamilyFormSubmit() {
+        var form = document.getElementById('nb-family-preorder-form');
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            var name = document.getElementById('nb-name') ? document.getElementById('nb-name').value : '';
+            var phone = document.getElementById('nb-phone') ? document.getElementById('nb-phone').value : '';
+            var emailEl = document.getElementById('nb-email');
+            var email = emailEl ? emailEl.value.trim() : '';
+            var date = document.getElementById('nb-date') ? document.getElementById('nb-date').value : '';
+            var time = document.getElementById('nb-time') ? document.getElementById('nb-time').value : '';
+            var item = document.getElementById('nb-item') ? document.getElementById('nb-item').value : '';
+            var address = document.getElementById('nb-address') ? document.getElementById('nb-address').value : '';
+            var notes = document.getElementById('nb-notes') ? document.getElementById('nb-notes').value : '';
+
+            if (!email || email === '') {
+              var cleanPhone = phone.replace(/[^0-9]/g, '') || Date.now();
+              emailEl.value = 'preorder+' + cleanPhone + '@niamatbiryani.in';
+            }
+
+            var bodyHidden = document.getElementById('nb-family-body-hidden');
+            if (bodyHidden) {
+              bodyHidden.value = [
+                '=== FAMILY PRE-ORDER DETAILS ===',
+                'Name: ' + name,
+                'Phone/WhatsApp: ' + phone,
+                'Email: ' + (email || emailEl.value),
+                'Preferred Date: ' + date,
+                'Time Slot: ' + time,
+                'Order Selection: ' + item,
+                'Delivery Address: ' + address,
+                'Special Notes: ' + (notes || 'None')
+              ].join('\n');
+            }
+          });
+        }
+      })();
+    </script>
+
     <!-- WHATSAPP FAST OPTION -->
     <div class="nb-whatsapp-divider">
       <span>OR ORDER INSTANTLY VIA WHATSAPP</span>
@@ -110,12 +151,13 @@
     </a>
   </div>
 
-  <!-- EMBEDDED SHOPIFY FORMS APP CONTENT IF PRESENT -->
-  {% if page.content != blank %}
-    <div class="nb-page-app-content">
+  <!-- EMBEDDED SHOPIFY FORMS APP CONTENT & APP BLOCKS IF PRESENT -->
+  <div class="nb-page-app-content">
+    {% content_for 'blocks' %}
+    {% if page.content != blank %}
       {{ page.content }}
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
 </div>
 
 <style>
