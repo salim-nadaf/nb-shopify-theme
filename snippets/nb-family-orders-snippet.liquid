@@ -1,4 +1,81 @@
 {% comment %}
-  NIAMAT BIRYANI — Family Orders Page Snippet & Luxury Pre-Order Form
+  NIAMAT BIRYANI — Family Orders Page Snippet
 {% comment %}
-{% section 'nb-family-orders' %}
+
+<div class="nb-family-orders-container">
+  <div class="nb-family-orders-header">
+    <span class="nb-pill-badge">👑 FAMILY ORDERS</span>
+    <h1>Family Orders</h1>
+    <p class="nb-family-sub">
+      Place a Family Order with Biryani Palace by Niamat. Fill in the form below to submit your pre-order details. Our team will contact you on WhatsApp or phone to confirm availability, delivery charges, and timing.
+    </p>
+    
+    <div class="nb-notice-box">
+      <span>⏰ Minimum 3-hour advance notice required for pre-orders.</span>
+      <span>🚚 Delivery within Kalyan, Ulhasnagar, Dombivli, Ambernath & nearby areas confirmed upon order placement.</span>
+    </div>
+  </div>
+</div>
+
+<style>
+.nb-family-orders-container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 16px 80px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.nb-family-orders-header {
+  margin-bottom: 36px;
+}
+
+.nb-pill-badge {
+  display: inline-block;
+  background: rgba(200, 146, 42, 0.12);
+  color: #C8922A !important;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+}
+
+.nb-family-orders-header h1 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 2.6rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  margin: 0 0 16px;
+}
+
+.nb-family-sub {
+  font-size: 1.02rem;
+  color: #5C4033 !important;
+  line-height: 1.6;
+  max-width: 720px;
+  margin: 0 auto 24px;
+}
+
+.nb-notice-box {
+  background: #FFFDF7;
+  border: 1px dashed rgba(200, 146, 42, 0.4);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #7A5C4A;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .nb-family-orders-container { padding: 24px 12px 60px; }
+  .nb-family-orders-header h1 { font-size: 2rem !important; }
+}
+</style>
