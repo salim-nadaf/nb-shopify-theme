@@ -152,7 +152,6 @@ div[class*="shopify-form"] form,
 div[class*="form-builder"] form,
 div[class*="form-app"] form,
 .shopify-app-block-content,
-form[action*="contact"],
 .px-form-builder form {
   background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
   border: 1px solid rgba(200, 146, 42, 0.32) !important;
@@ -164,6 +163,18 @@ form[action*="contact"],
   width: 100% !important;
   box-sizing: border-box !important;
   text-align: left !important;
+}
+
+/* Prevent double card nesting inside contact form card */
+.nb-contact-form-card form,
+form.nb-contact-form-inner {
+  background: transparent !important;
+  border: none !important;
+  border-top: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
 }
 
 /* ===== FORCE SHOPIFY FORMS APP ELEMENTS VISIBILITY & LAYOUT ===== */
@@ -178,9 +189,21 @@ shopify-form,
   opacity: 1 !important;
   width: 100% !important;
   max-width: 720px !important;
-  margin: 0 auto 24px !important;
-  min-height: 100px !important;
+  margin: 0 auto !important;
   box-sizing: border-box !important;
+}
+
+/* Hide empty app wrappers so no blank space is rendered when no Shopify Form is active */
+.nb-shopify-forms-app-wrapper:empty,
+.page-content-forms:empty,
+shopify-form:empty,
+.shopify-forms-embed:empty,
+.px-form-builder:empty {
+  display: none !important;
+  min-height: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Frame styling for App IFrames */

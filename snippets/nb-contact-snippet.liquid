@@ -43,19 +43,17 @@
 
     <!-- CONTACT FORM CONTAINER -->
     <div class="nb-contact-form-card">
-      <div class="nb-form-header">
+      <div class="nb-form-header" style="margin-bottom: 20px;">
         <h3>Send Us a Message</h3>
         <p>Fill out the form below and our team will get back to you promptly.</p>
       </div>
 
-      <!-- SHOPIFY FORMS APP EMBED SUPPORT -->
-      <div class="nb-shopify-forms-app-wrapper" style="margin-bottom: 24px;">
-        {% if page.content != blank %}
+      <!-- SHOPIFY FORMS APP EMBED SUPPORT (ONLY SHOWS IF ACTIVE) -->
+      {% if page.content != blank %}
+        <div class="nb-shopify-forms-app-wrapper" style="margin-bottom: 16px;">
           <div class="page-content-forms">{{ page.content }}</div>
-        {% endif %}
-        <shopify-form form-id="1095347"></shopify-form>
-        <div class="shopify-forms-embed" data-form-id="1095347"></div>
-      </div>
+        </div>
+      {% endif %}
 
       {% form 'contact', class: 'nb-contact-form-inner' %}
         {% if form.posted_successfully? %}
