@@ -1,0 +1,314 @@
+{% comment %}
+  NIAMAT BIRYANI — Bulk Catering Page Section with Package Cards & App Block Support
+{% comment %}
+
+<div class="nb-bulk-container">
+  <!-- PAGE INTRO HEADER -->
+  <div class="nb-bulk-header">
+    <span class="nb-pill-badge">🎉 BULK & EVENT CATERING</span>
+    <h1>Bulk Catering Packages</h1>
+    <p class="nb-bulk-sub">
+      Planning a wedding, corporate event, house party, or large family celebration in Kalyan & MMR region? Royal Biryani Handis, appetizers & complete catering packages crafted by Founder & Master Chef Salim Nadaf.
+    </p>
+
+    <div class="nb-notice-box">
+      <span>🚚 Delivered Hot & Fresh in Sealed Handis across Kalyan, Dombivli, Thane, Navi Mumbai & Mumbai.</span>
+      <span>📞 For custom pricing on 20 Kg to 100+ Kg catering, call or WhatsApp Salim Nadaf directly at +91 91676 82582.</span>
+    </div>
+  </div>
+
+  <!-- LUXURY BULK PACKAGES GRID -->
+  <div class="nb-bulk-packages-grid">
+    <!-- PACKAGE 1 -->
+    <div class="nb-bulk-package-card">
+      <div class="nb-pkg-icon">🎉</div>
+      <h3>The Mehmaan Plan [5 Kg]</h3>
+      <div class="nb-pkg-price">₹4,499</div>
+      <p class="nb-pkg-desc">Perfect for Intimate Gatherings, House Parties & Small Family Celebrations.</p>
+      <div class="nb-pkg-includes">
+        <span class="nb-free-bonus">✨ Free 12 Pcs Kebabs + Raita</span>
+      </div>
+      <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani!%20I%20want%20to%20enquire%20about%20The%20Mehmaan%20Plan%20(5%20Kg)%20for%20my%20event." target="_blank" rel="noopener" class="nb-pkg-wa-btn">
+        Enquire Mehmaan Plan →
+      </a>
+    </div>
+
+    <!-- PACKAGE 2 FEATURED -->
+    <div class="nb-bulk-package-card nb-pkg-featured">
+      <div class="nb-pkg-badge">🔥 MOST POPULAR</div>
+      <div class="nb-pkg-icon">👑</div>
+      <h3>The Shaahi Dawat [10 Kg]</h3>
+      <div class="nb-pkg-price">₹8,999</div>
+      <p class="nb-pkg-desc">Ideal for Birthday Parties, Engagement Ceremonies & Office Functions.</p>
+      <div class="nb-pkg-includes">
+        <span class="nb-free-bonus">✨ Free 24 Pcs Kebabs + Gulab Jamun</span>
+      </div>
+      <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani!%20I%20want%20to%20enquire%20about%20The%20Shaahi%20Dawat%20(10%20Kg)%20for%20my%20event." target="_blank" rel="noopener" class="nb-pkg-wa-btn">
+        Enquire Shaahi Dawat →
+      </a>
+    </div>
+
+    <!-- PACKAGE 3 -->
+    <div class="nb-bulk-package-card">
+      <div class="nb-pkg-icon">🏰</div>
+      <h3>The Royal Baithak [15 Kg]</h3>
+      <div class="nb-pkg-price">₹13,999</div>
+      <p class="nb-pkg-desc">Designed for Grand Reception Events, Corporate Feasts & Large Gatherings.</p>
+      <div class="nb-pkg-includes">
+        <span class="nb-free-bonus">✨ Free Starter Platter + Dessert Handi</span>
+      </div>
+      <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani!%20I%20want%20to%20enquire%20about%20The%20Royal%20Baithak%20(15%20Kg)%20for%20my%20event." target="_blank" rel="noopener" class="nb-pkg-wa-btn">
+        Enquire Royal Baithak →
+      </a>
+    </div>
+  </div>
+
+  <!-- DIRECT WHATSAPP ACTION BUTTON -->
+  <div class="nb-bulk-actions" style="margin-top: 30px;">
+    <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani!%20I%20want%20to%20enquire%20about%20Bulk%20Catering%20Packages%20for%20my%20event." target="_blank" rel="noopener" class="nb-whatsapp-btn" style="max-width: 440px; margin: 0 auto;">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+      Chat on WhatsApp (+91 91676 82582)
+    </a>
+  </div>
+
+  <!-- THEME EDITOR APP BLOCKS & CUSTOM BLOCKS CONTAINER -->
+  <div class="nb-page-app-blocks">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when '@app' %}
+          {% render block %}
+        {% when '@theme' %}
+          {% render block %}
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.nb-bulk-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 16px 80px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.nb-bulk-header {
+  margin-bottom: 40px;
+}
+
+.nb-pill-badge {
+  display: inline-block;
+  background: rgba(200, 146, 42, 0.12);
+  color: #C8922A !important;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+}
+
+.nb-bulk-header h1 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 2.6rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  margin: 0 0 16px;
+}
+
+.nb-bulk-sub {
+  font-size: 1.02rem;
+  color: #5C4033 !important;
+  line-height: 1.65;
+  max-width: 780px;
+  margin: 0 auto 24px;
+}
+
+.nb-notice-box {
+  background: #FFFDF7;
+  border: 1px dashed rgba(200, 146, 42, 0.4);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: #7A5C4A;
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.nb-bulk-packages-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 24px;
+  margin: 40px 0;
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .nb-bulk-packages-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.nb-bulk-package-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(200, 146, 42, 0.25) !important;
+  border-radius: 20px !important;
+  padding: 32px 24px !important;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.06) !important;
+  transition: all 0.3s ease !important;
+}
+
+.nb-bulk-package-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 35px rgba(200, 146, 42, 0.15) !important;
+}
+
+.nb-pkg-featured {
+  border: 2px solid #C8922A !important;
+  border-top: 5px solid #D49E35 !important;
+  box-shadow: 0 12px 35px rgba(200, 146, 42, 0.18) !important;
+}
+
+.nb-pkg-badge {
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 100%);
+  color: #FFFFFF;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(200,146,42,0.3);
+}
+
+.nb-pkg-icon {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+
+.nb-bulk-package-card h3 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.28rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+
+.nb-pkg-price {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #C8922A !important;
+  margin-bottom: 12px;
+}
+
+.nb-pkg-desc {
+  font-size: 0.9rem;
+  color: #5C4033;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.nb-pkg-includes {
+  margin-bottom: 20px;
+}
+
+.nb-free-bonus {
+  display: inline-block;
+  background: rgba(200, 146, 42, 0.12);
+  color: #B07C1C !important;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 146, 42, 0.25);
+}
+
+.nb-pkg-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: #25D366 !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 13px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+  margin-top: auto;
+}
+
+.nb-pkg-wa-btn:hover {
+  background: #20BA5A !important;
+  transform: translateY(-2px);
+}
+
+.nb-whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: #25D366 !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.98rem;
+  padding: 14px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.nb-whatsapp-btn:hover {
+  background: #20BA5A !important;
+  transform: translateY(-2px);
+}
+
+.nb-page-app-blocks {
+  margin-top: 30px;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .nb-bulk-container { padding: 24px 12px 60px; }
+  .nb-bulk-header h1 { font-size: 2rem !important; }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Bulk Orders Page",
+  "class": "section-wrapper",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bulk Orders Page"
+    }
+  ]
+}
+{% endschema %}
