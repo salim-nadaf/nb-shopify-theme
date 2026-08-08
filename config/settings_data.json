@@ -99,6 +99,11 @@
         "settings": {
           "widget_type": "review-widget"
         }
+      },
+      "5091004626459974968": {
+        "type": "shopify://apps/moose-whatsapp/blocks/whatsapp/b77db749-c44a-4265-8135-8b842af1b111",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_palette": {
