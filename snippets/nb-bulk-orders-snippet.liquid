@@ -194,16 +194,30 @@
     </a>
   </div>
 
-  <!-- EMBEDDED SHOPIFY FORMS APP CONTENT & APP BLOCKS IF PRESENT -->
+  <!-- EMBEDDED SHOPIFY FORMS APP & APP BLOCKS CONTAINER -->
   <div class="nb-page-app-content">
     {% content_for 'blocks' %}
     {% if page.content != blank %}
-      {{ page.content }}
+      <div class="nb-embedded-app-card">
+        {{ page.content }}
+      </div>
     {% endif %}
   </div>
 </div>
 
 <style>
+.nb-page-app-content h1,
+.nb-page-app-content .page-title,
+.nb-page-app-content .main-page-title {
+  display: none !important;
+}
+
+.nb-embedded-app-card {
+  width: 100%;
+  max-width: 760px;
+  margin: 20px auto 40px;
+  box-sizing: border-box;
+}
 .nb-bulk-container {
   max-width: 960px;
   margin: 0 auto;
