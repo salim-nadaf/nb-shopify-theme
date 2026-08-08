@@ -10,7 +10,13 @@
 {
   "sections": {
     "main": {
-      "type": "nb-bulk-orders"
+      "type": "main-page",
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
     }
   },
   "order": [

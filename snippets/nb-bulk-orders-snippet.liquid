@@ -1,9 +1,8 @@
 {% comment %}
   NIAMAT BIRYANI — Bulk Orders & Catering Page Snippet with Custom Packages
-{% comment %}
+{% endcomment %}
 
 <div class="nb-bulk-container">
-  <!-- PAGE INTRO HEADER -->
   <div class="nb-bulk-header">
     <span class="nb-pill-badge">🎉 BULK & EVENT CATERING</span>
     <h1>Bulk Catering Packages</h1>
@@ -62,10 +61,10 @@
       <div class="nb-pkg-icon">🏰</div>
       <h3>The Royal Baithak [15 Kg]</h3>
       <div class="nb-pkg-price">₹13,999.00</div>
-      <p class="nb-pkg-desc">3 Biryani Handis + 2 Starters + Gravy + Dessert.</p>
+      <p class="nb-pkg-desc">Choose 3 Biryanis + 1 Gravy + 2 Starters.</p>
       
       <div class="nb-pkg-includes">
-        <span class="nb-free-bonus">👑 Complete Royal VIP Service Included</span>
+        <span class="nb-free-bonus">🥂 Free Dessert + Drinks</span>
       </div>
 
       <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani!%20I%20would%20like%20to%20book%20The%20Royal%20Baithak%20%5B15%20Kg%5D%20%40%20%E2%82%B913%2C999.%20Please%20confirm%20availability." 
@@ -76,11 +75,165 @@
     </div>
 
   </div>
+
+  <!-- CENTERED CUSTOM BULK CATERING FORM -->
+  <div class="nb-bulk-form-card">
+    <div class="nb-card-badge">✨ CUSTOM CATERING ENQUIRY</div>
+    <h2>Need a Custom Bulk Package?</h2>
+    <p class="nb-card-subtitle">Have a larger event or specific menu preference? Submit your details below or connect directly on WhatsApp (+91 91676 82582).</p>
+
+    <!-- SHOPIFY FORMS APP & EMBEDDED FORM 1095347 -->
+    <shopify-form form-id="1095347"></shopify-form>
+    <div class="px-form-builder" id="px-form-builder-1095347" data-form-id="1095347"></div>
+    <div class="shopify-app-block" data-form-id="1095347" data-id="1095347"></div>
+    <div id="form-builder-1095347" data-form-id="1095347"></div>
+    <div class="hulk-form" data-id="1095347"></div>
+
+    {% form 'contact', id: 'nb-bulk-catering-form', action: '/contact#nb-bulk-catering-form' %}
+      <input type="hidden" name="contact[body]" id="nb-bulk-body-hidden" value="Bulk Catering Enquiry" />
+
+      {% if form.posted_successfully? %}
+        <div class="nb-form-success" style="padding: 40px 20px; text-align: center;">
+          <span class="nb-success-icon" style="font-size: 3.5rem; display: block; margin-bottom: 16px;">🎉</span>
+          <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; color: #2C1810; margin-bottom: 12px;">Bulk Catering Enquiry Received!</h3>
+          <p style="font-size: 1.05rem; color: #5C4033; max-width: 540px; margin: 0 auto 24px; line-height: 1.6;">
+            Thank you! Your bulk catering request has been successfully registered in our system. Salim Nadaf & our catering team will reach out via WhatsApp or Phone shortly with custom pricing and details.
+          </p>
+          <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani!%20I%20just%20submitted%20a%20Bulk%20Catering%20Enquiry%20on%20your%20website.%20Please%20confirm%20my%20quote." target="_blank" rel="noopener" class="nb-whatsapp-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 380px; margin: 0 auto; background: #25D366; color: #fff; font-weight: 700; padding: 15px 24px; border-radius: 12px; text-decoration: none;">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            Confirm & Chat on WhatsApp →
+          </a>
+        </div>
+      {% else %}
+        {% if form.errors %}
+          <div class="nb-form-error">
+            <p>Please complete all required fields to submit your enquiry.</p>
+          </div>
+        {% endif %}
+
+        <div class="nb-form-group">
+          <label for="nb-bulk-name">Your Full Name *</label>
+          <input type="text" id="nb-bulk-name" name="contact[Name]" placeholder="Enter your full name" required />
+        </div>
+
+        <div class="nb-form-grid">
+          <div class="nb-form-group">
+            <label for="nb-bulk-phone">WhatsApp / Phone Number *</label>
+            <input type="tel" id="nb-bulk-phone" name="contact[Phone]" placeholder="e.g. +91 91676 82582" required />
+          </div>
+          <div class="nb-form-group">
+            <label for="nb-bulk-email">Email Address</label>
+            <input type="email" id="nb-bulk-email" name="contact[email]" placeholder="yourname@gmail.com" />
+          </div>
+        </div>
+
+        <div class="nb-form-grid">
+          <div class="nb-form-group">
+            <label for="nb-bulk-date">Event Date *</label>
+            <input type="date" id="nb-bulk-date" name="contact[Event Date]" required />
+          </div>
+          <div class="nb-form-group">
+            <label for="nb-bulk-package">Preferred Bulk Package *</label>
+            <select id="nb-bulk-package" name="contact[Bulk Package]" required>
+              <option value="">Select Package or Custom</option>
+              <option value="The Mehmaan Plan [5 Kg] @ ₹4,499">The Mehmaan Plan [5 Kg] @ ₹4,499</option>
+              <option value="The Shaahi Dawat [10 Kg] @ ₹8,999">The Shaahi Dawat [10 Kg] @ ₹8,999</option>
+              <option value="The Royal Baithak [15 Kg] @ ₹13,999">The Royal Baithak [15 Kg] @ ₹13,999</option>
+              <option value="Custom Bulk Event (20 Kg to 100+ Kg)">Custom Bulk Event (20 Kg to 100+ Kg)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="nb-form-group">
+          <label for="nb-bulk-address">Event Venue / Delivery Address in Kalyan *</label>
+          <textarea id="nb-bulk-address" name="contact[Venue Address]" rows="3" placeholder="Enter complete venue address, landmark, and area (Kalyan, Dombivli, Thane, etc.)" required></textarea>
+        </div>
+
+        <div class="nb-form-group">
+          <label for="nb-bulk-notes">Biryani & Dish Customizations</label>
+          <textarea id="nb-bulk-notes" name="contact[Custom Requirements]" rows="2" placeholder="e.g., Specific biryani flavors, starter choices, spice preference..."></textarea>
+        </div>
+
+        <button type="submit" class="nb-submit-btn">
+          Request Bulk Catering Quote →
+        </button>
+      {% endif %}
+    {% endform %}
+
+    <script>
+      (function initBulkFormSubmit() {
+        var form = document.getElementById('nb-bulk-catering-form');
+        if (form) {
+          form.addEventListener('submit', function() {
+            var name = document.getElementById('nb-bulk-name') ? document.getElementById('nb-bulk-name').value.trim() : '';
+            var phone = document.getElementById('nb-bulk-phone') ? document.getElementById('nb-bulk-phone').value.trim() : '';
+            var emailEl = document.getElementById('nb-bulk-email');
+            var email = emailEl ? emailEl.value.trim() : '';
+            var date = document.getElementById('nb-bulk-date') ? document.getElementById('nb-bulk-date').value : '';
+            var pkg = document.getElementById('nb-bulk-package') ? document.getElementById('nb-bulk-package').value : '';
+            var address = document.getElementById('nb-bulk-address') ? document.getElementById('nb-bulk-address').value.trim() : '';
+            var notes = document.getElementById('nb-bulk-notes') ? document.getElementById('nb-bulk-notes').value.trim() : '';
+
+            if (!email || email === '') {
+              var cleanPhone = phone.replace(/[^0-9]/g, '') || Date.now();
+              email = 'bulkorder+' + cleanPhone + '@niamatbiryani.in';
+              if (emailEl) emailEl.value = email;
+            }
+
+            var bodyHidden = document.getElementById('nb-bulk-body-hidden');
+            if (bodyHidden) {
+              bodyHidden.value = [
+                '=== BULK CATERING ENQUIRY DETAILS ===',
+                'Customer Name: ' + name,
+                'WhatsApp / Phone: ' + phone,
+                'Email Address: ' + email,
+                'Event Date: ' + date,
+                'Selected Package: ' + pkg,
+                'Venue Address: ' + address,
+                'Customizations/Notes: ' + (notes || 'None')
+              ].join('\n');
+            }
+          });
+        }
+      })();
+    </script>
+
+    <!-- DIRECT WHATSAPP BUTTON WITH PRE-FILLED MESSAGE -->
+    <div class="nb-whatsapp-divider">
+      <span>OR CHAT DIRECTLY ON WHATSAPP</span>
+    </div>
+    <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani!%20I%20want%20to%20enquire%20about%20Bulk%20Catering%20Packages%20for%20my%20event." target="_blank" rel="noopener" class="nb-whatsapp-btn">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+      Chat on WhatsApp (+91 91676 82582)
+    </a>
+  </div>
+
+  <!-- EMBEDDED SHOPIFY FORMS APP & APP BLOCKS CONTAINER -->
+  <div class="nb-page-app-content">
+    {% content_for 'blocks' %}
+    {% if page.content != blank %}
+      <div class="nb-embedded-app-card">
+        {{ page.content }}
+      </div>
+    {% endif %}
+  </div>
 </div>
 
 <style>
+.nb-page-app-content h1,
+.nb-page-app-content .page-title,
+.nb-page-app-content .main-page-title {
+  display: none !important;
+}
+
+.nb-embedded-app-card {
+  width: 100%;
+  max-width: 760px;
+  margin: 20px auto 40px;
+  box-sizing: border-box;
+}
 .nb-bulk-container {
-  max-width: 1080px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 40px 16px 80px;
   text-align: center;
@@ -106,17 +259,17 @@
 
 .nb-bulk-header h1 {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 2.6rem !important;
+  font-size: 2.7rem !important;
   font-weight: 800 !important;
   color: #2C1810 !important;
   margin: 0 0 16px;
 }
 
 .nb-bulk-sub {
-  font-size: 1.02rem;
+  font-size: 1.05rem;
   color: #5C4033 !important;
-  line-height: 1.65;
-  max-width: 780px;
+  line-height: 1.6;
+  max-width: 760px;
   margin: 0 auto 24px;
 }
 
@@ -131,39 +284,41 @@
   font-size: 0.88rem;
   color: #7A5C4A;
   text-align: center;
-  max-width: 760px;
+  max-width: 740px;
   margin: 0 auto;
 }
 
 .nb-bulk-packages-grid {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: 1fr;
   gap: 24px;
-  margin: 40px 0;
+  margin-bottom: 50px;
   text-align: left;
 }
 
 @media (min-width: 768px) {
   .nb-bulk-packages-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
 .nb-bulk-package-card {
-  background: #FFFFFF !important;
-  border: 1px solid rgba(200, 146, 42, 0.25) !important;
-  border-radius: 20px !important;
-  padding: 32px 24px !important;
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 100%);
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  border-top: 4px solid #C8922A;
+  border-radius: 20px;
+  padding: 28px 22px;
+  box-shadow: 0 10px 30px rgba(44, 24, 16, 0.08);
   position: relative;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.06) !important;
-  transition: all 0.3s ease !important;
+  justify-content: space-between;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .nb-bulk-package-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 35px rgba(200, 146, 42, 0.15) !important;
+  box-shadow: 0 16px 36px rgba(200, 146, 42, 0.2);
 }
 
 .nb-pkg-featured {
@@ -253,8 +408,183 @@
   transform: translateY(-2px);
 }
 
+.nb-bulk-form-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
+  border: 1px solid rgba(200, 146, 42, 0.32) !important;
+  border-top: 5px solid #C8922A !important;
+  border-radius: 24px !important;
+  padding: 42px 36px !important;
+  box-shadow: 0 16px 40px -10px rgba(44, 24, 16, 0.12), 0 4px 12px rgba(200, 146, 42, 0.08) !important;
+  margin: 0 auto !important;
+  text-align: left;
+  max-width: 760px;
+  box-sizing: border-box;
+}
+
+.nb-card-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%);
+  color: #F3C669 !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.nb-bulk-form-card h2 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.9rem !important;
+  font-weight: 800 !important;
+  color: #2C1810 !important;
+  margin: 0 0 6px;
+  text-align: center;
+}
+
+.nb-card-subtitle {
+  font-size: 0.92rem;
+  color: #7A5C4A !important;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.nb-form-group {
+  margin-bottom: 20px;
+}
+
+.nb-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .nb-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.nb-bulk-form-card label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2C1810 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.nb-bulk-form-card input,
+.nb-bulk-form-card select,
+.nb-bulk-form-card textarea {
+  width: 100%;
+  background: #FFFFFF !important;
+  color: #2C1810 !important;
+  border: 1px solid rgba(200, 146, 42, 0.35) !important;
+  border-radius: 12px !important;
+  padding: 14px 16px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 0.95rem !important;
+  box-sizing: border-box !important;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.nb-bulk-form-card input:focus,
+.nb-bulk-form-card select:focus,
+.nb-bulk-form-card textarea:focus {
+  border-color: #C8922A !important;
+  box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.2) !important;
+  background: #FFFDF9 !important;
+}
+
+.nb-submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  padding: 16px 28px !important;
+  border-radius: 12px !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 6px 20px rgba(200,146,42,0.35), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+  transition: all 0.25s ease !important;
+  margin-top: 10px;
+}
+
+.nb-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(200,146,42,0.45) !important;
+}
+
+.nb-whatsapp-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 28px 0 18px;
+  color: #8C6A54;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.nb-whatsapp-divider::before,
+.nb-whatsapp-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.25);
+}
+
+.nb-whatsapp-divider span {
+  padding: 0 12px;
+}
+
+.nb-whatsapp-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: #25D366 !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.98rem;
+  padding: 14px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+
+.nb-whatsapp-btn:hover {
+  background: #20BA5A !important;
+  transform: translateY(-2px);
+}
+
+.nb-form-success {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.nb-success-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.nb-form-success h3 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.6rem;
+  color: #2C1810;
+  margin-bottom: 10px;
+}
+
 @media (max-width: 767px) {
   .nb-bulk-container { padding: 24px 12px 60px; }
   .nb-bulk-header h1 { font-size: 2rem !important; }
+  .nb-bulk-form-card { padding: 28px 20px !important; }
 }
 </style>
