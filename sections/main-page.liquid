@@ -23,11 +23,15 @@
       {% render 'spacing-style', settings: section.settings %}
     "
   >
-    {% if page.handle == 'contact' or page.handle == 'contact-us' %}
+    {% if page.handle == 'contact' or page.handle == 'contact-us' or page.title contains 'Contact' %}
       {% render 'nb-contact-snippet' %}
-    {% elsif page.handle == 'about-us' or page.handle == 'about' %}
+    {% elsif page.handle == 'about-us' or page.handle == 'about' or page.title contains 'About' or page.title contains 'Story' %}
       {% render 'nb-our-story-snippet' %}
-    {% elsif page.handle == 'biryani-calculator' %}
+    {% elsif page.handle == 'family-orders' or page.handle == 'family-feast' or page.title contains 'Family' %}
+      {% render 'nb-family-orders-snippet' %}
+    {% elsif page.handle == 'bulk-orders' or page.title contains 'Bulk' or page.title contains 'Catering' %}
+      {% render 'nb-bulk-orders-snippet' %}
+    {% elsif page.handle == 'biryani-calculator' or page.title contains 'Calculator' %}
       {% render 'nb-biryani-calculator-snippet' %}
     {% else %}
       {% if page.content != blank %}
