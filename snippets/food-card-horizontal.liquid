@@ -4,9 +4,9 @@
 {% endcomment %}
 
 {% liquid
-  assign is_preorder = false
-  if product.tags contains 'pre-order'
-    assign is_preorder = true
+  assign is_preorder = true
+  if force_instant == true
+    assign is_preorder = false
   endif
   assign first_variant = product.selected_or_first_available_variant
   assign is_available = first_variant.available

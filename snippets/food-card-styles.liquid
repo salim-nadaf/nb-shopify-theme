@@ -99,20 +99,26 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 110px;
+  min-height: 100px;
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 .nb-food-card__title {
   font-size: 0.95rem;
   font-weight: 700;
   color: #2C1810;
   margin: 0 0 4px;
-  line-height: 1.3;
+  line-height: 1.25;
+  word-break: break-word;
 }
 .nb-food-card__desc {
   font-size: 0.78rem;
   color: #7A5C4A;
   margin: 0 0 6px;
-  line-height: 1.4;
+  line-height: 1.35;
+  word-break: break-word;
 }
 .nb-food-card__meta {
   display: flex;
@@ -133,11 +139,69 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 .nb-food-card__price {
   font-size: 1.05rem;
   font-weight: 800;
   color: #2C1810;
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .nb-food-card {
+    padding: 10px !important;
+    gap: 10px !important;
+    border-radius: 12px !important;
+  }
+  .nb-food-card__image {
+    width: 90px !important;
+    height: 90px !important;
+    border-radius: 8px !important;
+  }
+  .nb-food-card__title {
+    font-size: 0.90rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 3px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .nb-food-card__desc {
+    font-size: 0.74rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 5px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .nb-food-card__meta {
+    gap: 4px !important;
+    margin-bottom: 5px !important;
+  }
+  .nb-meta-tag {
+    font-size: 0.66rem !important;
+    padding: 1.5px 6px !important;
+    border-radius: 10px !important;
+  }
+  .nb-food-card__bottom {
+    gap: 6px !important;
+    margin-top: 2px !important;
+  }
+  .nb-food-card__price {
+    font-size: 0.95rem !important;
+  }
+  .nb-food-card .nb-btn {
+    padding: 5px 10px !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
 }
 
 /* Buttons */
