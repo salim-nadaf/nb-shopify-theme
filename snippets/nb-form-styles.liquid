@@ -5,28 +5,99 @@
 <style>
 /* ===== SHOPIFY FORMS APP & PRE-ORDER FORM CENTER ALIGNMENT & BRAND STYLING ===== */
 
-/* Center Page Container & Text on Pages */
+/* Center Page Container & Text on Form Pages */
 .template-page .section-content-wrapper,
 .template-page .page-width-content,
-.template-page #MainContent,
-div[class*="page-content"],
-div[class*="main-page"] {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
+div[class*="page-content"] {
   margin-left: auto !important;
   margin-right: auto !important;
-  max-width: 800px !important;
+  max-width: 880px !important;
   width: 100% !important;
 }
 
-.template-page h1,
-.template-page .page-title,
-.template-page p,
-.template-page div {
+/* NIAMAT LUXURY POLICY & GENERAL PAGE DESIGN SYSTEM */
+.shopify-policy__container,
+.shopify-policy__title,
+.shopify-policy__body,
+.template-policy .page-width,
+.template-policy #MainContent,
+.rte-page,
+.page-width-content {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+.shopify-policy__container,
+.template-policy .shopify-policy__container,
+.template-page:not(.template-index) .page-width-content .section-content-wrapper {
+  max-width: 880px !important;
+  margin: 48px auto 80px !important;
+  padding: 44px 36px !important;
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
+  border: 1px solid rgba(200, 146, 42, 0.32) !important;
+  border-top: 5px solid #C8922A !important;
+  border-radius: 24px !important;
+  box-shadow: 0 16px 40px -10px rgba(44, 24, 16, 0.12), 0 4px 12px rgba(200, 146, 42, 0.08) !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
+}
+
+.shopify-policy__title h1,
+.shopify-policy__title,
+.template-policy h1,
+.template-page h1:not(.nb-calc-header h1) {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  color: #2C1810 !important;
+  font-weight: 800 !important;
+  font-size: 2.3rem !important;
   text-align: center !important;
+  margin-bottom: 28px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.25) !important;
+}
+
+.shopify-policy__body,
+.shopify-policy__body p,
+.shopify-policy__body li,
+.template-policy p,
+.template-policy li,
+.rte p,
+.rte li {
+  color: #4A352B !important;
+  font-size: 0.98rem !important;
+  line-height: 1.75 !important;
+  margin-bottom: 16px !important;
+  text-align: left !important;
+}
+
+.shopify-policy__body h2,
+.shopify-policy__body h3,
+.shopify-policy__body h4,
+.template-policy h2,
+.template-policy h3,
+.rte h2,
+.rte h3 {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  color: #2C1810 !important;
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  margin-top: 32px !important;
+  margin-bottom: 12px !important;
+  text-align: left !important;
+}
+
+.shopify-policy__body a,
+.template-policy a,
+.rte a {
+  color: #C8922A !important;
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+  transition: color 0.2s ease !important;
+}
+
+.shopify-policy__body a:hover,
+.template-policy a:hover,
+.rte a:hover {
+  color: #B07C1C !important;
 }
 
 /* Form Container Centering */
