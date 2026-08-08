@@ -622,27 +622,51 @@
 
       <script>
         (function nbPageFallbackEngine() {
-          var path = window.location.pathname.toLowerCase();
-          if (path.includes('bulk-orders') || path.includes('/pages/bulk')) {
-            var template = document.getElementById('nb-bulk-orders-template');
+          function nbExecuteScripts(container) {
+            var scripts = container.querySelectorAll('script');
+            scripts.forEach(function(oldScript) {
+              var newScript = document.createElement('script');
+              Array.from(oldScript.attributes).forEach(function(attr) {
+                newScript.setAttribute(attr.name, attr.value);
+              });
+              newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+              oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+          }
+
+          function checkAndExecute() {
+            var path = window.location.pathname.toLowerCase();
             var mainContent = document.getElementById('MainContent');
-            if (template && mainContent) {
-              mainContent.innerHTML = template.innerHTML;
-              document.title = "Bulk Catering Packages — Biryani Palace by Niamat";
+
+            if (path.includes('bulk-orders') || path.includes('/pages/bulk')) {
+              var template = document.getElementById('nb-bulk-orders-template');
+              if (template && mainContent) {
+                mainContent.innerHTML = template.innerHTML;
+                document.title = "Bulk Catering Packages — Biryani Palace by Niamat";
+                nbExecuteScripts(mainContent);
+              }
+            } else if (path.includes('biryani-calculator') || path.includes('calculator')) {
+              var template = document.getElementById('nb-biryani-calculator-template');
+              if (template && mainContent) {
+                mainContent.innerHTML = template.innerHTML;
+                document.title = "Biryani Quantity Calculator — Biryani Palace by Niamat";
+                nbExecuteScripts(mainContent);
+              }
+            } else if (path.includes('family-orders') || path.includes('/pages/family-orders') || path.includes('family-feast')) {
+              var template = document.getElementById('nb-family-orders-template');
+              if (template && mainContent) {
+                mainContent.innerHTML = template.innerHTML;
+                document.title = "Family Orders — Biryani Palace by Niamat";
+                nbExecuteScripts(mainContent);
+              }
             }
-          } else if (path.includes('biryani-calculator') || path.includes('calculator')) {
-            var template = document.getElementById('nb-biryani-calculator-template');
-            var mainContent = document.getElementById('MainContent');
-            if (template && mainContent) {
-              mainContent.innerHTML = template.innerHTML;
-              document.title = "Biryani Quantity Calculator — Biryani Palace by Niamat";
-            }
-          } else if (path.includes('family-orders') || path.includes('/pages/family-orders') || path.includes('family-feast')) {
-            var template = document.getElementById('nb-family-orders-template');
-            var mainContent = document.getElementById('MainContent');
-            if (template && mainContent) {
-              mainContent.innerHTML = template.innerHTML;
-            }
+          }
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkAndExecute);
+          } else {
+            checkAndExecute();
+          }
         })();
       </script>
 
