@@ -783,8 +783,8 @@
     }
   }
 
-  .header__column--left,
-  .header__column--center {
+  .header__column--left {
+    justify-content: flex-start;
     gap: var(--gap-xl);
     grid-area: left;
   }
@@ -875,11 +875,15 @@
       }
 
       .search-action {
-        grid-area: leftB;
+        grid-area: leftA !important;
+        justify-self: flex-start !important;
+        margin-left: 12px !important;
       }
 
       header-actions {
-        grid-area: rightB;
+        grid-area: rightB !important;
+        justify-self: flex-end !important;
+        margin-right: 12px !important;
       }
     }
   }
