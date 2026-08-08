@@ -111,9 +111,11 @@
     <div class="nb-food-grid">
       {% for product in all_prods_sorted %}
         {% assign title_lower = product.title | downcase %}
-        {% if title_lower contains 'paneer-e-tikka' or title_lower contains 'paneer tikka' or title_lower contains 'sabz tikka' or title_lower contains 'nawabi veg' or title_lower contains 'nazaakat' or title_lower contains 'makhmali sabz' %}
-          {% render 'food-card-horizontal', product: product %}
-        {% endif %}
+        {% unless title_lower contains 'masala' %}
+          {% if title_lower contains 'paneer-e-tikka' or title_lower contains 'paneer tikka' or title_lower contains 'sabz tikka' or title_lower contains 'nawabi veg' or title_lower contains 'nazaakat' or title_lower contains 'makhmali sabz' %}
+            {% render 'food-card-horizontal', product: product %}
+          {% endif %}
+        {% endunless %}
       {% endfor %}
     </div>
   </div>
