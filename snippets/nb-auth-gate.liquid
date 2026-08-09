@@ -217,6 +217,11 @@ var nbAuthPendingAction = null;
 var nbAuthPendingForm   = null;
 
 function nbShowAuthGate(action, form) {
+  if (action === 'checkout') {
+    window.location.href = '/checkout';
+    return;
+  }
+
   nbAuthPendingAction = action || null;
   nbAuthPendingForm   = form   || null;
 
@@ -466,32 +471,7 @@ function nbAuthSkip() {
 
 // Called by Proceed to Secure Checkout button in nb-cart-drawer
 function nbGoToCheckout() {
-  var phone = localStorage.getItem('nb_phone') || '';
-  var name  = localStorage.getItem('nb_name')  || '';
-
-  if (!phone || !name) {
-    // First time — show auth gate popup
-    nbShowAuthGate('checkout', null);
-    return;
-  }
-
-  // Returning customer — update cart attributes and redirect to checkout
-  fetch('/cart/update.js', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      attributes: {
-        'Customer Phone':   phone,
-        'Customer Name':    name,
-        'WhatsApp Consent': localStorage.getItem('nb_promo_consent') || 'no'
-      },
-      note: 'CUSTOMER CONTACT PHONE: ' + phone + ' | NAME: ' + name
-    })
-  }).then(function() {
-    window.location.href = nbBuildCheckoutUrl(phone, name);
-  }).catch(function() {
-    window.location.href = nbBuildCheckoutUrl(phone, name);
-  });
+  window.location.href = '/checkout';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
