@@ -430,51 +430,26 @@ function nbAuthSaveName() {
 
 function nbBuildCheckoutUrl(phone, name, customEmail) {
   var url = '/checkout';
-  var params = [
-    'country=IN',
-    'locale=en-IN',
-    'checkout[shipping_address][country]=India',
-    'checkout[shipping_address][country_code]=IN',
-    'checkout[billing_address][country]=India',
-    'checkout[billing_address][country_code]=IN'
-  ];
+  var params = [];
 
-  var emailToUse = '';
   if (customEmail && customEmail.indexOf('@') > 0) {
-    emailToUse = customEmail.trim().toLowerCase();
+    params.push('checkout[email]=' + encodeURIComponent(customEmail.trim()));
   }
 
   if (phone) {
-    var phone10       = phone.replace(/\D/g, '').slice(-10);
-    var phoneFormatted = '+91' + phone10;
-
-    params.push('checkout[phone]=' + encodeURIComponent(phoneFormatted));
-    params.push('checkout[contact][phone]=' + encodeURIComponent(phoneFormatted));
-    params.push('checkout[shipping_address][phone]=' + encodeURIComponent(phone10));
-    params.push('checkout[billing_address][phone]=' + encodeURIComponent(phone10));
-
-    if (!emailToUse && phone10) {
-      emailToUse = phone10 + '@niamatbiryani.com';
+    var phone10 = phone.replace(/\D/g, '').slice(-10);
+    if (phone10.length === 10) {
+      var phoneFormatted = '+91' + phone10;
+      params.push('checkout[phone]=' + encodeURIComponent(phoneFormatted));
     }
-  }
-
-  if (emailToUse) {
-    params.push('checkout[email]=' + encodeURIComponent(emailToUse));
   }
 
   if (name) {
     var parts = name.trim().split(/\s+/);
     var firstName = parts[0] || '';
     var lastName  = parts.slice(1).join(' ') || '';
-
-    if (firstName) {
-      params.push('checkout[shipping_address][first_name]=' + encodeURIComponent(firstName));
-      params.push('checkout[billing_address][first_name]=' + encodeURIComponent(firstName));
-    }
-    if (lastName) {
-      params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
-      params.push('checkout[billing_address][last_name]=' + encodeURIComponent(lastName));
-    }
+    if (firstName) params.push('checkout[shipping_address][first_name]=' + encodeURIComponent(firstName));
+    if (lastName) params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
   }
 
   if (params.length > 0) {

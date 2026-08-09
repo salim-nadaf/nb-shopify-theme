@@ -361,17 +361,9 @@ function nbGoToCheckout() {
       }
     })
   }).then(function() {
-    if (typeof nbBuildCheckoutUrl === 'function') {
-      window.location.href = nbBuildCheckoutUrl(phone, name);
-    } else {
-      window.location.href = '/checkout?country=IN&locale=en-IN&checkout[shipping_address][country_code]=IN';
-    }
+    window.location.href = '/checkout';
   }).catch(function() {
-    if (typeof nbBuildCheckoutUrl === 'function') {
-      window.location.href = nbBuildCheckoutUrl(phone, name);
-    } else {
-      window.location.href = '/checkout?country=IN&locale=en-IN&checkout[shipping_address][country_code]=IN';
-    }
+    window.location.href = '/checkout';
   });
 }
 

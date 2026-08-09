@@ -24,42 +24,8 @@
       <div class="nb-account-actions">
         {% if customer %}
           <a href="{{ routes.account_logout_url }}" class="nb-logout-btn">Sign Out</a>
-        {% else %}
-          <button id="nb-phone-signout-btn" onclick="nbPhoneSessionLogout()" class="nb-logout-btn" style="display:none;">Log Out Session</button>
         {% endif %}
       </div>
-    </div>
-
-    <!-- PHONE SESSION / WHATSAPP TRACKING CARD -->
-    <div id="nb-phone-tracking-card" class="nb-section-card" style="display: none; background: linear-gradient(145deg, #FFFDF7 0%, #F5ECD7 100%); border: 2px solid #C8922A; margin-bottom: 28px;">
-      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
-        <div>
-          <span class="nb-count-pill" style="margin-bottom: 8px;">⚡ INSTANT ORDER TRACKING</span>
-          <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; color: #2C1810; margin: 4px 0;">Track Your Biryani Order Live</h3>
-          <p style="font-size: 0.92rem; color: #5C4033; margin: 0;" id="nb-phone-tracking-desc">Connected Mobile: +91 <strong id="nb-tracking-phone-val"></strong></p>
-        </div>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-          <a id="nb-wa-track-btn" href="https://wa.me/919920042456?text=Hi%20Niamat%20Biryani!%20I%20want%20to%20track%20my%20order." target="_blank" rel="noopener" class="nb-btn-gold" style="background: #25D366 !important; border: none; box-shadow: 0 4px 14px rgba(37,211,102,0.35);">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="margin-right: 6px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-            Track Order on WhatsApp →
-          </a>
-          <a href="/collections/instant-delivery" class="nb-btn-dark">
-            Re-Order Biryani →
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- PHONE QUICK LOGIN BOX (IF NOT LOGGED IN) -->
-    <div id="nb-phone-login-box" class="nb-section-card" style="display: none; text-align: center; max-width: 520px; margin: 0 auto 32px; border-top: 4px solid #C8922A;">
-      <span class="nb-count-pill" style="margin-bottom: 8px;">📲 MOBILE ACCESS</span>
-      <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; color: #2C1810; margin: 6px 0 10px;">Sign In with Mobile Number</h3>
-      <p style="font-size: 0.9rem; color: #7A5C4A; margin-bottom: 20px;">Enter your 10-digit mobile number to access your orders and track live delivery updates.</p>
-      <div style="display: flex; gap: 10px; margin-bottom: 12px;">
-        <div style="padding: 12px 14px; background: rgba(200,146,42,0.1); border: 1px solid rgba(200,146,42,0.3); border-radius: 12px; font-weight: 700; color: #2C1810; font-size: 0.95rem;">🇮🇳 +91</div>
-        <input type="tel" id="nb-acc-phone-input" placeholder="98765 43210" maxlength="10" style="flex: 1; padding: 12px 14px; border: 1px solid rgba(200,146,42,0.35); border-radius: 12px; font-size: 1rem; font-weight: 600; outline: none;">
-      </div>
-      <button onclick="nbLoginWithPhone()" class="nb-btn-gold" style="width: 100%; padding: 14px; font-weight: 800; font-size: 1rem;">Access My Orders & Tracking →</button>
     </div>
 
     <!-- NAVIGATION TABS -->
@@ -204,94 +170,11 @@
     if (btnEl) btnEl.classList.add('active');
   }
 
-  function nbInitPhoneAccountSession() {
-    var phone = localStorage.getItem('nb_phone') || '';
-    var name = localStorage.getItem('nb_name') || '';
-
-    var titleEl = document.getElementById('nb-user-name-title');
-    var emailEl = document.getElementById('nb-user-email-text');
-    var trackingCard = document.getElementById('nb-phone-tracking-card');
-    var loginBox = document.getElementById('nb-phone-login-box');
-    var phoneValEl = document.getElementById('nb-tracking-phone-val');
-    var waBtn = document.getElementById('nb-wa-track-btn');
-    var logoutBtn = document.getElementById('nb-phone-signout-btn');
-    var avatarEl = document.getElementById('nb-user-avatar-el');
-
-    if (phone) {
-      var phone10 = phone.replace(/\D/g, '').slice(-10);
-      var displayName = name || ('Member ' + phone10.slice(-4));
-      
-      if (titleEl) {
-        titleEl.innerText = "Welcome, " + displayName + "!";
-      }
-      if (emailEl) {
-        emailEl.innerText = "Logged in via Mobile +91 " + phone10;
-      }
-      if (avatarEl && displayName) {
-        avatarEl.innerText = displayName.charAt(0).toUpperCase();
-      }
-      if (phoneValEl) phoneValEl.innerText = phone10;
-      if (waBtn) {
-        waBtn.href = "https://wa.me/919920042456?text=" + encodeURIComponent("Hi Niamat Biryani! I want to track my order for mobile +91" + phone10);
-      }
-      if (trackingCard) trackingCard.style.display = 'block';
-      if (logoutBtn) logoutBtn.style.display = 'inline-block';
-      if (loginBox) loginBox.style.display = 'none';
-
-      // Replace empty state in orders tab with Mobile Phone Active Order Card
-      var emptyState = document.querySelector('.nb-empty-orders-state');
-      if (emptyState) {
-        var waTrackUrl = "https://wa.me/919920042456?text=" + encodeURIComponent("Hi Niamat Biryani! I want to track my recent order for mobile +91" + phone10);
-        emptyState.outerHTML = [
-          '<div class="nb-phone-orders-view" style="padding: 20px 0;">',
-            '<div style="background: #FFFDF7; border: 1px solid rgba(200,146,42,0.3); border-radius: 16px; padding: 24px; margin-bottom: 20px;">',
-              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">',
-                '<strong style="color: #2C1810; font-size: 1.1rem;">📱 Active Mobile Order Session</strong>',
-                '<span class="nb-status-badge nb-status-paid">Registered (+91 ' + phone10 + ')</span>',
-              '</div>',
-              '<p style="color: #5C4033; font-size: 0.94rem; margin: 0 0 16px; line-height: 1.5;">Your recent order details and WhatsApp delivery updates are synced to mobile number <strong>+91 ' + phone10 + '</strong>.</p>',
-              '<div style="display: flex; gap: 12px; flex-wrap: wrap;">',
-                '<a href="' + waTrackUrl + '" target="_blank" rel="noopener" class="nb-btn-gold" style="background: #25D366 !important; border: none;">',
-                  '💬 Get Live Order Status on WhatsApp →',
-                '</a>',
-                '<a href="/collections/instant-delivery" class="nb-btn-dark">',
-                  '🍲 Order More Biryani',
-                '</a>',
-              '</div>',
-            '</div>',
-          '</div>'
-        ].join('');
-      }
-    } else {
-      {% unless customer %}
-        if (loginBox) loginBox.style.display = 'block';
-      {% endunless %}
-    }
+  function nbInitAccountPage() {
+    // Rely on standard Shopify Customer Account session
   }
 
-  function nbLoginWithPhone() {
-    var input = document.getElementById('nb-acc-phone-input');
-    var val = input ? input.value.replace(/\D/g, '') : '';
-    if (val.length < 10) {
-      alert('Please enter a valid 10-digit mobile number.');
-      return;
-    }
-    var formatted = '+91' + val.slice(-10);
-    localStorage.setItem('nb_phone', formatted);
-    if (!localStorage.getItem('nb_name')) {
-      localStorage.setItem('nb_name', 'Member ' + val.slice(-4));
-    }
-    nbInitPhoneAccountSession();
-  }
-
-  function nbPhoneSessionLogout() {
-    localStorage.removeItem('nb_phone');
-    localStorage.removeItem('nb_name');
-    localStorage.removeItem('nb_email');
-    window.location.reload();
-  }
-
-  document.addEventListener('DOMContentLoaded', nbInitPhoneAccountSession);
+  document.addEventListener('DOMContentLoaded', nbInitAccountPage);
 </script>
 
 <style>
