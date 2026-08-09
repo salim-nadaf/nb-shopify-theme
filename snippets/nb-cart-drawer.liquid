@@ -1,9 +1,12 @@
-{% comment %} NIAMAT BIRYANI — Ideal Ultra-Luxury Cart Drawer {% endcomment %}
+{% comment %} NIAMAT BIRYANI — Production-Grade Refined Cart Drawer {% endcomment %}
 
 <div id="nb-drawer-overlay" onclick="nbCloseDrawer()"></div>
 
-<div id="nb-cart-drawer">
-  <!-- HEADER WITH LOGO ONLY (CLEAN & CENTERED) -->
+<div id="nb-cart-drawer" role="dialog" aria-modal="true" aria-label="Your Order Cart">
+  <!-- TOAST NOTIFICATION FOR ERRORS -->
+  <div id="nb-cart-toast" class="nb-cart-toast" style="display:none;"></div>
+
+  <!-- HEADER WITH LOGO & CLOSE BUTTON -->
   <div class="nb-drawer__header">
     <div class="nb-drawer__header-logo-wrap">
       <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/BP_by_Niamat-removebg-preview.png?v=1785663837"
@@ -13,14 +16,17 @@
     <button class="nb-drawer__close" onclick="nbCloseDrawer()" aria-label="Close Cart">✕</button>
   </div>
 
-  <!-- FREE DELIVERY PROGRESS BAR BANNER -->
+  <!-- FREE DELIVERY PROGRESS BAR BANNER & ETA -->
   <div class="nb-drawer__delivery-progress" id="nb-delivery-progress-banner">
     <div class="nb-progress-text-wrap">
       <span class="nb-progress-icon">🚚</span>
-      <span id="nb-progress-msg">Add <strong>₹360</strong> more for <strong>FREE DELIVERY</strong></span>
+      <span id="nb-progress-msg">Please select your delivery area below</span>
     </div>
     <div class="nb-progress-bar-bg">
-      <div class="nb-progress-bar-fill" id="nb-progress-fill" style="width: 55%;"></div>
+      <div class="nb-progress-bar-fill" id="nb-progress-fill" style="width: 0%;"></div>
+    </div>
+    <div class="nb-eta-wrap" id="nb-eta-wrap">
+      ⏱️ Estimated delivery: <strong>{{ settings.nb_eta_min | default: 45 }}–{{ settings.nb_eta_max | default: 60 }} min</strong>
     </div>
   </div>
 
@@ -29,7 +35,7 @@
     <!-- CART ITEMS CONTAINER -->
     <div id="nb-cart-items" class="nb-drawer__items"></div>
 
-    <!-- COMPLETE YOUR ORDER (KEEP ONLY COKE & EXTRA RAITA) -->
+    <!-- COMPLETE YOUR ORDER (EXTRA RAITA & COKE) -->
     <div class="nb-drawer__upsell-section">
       <div class="nb-upsell-header">
         <span>🍽️</span>
@@ -38,10 +44,10 @@
       <div class="nb-upsell-grid">
         <div class="nb-upsell-pill-card">
           <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">Extra Raita</span>
+            <span class="nb-upsell-pill-name">Extra Niamat Raita</span>
             <span class="nb-upsell-pill-price">₹29</span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Raita', 2900)">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Niamat Raita', 2900)">+ Add</button>
         </div>
         <div class="nb-upsell-pill-card">
           <div class="nb-upsell-pill-info">
@@ -53,10 +59,10 @@
       </div>
     </div>
 
-    <!-- LOCATION INPUT & GPS DETECTION (LIVE KEYWORD MATCHING) -->
+    <!-- CONTROLLED LOCATION RESOLUTION ENGINE -->
     <div class="nb-drawer__location-box">
       <div class="nb-location-header">
-        <label for="nb-manual-location-input">📍 Delivery Location</label>
+        <label for="nb-delivery-zone-select">📍 Delivery Zone</label>
         <div class="nb-loc-btn-group">
           <button type="button" class="nb-use-location-btn" id="nb-use-location-btn" onclick="nbDetectLiveLocation()">
             🎯 Use My Location
@@ -67,24 +73,35 @@
         </div>
       </div>
 
-      <div class="nb-location-input-wrap">
+      <!-- CONTROLLED AREA DROPDOWN (NO BLIND ASSUMPTIONS) -->
+      <div class="nb-select-wrap">
+        <select id="nb-delivery-zone-select" onchange="nbSelectDeliveryZone(this.value)">
+          <option value="LOCATION_UNKNOWN">-- Select Your Delivery Area --</option>
+          <option value="ZONE_0_5_KM">Kalyan / Nearby Area (0–5 km) • ₹39 Delivery</option>
+          <option value="ZONE_5_8_KM">Extended Area (5–8 km) • ₹89 Delivery</option>
+          <option value="OUTSIDE_SERVICE_AREA">Outside Delivery Radius (>8 km)</option>
+        </select>
+        <span class="nb-select-arrow">›</span>
+      </div>
+
+      <!-- OPTIONAL SEARCH TEXT INPUT -->
+      <div class="nb-location-input-wrap" style="margin-top: 6px;">
         <input type="text" id="nb-manual-location-input"
-               placeholder="Type area or landmark (e.g. Raunak City, Kalyan West...)"
-               oninput="nbSaveManualLocation(this.value)"
-               onchange="nbSaveManualLocation(this.value)">
+               placeholder="Or type landmark/area (e.g. Raunak City, Kalyan West...)"
+               oninput="nbHandleLocationTextInput(this.value)">
       </div>
 
       <div id="nb-location-status-badge" class="nb-location-status" style="display: none;"></div>
     </div>
 
-    <!-- COOKING INSTRUCTIONS (SAVED TO SHOPIFY ADMIN ORDERS) -->
+    <!-- ORDER & DELIVERY INSTRUCTIONS -->
     <div class="nb-drawer__instructions-box">
-      <label for="nb-cooking-instructions">👨‍🍳 Cooking Instructions</label>
+      <label for="nb-cooking-instructions">📝 Order & Delivery Instructions</label>
       <textarea id="nb-cooking-instructions"
-                placeholder="Spice level, less oil, extra raita preference, allergies..."
+                placeholder="Example: Less spicy, no green chilli, call on arrival..."
                 rows="2"
-                onchange="nbSaveCookingInstructions()"></textarea>
-      <p class="nb-instructions-hint">💡 Visible to kitchen team in Shopify Admin Orders</p>
+                onchange="nbSaveInstructions()"></textarea>
+      <p class="nb-instructions-hint">💡 Saved to your order for our kitchen & delivery team</p>
     </div>
   </div>
 
@@ -97,7 +114,7 @@
       </div>
       <div class="nb-summary-row">
         <span>Delivery</span>
-        <span id="nb-delivery-val" class="nb-delivery-highlight">₹39</span>
+        <span id="nb-delivery-val" class="nb-delivery-highlight">Select Area</span>
       </div>
       <div class="nb-summary-row nb-total-row">
         <span>TOTAL</span>
@@ -109,9 +126,9 @@
       <span>🔒 100% Secure Checkout</span>
     </div>
 
-    <button class="nb-drawer__checkout-btn" onclick="nbGoToCheckout()">
-      <span class="nb-checkout-btn-text">Proceed to Checkout</span>
-      <span id="nb-btn-total-val" class="nb-checkout-btn-price">₹0</span>
+    <button class="nb-drawer__checkout-btn disabled" id="nb-checkout-submit-btn" onclick="nbGoToCheckout()" disabled>
+      <span class="nb-checkout-btn-text" id="nb-checkout-btn-text">Select Delivery Area</span>
+      <span id="nb-btn-total-val" class="nb-checkout-btn-price" style="display:none;">₹0</span>
     </button>
 
     <button class="nb-drawer__continue-btn" onclick="nbContinueOrdering()">
@@ -121,7 +138,7 @@
 </div>
 
 <style>
-/* ===== ULTRA-LUXURY COMPACT NB CART DRAWER ===== */
+/* ===== REFINED COMPACT CART DRAWER STYLES ===== */
 #nb-drawer-overlay {
   display: none;
   position: fixed;
@@ -149,6 +166,21 @@
 }
 #nb-cart-drawer.active { transform: translateX(0); }
 
+/* TOAST NOTIFICATION */
+.nb-cart-toast {
+  position: absolute;
+  top: 60px; left: 16px; right: 16px;
+  background: #C62828;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: center;
+  z-index: 99999;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+}
+
 /* HEADER LOGO ONLY */
 .nb-drawer__header {
   display: flex;
@@ -171,12 +203,12 @@
   background: none; border: none; color: #FDF6EC;
   font-size: 1.3rem; cursor: pointer; padding: 4px 8px;
   border-radius: 8px; transition: background 0.15s;
-  min-width: 40px; min-height: 40px;
+  min-width: 44px; min-height: 44px;
   display: flex; align-items: center; justify-content: center;
 }
 .nb-drawer__close:hover { background: rgba(255,255,255,0.12); }
 
-/* FREE DELIVERY PROGRESS BANNER */
+/* FREE DELIVERY PROGRESS BANNER & ETA */
 .nb-drawer__delivery-progress {
   background: linear-gradient(135deg, #FFFDF7 0%, #F8EED8 100%);
   border-bottom: 1px solid rgba(200,146,42,0.25);
@@ -205,8 +237,13 @@
   border-radius: 99px;
   transition: width 0.4s ease;
 }
+.nb-eta-wrap {
+  font-size: 0.76rem;
+  color: #5C4033;
+  margin-top: 4px;
+}
 
-/* DRAWER BODY (HIGH-DENSITY COMPACT) */
+/* DRAWER BODY */
 .nb-drawer__body {
   flex: 1;
   overflow-y: auto;
@@ -241,7 +278,7 @@
 }
 .nb-cart-item__variant { font-size: 0.74rem; color: #7A5C4A; margin: 0 0 4px; }
 
-/* RAITA INCLUDED BADGE */
+/* RAITA INCLUDED DISPLAY ATTRIBUTE */
 .nb-raita-tag {
   display: inline-flex;
   align-items: center;
@@ -263,12 +300,13 @@
 .nb-cart-item__price { font-size: 0.98rem; font-weight: 800; color: #C8922A; }
 .nb-qty-control { display: flex; align-items: center; gap: 6px; }
 .nb-qty-btn {
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
+  min-width: 36px; min-height: 36px;
   border-radius: 50%;
   border: 1.5px solid #C8922A;
   background: #FDF6EC;
   color: #C8922A;
-  font-size: 1rem; font-weight: 800;
+  font-size: 1.1rem; font-weight: 800;
   cursor: pointer; display: flex;
   align-items: center; justify-content: center;
   transition: all 0.15s;
@@ -314,7 +352,8 @@
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 4px 10px;
+  padding: 6px 12px;
+  min-height: 32px;
   font-size: 0.74rem;
   font-weight: 800;
   cursor: pointer;
@@ -322,7 +361,7 @@
 }
 .nb-upsell-pill-add:hover { background: #A67520; }
 
-/* LOCATION BOX (MANUAL INPUT + LIVE GPS) */
+/* LOCATION BOX & DROPDOWN */
 .nb-drawer__location-box {
   background: #fff;
   border: 1px solid rgba(200,146,42,0.2);
@@ -342,7 +381,8 @@
   border: 1px solid rgba(200,146,42,0.4);
   font-size: 0.72rem;
   font-weight: 800;
-  padding: 3px 8px;
+  padding: 4px 10px;
+  min-height: 32px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s;
@@ -355,9 +395,34 @@
   border: 1px solid rgba(229,62,62,0.3);
   font-size: 0.7rem;
   font-weight: 700;
-  padding: 3px 6px;
+  padding: 4px 8px;
+  min-height: 32px;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.nb-select-wrap {
+  position: relative;
+  display: flex; align-items: center;
+}
+.nb-select-wrap select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: #FFFDF7;
+  border: 1px solid rgba(200,146,42,0.3);
+  border-radius: 8px;
+  padding: 8px 30px 8px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2C1810;
+  outline: none;
+  cursor: pointer;
+}
+.nb-select-arrow {
+  position: absolute; right: 10px;
+  font-size: 1.1rem; color: #C8922A;
+  pointer-events: none; font-weight: 800;
 }
 
 .nb-location-input-wrap input {
@@ -457,6 +522,13 @@
   width: 100%;
   box-sizing: border-box;
 }
+.nb-drawer__checkout-btn.disabled,
+.nb-drawer__checkout-btn:disabled {
+  background: #A89F91 !important;
+  box-shadow: none !important;
+  opacity: 0.65;
+  cursor: not-allowed !important;
+}
 .nb-checkout-btn-text {
   flex: 1;
   text-align: center;
@@ -472,22 +544,18 @@
   font-weight: 900;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
-.nb-drawer__checkout-btn:hover,
-.nb-drawer__checkout-btn:active {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(200,146,42,0.45);
-}
 
 .nb-drawer__continue-btn {
   display: block; width: 100%; background: transparent;
   border: 1.5px solid rgba(44,24,16,0.25); color: #2C1810;
   font-size: 0.82rem; font-weight: 600; padding: 8px;
+  min-height: 40px;
   border-radius: 10px; cursor: pointer; transition: all 0.15s;
   text-align: center; box-sizing: border-box;
 }
 .nb-drawer__continue-btn:hover { border-color: #C8922A; color: #C8922A; }
 
-/* MOBILE RESPONSIVE FIT */
+/* MOBILE RESPONSIVE FIT (320px - 430px) */
 @media (max-width: 768px) {
   #nb-cart-drawer { max-width: 100%; height: 100dvh; }
   .nb-drawer__footer { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important; }
@@ -495,13 +563,40 @@
 </style>
 
 <script>
-// ===== NB IDEAL CART DRAWER CONTROLLER =====
+// ===== SINGLE SOURCE OF TRUTH CONFIGURATION =====
+const NB_CONFIG = {
+  storeLat: parseFloat("{{ settings.nb_store_lat | default: '19.2402' }}") || 19.2402,
+  storeLng: parseFloat("{{ settings.nb_store_lng | default: '73.1305' }}") || 73.1305,
+  zone1MaxKm: parseFloat("{{ settings.nb_zone1_max_km | default: 5 }}") || 5.0,
+  zone1Fee: parseInt("{{ settings.nb_zone1_fee | default: 39 }}", 10) || 39,
+  zone1Threshold: parseInt("{{ settings.nb_zone1_free_threshold | default: 799 }}", 10) || 799,
+  zone2MaxKm: parseFloat("{{ settings.nb_zone2_max_km | default: 8 }}") || 8.0,
+  zone2Fee: parseInt("{{ settings.nb_zone2_fee | default: 89 }}", 10) || 89,
+  zone2Threshold: parseInt("{{ settings.nb_zone2_free_threshold | default: 1299 }}", 10) || 1299,
+  etaMin: parseInt("{{ settings.nb_eta_min | default: 45 }}", 10) || 45,
+  etaMax: parseInt("{{ settings.nb_eta_max | default: 60 }}", 10) || 60
+};
 
-var nbSelectedArea = '5km_kalyan_west';
+// EXPLICIT ZONE STATES
+const ZONES = {
+  LOCATION_UNKNOWN: 'LOCATION_UNKNOWN',
+  ZONE_0_5_KM: 'ZONE_0_5_KM',
+  ZONE_5_8_KM: 'ZONE_5_8_KM',
+  OUTSIDE_SERVICE_AREA: 'OUTSIDE_SERVICE_AREA'
+};
 
-// Niamat Biryani Central Store Coordinates (Kalyan West)
-var NB_KITCHEN_LAT = 19.2402;
-var NB_KITCHEN_LNG = 73.1305;
+var currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
+
+function nbShowToast(msg, duration) {
+  var toast = document.getElementById('nb-cart-toast');
+  if (toast) {
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    setTimeout(function() {
+      toast.style.display = 'none';
+    }, duration || 4000);
+  }
+}
 
 function nbOpenDrawer() {
   document.getElementById('nb-cart-drawer').classList.add('active');
@@ -520,70 +615,112 @@ function nbFormatMoney(cents) {
   return '₹' + (cents / 100).toFixed(0);
 }
 
-// ===== SMART MANUAL LOCATION KEYWORD MATCHING =====
-function nbSaveManualLocation(val) {
-  var inputVal = (val || '').trim();
+// CONTROLLED ZONE SELECTION
+function nbSelectDeliveryZone(zoneKey) {
+  currentDeliveryZone = zoneKey || ZONES.LOCATION_UNKNOWN;
+  localStorage.setItem('nb_delivery_zone', currentDeliveryZone);
+  
   var badge = document.getElementById('nb-location-status-badge');
   var clearBtn = document.getElementById('nb-clear-location-btn');
 
-  if (!inputVal) {
-    if (badge) badge.style.display = 'none';
-    if (clearBtn) clearBtn.style.display = 'none';
-    return;
-  }
-
-  localStorage.setItem('nb_manual_location', inputVal);
-  if (clearBtn) clearBtn.style.display = 'inline-block';
-
-  var lower = inputVal.toLowerCase();
-  var isExtended = lower.includes('beyond') || lower.includes('badlapur') || lower.includes('thane') || lower.includes('mumbra') || lower.includes('mumbai') || lower.includes('8km');
-
-  if (isExtended) {
-    nbSelectedArea = '8km_beyond';
-    if (badge) {
-      badge.style.display = 'block';
-      badge.style.background = '#FFF3E0';
-      badge.style.color = '#E65100';
-      badge.style.borderColor = '#FFE0B2';
-      badge.innerHTML = '📍 Location Set: <strong>' + inputVal + '</strong> (Extended Zone ₹69 Delivery · Free > ₹1,299)';
-    }
-  } else {
-    nbSelectedArea = '5km_kalyan_west';
+  if (currentDeliveryZone === ZONES.ZONE_0_5_KM) {
     if (badge) {
       badge.style.display = 'block';
       badge.style.background = '#E8F5E9';
       badge.style.color = '#2E7D32';
       badge.style.borderColor = '#A5D6A7';
-      badge.innerHTML = '📍 Location Set: <strong>' + inputVal + '</strong> (Standard Zone ₹39 Delivery · Free > ₹799)';
+      badge.innerHTML = '📍 Delivery Zone: <strong>Central Kalyan / Nearby (0–5 km)</strong> • ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
     }
+    if (clearBtn) clearBtn.style.display = 'inline-block';
+  } else if (currentDeliveryZone === ZONES.ZONE_5_8_KM) {
+    if (badge) {
+      badge.style.display = 'block';
+      badge.style.background = '#FFF3E0';
+      badge.style.color = '#E65100';
+      badge.style.borderColor = '#FFE0B2';
+      badge.innerHTML = '📍 Delivery Zone: <strong>Extended Area (5–8 km)</strong> • ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
+    }
+    if (clearBtn) clearBtn.style.display = 'inline-block';
+  } else if (currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
+    if (badge) {
+      badge.style.display = 'block';
+      badge.style.background = '#FFEBEE';
+      badge.style.color = '#C62828';
+      badge.style.borderColor = '#EF9A9A';
+      badge.innerHTML = '⚠️ <strong>Outside Service Area</strong> • Delivery is currently unavailable for this location.';
+    }
+    if (clearBtn) clearBtn.style.display = 'inline-block';
+  } else {
+    if (badge) badge.style.display = 'none';
+    if (clearBtn) clearBtn.style.display = 'none';
   }
 
-  localStorage.setItem('nb_delivery_area', nbSelectedArea);
   nbRefreshCart();
+}
+
+// CONTROLLED TEXT INPUT RESOLUTION (NO BLIND ASSUMPTIONS)
+function nbHandleLocationTextInput(val) {
+  var inputVal = (val || '').trim();
+  var select = document.getElementById('nb-delivery-zone-select');
+
+  if (!inputVal) {
+    nbSelectDeliveryZone(ZONES.LOCATION_UNKNOWN);
+    if (select) select.value = ZONES.LOCATION_UNKNOWN;
+    return;
+  }
+
+  localStorage.setItem('nb_manual_location', inputVal);
+
+  var lower = inputVal.toLowerCase();
+  var isZone1 = lower.includes('kalyan') || lower.includes('khadakpada') || lower.includes('raunak') || lower.includes('station') || lower.includes('wayle') || lower.includes('chikanghar');
+  var isZone2 = lower.includes('dombivli') || lower.includes('ulhasnagar') || lower.includes('shahad') || lower.includes('ambivli') || lower.includes('titwala');
+  var isOutside = lower.includes('outside') || lower.includes('badlapur') || lower.includes('thane') || lower.includes('mumbra') || lower.includes('mumbai');
+
+  if (isOutside) {
+    nbSelectDeliveryZone(ZONES.OUTSIDE_SERVICE_AREA);
+    if (select) select.value = ZONES.OUTSIDE_SERVICE_AREA;
+  } else if (isZone2) {
+    nbSelectDeliveryZone(ZONES.ZONE_5_8_KM);
+    if (select) select.value = ZONES.ZONE_5_8_KM;
+  } else if (isZone1) {
+    nbSelectDeliveryZone(ZONES.ZONE_0_5_KM);
+    if (select) select.value = ZONES.ZONE_0_5_KM;
+  } else {
+    // Unclassified location text -> Ask customer to pick zone explicitly
+    currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
+    if (select) select.value = ZONES.LOCATION_UNKNOWN;
+    var badge = document.getElementById('nb-location-status-badge');
+    if (badge) {
+      badge.style.display = 'block';
+      badge.style.background = '#FFF8E1';
+      badge.style.color = '#F57F17';
+      badge.style.borderColor = '#FFE082';
+      badge.innerHTML = '🔍 Please select your delivery area from the dropdown above to calculate delivery charges.';
+    }
+    nbRefreshCart();
+  }
 }
 
 function nbClearLocation() {
   localStorage.removeItem('nb_manual_location');
   localStorage.removeItem('nb_user_lat');
   localStorage.removeItem('nb_user_lng');
-  localStorage.removeItem('nb_delivery_area');
-  nbSelectedArea = '5km_kalyan_west';
+  localStorage.removeItem('nb_delivery_zone');
+  currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
 
   var input = document.getElementById('nb-manual-location-input');
-  var badge = document.getElementById('nb-location-status-badge');
+  var select = document.getElementById('nb-delivery-zone-select');
   var btn = document.getElementById('nb-use-location-btn');
-  var clearBtn = document.getElementById('nb-clear-location-btn');
 
   if (input) input.value = '';
-  if (badge) badge.style.display = 'none';
+  if (select) select.value = ZONES.LOCATION_UNKNOWN;
   if (btn) btn.textContent = '🎯 Use My Location';
-  if (clearBtn) clearBtn.style.display = 'none';
 
-  nbRefreshCart();
+  nbSelectDeliveryZone(ZONES.LOCATION_UNKNOWN);
 }
 
 function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
-  var R = 6371; // Earth radius in km
+  var R = 6371;
   var dLat = (lat2 - lat1) * Math.PI / 180;
   var dLon = (lon2 - lon1) * Math.PI / 180;
   var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
@@ -595,12 +732,11 @@ function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
 
 function nbDetectLiveLocation() {
   var btn = document.getElementById('nb-use-location-btn');
-  var badge = document.getElementById('nb-location-status-badge');
-  var clearBtn = document.getElementById('nb-clear-location-btn');
+  var select = document.getElementById('nb-delivery-zone-select');
   var input = document.getElementById('nb-manual-location-input');
 
   if (!navigator.geolocation) {
-    alert('Geolocation is not supported by your browser.');
+    nbShowToast('Geolocation is not supported by your browser. Please select your delivery zone below.');
     return;
   }
 
@@ -610,73 +746,60 @@ function nbDetectLiveLocation() {
     function(position) {
       var userLat = position.coords.latitude;
       var userLng = position.coords.longitude;
-      var distKm = nbCalculateDistanceKm(NB_KITCHEN_LAT, NB_KITCHEN_LNG, userLat, userLng);
+      var distKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, userLat, userLng);
 
       if (btn) btn.textContent = '🎯 Location Set';
-      if (clearBtn) clearBtn.style.display = 'inline-block';
 
-      // If within 1.5 km of store, treat as Store Vicinity (0 km)
-      if (distKm <= 1.5) {
-        nbSelectedArea = '5km_kalyan_west';
-        if (input) input.value = 'Store Vicinity / Kalyan Central';
-        if (badge) {
-          badge.style.display = 'block';
-          badge.style.background = '#E8F5E9';
-          badge.style.color = '#2E7D32';
-          badge.style.borderColor = '#A5D6A7';
-          badge.innerHTML = '📍 Location: <strong>At Store / Central Kalyan (0 km)</strong> (Standard ₹39 Delivery · Free > ₹799)';
-        }
-      } else if (distKm <= 5.2) {
-        nbSelectedArea = '5km_kalyan_west';
-        if (input) input.value = 'Kalyan / Nearby Area (~' + distKm.toFixed(1) + ' km)';
-        if (badge) {
-          badge.style.display = 'block';
-          badge.style.background = '#E8F5E9';
-          badge.style.color = '#2E7D32';
-          badge.style.borderColor = '#A5D6A7';
-          badge.innerHTML = '📍 Location: <strong>~' + distKm.toFixed(1) + ' km away</strong> (Standard ₹39 Delivery · Free > ₹799)';
-        }
+      if (distKm <= NB_CONFIG.zone1MaxKm) {
+        nbSelectDeliveryZone(ZONES.ZONE_0_5_KM);
+        if (select) select.value = ZONES.ZONE_0_5_KM;
+        if (input && !input.value) input.value = 'Central Kalyan (~' + (distKm <= 1.2 ? 0 : distKm.toFixed(1)) + ' km)';
+      } else if (distKm <= NB_CONFIG.zone2MaxKm) {
+        nbSelectDeliveryZone(ZONES.ZONE_5_8_KM);
+        if (select) select.value = ZONES.ZONE_5_8_KM;
+        if (input && !input.value) input.value = 'Extended Zone (~' + distKm.toFixed(1) + ' km)';
       } else {
-        nbSelectedArea = '8km_beyond';
-        if (input) input.value = 'Extended Delivery Zone (~' + distKm.toFixed(1) + ' km)';
-        if (badge) {
-          badge.style.display = 'block';
-          badge.style.background = '#FFF3E0';
-          badge.style.color = '#E65100';
-          badge.style.borderColor = '#FFE0B2';
-          badge.innerHTML = '📍 Location: <strong>~' + distKm.toFixed(1) + ' km away</strong> (Extended Zone ₹69 Delivery · Free > ₹1,299)';
-        }
+        nbSelectDeliveryZone(ZONES.OUTSIDE_SERVICE_AREA);
+        if (select) select.value = ZONES.OUTSIDE_SERVICE_AREA;
+        if (input && !input.value) input.value = 'Outside Service Area (~' + distKm.toFixed(1) + ' km)';
       }
 
-      localStorage.setItem('nb_delivery_area', nbSelectedArea);
       localStorage.setItem('nb_user_lat', userLat);
       localStorage.setItem('nb_user_lng', userLng);
-      nbRefreshCart();
     },
     function(error) {
       if (btn) btn.textContent = '🎯 Use My Location';
-      alert('Could not detect location. Please type your location manually in the input box.');
+      nbShowToast('Location access was unavailable. Please select your delivery area from the dropdown below.');
     },
     { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
   );
 }
 
-function nbSaveCookingInstructions() {
+function nbSaveInstructions() {
   var textarea = document.getElementById('nb-cooking-instructions');
   var instructions = textarea ? textarea.value.trim() : '';
-  if (instructions) {
-    fetch('/cart/update.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        attributes: { 'Cooking Instructions': instructions },
-        note: 'COOKING INSTRUCTIONS: ' + instructions
-      })
-    }).catch(function(e) {});
-  }
+  fetch('/cart/update.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      attributes: { 'Order & Delivery Instructions': instructions },
+      note: instructions ? ('ORDER & DELIVERY INSTRUCTIONS: ' + instructions) : ''
+    })
+  }).catch(function(e) {
+    nbShowToast('Could not save instructions. Please check network.');
+  });
 }
 
 function nbGoToCheckout() {
+  if (currentDeliveryZone === ZONES.LOCATION_UNKNOWN) {
+    nbShowToast('Please select your delivery area before proceeding to checkout.');
+    return;
+  }
+  if (currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
+    nbShowToast('Delivery is currently unavailable for your area.');
+    return;
+  }
+
   var textarea = document.getElementById('nb-cooking-instructions');
   var instructions = textarea ? textarea.value.trim() : '';
   var locInput = document.getElementById('nb-manual-location-input');
@@ -687,11 +810,11 @@ function nbGoToCheckout() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       attributes: { 
-        'Cooking Instructions': instructions,
+        'Order & Delivery Instructions': instructions,
         'Delivery Location': locationText,
-        'Delivery Area': nbSelectedArea
+        'Delivery Zone': currentDeliveryZone
       },
-      note: instructions ? ('COOKING INSTRUCTIONS: ' + instructions) : ''
+      note: instructions ? ('ORDER & DELIVERY INSTRUCTIONS: ' + instructions) : ''
     })
   }).then(function() {
     window.location.href = '/checkout';
@@ -713,6 +836,8 @@ function nbRenderCart(cart) {
   var deliveryEl = document.getElementById('nb-delivery-val');
   var grandTotalEl = document.getElementById('nb-grand-total-val');
   var btnTotalEl = document.getElementById('nb-btn-total-val');
+  var btnTextEl = document.getElementById('nb-checkout-btn-text');
+  var checkoutBtn = document.getElementById('nb-checkout-submit-btn');
   var progressMsgEl = document.getElementById('nb-progress-msg');
   var progressFillEl = document.getElementById('nb-progress-fill');
 
@@ -725,49 +850,107 @@ function nbRenderCart(cart) {
     ].join('');
 
     subtotalEl.textContent = '₹0';
-    deliveryEl.textContent = '₹0';
+    deliveryEl.textContent = 'Select Area';
     grandTotalEl.textContent = '₹0';
-    btnTotalEl.textContent = '₹0';
+    if (btnTotalEl) btnTotalEl.style.display = 'none';
+    if (btnTextEl) btnTextEl.textContent = 'Select Delivery Area';
+    if (checkoutBtn) {
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('disabled');
+    }
     progressFillEl.style.width = '0%';
-    progressMsgEl.innerHTML = 'Add <strong>₹799</strong> for <strong>FREE DELIVERY</strong>';
+    progressMsgEl.innerHTML = 'Add items to unlock <strong>FREE DELIVERY</strong>';
     return;
   }
 
   var subtotalCents = cart.total_price;
   var subtotalRupees = Math.round(subtotalCents / 100);
+  subtotalEl.textContent = '₹' + subtotalRupees;
 
-  var isBeyond5km = (nbSelectedArea === '8km_beyond');
-  var freeThresholdRupees = isBeyond5km ? 1299 : 799;
-  var baseDeliveryRupees = isBeyond5km ? 69 : 39;
+  // ZONE SAFETY CALCULATIONS
+  var feeRupees = 0;
+  var thresholdRupees = NB_CONFIG.zone1Threshold;
 
-  var deliveryRupees = 0;
-  if (subtotalRupees >= freeThresholdRupees) {
-    deliveryRupees = 0;
-    deliveryEl.textContent = 'FREE 🎉';
-    deliveryEl.style.color = '#25D366';
-    progressFillEl.style.width = '100%';
-    progressMsgEl.innerHTML = '🎉 You\'ve unlocked <strong>FREE DELIVERY</strong>!';
+  if (currentDeliveryZone === ZONES.ZONE_0_5_KM) {
+    thresholdRupees = NB_CONFIG.zone1Threshold;
+    if (subtotalRupees >= thresholdRupees) {
+      feeRupees = 0;
+      deliveryEl.textContent = 'FREE 🎉';
+      deliveryEl.style.color = '#25D366';
+      progressFillEl.style.width = '100%';
+      progressMsgEl.innerHTML = '🎉 You\'ve unlocked <strong>FREE DELIVERY</strong>!';
+    } else {
+      feeRupees = NB_CONFIG.zone1Fee;
+      deliveryEl.textContent = '₹' + feeRupees;
+      deliveryEl.style.color = '#C8922A';
+      var needed = thresholdRupees - subtotalRupees;
+      var pct = Math.min(100, Math.round((subtotalRupees / thresholdRupees) * 100));
+      progressFillEl.style.width = pct + '%';
+      progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed + '</strong> more for <strong>FREE DELIVERY</strong>';
+    }
+
+    if (checkoutBtn) { checkoutBtn.disabled = false; checkoutBtn.classList.remove('disabled'); }
+    if (btnTextEl) btnTextEl.textContent = 'Proceed to Checkout';
+
+  } else if (currentDeliveryZone === ZONES.ZONE_5_8_KM) {
+    thresholdRupees = NB_CONFIG.zone2Threshold;
+    if (subtotalRupees >= thresholdRupees) {
+      feeRupees = 0;
+      deliveryEl.textContent = 'FREE 🎉';
+      deliveryEl.style.color = '#25D366';
+      progressFillEl.style.width = '100%';
+      progressMsgEl.innerHTML = '🎉 You\'ve unlocked <strong>FREE DELIVERY</strong>!';
+    } else {
+      feeRupees = NB_CONFIG.zone2Fee;
+      deliveryEl.textContent = '₹' + feeRupees;
+      deliveryEl.style.color = '#C8922A';
+      var needed2 = thresholdRupees - subtotalRupees;
+      var pct2 = Math.min(100, Math.round((subtotalRupees / thresholdRupees) * 100));
+      progressFillEl.style.width = pct2 + '%';
+      progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed2 + '</strong> more for <strong>FREE DELIVERY</strong>';
+    }
+
+    if (checkoutBtn) { checkoutBtn.disabled = false; checkoutBtn.classList.remove('disabled'); }
+    if (btnTextEl) btnTextEl.textContent = 'Proceed to Checkout';
+
+  } else if (currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
+    feeRupees = 0;
+    deliveryEl.textContent = 'Unavailable';
+    deliveryEl.style.color = '#C62828';
+    progressFillEl.style.width = '0%';
+    progressMsgEl.innerHTML = '⚠️ Delivery is currently unavailable for your area';
+
+    if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.add('disabled'); }
+    if (btnTextEl) btnTextEl.textContent = 'Delivery Unavailable';
+
   } else {
-    deliveryRupees = baseDeliveryRupees;
-    deliveryEl.textContent = '₹' + deliveryRupees;
-    deliveryEl.style.color = '#C8922A';
+    // LOCATION_UNKNOWN
+    feeRupees = 0;
+    deliveryEl.textContent = 'Select Area';
+    deliveryEl.style.color = '#7A5C4A';
+    progressFillEl.style.width = '0%';
+    progressMsgEl.innerHTML = 'Please select your delivery area to calculate delivery charges';
 
-    var neededRupees = freeThresholdRupees - subtotalRupees;
-    var percentage = Math.min(100, Math.round((subtotalRupees / freeThresholdRupees) * 100));
-    progressFillEl.style.width = percentage + '%';
-    progressMsgEl.innerHTML = '🚚 Add <strong>₹' + neededRupees + '</strong> more for <strong>FREE DELIVERY</strong>';
+    if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.add('disabled'); }
+    if (btnTextEl) btnTextEl.textContent = 'Select Delivery Area';
   }
 
-  var grandTotalRupees = subtotalRupees + deliveryRupees;
-
-  subtotalEl.textContent = '₹' + subtotalRupees;
+  var grandTotalRupees = subtotalRupees + feeRupees;
   grandTotalEl.textContent = '₹' + grandTotalRupees;
-  btnTotalEl.textContent = '₹' + grandTotalRupees;
 
-  // Render cart items with line index for guaranteed qty update
+  if (currentDeliveryZone === ZONES.ZONE_0_5_KM || currentDeliveryZone === ZONES.ZONE_5_8_KM) {
+    if (btnTotalEl) {
+      btnTotalEl.style.display = 'inline-block';
+      btnTotalEl.textContent = '₹' + grandTotalRupees;
+    }
+  } else {
+    if (btnTotalEl) btnTotalEl.style.display = 'none';
+  }
+
+  // RENDER CART ITEMS WITH LINE INDEX
   container.innerHTML = cart.items.map(function(item, idx) {
     var lineNum = idx + 1;
-    var isBiryani = item.product_title.toLowerCase().includes('biryani') || item.product_type.toLowerCase().includes('biryani');
+    var isBiryani = item.product_title.toLowerCase().includes('biryani') || (item.product_type && item.product_type.toLowerCase().includes('biryani'));
     var raitaHtml = isBiryani ? '<div class="nb-raita-tag"><span>✓</span> Raita included</div>' : '';
 
     return [
@@ -780,9 +963,9 @@ function nbRenderCart(cart) {
           '<div class="nb-cart-item__bottom">',
             '<span class="nb-cart-item__price">' + nbFormatMoney(item.final_line_price) + '</span>',
             '<div class="nb-qty-control">',
-              '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity - 1) + ', ' + lineNum + ')">−</button>',
+              '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity - 1) + ', ' + lineNum + ')" aria-label="Decrease quantity">−</button>',
               '<span class="nb-qty-num">' + item.quantity + '</span>',
-              '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity + 1) + ', ' + lineNum + ')">+</button>',
+              '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity + 1) + ', ' + lineNum + ')" aria-label="Increase quantity">+</button>',
             '</div>',
           '</div>',
         '</div>',
@@ -793,13 +976,15 @@ function nbRenderCart(cart) {
 
 function nbRefreshCart() {
   fetch('/cart.js')
-    .then(r => r.json())
-    .then(cart => nbRenderCart(cart));
+    .then(function(r) { return r.json(); })
+    .then(function(cart) { nbRenderCart(cart); })
+    .catch(function(e) {
+      nbShowToast('Unable to update cart. Please check your network connection.');
+    });
 }
 
 function nbUpdateQty(key, qty, lineNum) {
   if (qty < 0) qty = 0;
-  
   var payload = lineNum ? { line: lineNum, quantity: qty } : { id: key, quantity: qty };
 
   fetch('/cart/change.js', {
@@ -807,14 +992,15 @@ function nbUpdateQty(key, qty, lineNum) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   })
-  .then(r => r.json())
-  .then(cart => nbRenderCart(cart))
+  .then(function(r) { return r.json(); })
+  .then(function(cart) { nbRenderCart(cart); })
   .catch(function(e) {
+    nbShowToast('Could not update quantity. Please try again.');
     nbRefreshCart();
   });
 }
 
-// ===== MULTI-TIER ADDON LOOKUP (BY HANDLE, TITLE, SEARCH) =====
+// MULTI-TIER ADD-ON LOOKUP (PREVENTS SILENT FAILS & REPEATED SEARCHES)
 function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
   btn.textContent = 'Adding...';
 
@@ -824,62 +1010,66 @@ function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: variantId, quantity: 1 })
     })
-    .then(r => r.json())
-    .then(item => {
+    .then(function(r) { return r.json(); })
+    .then(function(item) {
       btn.textContent = '✓ Added';
       btn.style.background = '#2E7D32';
       nbRefreshCart();
     });
   }
 
-  // Tier 1: Try handle JS endpoint
   fetch('/products/' + handle + '.js')
-    .then(r => r.json())
-    .then(product => {
+    .then(function(r) { return r.json(); })
+    .then(function(product) {
       if (product && product.variants && product.variants.length > 0) {
         return tryAddToCart(product.variants[0].id);
       }
       throw new Error('Handle not found');
     })
-    .catch(() => {
-      // Tier 2: Search by title query
+    .catch(function() {
       fetch('/search/suggest.json?q=' + encodeURIComponent(titleQuery || handle) + '&resources[type]=product')
-        .then(r => r.json())
-        .then(res => {
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
           var products = (res.resources && res.resources.results && res.resources.results.products) ? res.resources.results.products : [];
           if (products.length > 0) {
             return tryAddToCart(products[0].variants[0].id);
           }
           throw new Error('Suggest not found');
         })
-        .catch(() => {
-          // Tier 3: Fetch all products catalog
+        .catch(function() {
           fetch('/collections/all/products.json')
-            .then(r => r.json())
-            .then(data => {
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
               var prods = data.products || [];
-              var matched = prods.find(p => p.title.toLowerCase().includes((titleQuery || handle).toLowerCase()));
+              var matched = prods.find(function(p) { return p.title.toLowerCase().includes((titleQuery || handle).toLowerCase()); });
               if (matched && matched.variants && matched.variants.length > 0) {
                 return tryAddToCart(matched.variants[0].id);
               }
               throw new Error('Product not found in catalog');
             })
-            .catch(() => {
+            .catch(function() {
               btn.textContent = '+ Add';
-              alert('Addon product "' + titleQuery + '" not found. Please verify product name in Shopify Admin.');
+              nbShowToast('Add-on product "' + titleQuery + '" not found. Please verify product handle in Shopify Admin.');
             });
         });
     });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  var savedZone = localStorage.getItem('nb_delivery_zone');
   var savedLoc = localStorage.getItem('nb_manual_location');
+
   if (savedLoc) {
     var input = document.getElementById('nb-manual-location-input');
-    if (input) {
-      input.value = savedLoc;
-      nbSaveManualLocation(savedLoc);
-    }
+    if (input) input.value = savedLoc;
+  }
+
+  if (savedZone && ZONES[savedZone]) {
+    var select = document.getElementById('nb-delivery-zone-select');
+    if (select) select.value = savedZone;
+    nbSelectDeliveryZone(savedZone);
+  } else {
+    nbSelectDeliveryZone(ZONES.LOCATION_UNKNOWN);
   }
 
   document.addEventListener('submit', function(e) {
@@ -893,9 +1083,9 @@ document.addEventListener('DOMContentLoaded', function() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: parseInt(id), quantity: 1 })
     })
-    .then(r => r.json())
-    .then(() => nbOpenDrawer())
-    .catch(() => window.location.href = '/cart');
+    .then(function(r) { return r.json(); })
+    .then(function() { nbOpenDrawer(); })
+    .catch(function() { window.location.href = '/cart'; });
   });
 
   document.addEventListener('click', function(e) {

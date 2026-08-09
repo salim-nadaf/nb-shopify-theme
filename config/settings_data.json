@@ -86,6 +86,16 @@
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",
     "popover_border": "none",
+    "nb_store_lat": "19.2402",
+    "nb_store_lng": "73.1305",
+    "nb_zone1_max_km": 5,
+    "nb_zone1_fee": 39,
+    "nb_zone1_free_threshold": 799,
+    "nb_zone2_max_km": 8,
+    "nb_zone2_fee": 89,
+    "nb_zone2_free_threshold": 1299,
+    "nb_eta_min": 45,
+    "nb_eta_max": 60,
     "content_for_index": [],
     "blocks": {
       "14060646107696862457": {

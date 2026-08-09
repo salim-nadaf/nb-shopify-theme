@@ -2116,5 +2116,70 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Niamat Delivery Settings",
+    "settings": [
+      {
+        "type": "text",
+        "id": "nb_store_lat",
+        "label": "Store Latitude (Central Kitchen)",
+        "default": "19.2402"
+      },
+      {
+        "type": "text",
+        "id": "nb_store_lng",
+        "label": "Store Longitude (Central Kitchen)",
+        "default": "73.1305"
+      },
+      {
+        "type": "number",
+        "id": "nb_zone1_max_km",
+        "label": "Zone 1 Max Distance (km)",
+        "default": 5
+      },
+      {
+        "type": "number",
+        "id": "nb_zone1_fee",
+        "label": "Zone 1 Delivery Fee (₹)",
+        "default": 39
+      },
+      {
+        "type": "number",
+        "id": "nb_zone1_free_threshold",
+        "label": "Zone 1 Free Delivery Threshold (₹)",
+        "default": 799
+      },
+      {
+        "type": "number",
+        "id": "nb_zone2_max_km",
+        "label": "Zone 2 Max Distance (km)",
+        "default": 8
+      },
+      {
+        "type": "number",
+        "id": "nb_zone2_fee",
+        "label": "Zone 2 Delivery Fee (₹)",
+        "default": 89
+      },
+      {
+        "type": "number",
+        "id": "nb_zone2_free_threshold",
+        "label": "Zone 2 Free Delivery Threshold (₹)",
+        "default": 1299
+      },
+      {
+        "type": "number",
+        "id": "nb_eta_min",
+        "label": "Minimum ETA (mins)",
+        "default": 45
+      },
+      {
+        "type": "number",
+        "id": "nb_eta_max",
+        "label": "Maximum ETA (mins)",
+        "default": 60
+      }
+    ]
   }
 ]
