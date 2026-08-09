@@ -206,53 +206,35 @@ shopify-form:empty,
   padding: 0 !important;
 }
 
-/* ===== MASTER SHOPIFY CUSTOMER ACCOUNT & PROFILE THEME PATTERN STYLING ===== */
+/* ===== MASTER SHOPIFY CUSTOMER ACCOUNT & PROFILE THEME TYPOGRAPHY ===== */
 shopify-account,
 [data-account-dialog],
 .shopify-account-dialog,
 .account-popover,
-.menu-drawer__account-menu {
+.menu-drawer__account-menu,
+.nb-account-page-section,
+.nb-auth-page-section {
   --shopify-account-font-heading: 'Playfair Display', Georgia, serif !important;
   --shopify-account-font-heading-weight: 800 !important;
-  --shopify-account-font-body: 'Inter', system-ui, sans-serif !important;
+  --shopify-account-font-body: 'Inter', system-ui, -apple-system, sans-serif !important;
   --shopify-account-font-body-weight: 400 !important;
-  --shopify-account-radius-base: 20px !important;
-  --shopify-account-radius-button: 12px !important;
-  --shopify-account-radius-button-small: 10px !important;
-  --shopify-account-radius-input: 12px !important;
-  --shopify-account-color-background: #FFFDF7 !important;
-  --shopify-account-color-text: #2C1810 !important;
-  --shopify-account-color-accent: #C8922A !important;
-  --shopify-account-color-accent-text: #FFFFFF !important;
-}
-
-shopify-account [role="dialog"],
-.shopify-account-dialog,
-.account-popover__content {
-  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
-  border: 1px solid rgba(200, 146, 42, 0.32) !important;
-  border-top: 4px solid #C8922A !important;
-  border-radius: 20px !important;
-  box-shadow: 0 16px 40px -10px rgba(44, 24, 16, 0.15) !important;
-  padding: 24px !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 shopify-account h1, shopify-account h2, shopify-account h3, shopify-account h4,
-.account-popover h1, .account-popover h2, .account-popover h3 {
+.account-popover h1, .account-popover h2, .account-popover h3,
+.nb-account-page-section h1, .nb-account-page-section h2, .nb-account-page-section h3,
+.nb-auth-page-section h1, .nb-auth-page-section h2, .nb-auth-page-section h3 {
   font-family: 'Playfair Display', Georgia, serif !important;
-  color: #2C1810 !important;
   font-weight: 800 !important;
+  letter-spacing: -0.01em;
 }
 
-shopify-account button[type="submit"],
-shopify-account .button,
-.account-popover button {
-  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
-  color: #FFFFFF !important;
-  font-weight: 700 !important;
-  border-radius: 12px !important;
-  border: none !important;
-  box-shadow: 0 4px 14px rgba(200, 146, 42, 0.3) !important;
+shopify-account button, shopify-account input, shopify-account select, shopify-account label,
+.account-popover button, .account-popover input, .account-popover label,
+.nb-account-page-section button, .nb-account-page-section input, .nb-account-page-section select,
+.nb-auth-page-section button, .nb-auth-page-section input, .nb-auth-page-section select {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
 /* Frame styling for App IFrames */
