@@ -1,0 +1,214 @@
+{% comment %}
+  NIAMAT BIRYANI — Customer Account Registration Page Template
+{% endcomment %}
+
+<div class="nb-auth-page-section">
+  <div class="nb-auth-container">
+    
+    <!-- REGISTER CARD -->
+    <div class="nb-auth-card">
+      <div class="nb-auth-badge">👑 CREATE ACCOUNT</div>
+      <h2>Join Niamat Biryani</h2>
+      <p class="nb-auth-sub">Create an account to save your delivery preferences and track your biryani orders.</p>
+
+      {% form 'create_customer', class: 'nb-auth-form' %}
+        {% if form.errors %}
+          <div class="nb-auth-error">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div class="nb-auth-group">
+          <label for="FirstName">First Name</label>
+          <input
+            type="text"
+            name="customer[first_name]"
+            id="FirstName"
+            {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+            autocomplete="given-name"
+            placeholder="First Name"
+            required
+            class="nb-auth-input"
+          >
+        </div>
+
+        <div class="nb-auth-group">
+          <label for="LastName">Last Name</label>
+          <input
+            type="text"
+            name="customer[last_name]"
+            id="LastName"
+            {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+            autocomplete="family-name"
+            placeholder="Last Name"
+            required
+            class="nb-auth-input"
+          >
+        </div>
+
+        <div class="nb-auth-group">
+          <label for="Email">Email Address</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="Email"
+            {% if form.email %}value="{{ form.email }}"{% endif %}
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="name@example.com"
+            required
+            class="nb-auth-input"
+          >
+        </div>
+
+        <div class="nb-auth-group">
+          <label for="CreatePassword">Password</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="CreatePassword"
+            autocomplete="new-password"
+            placeholder="••••••••"
+            required
+            class="nb-auth-input"
+          >
+        </div>
+
+        <button type="submit" class="nb-auth-btn-gold">
+          Create My Account →
+        </button>
+
+        <div class="nb-auth-footer-links">
+          <span>Already have an account?</span>
+          <a href="{{ routes.account_login_url }}">Sign In Here →</a>
+        </div>
+      {% endform %}
+    </div>
+
+  </div>
+</div>
+
+<style>
+.nb-auth-page-section {
+  padding: 60px 20px 100px;
+  background: #FFFAF4;
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nb-auth-container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.nb-auth-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%);
+  border: 1px solid rgba(200, 146, 42, 0.32);
+  border-top: 4px solid #C8922A;
+  border-radius: 24px;
+  padding: 40px 32px;
+  box-shadow: 0 16px 40px -10px rgba(44, 24, 16, 0.12);
+  text-align: center;
+}
+.nb-auth-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #C8922A;
+  background: #FFFDF7;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+.nb-auth-card h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2C1810;
+  margin: 0 0 8px;
+}
+.nb-auth-sub {
+  font-size: 0.92rem;
+  color: #7A5C4A;
+  margin: 0 0 28px;
+  line-height: 1.5;
+}
+.nb-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+.nb-auth-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.nb-auth-group label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #2C1810;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.nb-auth-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgba(200, 146, 42, 0.32) !important;
+  border-radius: 12px;
+  background-color: #FFFFFF !important;
+  color: #2C1810 !important;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.25s ease;
+  box-sizing: border-box;
+}
+.nb-auth-input:focus {
+  border-color: #C8922A !important;
+  box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.2) !important;
+}
+.nb-auth-btn-gold {
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 800;
+  font-size: 1.02rem;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(200, 146, 42, 0.35) !important;
+  transition: all 0.25s ease;
+  margin-top: 8px;
+}
+.nb-auth-btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(200, 146, 42, 0.45) !important;
+}
+.nb-auth-footer-links {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 0.88rem;
+  color: #7A5C4A;
+}
+.nb-auth-footer-links a {
+  color: #C8922A;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 6px;
+}
+.nb-auth-footer-links a:hover { text-decoration: underline; }
+.nb-auth-error {
+  background: #FEE2E2;
+  border: 1px solid #FCA5A5;
+  color: #991B1B;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+</style>

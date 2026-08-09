@@ -1,0 +1,94 @@
+{% comment %}
+  NIAMAT BIRYANI — Customer Single Order View Template
+{% endcomment %}
+
+<div class="nb-account-page-section">
+  <div class="nb-account-container">
+
+    <!-- ORDER HEADER -->
+    <div class="nb-account-header-card">
+      <div class="nb-user-details">
+        <span class="nb-account-badge">📦 ORDER DETAILS</span>
+        <h2>Order {{ order.name }}</h2>
+        <p class="nb-user-email">Placed on {{ order.created_at | date: "%B %d, %Y at %I:%M %p" }}</p>
+      </div>
+
+      <div class="nb-account-actions">
+        <a href="{{ routes.account_url }}" class="nb-logout-btn">
+          ← Back to All Orders
+        </a>
+      </div>
+    </div>
+
+    <!-- ORDER ITEMS CARD -->
+    <div class="nb-section-card">
+      <div class="nb-card-title-wrap">
+        <h3>Items In Your Order</h3>
+        <span class="nb-count-pill">{{ order.line_items.size }} Item{% if order.line_items.size > 1 %}s{% endif %}</span>
+      </div>
+
+      <div class="nb-orders-table-wrapper">
+        <table class="nb-orders-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for line_item in order.line_items %}
+              <tr>
+                <td>
+                  <strong>{{ line_item.title }}</strong>
+                  {% if line_item.variant.title != 'Default Title' %}
+                    <br><small style="color: #7A5C4A;">{{ line_item.variant.title }}</small>
+                  {% endif %}
+                </td>
+                <td>{{ line_item.final_price | money }}</td>
+                <td>{{ line_item.quantity }}</td>
+                <td><strong>{{ line_item.final_line_price | money }}</strong></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 24px; text-align: right; border-top: 1px solid rgba(200,146,42,0.2); padding-top: 16px;">
+        <p style="font-size: 1.1rem; color: #2C1810; margin: 0;">Total Paid: <strong style="color: #C8922A; font-size: 1.3rem;">{{ order.total_price | money }}</strong></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.nb-account-page-section { padding: 40px 0 80px; background: #FFFAF4; min-height: 75vh; }
+.nb-account-container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+.nb-account-header-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%);
+  border: 1px solid rgba(200, 146, 42, 0.28);
+  border-top: 4px solid #C8922A;
+  border-radius: 22px;
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.nb-account-badge { display: inline-block; font-size: 0.7rem; font-weight: 800; color: #C8922A; background: #FFFDF7; border: 1px solid rgba(200,146,42,0.3); padding: 3px 12px; border-radius: 20px; margin-bottom: 6px; }
+.nb-user-details h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.8rem; font-weight: 800; color: #2C1810; margin: 0 0 4px; }
+.nb-user-email { font-size: 0.92rem; color: #7A5C4A; margin: 0; }
+.nb-logout-btn { background: #FFFDF7; color: #2C1810; border: 1px solid rgba(200,146,42,0.3); padding: 10px 20px; border-radius: 12px; font-size: 0.88rem; font-weight: 700; text-decoration: none; }
+.nb-section-card { background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%); border: 1px solid rgba(200, 146, 42, 0.28); border-radius: 20px; padding: 28px; box-shadow: 0 10px 30px -10px rgba(44, 24, 16, 0.08); }
+.nb-card-title-wrap { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(200, 146, 42, 0.18); padding-bottom: 12px; }
+.nb-card-title-wrap h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 800; color: #2C1810; margin: 0; }
+.nb-count-pill { font-size: 0.78rem; font-weight: 800; color: #C8922A; background: #FFFDF7; border: 1px solid rgba(200, 146, 42, 0.3); padding: 3px 10px; border-radius: 12px; }
+.nb-orders-table-wrapper { overflow-x: auto; }
+.nb-orders-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+.nb-orders-table th { padding: 12px 14px; color: #2C1810; font-weight: 800; text-transform: uppercase; font-size: 0.78rem; letter-spacing: 0.5px; border-bottom: 2px solid rgba(200, 146, 42, 0.2); }
+.nb-orders-table td { padding: 16px 14px; color: #5C4033; border-bottom: 1px solid rgba(200, 146, 42, 0.12); }
+</style>
