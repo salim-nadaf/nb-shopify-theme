@@ -37,6 +37,8 @@
       {% render 'nb-bulk-orders-snippet' %}
     {% elsif ph contains 'calculator' or pt contains 'calculator' %}
       {% render 'nb-biryani-calculator-snippet' %}
+    {% elsif ph contains 'account' or pt contains 'account' or ph contains 'profile' or pt contains 'profile' or ph contains 'order' or pt contains 'order' %}
+      {% render 'nb-account-snippet' %}
     {% else %}
       {% if page.content != blank %}
         <div class="rte">

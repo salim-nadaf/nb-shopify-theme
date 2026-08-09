@@ -1,0 +1,461 @@
+{% comment %}
+  NIAMAT BIRYANI — Ultra-Luxury Customer Account, Orders & Profile Snippet
+{% endcomment %}
+
+<div class="nb-account-page-section">
+  <div class="nb-account-container">
+
+    <!-- ACCOUNT HEADER & USER WELCOME -->
+    <div class="nb-account-header-card">
+      <div class="nb-user-avatar">
+        {% if customer.first_name != blank %}
+          {{ customer.first_name | slice: 0 | upcase }}
+        {% else %}
+          👑
+        {% endif %}
+      </div>
+
+      <div class="nb-user-details">
+        <span class="nb-account-badge">👑 NIAMAT BIRYANI MEMBER</span>
+        <h2>Welcome, {% if customer %}{{ customer.first_name }}{% else %}Valued Guest{% endif %}!</h2>
+        <p class="nb-user-email">{% if customer %}{{ customer.email }}{% else %}Manage your orders, profile & delivery preferences below.{% endif %}</p>
+      </div>
+
+      {% if customer %}
+        <div class="nb-account-actions">
+          <a href="{{ routes.account_logout_url }}" class="nb-logout-btn">
+            Sign Out
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- NAVIGATION TABS -->
+    <div class="nb-account-tabs">
+      <button class="nb-tab-btn active" onclick="nbSwitchAccountTab('orders', this)">
+        📦 My Orders
+      </button>
+      <button class="nb-tab-btn" onclick="nbSwitchAccountTab('profile', this)">
+        👤 Profile & Addresses
+      </button>
+      <a href="/pages/family-orders" class="nb-tab-btn nb-tab-link">
+        🍲 Place Family Order
+      </a>
+      <a href="/collections/instant-delivery" class="nb-tab-btn nb-tab-link">
+        🚀 Instant Delivery
+      </a>
+    </div>
+
+    <!-- TAB 1: ORDERS HISTORY -->
+    <div id="nb-tab-orders" class="nb-account-tab-content active">
+      <div class="nb-section-card">
+        <div class="nb-card-title-wrap">
+          <h3>My Orders History</h3>
+          <span class="nb-count-pill">{% if customer.orders.size > 0 %}{{ customer.orders.size }} Orders{% else %}0 Orders{% endif %}</span>
+        </div>
+
+        {% if customer and customer.orders.size > 0 %}
+          <div class="nb-orders-table-wrapper">
+            <table class="nb-orders-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Date</th>
+                  <th>Payment</th>
+                  <th>Fulfillment</th>
+                  <th>Total</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in customer.orders %}
+                  <tr>
+                    <td><strong>{{ order.name }}</strong></td>
+                    <td>{{ order.created_at | date: "%b %d, %Y" }}</td>
+                    <td><span class="nb-status-badge nb-status-{{ order.financial_status }}">{{ order.financial_status_label }}</span></td>
+                    <td><span class="nb-status-badge nb-status-{{ order.fulfillment_status }}">{{ order.fulfillment_status_label }}</span></td>
+                    <td><strong>{{ order.total_price | money }}</strong></td>
+                    <td>
+                      <a href="{{ order.customer_url }}" class="nb-view-order-btn">View Details</a>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="nb-empty-orders-state">
+            <span class="nb-empty-icon">🍲</span>
+            <h4>No Orders Found Yet</h4>
+            <p>You haven't placed any orders with us yet. Ready to experience Kalyan's finest Biryani?</p>
+            <div class="nb-empty-actions">
+              <a href="/collections/instant-delivery" class="nb-btn-gold">Order Instant Delivery (30-45 Mins) →</a>
+              <a href="/pages/family-orders" class="nb-btn-dark">Place Family Pre-Order →</a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- TAB 2: PROFILE & ADDRESSES -->
+    <div id="nb-tab-profile" class="nb-account-tab-content">
+      <div class="nb-profile-grid">
+
+        <!-- ACCOUNT DETAILS CARD -->
+        <div class="nb-section-card">
+          <div class="nb-card-title-wrap">
+            <h3>Account Details</h3>
+          </div>
+
+          <div class="nb-profile-info-list">
+            <div class="nb-info-item">
+              <span class="nb-info-label">Full Name</span>
+              <span class="nb-info-value">{% if customer %}{{ customer.name }}{% else %}Guest User{% endif %}</span>
+            </div>
+            <div class="nb-info-item">
+              <span class="nb-info-label">Email Address</span>
+              <span class="nb-info-value">{% if customer %}{{ customer.email }}{% else %}—{% endif %}</span>
+            </div>
+            <div class="nb-info-item">
+              <span class="nb-info-label">Phone / WhatsApp</span>
+              <span class="nb-info-value">{% if customer.phone != blank %}{{ customer.phone }}{% else %}+91 99200 42456{% endif %}</span>
+            </div>
+            <div class="nb-info-item">
+              <span class="nb-info-label">Default Delivery Zone</span>
+              <span class="nb-info-value">Kalyan, Maharashtra</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADDRESSES CARD -->
+        <div class="nb-section-card">
+          <div class="nb-card-title-wrap">
+            <h3>Saved Addresses</h3>
+            <a href="{{ routes.account_addresses_url }}" class="nb-link-btn">Manage Addresses →</a>
+          </div>
+
+          {% if customer and customer.default_address %}
+            <div class="nb-address-box">
+              <span class="nb-address-badge">DEFAULT ADDRESS</span>
+              <p class="nb-address-name"><strong>{{ customer.default_address.name }}</strong></p>
+              <p class="nb-address-text">
+                {{ customer.default_address.address1 }}<br>
+                {% if customer.default_address.address2 != blank %}{{ customer.default_address.address2 }}<br>{% endif %}
+                {{ customer.default_address.city }}, {{ customer.default_address.province_code }} {{ customer.default_address.zip }}<br>
+                {{ customer.default_address.country }}
+              </p>
+            </div>
+          {% else %}
+            <div class="nb-empty-address">
+              <p>No saved delivery address found.</p>
+              <a href="{{ routes.account_addresses_url }}" class="nb-btn-gold nb-btn-sm">Add Delivery Address +</a>
+            </div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function nbSwitchAccountTab(tabName, btnEl) {
+    var tabs = document.querySelectorAll('.nb-account-tab-content');
+    tabs.forEach(function(t) { t.classList.remove('active'); });
+
+    var btns = document.querySelectorAll('.nb-tab-btn:not(.nb-tab-link)');
+    btns.forEach(function(b) { b.classList.remove('active'); });
+
+    var target = document.getElementById('nb-tab-' + tabName);
+    if (target) target.classList.add('active');
+    if (btnEl) btnEl.classList.add('active');
+  }
+</script>
+
+<style>
+.nb-account-page-section {
+  padding: 40px 0 80px;
+  background: #FFFAF4;
+  min-height: 70vh;
+}
+.nb-account-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* HEADER CARD */
+.nb-account-header-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%);
+  border: 1px solid rgba(200, 146, 42, 0.28);
+  border-top: 4px solid #C8922A;
+  border-radius: 22px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  box-shadow: 0 12px 35px -10px rgba(44, 24, 16, 0.09);
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.nb-user-avatar {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #2C1810 0%, #1A0D08 100%);
+  color: #F3C669;
+  border: 2px solid #C8922A;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(44, 24, 16, 0.2);
+}
+.nb-user-details { flex: 1; }
+.nb-account-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #C8922A;
+  background: #FFFDF7;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+.nb-user-details h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #2C1810;
+  margin: 0 0 4px;
+}
+.nb-user-email {
+  font-size: 0.92rem;
+  color: #7A5C4A;
+  margin: 0;
+}
+.nb-logout-btn {
+  background: #FFFDF7;
+  color: #991B1B;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.nb-logout-btn:hover { background: #FEE2E2; }
+
+/* TABS */
+.nb-account-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.nb-tab-btn {
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 146, 42, 0.25);
+  color: #2C1810;
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.nb-tab-btn.active, .nb-tab-btn:hover {
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%);
+  color: #FFFFFF;
+  border-color: #C8922A;
+  box-shadow: 0 4px 14px rgba(200, 146, 42, 0.3);
+}
+
+/* CONTENT TABS */
+.nb-account-tab-content { display: none; }
+.nb-account-tab-content.active { display: block; }
+
+.nb-section-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%);
+  border: 1px solid rgba(200, 146, 42, 0.28);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 10px 30px -10px rgba(44, 24, 16, 0.08);
+  margin-bottom: 24px;
+}
+.nb-card-title-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.18);
+  padding-bottom: 12px;
+}
+.nb-card-title-wrap h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #2C1810;
+  margin: 0;
+}
+.nb-count-pill {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #C8922A;
+  background: #FFFDF7;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+/* ORDERS TABLE */
+.nb-orders-table-wrapper { overflow-x: auto; }
+.nb-orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+.nb-orders-table th {
+  padding: 12px 14px;
+  color: #2C1810;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid rgba(200, 146, 42, 0.2);
+}
+.nb-orders-table td {
+  padding: 16px 14px;
+  color: #5C4033;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.12);
+}
+.nb-status-badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.nb-status-paid { background: #DCFCE7; color: #166534; }
+.nb-status-unpaid { background: #FEF3C7; color: #92400E; }
+.nb-status-fulfilled { background: #DBEAFE; color: #1E40AF; }
+.nb-status-unfulfilled { background: #FEE2E2; color: #991B1B; }
+
+.nb-view-order-btn {
+  color: #C8922A;
+  font-weight: 700;
+  text-decoration: none;
+}
+.nb-view-order-btn:hover { text-decoration: underline; }
+
+/* EMPTY STATE */
+.nb-empty-orders-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+.nb-empty-icon { font-size: 3.5rem; display: block; margin-bottom: 12px; }
+.nb-empty-orders-state h4 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.5rem;
+  color: #2C1810;
+  margin: 0 0 8px;
+}
+.nb-empty-orders-state p {
+  font-size: 0.94rem;
+  color: #7A5C4A;
+  max-width: 480px;
+  margin: 0 auto 24px;
+}
+.nb-empty-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* PROFILE GRID */
+.nb-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 768px) {
+  .nb-profile-grid { grid-template-columns: 1fr; }
+}
+
+.nb-info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.12);
+}
+.nb-info-label { color: #7A5C4A; font-size: 0.88rem; font-weight: 600; }
+.nb-info-value { color: #2C1810; font-size: 0.9rem; font-weight: 700; }
+
+.nb-address-box {
+  background: #FFFFFF;
+  border: 1px solid rgba(200, 146, 42, 0.25);
+  border-radius: 14px;
+  padding: 18px;
+  position: relative;
+}
+.nb-address-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #C8922A;
+  background: #FFFDF7;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  padding: 2px 8px;
+  border-radius: 10px;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.nb-address-name { font-size: 0.98rem; color: #2C1810; margin: 0 0 6px; }
+.nb-address-text { font-size: 0.88rem; color: #7A5C4A; line-height: 1.5; margin: 0; }
+
+.nb-btn-gold {
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 12px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(200, 146, 42, 0.3);
+}
+.nb-btn-dark {
+  background: linear-gradient(135deg, #2C1810 0%, #1A0D08 100%) !important;
+  color: #F3C669 !important;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 12px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #C8922A;
+}
+.nb-link-btn {
+  color: #C8922A;
+  font-weight: 700;
+  font-size: 0.86rem;
+  text-decoration: none;
+}
+.nb-link-btn:hover { text-decoration: underline; }
+</style>
