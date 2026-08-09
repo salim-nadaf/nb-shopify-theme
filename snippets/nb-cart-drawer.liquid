@@ -1,88 +1,133 @@
-{% comment %} NIAMAT BIRYANI — Premium Cart Drawer {% endcomment %}
+{% comment %} NIAMAT BIRYANI — Ideal Ultra-Luxury Cart Drawer {% endcomment %}
 
 <div id="nb-drawer-overlay" onclick="nbCloseDrawer()"></div>
 
 <div id="nb-cart-drawer">
+  <!-- HEADER WITH LOGO & CLOSE -->
   <div class="nb-drawer__header">
     <div class="nb-drawer__header-left">
-      <span class="nb-drawer__icon">🛒</span>
+      <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/BP_by_Niamat-removebg-preview.png?v=1785663837"
+           alt="Biryani Palace by Niamat"
+           class="nb-drawer__logo">
       <div>
         <h3>Your Order</h3>
         <p class="nb-drawer__subtitle">Biryani Palace by Niamat</p>
       </div>
     </div>
-    <button class="nb-drawer__close" onclick="nbCloseDrawer()">✕</button>
+    <button class="nb-drawer__close" onclick="nbCloseDrawer()" aria-label="Close Cart">✕</button>
   </div>
 
-  <div class="nb-drawer__prep-banner">
-    <span>⚡</span>
-    <span>Ready in <strong>30–60 mins</strong> · Kalyan West delivery</span>
+  <!-- FREE DELIVERY PROGRESS BAR BANNER -->
+  <div class="nb-drawer__delivery-progress" id="nb-delivery-progress-banner">
+    <div class="nb-progress-text-wrap">
+      <span class="nb-progress-icon">🚚</span>
+      <span id="nb-progress-msg">Add <strong>₹360</strong> more for <strong>FREE DELIVERY</strong></span>
+    </div>
+    <div class="nb-progress-bar-bg">
+      <div class="nb-progress-bar-fill" id="nb-progress-fill" style="width: 55%;"></div>
+    </div>
   </div>
 
+  <!-- MAIN DRAWER BODY -->
   <div class="nb-drawer__body">
+    <!-- CART ITEMS CONTAINER -->
     <div id="nb-cart-items" class="nb-drawer__items"></div>
 
-    <div class="nb-drawer__notes">
-      <label for="nb-order-note">📝 Special Instructions</label>
-      <textarea id="nb-order-note" placeholder="Spice level, allergies, delivery instructions..." rows="2"></textarea>
-    </div>
-
-    <div class="nb-drawer__upsell">
-      <p class="nb-drawer__upsell-title">🍽️ Complete Your Meal</p>
-      <div class="nb-drawer__upsell-items" id="nb-upsell-items">
-        <div class="nb-upsell-card" data-handle="extra-raita">
-          <span class="nb-upsell-emoji">🥛</span>
-          <div class="nb-upsell-info">
-            <span class="nb-upsell-name">Extra Raita</span>
-            <span class="nb-upsell-price">₹49</span>
+    <!-- COMPLETE YOUR ORDER (KEEP ONLY COKE & EXTRA RAITA) -->
+    <div class="nb-drawer__upsell-section">
+      <div class="nb-upsell-header">
+        <span>🍽️</span>
+        <h4>Complete your order</h4>
+      </div>
+      <div class="nb-upsell-grid">
+        <div class="nb-upsell-pill-card">
+          <div class="nb-upsell-pill-info">
+            <span class="nb-upsell-pill-name">Extra Raita</span>
+            <span class="nb-upsell-pill-price">₹29</span>
           </div>
-          <button class="nb-upsell-add" onclick="nbAddUpsell(this, 'extra-raita')">+</button>
+          <button class="nb-upsell-pill-add" onclick="nbAddUpsell(this, 'extra-raita', 2900)">+ Add</button>
         </div>
-        <div class="nb-upsell-card" data-handle="cold-drink">
-          <span class="nb-upsell-emoji">🥤</span>
-          <div class="nb-upsell-info">
-            <span class="nb-upsell-name">Cold Drink</span>
-            <span class="nb-upsell-price">₹39</span>
+        <div class="nb-upsell-pill-card">
+          <div class="nb-upsell-pill-info">
+            <span class="nb-upsell-pill-name">Coke</span>
+            <span class="nb-upsell-pill-price">₹39</span>
           </div>
-          <button class="nb-upsell-add" onclick="nbAddUpsell(this, 'cold-drink')">+</button>
-        </div>
-        <div class="nb-upsell-card" data-handle="gulab-jamun">
-          <span class="nb-upsell-emoji">🍮</span>
-          <div class="nb-upsell-info">
-            <span class="nb-upsell-name">Gulab Jamun</span>
-            <span class="nb-upsell-price">₹59</span>
-          </div>
-          <button class="nb-upsell-add" onclick="nbAddUpsell(this, 'gulab-jamun')">+</button>
+          <button class="nb-upsell-pill-add" onclick="nbAddUpsell(this, 'coke', 3900)">+ Add</button>
         </div>
       </div>
     </div>
+
+    <hr class="nb-drawer-divider">
+
+    <!-- LOCATION SELECTOR -->
+    <div class="nb-drawer__location-box">
+      <div class="nb-location-header">
+        <span class="nb-loc-icon">📍</span>
+        <label for="nb-delivery-area-select">Delivering to?</label>
+      </div>
+      <div class="nb-select-wrap">
+        <select id="nb-delivery-area-select" onchange="nbUpdateDeliveryArea(this.value)">
+          <option value="5km_kalyan_west" selected>Kalyan West (0–5 km)</option>
+          <option value="5km_kalyan_east">Kalyan East (0–5 km)</option>
+          <option value="5km_dombivli">Dombivli / Ulhasnagar (0–5 km)</option>
+          <option value="8km_beyond">Beyond 5–8 km</option>
+        </select>
+        <span class="nb-select-arrow">›</span>
+      </div>
+    </div>
+
+    <!-- DELIVERY INSTRUCTIONS (SAVED TO SHOPIFY ADMIN ORDERS) -->
+    <div class="nb-drawer__instructions-box">
+      <label for="nb-delivery-instructions">📝 Delivery Instructions</label>
+      <textarea id="nb-delivery-instructions"
+                placeholder="Gate code, ring bell, leave with security, extra spicy..."
+                rows="2"
+                onchange="nbSaveDeliveryInstructions()"></textarea>
+    </div>
   </div>
 
+  <!-- DRAWER FOOTER WITH LIVE SUMMARY & CHECKOUT -->
   <div class="nb-drawer__footer">
-    <div class="nb-drawer__total">
-      <span>Total</span>
-      <span id="nb-total-price">₹0</span>
+    <div class="nb-summary-rows">
+      <div class="nb-summary-row">
+        <span>Subtotal</span>
+        <span id="nb-subtotal-val">₹0</span>
+      </div>
+      <div class="nb-summary-row">
+        <span>Delivery</span>
+        <span id="nb-delivery-val" class="nb-delivery-highlight">₹39</span>
+      </div>
+      <div class="nb-summary-row nb-total-row">
+        <span>TOTAL</span>
+        <span id="nb-grand-total-val">₹0</span>
+      </div>
     </div>
+
+    <div class="nb-secure-badge">
+      <span>🔒 100% Secure Checkout</span>
+    </div>
+
     <button class="nb-drawer__checkout-btn" onclick="nbGoToCheckout()">
-  🔒 Proceed to Secure Checkout
+      <span>Proceed to Checkout</span>
+      <span id="nb-btn-total-val">₹0</span>
     </button>
 
-    <a href="/collections/instant-delivery" class="nb-drawer__continue-btn" onclick="nbCloseDrawer()">
-  ← Continue Ordering
-</a>
-
+    <button class="nb-drawer__continue-btn" onclick="nbContinueOrdering()">
+      ← Continue Ordering
+    </button>
   </div>
 </div>
 
 <style>
-/* ===== NB CART DRAWER ===== */
+/* ===== ULTRA-LUXURY NB CART DRAWER STYLES ===== */
 #nb-drawer-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(44,24,16,0.5);
+  background: rgba(44,24,16,0.6);
   z-index: 99990;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 #nb-drawer-overlay.active { display: block; }
 
@@ -90,27 +135,19 @@
   position: fixed;
   top: 0; right: 0;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   height: 100%;
   background: #FFFAF4;
   z-index: 99991;
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: -4px 0 32px rgba(44,24,16,0.15);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -8px 0 36px rgba(44,24,16,0.22);
 }
 #nb-cart-drawer.active { transform: translateX(0); }
 
-/* On mobile, account for bottom dock */
-@media (max-width: 768px) {
-  #nb-cart-drawer {
-    max-width: 100%;
-    height: calc(100% - 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-}
-
+/* HEADER */
 .nb-drawer__header {
   display: flex;
   align-items: center;
@@ -119,29 +156,57 @@
   background: #2C1810;
   color: #FDF6EC;
   flex-shrink: 0;
+  border-bottom: 2px solid #C8922A;
 }
-.nb-drawer__header-left { display: flex; align-items: center; gap: 10px; }
-.nb-drawer__icon { font-size: 1.4rem; }
-.nb-drawer__header h3 { margin: 0; font-size: 1rem; font-weight: 700; color: #FDF6EC; }
-.nb-drawer__subtitle { margin: 0; font-size: 0.72rem; color: rgba(253,246,236,0.7); }
+.nb-drawer__header-left { display: flex; align-items: center; gap: 12px; }
+.nb-drawer__logo {
+  height: 42px;
+  width: auto;
+  max-width: 130px;
+  object-fit: contain;
+}
+.nb-drawer__header h3 { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; font-weight: 700; color: #F3C669; }
+.nb-drawer__subtitle { margin: 2px 0 0; font-size: 0.72rem; color: rgba(253,246,236,0.7); }
 .nb-drawer__close {
   background: none; border: none; color: #FDF6EC;
-  font-size: 1.2rem; cursor: pointer; padding: 8px 12px;
-  border-radius: 6px; transition: background 0.15s;
+  font-size: 1.4rem; cursor: pointer; padding: 6px 12px;
+  border-radius: 8px; transition: background 0.15s;
   min-width: 44px; min-height: 44px;
   display: flex; align-items: center; justify-content: center;
 }
-.nb-drawer__close:hover { background: rgba(255,255,255,0.1); }
+.nb-drawer__close:hover { background: rgba(255,255,255,0.12); }
 
-.nb-drawer__prep-banner {
-  display: flex; align-items: center; gap: 8px;
-  background: rgba(200,146,42,0.12);
-  border-bottom: 1px solid rgba(200,146,42,0.2);
-  padding: 10px 20px;
-  font-size: 0.82rem; color: #2C1810;
+/* FREE DELIVERY PROGRESS BANNER */
+.nb-drawer__delivery-progress {
+  background: linear-gradient(135deg, #FFFDF7 0%, #F8EED8 100%);
+  border-bottom: 1px solid rgba(200,146,42,0.25);
+  padding: 12px 20px;
   flex-shrink: 0;
 }
+.nb-progress-text-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #2C1810;
+  margin-bottom: 8px;
+}
+.nb-progress-icon { font-size: 1.1rem; }
+.nb-progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: rgba(200,146,42,0.2);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.nb-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #C8922A 0%, #25D366 100%);
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
 
+/* DRAWER BODY */
 .nb-drawer__body {
   flex: 1;
   overflow-y: auto;
@@ -152,39 +217,51 @@
   gap: 16px;
 }
 
-/* Cart items */
+/* CART ITEMS */
 .nb-drawer__items { display: flex; flex-direction: column; gap: 12px; }
 .nb-cart-item {
-  display: flex; gap: 12px; align-items: center;
+  display: flex; gap: 12px; align-items: flex-start;
   background: #fff;
-  border: 1px solid rgba(200,146,42,0.15);
-  border-radius: 12px;
+  border: 1px solid rgba(200,146,42,0.2);
+  border-radius: 14px;
   padding: 12px;
+  box-shadow: 0 2px 8px rgba(44,24,16,0.04);
 }
 .nb-cart-item__img {
-  width: 64px; height: 64px;
-  border-radius: 8px; object-fit: cover;
+  width: 68px; height: 68px;
+  border-radius: 10px; object-fit: cover;
   flex-shrink: 0; background: #F5ECD7;
 }
 .nb-cart-item__info { flex: 1; min-width: 0; }
 .nb-cart-item__name {
-  font-size: 0.88rem; font-weight: 700;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.95rem; font-weight: 700;
   color: #2C1810; margin: 0 0 2px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.nb-cart-item__variant {
-  font-size: 0.75rem; color: #7A5C4A; margin: 0 0 8px;
+.nb-cart-item__variant { font-size: 0.76rem; color: #7A5C4A; margin: 0 0 6px; }
+
+/* RAITA INCLUDED BADGE */
+.nb-raita-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #A5D6A7;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 8px;
 }
+.nb-raita-tag span { font-weight: 900; }
+
 .nb-cart-item__bottom {
   display: flex; align-items: center;
   justify-content: space-between; gap: 8px;
 }
-.nb-cart-item__price {
-  font-size: 0.95rem; font-weight: 800; color: #C8922A;
-}
-.nb-qty-control {
-  display: flex; align-items: center; gap: 6px;
-}
+.nb-cart-item__price { font-size: 1rem; font-weight: 800; color: #C8922A; }
+.nb-qty-control { display: flex; align-items: center; gap: 8px; }
 .nb-qty-btn {
   width: 32px; height: 32px;
   border-radius: 50%;
@@ -195,60 +272,117 @@
   cursor: pointer; display: flex;
   align-items: center; justify-content: center;
   transition: all 0.15s;
-  /* Large touch target */
-  min-width: 32px; min-height: 32px;
 }
 .nb-qty-btn:hover, .nb-qty-btn:active { background: #C8922A; color: #fff; }
-.nb-qty-num { font-size: 0.9rem; font-weight: 700; color: #2C1810; min-width: 20px; text-align: center; }
+.nb-qty-num { font-size: 0.92rem; font-weight: 700; color: #2C1810; min-width: 18px; text-align: center; }
 
-/* Notes */
-.nb-drawer__notes label {
-  display: block; font-size: 0.8rem;
-  font-weight: 600; color: #2C1810; margin-bottom: 6px;
+/* UPSELL SECTION (ONLY COKE & EXTRA RAITA) */
+.nb-drawer__upsell-section {
+  background: #FFFDF7;
+  border: 1px dashed rgba(200,146,42,0.35);
+  border-radius: 14px;
+  padding: 14px;
 }
-.nb-drawer__notes textarea {
-  width: 100%; border: 1.5px solid rgba(200,146,42,0.3);
+.nb-upsell-header {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 10px;
+}
+.nb-upsell-header h4 {
+  margin: 0; font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.92rem; font-weight: 700; color: #2C1810;
+}
+.nb-upsell-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.nb-upsell-pill-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid rgba(200,146,42,0.2);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.nb-upsell-pill-info { display: flex; flex-direction: column; }
+.nb-upsell-pill-name { font-size: 0.8rem; font-weight: 700; color: #2C1810; }
+.nb-upsell-pill-price { font-size: 0.76rem; font-weight: 800; color: #C8922A; }
+.nb-upsell-pill-add {
+  background: #C8922A;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nb-upsell-pill-add:hover { background: #A67520; }
+
+.nb-drawer-divider {
+  border: none;
+  border-top: 1px solid rgba(200,146,42,0.2);
+  margin: 4px 0;
+}
+
+/* LOCATION SELECTOR BOX */
+.nb-drawer__location-box {
+  background: #fff;
+  border: 1px solid rgba(200,146,42,0.2);
+  border-radius: 12px;
+  padding: 12px;
+}
+.nb-location-header {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+}
+.nb-location-header label {
+  font-size: 0.82rem; font-weight: 700; color: #2C1810; margin: 0;
+}
+.nb-select-wrap {
+  position: relative;
+  display: flex; align-items: center;
+}
+.nb-select-wrap select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  background: #FFFDF7;
+  border: 1px solid rgba(200,146,42,0.3);
+  border-radius: 8px;
+  padding: 10px 32px 10px 12px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #2C1810;
+  outline: none;
+  cursor: pointer;
+}
+.nb-select-arrow {
+  position: absolute; right: 12px;
+  font-size: 1.2rem; color: #C8922A;
+  pointer-events: none; font-weight: 800;
+}
+
+/* INSTRUCTIONS BOX */
+.nb-drawer__instructions-box label {
+  display: block; font-size: 0.82rem;
+  font-weight: 700; color: #2C1810; margin-bottom: 6px;
+}
+.nb-drawer__instructions-box textarea {
+  width: 100%; border: 1px solid rgba(200,146,42,0.3);
   border-radius: 10px; padding: 10px 12px;
   font-size: 0.82rem; color: #2C1810;
   background: #fff; resize: none;
   font-family: inherit; box-sizing: border-box;
 }
-.nb-drawer__notes textarea:focus {
+.nb-drawer__instructions-box textarea:focus {
   outline: none; border-color: #C8922A;
 }
 
-/* Upsell */
-.nb-drawer__upsell-title {
-  font-size: 0.85rem; font-weight: 700;
-  color: #2C1810; margin: 0 0 10px;
-}
-.nb-drawer__upsell-items { display: flex; flex-direction: column; gap: 8px; }
-.nb-upsell-card {
-  display: flex; align-items: center; gap: 10px;
-  background: #fff;
-  border: 1px solid rgba(200,146,42,0.15);
-  border-radius: 10px; padding: 10px 12px;
-}
-.nb-upsell-emoji { font-size: 1.4rem; }
-.nb-upsell-info { flex: 1; }
-.nb-upsell-name { display: block; font-size: 0.82rem; font-weight: 600; color: #2C1810; }
-.nb-upsell-price { display: block; font-size: 0.78rem; color: #C8922A; font-weight: 700; }
-.nb-upsell-add {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: #C8922A; color: #fff;
-  border: none; font-size: 1.2rem;
-  cursor: pointer; display: flex;
-  align-items: center; justify-content: center;
-  transition: background 0.15s; flex-shrink: 0;
-}
-.nb-upsell-add:hover, .nb-upsell-add:active { background: #A67520; }
-.nb-upsell-add.added { background: #2C1810; }
-
-/* Footer — always visible, never hidden on mobile */
+/* FOOTER */
 .nb-drawer__footer {
   padding: 14px 20px 20px;
-  border-top: 1px solid rgba(200,146,42,0.2);
+  border-top: 2px solid rgba(200,146,42,0.25);
   background: #FFFAF4;
   flex-shrink: 0;
   display: flex;
@@ -258,122 +392,67 @@
   z-index: 1;
 }
 
-/* ADD THIS — pushes footer above mobile dock */
-@media (max-width: 768px) {
-  .nb-drawer__footer {
-    padding-bottom: 84px !important;
-  }
-  #nb-cart-drawer {
-    max-width: 100%;
-    /* Full height minus dock height */
-    height: calc(100dvh) !important;
-    overflow: hidden;
-  }
-  .nb-drawer__body {
-    /* Ensure body scrolls and footer stays visible */
-    padding-bottom: 8px !important;
-  }
+.nb-summary-rows { display: flex; flex-direction: column; gap: 6px; margin-bottom: 4px; }
+.nb-summary-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.88rem; color: #5C4033;
 }
-  
-.nb-drawer__total {
-  display: flex; justify-content: space-between;
-  align-items: center;
-  font-size: 1rem; font-weight: 800; color: #2C1810;
-  padding-bottom: 4px;
+.nb-summary-row.nb-total-row {
+  font-size: 1.05rem; font-weight: 900; color: #2C1810;
+  border-top: 1px solid rgba(200,146,42,0.2);
+  padding-top: 8px; margin-top: 4px;
 }
+.nb-delivery-highlight { font-weight: 800; color: #C8922A; }
+
+.nb-secure-badge {
+  text-align: center; font-size: 0.76rem; color: #7A5C4A; font-weight: 600;
+}
+
 .nb-drawer__checkout-btn {
-  display: block; text-align: center;
-  background: #C8922A; color: #fff !important;
-  font-weight: 700; font-size: 0.95rem;
-  padding: 15px; border-radius: 12px;
-  text-decoration: none;
-  transition: background 0.15s;
-  min-height: 50px;
-  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #C8922A 0%, #A67520 100%);
+  color: #fff !important;
+  font-weight: 800; font-size: 1rem;
+  padding: 16px 20px; border-radius: 12px;
+  border: none; cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 14px rgba(200,146,42,0.35);
+  min-height: 52px;
 }
 .nb-drawer__checkout-btn:hover,
-.nb-drawer__checkout-btn:active { background: #A67520; color: #fff !important; }
+.nb-drawer__checkout-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(200,146,42,0.45);
+}
 
-/* Continue Ordering — ALWAYS visible on all screen sizes */
 .nb-drawer__continue-btn {
-  display: block !important;
-  width: 100%;
-  background: transparent;
-  border: 1.5px solid rgba(44,24,16,0.25);
-  color: #2C1810;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.15s;
-  font-family: inherit;
-  text-align: center;
-  min-height: 44px;
-  box-sizing: border-box;
+  display: block; width: 100%; background: transparent;
+  border: 1.5px solid rgba(44,24,16,0.25); color: #2C1810;
+  font-size: 0.85rem; font-weight: 600; padding: 10px;
+  border-radius: 10px; cursor: pointer; transition: all 0.15s;
+  text-align: center; box-sizing: border-box;
 }
-.nb-drawer__continue-btn:hover,
-.nb-drawer__continue-btn:active {
-  border-color: #C8922A; color: #C8922A;
-}
+.nb-drawer__continue-btn:hover { border-color: #C8922A; color: #C8922A; }
 
-/* Empty state */
-.nb-drawer__empty {
-  text-align: center; padding: 40px 20px;
-  color: #7A5C4A;
-}
-.nb-drawer__empty-icon { font-size: 3rem; margin-bottom: 12px; }
-.nb-drawer__empty p { font-size: 0.9rem; margin: 0; }
-
-/* Hide theme's default cart icon on mobile — use dock instead */
+/* MOBILE RESPONSIVE FIT */
 @media (max-width: 768px) {
-  .header__icon--cart,
-  a[href="/cart"].header__icon,
-  .header__icons .header__icon:last-child {
-    display: none !important;
-  }
+  #nb-cart-drawer { max-width: 100%; height: 100dvh; }
+  .nb-drawer__footer { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important; }
 }
 </style>
 
 <script>
-// ===== NB CART DRAWER SYSTEM =====
+// ===== NB IDEAL CART DRAWER CONTROLLER =====
+
+var nbSelectedArea = '5km_kalyan_west';
 
 function nbOpenDrawer() {
   document.getElementById('nb-cart-drawer').classList.add('active');
   document.getElementById('nb-drawer-overlay').classList.add('active');
   document.body.style.overflow = 'hidden';
   nbRefreshCart();
-}
-
-function nbGoToCheckout() {
-  var phone = localStorage.getItem('nb_phone') || '';
-  var name = localStorage.getItem('nb_name') || '';
-
-  // Save to cart attributes first, then redirect
-  fetch('/cart/update.js', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      attributes: {
-        'Customer Phone': phone,
-        'Customer Name': name,
-        'WhatsApp Consent': localStorage.getItem('nb_promo_consent') || 'no'
-      }
-    })
-  }).then(function() {
-    window.location.href = '/checkout';
-  }).catch(function() {
-    window.location.href = '/checkout';
-  });
-}
-
-function nbContinueOrdering() {
-  nbCloseDrawer();
-  // On desktop, navigate to Instant Delivery
-  if (window.innerWidth > 768) {
-    window.location.href = '/collections/instant-delivery';
-  }
-  // On mobile, just close drawer — customer is already on the page
 }
 
 function nbCloseDrawer() {
@@ -386,46 +465,141 @@ function nbFormatMoney(cents) {
   return '₹' + (cents / 100).toFixed(0);
 }
 
+function nbUpdateDeliveryArea(area) {
+  nbSelectedArea = area;
+  localStorage.setItem('nb_delivery_area', area);
+  nbRefreshCart();
+}
+
+function nbSaveDeliveryInstructions() {
+  var textarea = document.getElementById('nb-delivery-instructions');
+  var instructions = textarea ? textarea.value.trim() : '';
+  if (instructions) {
+    fetch('/cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        attributes: { 'Delivery Instructions': instructions },
+        note: 'DELIVERY INSTRUCTIONS: ' + instructions
+      })
+    }).catch(function(e) {});
+  }
+}
+
+function nbGoToCheckout() {
+  var textarea = document.getElementById('nb-delivery-instructions');
+  var instructions = textarea ? textarea.value.trim() : '';
+  
+  // Save instructions to Cart Attributes & Note before going to checkout
+  fetch('/cart/update.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      attributes: { 
+        'Delivery Instructions': instructions,
+        'Delivery Area': nbSelectedArea
+      },
+      note: instructions ? ('DELIVERY INSTRUCTIONS: ' + instructions) : ''
+    })
+  }).then(function() {
+    window.location.href = '/checkout';
+  }).catch(function() {
+    window.location.href = '/checkout';
+  });
+}
+
+function nbContinueOrdering() {
+  nbCloseDrawer();
+  if (window.innerWidth > 768) {
+    window.location.href = '/collections/instant-delivery';
+  }
+}
+
 function nbRefreshCart() {
   fetch('/cart.js')
     .then(r => r.json())
     .then(cart => {
-      const container = document.getElementById('nb-cart-items');
-      const totalEl = document.getElementById('nb-total-price');
+      var container = document.getElementById('nb-cart-items');
+      var subtotalEl = document.getElementById('nb-subtotal-val');
+      var deliveryEl = document.getElementById('nb-delivery-val');
+      var grandTotalEl = document.getElementById('nb-grand-total-val');
+      var btnTotalEl = document.getElementById('nb-btn-total-val');
+      var progressMsgEl = document.getElementById('nb-progress-msg');
+      var progressFillEl = document.getElementById('nb-progress-fill');
 
       if (cart.item_count === 0) {
-        container.innerHTML = `
-          <div class="nb-drawer__empty">
-            <div class="nb-drawer__empty-icon">🍛</div>
-            <p>Your order is empty.<br>Add something delicious!</p>
-          </div>`;
-        totalEl.textContent = '₹0';
+        container.innerHTML = [
+          '<div class="nb-drawer__empty" style="text-align: center; padding: 40px 20px;">',
+            '<div style="font-size: 3rem; margin-bottom: 10px;">🍛</div>',
+            '<p style="color: #7A5C4A; font-weight: 600;">Your order is empty.<br>Add delicious Biryani to get started!</p>',
+          '</div>'
+        ].join('');
+
+        subtotalEl.textContent = '₹0';
+        deliveryEl.textContent = '₹0';
+        grandTotalEl.textContent = '₹0';
+        btnTotalEl.textContent = '₹0';
+        progressFillEl.style.width = '0%';
+        progressMsgEl.innerHTML = 'Add <strong>₹799</strong> for <strong>FREE DELIVERY</strong>';
         return;
       }
 
-      totalEl.textContent = nbFormatMoney(cart.total_price);
+      var subtotalCents = cart.total_price;
+      var subtotalRupees = Math.round(subtotalCents / 100);
 
-      container.innerHTML = cart.items.map(item => `
-        <div class="nb-cart-item" data-key="${item.key}">
-          <img class="nb-cart-item__img"
-               src="${item.image ? item.image : ''}"
-               alt="${item.product_title}"
-               onerror="this.style.display='none'">
-          <div class="nb-cart-item__info">
-            <p class="nb-cart-item__name">${item.product_title}</p>
-            ${item.variant_title && item.variant_title !== 'Default Title'
-              ? `<p class="nb-cart-item__variant">${item.variant_title}</p>` : ''}
-            <div class="nb-cart-item__bottom">
-              <span class="nb-cart-item__price">${nbFormatMoney(item.final_line_price)}</span>
-              <div class="nb-qty-control">
-                <button class="nb-qty-btn" onclick="nbUpdateQty('${item.key}', ${item.quantity - 1})">−</button>
-                <span class="nb-qty-num">${item.quantity}</span>
-                <button class="nb-qty-btn" onclick="nbUpdateQty('${item.key}', ${item.quantity + 1})">+</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `).join('');
+      // Determine Free Delivery Threshold & Base Delivery Charge based on selected area
+      var isBeyond5km = (nbSelectedArea === '8km_beyond');
+      var freeThresholdRupees = isBeyond5km ? 1299 : 799;
+      var baseDeliveryRupees = isBeyond5km ? 69 : 39;
+
+      var deliveryRupees = 0;
+      if (subtotalRupees >= freeThresholdRupees) {
+        deliveryRupees = 0;
+        deliveryEl.textContent = 'FREE 🎉';
+        deliveryEl.style.color = '#25D366';
+        progressFillEl.style.width = '100%';
+        progressMsgEl.innerHTML = '🎉 You\'ve unlocked <strong>FREE DELIVERY</strong>!';
+      } else {
+        deliveryRupees = baseDeliveryRupees;
+        deliveryEl.textContent = '₹' + deliveryRupees;
+        deliveryEl.style.color = '#C8922A';
+
+        var neededRupees = freeThresholdRupees - subtotalRupees;
+        var percentage = Math.min(100, Math.round((subtotalRupees / freeThresholdRupees) * 100));
+        progressFillEl.style.width = percentage + '%';
+        progressMsgEl.innerHTML = '🚚 Add <strong>₹' + neededRupees + '</strong> more for <strong>FREE DELIVERY</strong>';
+      }
+
+      var grandTotalRupees = subtotalRupees + deliveryRupees;
+
+      subtotalEl.textContent = '₹' + subtotalRupees;
+      grandTotalEl.textContent = '₹' + grandTotalRupees;
+      btnTotalEl.textContent = '₹' + grandTotalRupees;
+
+      // Render cart items with "✓ Raita included" box
+      container.innerHTML = cart.items.map(function(item) {
+        var isBiryani = item.product_title.toLowerCase().includes('biryani') || item.product_type.toLowerCase().includes('biryani');
+        var raitaHtml = isBiryani ? '<div class="nb-raita-tag"><span>✓</span> Raita included</div>' : '';
+
+        return [
+          '<div class="nb-cart-item" data-key="' + item.key + '">',
+            '<img class="nb-cart-item__img" src="' + (item.image || '') + '" alt="' + item.product_title + '" onerror="this.style.display=\'none\'">',
+            '<div class="nb-cart-item__info">',
+              '<p class="nb-cart-item__name">' + item.product_title + '</p>',
+              (item.variant_title && item.variant_title !== 'Default Title' ? '<p class="nb-cart-item__variant">' + item.variant_title + '</p>' : ''),
+              raitaHtml,
+              '<div class="nb-cart-item__bottom">',
+                '<span class="nb-cart-item__price">' + nbFormatMoney(item.final_line_price) + '</span>',
+                '<div class="nb-qty-control">',
+                  '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity - 1) + ')">−</button>',
+                  '<span class="nb-qty-num">' + item.quantity + '</span>',
+                  '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity + 1) + ')">+</button>',
+                '</div>',
+              '</div>',
+            '</div>',
+          '</div>'
+        ].join('');
+      }).join('');
     });
 }
 
@@ -434,14 +608,15 @@ function nbUpdateQty(key, qty) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id: key, quantity: qty })
-  }).then(() => nbRefreshCart());
+  }).then(function() { nbRefreshCart(); });
 }
 
-function nbAddUpsell(btn, handle) {
+function nbAddUpsell(btn, handle, fallbackPriceCents) {
+  btn.textContent = 'Adding...';
   fetch('/products/' + handle + '.js')
     .then(r => r.json())
     .then(product => {
-      const variantId = product.variants[0].id;
+      var variantId = product.variants[0].id;
       return fetch('/cart/add.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -449,24 +624,51 @@ function nbAddUpsell(btn, handle) {
       });
     })
     .then(() => {
-      btn.textContent = '✓';
-      btn.classList.add('added');
+      btn.textContent = '✓ Added';
+      btn.style.background = '#2E7D32';
       nbRefreshCart();
     })
     .catch(() => {
-      btn.textContent = '✓';
-      btn.style.background = '#999';
+      // Fallback search by title
+      fetch('/search/suggest.json?q=' + encodeURIComponent(handle) + '&resources[type]=product')
+        .then(r => r.json())
+        .then(res => {
+          var products = (res.resources && res.resources.results && res.resources.results.products) ? res.resources.results.products : [];
+          if (products.length > 0) {
+            return fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id: products[0].variants[0].id, quantity: 1 })
+            });
+          }
+        })
+        .then(() => {
+          btn.textContent = '✓ Added';
+          btn.style.background = '#2E7D32';
+          nbRefreshCart();
+        })
+        .catch(() => {
+          btn.textContent = '+ Add';
+          alert('Addon product not found. Please ensure Extra Raita or Coke product exists in Shopify Admin.');
+        });
     });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Load saved delivery area if available
+  var savedArea = localStorage.getItem('nb_delivery_area');
+  if (savedArea) {
+    nbSelectedArea = savedArea;
+    var sel = document.getElementById('nb-delivery-area-select');
+    if (sel) sel.value = savedArea;
+  }
 
   // Intercept nb-quick-form → open drawer
   document.addEventListener('submit', function(e) {
-    const form = e.target;
+    var form = e.target;
     if (!form.classList.contains('nb-quick-form')) return;
     e.preventDefault();
-    const id = form.querySelector('[name="id"]').value;
+    var id = form.querySelector('[name="id"]').value;
     if (!id) return;
     fetch('/cart/add.js', {
       method: 'POST',
@@ -480,23 +682,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Intercept /cart link clicks → open drawer instead
   document.addEventListener('click', function(e) {
-    const link = e.target.closest('a[href="/cart"]');
+    var link = e.target.closest('a[href="/cart"]');
     if (!link) return;
-    // Don't intercept if it's the checkout button inside our drawer
     if (link.closest('#nb-cart-drawer')) return;
     e.preventDefault();
     nbOpenDrawer();
   });
 
-  // Intercept cart icon button clicks (theme's cart drawer trigger)
+  // Intercept cart icon button clicks
   document.addEventListener('click', function(e) {
-    const cartBtn = e.target.closest('[data-cart-toggle], .header__icon--cart, [aria-label="Cart"]');
+    var cartBtn = e.target.closest('[data-cart-toggle], .header__icon--cart, [aria-label="Cart"]');
     if (!cartBtn) return;
     if (cartBtn.closest('#nb-cart-drawer')) return;
     e.preventDefault();
     e.stopPropagation();
     nbOpenDrawer();
   });
-
 });
 </script>
