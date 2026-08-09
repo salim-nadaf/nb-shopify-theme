@@ -23,15 +23,19 @@
       {% render 'spacing-style', settings: section.settings %}
     "
   >
-    {% if page.handle == 'contact' or page.handle == 'contact-us' or page.title contains 'Contact' %}
+    {% liquid
+      assign ph = page.handle | downcase
+      assign pt = page.title | downcase
+    %}
+    {% if ph contains 'contact' or pt contains 'contact' %}
       {% render 'nb-contact-snippet' %}
-    {% elsif page.handle == 'about-us' or page.handle == 'about' or page.title contains 'About' or page.title contains 'Story' %}
+    {% elsif ph contains 'about' or pt contains 'about' or pt contains 'story' %}
       {% render 'nb-our-story-snippet' %}
-    {% elsif page.handle == 'family-orders' or page.handle == 'family-feast' or page.title contains 'Family' %}
+    {% elsif ph contains 'family' or pt contains 'family' or ph contains 'feast' or pt contains 'feast' or ph contains 'pre-order' or pt contains 'pre-order' %}
       {% render 'nb-family-orders-snippet' %}
-    {% elsif page.handle == 'bulk-orders' or page.title contains 'Bulk' or page.title contains 'Catering' %}
+    {% elsif ph contains 'bulk' or pt contains 'bulk' or ph contains 'catering' or pt contains 'catering' %}
       {% render 'nb-bulk-orders-snippet' %}
-    {% elsif page.handle == 'biryani-calculator' or page.title contains 'Calculator' %}
+    {% elsif ph contains 'calculator' or pt contains 'calculator' %}
       {% render 'nb-biryani-calculator-snippet' %}
     {% else %}
       {% if page.content != blank %}

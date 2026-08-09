@@ -656,24 +656,31 @@
           function checkAndExecute() {
             var path = window.location.pathname.toLowerCase();
             var mainContent = document.getElementById('MainContent');
+            if (!mainContent) return;
 
-            if (path.includes('bulk-orders') || path.includes('/pages/bulk')) {
+            var is404 = document.body.classList.contains('template-404') || !!document.querySelector('.template-404');
+            if (!is404 && mainContent.children.length > 0) {
+              // Page exists natively in Shopify, do not override
+              return;
+            }
+
+            if (path.includes('bulk') || path.includes('catering')) {
               var template = document.getElementById('nb-bulk-orders-template');
-              if (template && mainContent) {
+              if (template) {
                 mainContent.innerHTML = template.innerHTML;
                 document.title = "Bulk Catering Packages — Biryani Palace by Niamat";
                 nbExecuteScripts(mainContent);
               }
-            } else if (path.includes('biryani-calculator') || path.includes('calculator')) {
+            } else if (path.includes('calculator')) {
               var template = document.getElementById('nb-biryani-calculator-template');
-              if (template && mainContent) {
+              if (template) {
                 mainContent.innerHTML = template.innerHTML;
                 document.title = "Biryani Quantity Calculator — Biryani Palace by Niamat";
                 nbExecuteScripts(mainContent);
               }
-            } else if (path.includes('family-orders') || path.includes('/pages/family-orders') || path.includes('family-feast')) {
+            } else if (path.includes('family') || path.includes('feast') || path.includes('pre-order') || path.includes('order')) {
               var template = document.getElementById('nb-family-orders-template');
-              if (template && mainContent) {
+              if (template) {
                 mainContent.innerHTML = template.innerHTML;
                 document.title = "Family Orders — Biryani Palace by Niamat";
                 nbExecuteScripts(mainContent);
