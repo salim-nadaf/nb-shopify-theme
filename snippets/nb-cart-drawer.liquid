@@ -1,4 +1,4 @@
-{% comment %} NIAMAT BIRYANI — Ideal Ultra-Luxury Cart Drawer {% endcomment %}
+{% comment %} NIAMAT BIRYANI — Ideal Ultra-Luxury Cart Drawer with Live Location GPS {% endcomment %}
 
 <div id="nb-drawer-overlay" onclick="nbCloseDrawer()"></div>
 
@@ -59,12 +59,18 @@
 
     <hr class="nb-drawer-divider">
 
-    <!-- LOCATION SELECTOR -->
+    <!-- LOCATION DETECTOR SELECTOR -->
     <div class="nb-drawer__location-box">
       <div class="nb-location-header">
-        <span class="nb-loc-icon">📍</span>
-        <label for="nb-delivery-area-select">Delivering to?</label>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span class="nb-loc-icon">📍</span>
+          <label for="nb-delivery-area-select">Delivering to?</label>
+        </div>
+        <button type="button" class="nb-use-location-btn" id="nb-use-location-btn" onclick="nbDetectLiveLocation()">
+          🎯 Use My Location
+        </button>
       </div>
+
       <div class="nb-select-wrap">
         <select id="nb-delivery-area-select" onchange="nbUpdateDeliveryArea(this.value)">
           <option value="5km_kalyan_west" selected>Kalyan West (0–5 km)</option>
@@ -74,6 +80,8 @@
         </select>
         <span class="nb-select-arrow">›</span>
       </div>
+
+      <div id="nb-location-status-badge" class="nb-location-status" style="display: none;"></div>
     </div>
 
     <!-- DELIVERY INSTRUCTIONS (SAVED TO SHOPIFY ADMIN ORDERS) -->
@@ -326,7 +334,7 @@
   margin: 4px 0;
 }
 
-/* LOCATION SELECTOR BOX */
+/* LOCATION SELECTOR BOX & LIVE GEOLOCATION */
 .nb-drawer__location-box {
   background: #fff;
   border: 1px solid rgba(200,146,42,0.2);
@@ -334,11 +342,35 @@
   padding: 12px;
 }
 .nb-location-header {
-  display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+  display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;
 }
 .nb-location-header label {
   font-size: 0.82rem; font-weight: 700; color: #2C1810; margin: 0;
 }
+.nb-use-location-btn {
+  background: rgba(200,146,42,0.12);
+  color: #C8922A;
+  border: 1px solid rgba(200,146,42,0.4);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.nb-use-location-btn:hover { background: #C8922A; color: #fff; }
+
+.nb-location-status {
+  margin-top: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #A5D6A7;
+}
+
 .nb-select-wrap {
   position: relative;
   display: flex; align-items: center;
@@ -448,6 +480,10 @@
 
 var nbSelectedArea = '5km_kalyan_west';
 
+// Niamat Biryani Central Kitchen Coordinates (Kalyan West)
+var NB_KITCHEN_LAT = 19.2437;
+var NB_KITCHEN_LNG = 73.1355;
+
 function nbOpenDrawer() {
   document.getElementById('nb-cart-drawer').classList.add('active');
   document.getElementById('nb-drawer-overlay').classList.add('active');
@@ -471,6 +507,72 @@ function nbUpdateDeliveryArea(area) {
   nbRefreshCart();
 }
 
+// ===== HAVERSINE DISTANCE CALCULATOR =====
+function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
+  var R = 6371; // Earth radius in km
+  var dLat = (lat2 - lat1) * Math.PI / 180;
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+          Math.sin(dLon/2) * Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+
+// ===== LIVE GEOLOCATION DETECTOR =====
+function nbDetectLiveLocation() {
+  var btn = document.getElementById('nb-use-location-btn');
+  var badge = document.getElementById('nb-location-status-badge');
+  var select = document.getElementById('nb-delivery-area-select');
+
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by your browser.');
+    return;
+  }
+
+  if (btn) btn.textContent = '⌛ Locating...';
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      var userLat = position.coords.latitude;
+      var userLng = position.coords.longitude;
+      var distKm = nbCalculateDistanceKm(NB_KITCHEN_LAT, NB_KITCHEN_LNG, userLat, userLng);
+      var distRounded = distKm.toFixed(1);
+
+      if (btn) btn.textContent = '🎯 Location Set';
+
+      if (distKm <= 5.2) {
+        nbSelectedArea = '5km_kalyan_west';
+        if (select) select.value = '5km_kalyan_west';
+        if (badge) {
+          badge.style.display = 'block';
+          badge.innerHTML = '📍 Detected Location: <strong>~' + distRounded + ' km away</strong> (Standard ₹39 Delivery · Free > ₹799)';
+        }
+      } else {
+        nbSelectedArea = '8km_beyond';
+        if (select) select.value = '8km_beyond';
+        if (badge) {
+          badge.style.display = 'block';
+          badge.style.background = '#FFF3E0';
+          badge.style.color = '#E65100';
+          badge.style.borderColor = '#FFE0B2';
+          badge.innerHTML = '📍 Detected Location: <strong>~' + distRounded + ' km away</strong> (Extended Zone ₹69 Delivery · Free > ₹1,299)';
+        }
+      }
+
+      localStorage.setItem('nb_delivery_area', nbSelectedArea);
+      localStorage.setItem('nb_user_lat', userLat);
+      localStorage.setItem('nb_user_lng', userLng);
+      nbRefreshCart();
+    },
+    function(error) {
+      if (btn) btn.textContent = '🎯 Use My Location';
+      alert('Could not detect location. Please select your area manually from the dropdown.');
+    },
+    { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
+  );
+}
+
 function nbSaveDeliveryInstructions() {
   var textarea = document.getElementById('nb-delivery-instructions');
   var instructions = textarea ? textarea.value.trim() : '';
@@ -490,7 +592,6 @@ function nbGoToCheckout() {
   var textarea = document.getElementById('nb-delivery-instructions');
   var instructions = textarea ? textarea.value.trim() : '';
   
-  // Save instructions to Cart Attributes & Note before going to checkout
   fetch('/cart/update.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -547,7 +648,6 @@ function nbRefreshCart() {
       var subtotalCents = cart.total_price;
       var subtotalRupees = Math.round(subtotalCents / 100);
 
-      // Determine Free Delivery Threshold & Base Delivery Charge based on selected area
       var isBeyond5km = (nbSelectedArea === '8km_beyond');
       var freeThresholdRupees = isBeyond5km ? 1299 : 799;
       var baseDeliveryRupees = isBeyond5km ? 69 : 39;
@@ -629,7 +729,6 @@ function nbAddUpsell(btn, handle, fallbackPriceCents) {
       nbRefreshCart();
     })
     .catch(() => {
-      // Fallback search by title
       fetch('/search/suggest.json?q=' + encodeURIComponent(handle) + '&resources[type]=product')
         .then(r => r.json())
         .then(res => {
@@ -655,7 +754,6 @@ function nbAddUpsell(btn, handle, fallbackPriceCents) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Load saved delivery area if available
   var savedArea = localStorage.getItem('nb_delivery_area');
   if (savedArea) {
     nbSelectedArea = savedArea;
@@ -663,7 +761,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sel) sel.value = savedArea;
   }
 
-  // Intercept nb-quick-form → open drawer
   document.addEventListener('submit', function(e) {
     var form = e.target;
     if (!form.classList.contains('nb-quick-form')) return;
@@ -680,7 +777,6 @@ document.addEventListener('DOMContentLoaded', function() {
     .catch(() => window.location.href = '/cart');
   });
 
-  // Intercept /cart link clicks → open drawer instead
   document.addEventListener('click', function(e) {
     var link = e.target.closest('a[href="/cart"]');
     if (!link) return;
@@ -689,7 +785,6 @@ document.addEventListener('DOMContentLoaded', function() {
     nbOpenDrawer();
   });
 
-  // Intercept cart icon button clicks
   document.addEventListener('click', function(e) {
     var cartBtn = e.target.closest('[data-cart-toggle], .header__icon--cart, [aria-label="Cart"]');
     if (!cartBtn) return;
