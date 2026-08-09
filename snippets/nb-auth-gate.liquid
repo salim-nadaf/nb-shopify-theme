@@ -102,24 +102,51 @@
 .nb-auth-body { margin-bottom: 20px; }
 
 .nb-phone-input-wrap {
-  display: flex; align-items: center;
-  border: 2px solid rgba(200,146,42,0.4);
-  border-radius: 12px; overflow: hidden;
-  background: #fff; margin-bottom: 14px;
-  transition: border-color 0.2s;
+  display: flex !important;
+  align-items: center !important;
+  border: 2px solid rgba(200, 146, 42, 0.45) !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+  margin-bottom: 14px !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  transition: border-color 0.2s ease !important;
 }
-.nb-phone-input-wrap:focus-within { border-color: #C8922A; }
+.nb-phone-input-wrap:focus-within {
+  border-color: #C8922A !important;
+  box-shadow: 0 0 0 3px rgba(200, 146, 42, 0.15) !important;
+}
 .nb-phone-prefix {
-  padding: 14px 12px; font-size: 0.9rem; font-weight: 600;
-  color: #2C1810; background: rgba(200,146,42,0.08);
-  border-right: 1px solid rgba(200,146,42,0.2);
-  white-space: nowrap; flex-shrink: 0;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 14px 12px 14px 16px !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: #2C1810 !important;
+  background: rgba(200, 146, 42, 0.1) !important;
+  border-right: 1px solid rgba(200, 146, 42, 0.25) !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  min-width: 78px !important;
+  letter-spacing: 0.5px !important;
 }
 #nb-phone-input {
-  flex: 1; border: none; outline: none;
-  padding: 14px; font-size: 1.1rem; font-weight: 600;
-  color: #2C1810; background: transparent;
-  letter-spacing: 1px; font-family: inherit;
+  flex: 1 !important;
+  width: 100% !important;
+  border: none !important;
+  outline: none !important;
+  padding: 14px 14px 14px 10px !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  color: #2C1810 !important;
+  background: transparent !important;
+  letter-spacing: 1px !important;
+  font-family: inherit !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
 }
 .nb-name-input {
   width: 100%; border: 2px solid rgba(200,146,42,0.4);
