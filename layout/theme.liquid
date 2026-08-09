@@ -787,25 +787,61 @@
     });
 
     (function nbOrderConfirmationEnhancer() {
+      function captureOrderSession() {
+        try {
+          // 1. Read from Shopify checkout JS object if present
+          if (window.Shopify && window.Shopify.checkout) {
+            var co = window.Shopify.checkout;
+            var phone = co.phone || (co.shipping_address && co.shipping_address.phone) || (co.billing_address && co.billing_address.phone) || '';
+            var name = (co.shipping_address && co.shipping_address.first_name) ? (co.shipping_address.first_name + ' ' + (co.shipping_address.last_name || '')) : '';
+            
+            if (phone) {
+              var phone10 = phone.replace(/\D/g, '').slice(-10);
+              if (phone10.length === 10) {
+                localStorage.setItem('nb_phone', '+91' + phone10);
+                if (name) localStorage.setItem('nb_name', name.trim());
+              }
+            }
+          }
+
+          // 2. Read from URL search params or referrer
+          var urlParams = new URLSearchParams(window.location.search);
+          var urlPhone = urlParams.get('phone') || urlParams.get('checkout[phone]') || '';
+          if (urlPhone) {
+            var urlPhone10 = urlPhone.replace(/\D/g, '').slice(-10);
+            if (urlPhone10.length === 10) {
+              localStorage.setItem('nb_phone', '+91' + urlPhone10);
+            }
+          }
+        } catch(e) {}
+      }
+
       function fixContactLinks() {
+        captureOrderSession();
         var links = document.querySelectorAll('a');
         links.forEach(function(a) {
           var text = (a.innerText || a.textContent || '').toLowerCase().trim();
           var href = (a.getAttribute('href') || '').toLowerCase();
           if (text.includes('contact us') || text.includes('contact support') || text.includes('need help') || href.includes('contact') || href.includes('mailto:')) {
-            a.setAttribute('href', 'https://wa.me/919920042456?text=Hi%20Niamat%20Biryani!%20I%20have%20a%20question%20about%20my%20order.');
+            var currentPhone = (localStorage.getItem('nb_phone') || '').replace(/\D/g, '').slice(-10);
+            var waMsg = "Hi Niamat Biryani! I have a question about my order.";
+            if (currentPhone) {
+              waMsg += " My mobile number is +91" + currentPhone + ".";
+            }
+            a.setAttribute('href', 'https://wa.me/919920042456?text=' + encodeURIComponent(waMsg));
             a.setAttribute('target', '_blank');
             a.setAttribute('rel', 'noopener');
           }
         });
       }
+
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', fixContactLinks);
       } else {
         fixContactLinks();
       }
-      setTimeout(fixContactLinks, 1500);
-      setTimeout(fixContactLinks, 3000);
+      setTimeout(fixContactLinks, 1000);
+      setTimeout(fixContactLinks, 2500);
     })();
   </script>
   </body>
