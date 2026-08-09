@@ -221,7 +221,7 @@
       var phone10 = phone.replace(/\D/g, '').slice(-10);
       var displayName = name || ('Member ' + phone10.slice(-4));
       
-      if (titleEl && !titleEl.innerText.includes('{% if customer %}{{ customer.first_name }}{% endif %}')) {
+      if (titleEl) {
         titleEl.innerText = "Welcome, " + displayName + "!";
       }
       if (emailEl) {
@@ -237,6 +237,31 @@
       if (trackingCard) trackingCard.style.display = 'block';
       if (logoutBtn) logoutBtn.style.display = 'inline-block';
       if (loginBox) loginBox.style.display = 'none';
+
+      // Replace empty state in orders tab with Mobile Phone Active Order Card
+      var emptyState = document.querySelector('.nb-empty-orders-state');
+      if (emptyState) {
+        var waTrackUrl = "https://wa.me/919920042456?text=" + encodeURIComponent("Hi Niamat Biryani! I want to track my recent order for mobile +91" + phone10);
+        emptyState.outerHTML = [
+          '<div class="nb-phone-orders-view" style="padding: 20px 0;">',
+            '<div style="background: #FFFDF7; border: 1px solid rgba(200,146,42,0.3); border-radius: 16px; padding: 24px; margin-bottom: 20px;">',
+              '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">',
+                '<strong style="color: #2C1810; font-size: 1.1rem;">📱 Active Mobile Order Session</strong>',
+                '<span class="nb-status-badge nb-status-paid">Registered (+91 ' + phone10 + ')</span>',
+              '</div>',
+              '<p style="color: #5C4033; font-size: 0.94rem; margin: 0 0 16px; line-height: 1.5;">Your recent order details and WhatsApp delivery updates are synced to mobile number <strong>+91 ' + phone10 + '</strong>.</p>',
+              '<div style="display: flex; gap: 12px; flex-wrap: wrap;">',
+                '<a href="' + waTrackUrl + '" target="_blank" rel="noopener" class="nb-btn-gold" style="background: #25D366 !important; border: none;">',
+                  '💬 Get Live Order Status on WhatsApp →',
+                '</a>',
+                '<a href="/collections/instant-delivery" class="nb-btn-dark">',
+                  '🍲 Order More Biryani',
+                '</a>',
+              '</div>',
+            '</div>',
+          '</div>'
+        ].join('');
+      }
     } else {
       {% unless customer %}
         if (loginBox) loginBox.style.display = 'block';
