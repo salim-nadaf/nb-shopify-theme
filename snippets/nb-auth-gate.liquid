@@ -409,7 +409,7 @@ function nbAuthSaveName() {
   });
 }
 
-function nbBuildCheckoutUrl(phone, name) {
+function nbBuildCheckoutUrl(phone, name, customEmail) {
   var url = '/checkout';
   var params = [
     'country=IN',
@@ -420,6 +420,11 @@ function nbBuildCheckoutUrl(phone, name) {
     'checkout[billing_address][country_code]=IN'
   ];
 
+  var emailToUse = '';
+  if (customEmail && customEmail.indexOf('@') > 0) {
+    emailToUse = customEmail.trim().toLowerCase();
+  }
+
   if (phone) {
     var phone10       = phone.replace(/\D/g, '').slice(-10);
     var phoneFormatted = '+91' + phone10;
@@ -428,7 +433,14 @@ function nbBuildCheckoutUrl(phone, name) {
     params.push('checkout[contact][phone]=' + encodeURIComponent(phoneFormatted));
     params.push('checkout[shipping_address][phone]=' + encodeURIComponent(phone10));
     params.push('checkout[billing_address][phone]=' + encodeURIComponent(phone10));
-    params.push('checkout[email]=' + encodeURIComponent(phoneFormatted));
+
+    if (!emailToUse && phone10) {
+      emailToUse = phone10 + '@niamatbiryani.com';
+    }
+  }
+
+  if (emailToUse) {
+    params.push('checkout[email]=' + encodeURIComponent(emailToUse));
   }
 
   if (name) {

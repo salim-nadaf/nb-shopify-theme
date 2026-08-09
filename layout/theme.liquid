@@ -785,6 +785,28 @@
         window.Shopify.loadFeatures([{ name: 'shopify-forms', version: '1.0' }]);
       }
     });
+
+    (function nbOrderConfirmationEnhancer() {
+      function fixContactLinks() {
+        var links = document.querySelectorAll('a');
+        links.forEach(function(a) {
+          var text = (a.innerText || a.textContent || '').toLowerCase().trim();
+          var href = (a.getAttribute('href') || '').toLowerCase();
+          if (text.includes('contact us') || text.includes('contact support') || text.includes('need help') || href.includes('contact') || href.includes('mailto:')) {
+            a.setAttribute('href', 'https://wa.me/919920042456?text=Hi%20Niamat%20Biryani!%20I%20have%20a%20question%20about%20my%20order.');
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener');
+          }
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixContactLinks);
+      } else {
+        fixContactLinks();
+      }
+      setTimeout(fixContactLinks, 1500);
+      setTimeout(fixContactLinks, 3000);
+    })();
   </script>
   </body>
 </html>
