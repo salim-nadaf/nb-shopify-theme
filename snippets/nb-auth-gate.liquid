@@ -384,7 +384,14 @@ function nbAuthSaveName() {
 
 function nbBuildCheckoutUrl(phone, name) {
   var url = '/checkout';
-  var params = [];
+  var params = [
+    'country=IN',
+    'locale=en-IN',
+    'checkout[shipping_address][country]=India',
+    'checkout[shipping_address][country_code]=IN',
+    'checkout[billing_address][country]=India',
+    'checkout[billing_address][country_code]=IN'
+  ];
 
   if (phone) {
     var phone10       = phone.replace(/\D/g, '').slice(-10);
