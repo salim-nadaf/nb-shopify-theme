@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <!-- Step 2: Name Entry -->
+  <!-- Step 2: Name & Email Entry -->
   <div id="nb-auth-step-2" class="nb-auth-step">
     <div class="nb-auth-header">
       <span class="nb-auth-logo">👋</span>
@@ -40,9 +40,15 @@
       <p>So we can personalise your order experience</p>
     </div>
     <div class="nb-auth-body">
-      <input type="text" id="nb-name-input" class="nb-name-input"
-             placeholder="Your name" autocomplete="name" inputmode="text">
-      <p class="nb-auth-returning" id="nb-returning-msg" style="display:none">
+      <div style="margin-bottom: 12px;">
+        <input type="text" id="nb-name-input" class="nb-name-input"
+               placeholder="Your full name" autocomplete="name" inputmode="text" required>
+      </div>
+      <div>
+        <input type="email" id="nb-email-input" class="nb-name-input"
+               placeholder="Email address (Optional for official receipts)" autocomplete="email" inputmode="email">
+      </div>
+      <p class="nb-auth-returning" id="nb-returning-msg" style="display:none; margin-top: 8px;">
         ✅ Welcome back! We found your previous orders.
       </p>
     </div>
@@ -308,6 +314,12 @@ function nbAuthSaveName() {
   }
 
   localStorage.setItem('nb_name', name);
+  var emailInput = document.getElementById('nb-email-input');
+  var customEmail = emailInput ? emailInput.value.trim() : '';
+  if (customEmail) {
+    localStorage.setItem('nb_email', customEmail);
+  }
+
   var phone = localStorage.getItem('nb_phone') || '';
   var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
 
@@ -315,7 +327,7 @@ function nbAuthSaveName() {
   try {
     var phone10 = phone.replace(/\D/g, '').slice(-10);
     if (phone10.length === 10) {
-      var leadEmail = 'customer_' + phone10 + '@niamatbiryani.com';
+      var leadEmail = customEmail && customEmail.indexOf('@') > 0 ? customEmail : ('customer_' + phone10 + '@niamatbiryani.com');
       var leadFormData = new FormData();
       leadFormData.append('form_type', 'customer');
       leadFormData.append('utf8', '✓');
@@ -330,11 +342,18 @@ function nbAuthSaveName() {
       fetch('/contact#contact_form', {
         method: 'POST',
         body: leadFormData
-      }).catch(function() {});
+      }).catch(function(e) {});
     }
   } catch(e) {}
 
-  // 2. Save to Shopify cart attributes & Order Note
+  // 2. Perform pending action
+  if (nbAuthPendingAction === 'checkout') {
+    nbAuthPendingAction = null;
+    window.location.href = nbBuildCheckoutUrl(phone, name, customEmail);
+    return;
+  }
+
+  // 3. Save to Shopify cart attributes & Order Note
   fetch('/cart/update.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
