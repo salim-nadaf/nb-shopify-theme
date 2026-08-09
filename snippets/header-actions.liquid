@@ -82,25 +82,34 @@
         assign account_actions_style = '--header-actions-font-family: ' | append: font_family_safe | append: '; --header-actions-font-weight: ' | append: font_obj.weight | append: ';'
       endif
     %}
-    <a
-      href="{% if customer %}/account{% else %}/account/login{% endif %}"
+    <shopify-account
       class="account-button header-actions__action{% if display_style == 'text' %} account-button--text{% endif %}"
-      title="{% if customer %}My Account & Orders{% else %}Sign In / Account{% endif %}"
-      style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; color: var(--color-account-icon);"
+      {% if account_actions_style != blank %}
+        style="{{ account_actions_style }}"
+      {% endif %}
+      {% if customer_account_menu != blank %}
+        menu-handle="{{ customer_account_menu }}"
+      {% endif %}
     >
       <span
         class="{% if display_style != 'icon' %}desktop:hidden{% endif %}"
         aria-hidden="true"
+        slot="account-button-icon"
       >
         {{ account_icon }}
       </span>
 
       <span
         class="account-button__text header-actions__text-style {% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}"
+        slot="account-button-text"
       >
-        {% if customer %}{{ customer.first_name | default: 'Account' }}{% else %}{{ 'content.account_title' | t }}{% endif %}
+        {% if customer %}
+          {{ 'content.account_title' | t }}
+        {% else %}
+          {{ 'content.sign_in' | t }}
+        {% endif %}
       </span>
-    </a>
+    </shopify-account>
   {% endif %}
   
   {% comment %} NIAMAT BIRYANI — Cart icon hijacked to open NB drawer {% endcomment %}
