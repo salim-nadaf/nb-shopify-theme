@@ -1205,27 +1205,36 @@ function nbGoToCheckout() {
   var input = document.getElementById('nb-location-search-input');
   var locText = input ? input.value.trim() : '';
 
-  var phone = localStorage.getItem('nb_phone') || '';
-  var name  = localStorage.getItem('nb_name')  || '';
-  var email = localStorage.getItem('nb_email') || '';
-  var targetUrl = typeof nbBuildCheckoutUrl === 'function' ? nbBuildCheckoutUrl(phone, name, email) : '/checkout';
+  var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
+  var name  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name')  || '';
+  var email = localStorage.getItem('gate_email') || localStorage.getItem('nb_email') || '';
+
+  var cleanPhone = phone.replace(/\D/g, '').slice(-10);
+  var targetUrl = typeof nbBuildCheckoutUrl === 'function' ? nbBuildCheckoutUrl(cleanPhone, name, email) : '/checkout';
+
+  var noteText = 'WhatsApp/Delivery Phone: ' + (cleanPhone ? ('+91' + cleanPhone) : 'Not provided');
+  if (name) noteText += ' | Name: ' + name;
+  if (email) noteText += ' | Email: ' + email;
+  if (instructions) noteText += ' | Instructions: ' + instructions;
 
   fetch('/cart/update.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       attributes: { 
-        'Phone': phone,
-        'Customer Phone': phone,
-        'Mobile Number': phone,
+        'Phone': cleanPhone ? ('+91' + cleanPhone) : '',
+        'Customer Phone': cleanPhone ? ('+91' + cleanPhone) : '',
+        'Mobile Number': cleanPhone ? ('+91' + cleanPhone) : '',
+        'WhatsApp Number': cleanPhone ? ('+91' + cleanPhone) : '',
         'Customer Name': name,
         'Customer Email': email,
+        'Email': email,
         'Instant Delivery Status': NB_CONFIG.instantDeliveryEnabled ? 'Available' : 'Paused',
         'Order & Delivery Instructions': instructions,
         'Delivery Location': locText,
         'Delivery Zone': currentDeliveryZone
       },
-      note: instructions ? ('ORDER & DELIVERY INSTRUCTIONS: ' + instructions) : ''
+      note: noteText
     })
   }).then(function() {
     window.location.href = targetUrl;
