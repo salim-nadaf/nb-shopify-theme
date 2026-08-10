@@ -20,7 +20,7 @@
   <div class="nb-drawer__delivery-progress" id="nb-delivery-progress-banner">
     <div class="nb-progress-text-wrap">
       <span class="nb-progress-icon">🚚</span>
-      <span id="nb-progress-msg">Tap 🎯 <strong>Use My Location</strong> to calculate exact delivery fee</span>
+      <span id="nb-progress-msg">Add items to unlock <strong>FREE DELIVERY</strong></span>
     </div>
     <div class="nb-progress-bar-bg">
       <div class="nb-progress-bar-fill" id="nb-progress-fill" style="width: 0%;"></div>
@@ -59,13 +59,25 @@
       </div>
     </div>
 
-    <!-- INFORMATIONAL STORE DELIVERY POLICY DROPDOWN & GPS BUTTON -->
+    <!-- INFORMATIONAL STORE DELIVERY POLICY CARD (POINTERS ONLY) -->
+    <div class="nb-drawer__policy-card">
+      <div class="nb-policy-header">
+        <span>📜</span> <strong>Store Delivery Policy</strong>
+      </div>
+      <ul class="nb-policy-list">
+        <li>🚚 <strong>0–5 km (Kalyan / Nearby)</strong>: ₹39 Delivery · <strong>FREE</strong> > ₹799</li>
+        <li>🚀 <strong>5–8 km (Extended Zone)</strong>: ₹89 Delivery · <strong>FREE</strong> > ₹1,299</li>
+        <li>⛔ <strong>> 8 km</strong>: Outside direct delivery radius</li>
+      </ul>
+    </div>
+
+    <!-- LIVE ZOMATO/SWIGGY STYLE LOCATION SEARCH & GPS DETECTOR -->
     <div class="nb-drawer__location-box">
       <div class="nb-location-header">
-        <label for="nb-delivery-zone-select">📍 Delivery Policy</label>
+        <label for="nb-location-search-input">📍 Delivery Location</label>
         <div class="nb-loc-btn-group">
           <button type="button" class="nb-use-location-btn" id="nb-use-location-btn" onclick="nbDetectLiveLocation()">
-            🎯 Use My Location
+            🎯 Use Live Location
           </button>
           <button type="button" class="nb-clear-location-btn" id="nb-clear-location-btn" onclick="nbClearLocation()" style="display:none;">
             ✕ Clear
@@ -73,15 +85,11 @@
         </div>
       </div>
 
-      <!-- INFORMATIONAL STORE POLICY SELECTOR -->
-      <div class="nb-select-wrap">
-        <select id="nb-delivery-zone-select" onchange="nbSelectDeliveryZone(this.value)">
-          <option value="LOCATION_UNKNOWN">-- Delivery policy --</option>
-          <option value="ZONE_0_5_KM">Kalyan / Nearby Area (0–5 km) • ₹39 Delivery (Free > ₹799)</option>
-          <option value="ZONE_5_8_KM">Extended Area (5–8 km) • ₹89 Delivery (Free > ₹1,299)</option>
-          <option value="OUTSIDE_SERVICE_AREA">Outside Delivery Radius (>8 km) • Delivery Unavailable</option>
-        </select>
-        <span class="nb-select-arrow">›</span>
+      <div class="nb-search-input-wrap">
+        <input type="text" id="nb-location-search-input"
+               placeholder="Search area, landmark or society (e.g. Raunak City...)"
+               onkeyup="nbDebounceSearch(this.value)">
+        <div id="nb-location-suggestions" class="nb-suggestions-dropdown" style="display:none;"></div>
       </div>
 
       <div id="nb-location-status-badge" class="nb-location-status" style="display: none;"></div>
@@ -354,12 +362,33 @@
 }
 .nb-upsell-pill-add:hover { background: #A67520; }
 
-/* LOCATION BOX & DROPDOWN */
+/* STORE POLICY CARD (POINTERS ONLY) */
+.nb-drawer__policy-card {
+  background: #FFFDF7;
+  border: 1px solid rgba(200,146,42,0.25);
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+.nb-policy-header {
+  font-size: 0.8rem;
+  color: #2C1810;
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 4px;
+}
+.nb-policy-list {
+  margin: 0; padding-left: 16px;
+  font-size: 0.74rem; color: #5C4033;
+  line-height: 1.4;
+}
+.nb-policy-list li { margin-bottom: 2px; }
+
+/* LOCATION BOX & SEARCH SUGGESTIONS */
 .nb-drawer__location-box {
   background: #fff;
   border: 1px solid rgba(200,146,42,0.2);
   border-radius: 12px;
   padding: 10px;
+  position: relative;
 }
 .nb-location-header {
   display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;
@@ -394,28 +423,43 @@
   cursor: pointer;
 }
 
-.nb-select-wrap {
+.nb-search-input-wrap {
   position: relative;
-  display: flex; align-items: center;
 }
-.nb-select-wrap select {
+.nb-search-input-wrap input {
   width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
   background: #FFFDF7;
   border: 1px solid rgba(200,146,42,0.3);
   border-radius: 8px;
-  padding: 8px 30px 8px 10px;
+  padding: 8px 10px;
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 600;
   color: #2C1810;
   outline: none;
-  cursor: pointer;
+  box-sizing: border-box;
 }
-.nb-select-arrow {
-  position: absolute; right: 10px;
-  font-size: 1.1rem; color: #C8922A;
-  pointer-events: none; font-weight: 800;
+.nb-suggestions-dropdown {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: #fff;
+  border: 1px solid rgba(200,146,42,0.3);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  z-index: 99;
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+.nb-suggestion-item {
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  color: #2C1810;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(200,146,42,0.1);
+}
+.nb-suggestion-item:hover {
+  background: #FDF6EC;
+  color: #C8922A;
 }
 
 .nb-location-status {
@@ -566,7 +610,8 @@ const ZONES = {
 };
 
 var currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
-var isGpsDetected = false;
+var isLocationDetected = false;
+var searchTimer = null;
 
 function nbShowToast(msg, duration) {
   var toast = document.getElementById('nb-cart-toast');
@@ -596,64 +641,6 @@ function nbFormatMoney(cents) {
   return '₹' + (cents / 100).toFixed(0);
 }
 
-// INFORMATIONAL STORE POLICY SELECTION (DOES NOT OVERRIDE GPS DISTANCE CALCULATION)
-function nbSelectDeliveryZone(zoneKey) {
-  var selectedKey = zoneKey || ZONES.LOCATION_UNKNOWN;
-  var badge = document.getElementById('nb-location-status-badge');
-
-  if (selectedKey === ZONES.ZONE_0_5_KM) {
-    if (badge) {
-      badge.style.display = 'block';
-      badge.style.background = '#E8F5E9';
-      badge.style.color = '#2E7D32';
-      badge.style.borderColor = '#A5D6A7';
-      badge.innerHTML = '📜 Store Policy: <strong>Kalyan / Nearby Area (0–5 km)</strong> • ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
-    }
-  } else if (selectedKey === ZONES.ZONE_5_8_KM) {
-    if (badge) {
-      badge.style.display = 'block';
-      badge.style.background = '#FFF3E0';
-      badge.style.color = '#E65100';
-      badge.style.borderColor = '#FFE0B2';
-      badge.innerHTML = '📜 Store Policy: <strong>Extended Area (5–8 km)</strong> • ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
-    }
-  } else if (selectedKey === ZONES.OUTSIDE_SERVICE_AREA) {
-    if (badge) {
-      badge.style.display = 'block';
-      badge.style.background = '#FFEBEE';
-      badge.style.color = '#C62828';
-      badge.style.borderColor = '#EF9A9A';
-      badge.innerHTML = '⚠️ <strong>Outside Service Area</strong> • Delivery is currently unavailable for locations > 8 km.';
-    }
-  } else {
-    if (badge && !isGpsDetected) badge.style.display = 'none';
-  }
-
-  nbRefreshCart();
-}
-
-function nbClearLocation() {
-  localStorage.removeItem('nb_user_lat');
-  localStorage.removeItem('nb_user_lng');
-  localStorage.removeItem('nb_gps_detected');
-  localStorage.removeItem('nb_delivery_zone');
-  
-  isGpsDetected = false;
-  currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
-
-  var select = document.getElementById('nb-delivery-zone-select');
-  var btn = document.getElementById('nb-use-location-btn');
-  var clearBtn = document.getElementById('nb-clear-location-btn');
-  var badge = document.getElementById('nb-location-status-badge');
-
-  if (select) select.value = ZONES.LOCATION_UNKNOWN;
-  if (btn) btn.textContent = '🎯 Use My Location';
-  if (clearBtn) clearBtn.style.display = 'none';
-  if (badge) badge.style.display = 'none';
-
-  nbRefreshCart();
-}
-
 function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
   var R = 6371;
   var dLat = (lat2 - lat1) * Math.PI / 180;
@@ -665,11 +652,111 @@ function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
+// ZOMATO/SWIGGY STYLE SEARCH DEBOUNCE
+function nbDebounceSearch(val) {
+  clearTimeout(searchTimer);
+  var dropdown = document.getElementById('nb-location-suggestions');
+  
+  if (!val || val.trim().length < 3) {
+    if (dropdown) dropdown.style.display = 'none';
+    return;
+  }
+
+  searchTimer = setTimeout(function() {
+    nbPerformLocationSearch(val.trim());
+  }, 400);
+}
+
+// OPENSTREETMAP NOMINATIM REAL GEOCODING SEARCH
+function nbPerformLocationSearch(query) {
+  var dropdown = document.getElementById('nb-location-suggestions');
+  if (!dropdown) return;
+
+  dropdown.style.display = 'block';
+  dropdown.innerHTML = '<div class="nb-suggestion-item">🔍 Searching location...</div>';
+
+  var searchUrl = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query + ', Kalyan, Maharashtra, India') + '&limit=5';
+
+  fetch(searchUrl)
+    .then(r => r.json())
+    .then(data => {
+      if (!data || data.length === 0) {
+        // Fallback search without Kalyan prefix
+        return fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query + ', Thane, Maharashtra, India') + '&limit=5')
+          .then(r => r.json());
+      }
+      return data;
+    })
+    .then(results => {
+      if (!results || results.length === 0) {
+        dropdown.innerHTML = '<div class="nb-suggestion-item" style="color:#7A5C4A;">No matching location found. Try adding Kalyan or landmark.</div>';
+        return;
+      }
+
+      dropdown.innerHTML = results.map(function(item) {
+        var cleanName = item.display_name.split(',').slice(0, 3).join(',');
+        return '<div class="nb-suggestion-item" onclick="nbSelectLocationResult(' + item.lat + ', ' + item.lon + ', \'' + cleanName.replace(/'/g, "\\'") + '\')">📍 ' + cleanName + '</div>';
+      }).join('');
+    })
+    .catch(() => {
+      dropdown.style.display = 'none';
+    });
+}
+
+function nbSelectLocationResult(lat, lon, nameText) {
+  var dropdown = document.getElementById('nb-location-suggestions');
+  var input = document.getElementById('nb-location-search-input');
+  var clearBtn = document.getElementById('nb-clear-location-btn');
+
+  if (dropdown) dropdown.style.display = 'none';
+  if (input) input.value = nameText;
+  if (clearBtn) clearBtn.style.display = 'inline-block';
+
+  var distKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, parseFloat(lat), parseFloat(lon));
+  nbApplyLocationCalculation(distKm, nameText);
+}
+
+function nbApplyLocationCalculation(distKm, placeName) {
+  isLocationDetected = true;
+  localStorage.setItem('nb_gps_detected', 'true');
+  var badge = document.getElementById('nb-location-status-badge');
+
+  if (distKm <= NB_CONFIG.zone1MaxKm) {
+    currentDeliveryZone = ZONES.ZONE_0_5_KM;
+    if (badge) {
+      badge.style.display = 'block';
+      badge.style.background = '#E8F5E9';
+      badge.style.color = '#2E7D32';
+      badge.style.borderColor = '#A5D6A7';
+      badge.innerHTML = '🎯 Detected: <strong>' + (placeName || 'Your Location') + ' (~' + (distKm <= 1.2 ? 0 : distKm.toFixed(1)) + ' km)</strong> • ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
+    }
+  } else if (distKm <= NB_CONFIG.zone2MaxKm) {
+    currentDeliveryZone = ZONES.ZONE_5_8_KM;
+    if (badge) {
+      badge.style.display = 'block';
+      badge.style.background = '#FFF3E0';
+      badge.style.color = '#E65100';
+      badge.style.borderColor = '#FFE0B2';
+      badge.innerHTML = '🎯 Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distKm.toFixed(1) + ' km)</strong> • Extended ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
+    }
+  } else {
+    currentDeliveryZone = ZONES.OUTSIDE_SERVICE_AREA;
+    if (badge) {
+      badge.style.display = 'block';
+      badge.style.background = '#FFEBEE';
+      badge.style.color = '#C62828';
+      badge.style.borderColor = '#EF9A9A';
+      badge.innerHTML = '⚠️ Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distKm.toFixed(1) + ' km)</strong> • Outside direct delivery service area.';
+    }
+  }
+
+  localStorage.setItem('nb_delivery_zone', currentDeliveryZone);
+  nbRefreshCart();
+}
+
 function nbDetectLiveLocation() {
   var btn = document.getElementById('nb-use-location-btn');
-  var select = document.getElementById('nb-delivery-zone-select');
   var clearBtn = document.getElementById('nb-clear-location-btn');
-  var badge = document.getElementById('nb-location-status-badge');
 
   if (!navigator.geolocation) {
     nbShowToast('Geolocation is not supported by your browser.');
@@ -684,54 +771,55 @@ function nbDetectLiveLocation() {
       var userLng = position.coords.longitude;
       var distKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, userLat, userLng);
 
-      isGpsDetected = true;
-      localStorage.setItem('nb_gps_detected', 'true');
       if (btn) btn.textContent = '🎯 Location Set';
       if (clearBtn) clearBtn.style.display = 'inline-block';
 
-      if (distKm <= NB_CONFIG.zone1MaxKm) {
-        currentDeliveryZone = ZONES.ZONE_0_5_KM;
-        if (select) select.value = ZONES.ZONE_0_5_KM;
-        if (badge) {
-          badge.style.display = 'block';
-          badge.style.background = '#E8F5E9';
-          badge.style.color = '#2E7D32';
-          badge.style.borderColor = '#A5D6A7';
-          badge.innerHTML = '🎯 Detected Location: <strong>~' + (distKm <= 1.2 ? 0 : distKm.toFixed(1)) + ' km away</strong> • Standard ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
-        }
-      } else if (distKm <= NB_CONFIG.zone2MaxKm) {
-        currentDeliveryZone = ZONES.ZONE_5_8_KM;
-        if (select) select.value = ZONES.ZONE_5_8_KM;
-        if (badge) {
-          badge.style.display = 'block';
-          badge.style.background = '#FFF3E0';
-          badge.style.color = '#E65100';
-          badge.style.borderColor = '#FFE0B2';
-          badge.innerHTML = '🎯 Detected Location: <strong>~' + distKm.toFixed(1) + ' km away</strong> • Extended ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
-        }
-      } else {
-        currentDeliveryZone = ZONES.OUTSIDE_SERVICE_AREA;
-        if (select) select.value = ZONES.OUTSIDE_SERVICE_AREA;
-        if (badge) {
-          badge.style.display = 'block';
-          badge.style.background = '#FFEBEE';
-          badge.style.color = '#C62828';
-          badge.style.borderColor = '#EF9A9A';
-          badge.innerHTML = '⚠️ Detected Location: <strong>~' + distKm.toFixed(1) + ' km away</strong> • Outside delivery service area.';
-        }
-      }
+      // Reverse Geocode
+      fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + userLat + '&lon=' + userLng)
+        .then(r => r.json())
+        .then(data => {
+          var cleanName = (data && data.display_name) ? data.display_name.split(',').slice(0, 2).join(',') : 'Live GPS Position';
+          var input = document.getElementById('nb-location-search-input');
+          if (input) input.value = cleanName;
+          nbApplyLocationCalculation(distKm, cleanName);
+        })
+        .catch(() => {
+          nbApplyLocationCalculation(distKm, 'Live GPS Location');
+        });
 
       localStorage.setItem('nb_user_lat', userLat);
       localStorage.setItem('nb_user_lng', userLng);
-      localStorage.setItem('nb_delivery_zone', currentDeliveryZone);
-      nbRefreshCart();
     },
     function(error) {
-      if (btn) btn.textContent = '🎯 Use My Location';
-      nbShowToast('Location access was unavailable. You can proceed with standard checkout.');
+      if (btn) btn.textContent = '🎯 Use Live Location';
+      nbShowToast('Location access was unavailable. Search your area in the text box.');
     },
     { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
   );
+}
+
+function nbClearLocation() {
+  localStorage.removeItem('nb_user_lat');
+  localStorage.removeItem('nb_user_lng');
+  localStorage.removeItem('nb_gps_detected');
+  localStorage.removeItem('nb_delivery_zone');
+  
+  isLocationDetected = false;
+  currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
+
+  var input = document.getElementById('nb-location-search-input');
+  var btn = document.getElementById('nb-use-location-btn');
+  var clearBtn = document.getElementById('nb-clear-location-btn');
+  var badge = document.getElementById('nb-location-status-badge');
+  var dropdown = document.getElementById('nb-location-suggestions');
+
+  if (input) input.value = '';
+  if (btn) btn.textContent = '🎯 Use Live Location';
+  if (clearBtn) clearBtn.style.display = 'none';
+  if (badge) badge.style.display = 'none';
+  if (dropdown) dropdown.style.display = 'none';
+
+  nbRefreshCart();
 }
 
 function nbSaveInstructions() {
@@ -750,13 +838,15 @@ function nbSaveInstructions() {
 }
 
 function nbGoToCheckout() {
-  if (isGpsDetected && currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
+  if (isLocationDetected && currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
     nbShowToast('Delivery is currently unavailable for your detected area.');
     return;
   }
 
   var textarea = document.getElementById('nb-cooking-instructions');
   var instructions = textarea ? textarea.value.trim() : '';
+  var input = document.getElementById('nb-location-search-input');
+  var locText = input ? input.value.trim() : '';
 
   fetch('/cart/update.js', {
     method: 'POST',
@@ -764,6 +854,7 @@ function nbGoToCheckout() {
     body: JSON.stringify({
       attributes: { 
         'Order & Delivery Instructions': instructions,
+        'Delivery Location': locText,
         'Delivery Zone': currentDeliveryZone
       },
       note: instructions ? ('ORDER & DELIVERY INSTRUCTIONS: ' + instructions) : ''
@@ -854,21 +945,21 @@ function nbRenderCart(cart) {
   var subtotalRupees = Math.round(subtotalCents / 100);
   subtotalEl.textContent = '₹' + subtotalRupees;
 
-  // DELIVERY CALCULATION: IF GPS "USE MY LOCATION" NOT USED -> DELIVERY IS ₹0
+  // DELIVERY CALCULATION: IF LOCATION NOT DETECTED -> DEFAULT DELIVERY IS ₹0
   var feeRupees = 0;
 
-  if (!isGpsDetected) {
+  if (!isLocationDetected) {
     feeRupees = 0;
     deliveryEl.textContent = '₹0';
     deliveryEl.style.color = '#2E7D32';
     progressFillEl.style.width = '0%';
-    progressMsgEl.innerHTML = 'Tap 🎯 <strong>Use My Location</strong> to check distance & delivery fee';
+    progressMsgEl.innerHTML = 'Search area or tap 🎯 <strong>Use Live Location</strong> to verify delivery fee';
 
     if (checkoutBtn) { checkoutBtn.disabled = false; checkoutBtn.classList.remove('disabled'); }
     if (btnTextEl) btnTextEl.textContent = 'Proceed to Checkout';
 
   } else {
-    // GPS USED
+    // LOCATION DETECTED
     if (currentDeliveryZone === ZONES.ZONE_0_5_KM) {
       var thresholdRupees = NB_CONFIG.zone1Threshold;
       if (subtotalRupees >= thresholdRupees) {
@@ -1059,10 +1150,17 @@ function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
 document.addEventListener('DOMContentLoaded', function() {
   var savedGps = localStorage.getItem('nb_gps_detected');
   if (savedGps === 'true') {
-    isGpsDetected = true;
+    isLocationDetected = true;
     var clearBtn = document.getElementById('nb-clear-location-btn');
     if (clearBtn) clearBtn.style.display = 'inline-block';
   }
+
+  document.addEventListener('click', function(e) {
+    var dropdown = document.getElementById('nb-location-suggestions');
+    if (dropdown && !e.target.closest('.nb-search-input-wrap')) {
+      dropdown.style.display = 'none';
+    }
+  });
 
   document.addEventListener('submit', function(e) {
     var form = e.target;
