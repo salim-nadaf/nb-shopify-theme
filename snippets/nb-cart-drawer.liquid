@@ -32,29 +32,33 @@
 
   <!-- MAIN DRAWER BODY -->
   <div class="nb-drawer__body">
+    <!-- DYNAMIC FREE DELIVERY NOTICE BANNER JUST ABOVE ITEMS -->
+    <div class="nb-drawer__items-fd-notice" id="nb-items-fd-notice">
+      <div class="nb-fd-notice-content">
+        <span class="nb-fd-notice-icon">🚚</span>
+        <span id="nb-items-fd-text">Add <strong>₹799</strong> more to get <strong>FREE Delivery</strong></span>
+      </div>
+      <div class="nb-fd-notice-bar-bg">
+        <div class="nb-fd-notice-bar-fill" id="nb-items-fd-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+
     <!-- CART ITEMS CONTAINER -->
     <div id="nb-cart-items" class="nb-drawer__items"></div>
 
-    <!-- COMPLETE YOUR ORDER (EXTRA RAITA & COKE) -->
+    <!-- COMPLETE YOUR ORDER (EXTRA RAITA ONLY) -->
     <div class="nb-drawer__upsell-section">
       <div class="nb-upsell-header">
-        <span>🍽️</span>
+        <span>🥣</span>
         <h4>Complete your order</h4>
       </div>
-      <div class="nb-upsell-grid">
+      <div class="nb-upsell-grid nb-upsell-grid--single">
         <div class="nb-upsell-pill-card">
           <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">Extra Raita</span>
+            <span class="nb-upsell-pill-name">Niamat Extra Raita</span>
             <span class="nb-upsell-pill-price">₹29</span>
           </div>
           <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Raita', 2900)">+ Add</button>
-        </div>
-        <div class="nb-upsell-pill-card">
-          <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">Coke</span>
-            <span class="nb-upsell-pill-price">₹39</span>
-          </div>
-          <button class="nb-upsell-pill-add" id="nb-add-coke-btn" onclick="nbAddUpsell(this, 'coke', 'Coke', 3900)">+ Add</button>
         </div>
       </div>
     </div>
@@ -503,6 +507,42 @@
   line-height: 1.3;
 }
 
+/* DYNAMIC FREE DELIVERY BANNER ABOVE CART ITEMS */
+.nb-drawer__items-fd-notice {
+  background: #FFFDF7;
+  border: 1.5px solid rgba(200, 146, 42, 0.35);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(44, 24, 16, 0.04);
+}
+.nb-fd-notice-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  color: #2C1810;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.nb-fd-notice-icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+.nb-fd-notice-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: rgba(200, 146, 42, 0.15);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.nb-fd-notice-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #D49E35 0%, #C8922A 100%);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
 /* COOKING INSTRUCTIONS BOX */
 .nb-drawer__instructions-box {
   background: #fff;
@@ -638,24 +678,58 @@ const ZONES = {
   OUTSIDE_SERVICE_AREA: 'OUTSIDE_SERVICE_AREA'
 };
 
-// INSTANT LOCAL LANDMARK DICTIONARY
+// INSTANT LOCAL LANDMARK DICTIONARY (40+ POPULAR SOCIETIES & AREAS)
 const LOCAL_LANDMARKS = [
   { name: 'Raunak City, Kalyan West', lat: 19.2550, lon: 73.1380 },
   { name: 'Khadakpada, Kalyan West', lat: 19.2520, lon: 73.1410 },
-  { name: 'Kalyan Station, Kalyan West', lat: 19.2360, lon: 73.1300 },
+  { name: 'Godrej Hill, Kalyan West', lat: 19.2540, lon: 73.1320 },
   { name: 'Wayle Nagar, Kalyan West', lat: 19.2480, lon: 73.1360 },
   { name: 'Chikanghar, Kalyan West', lat: 19.2440, lon: 73.1390 },
   { name: 'Rambaug, Kalyan West', lat: 19.2390, lon: 73.1320 },
+  { name: 'Syndicate, Kalyan West', lat: 19.2410, lon: 73.1350 },
+  { name: 'Agra Road, Kalyan West', lat: 19.2395, lon: 73.1340 },
+  { name: 'Murbad Road, Kalyan West', lat: 19.2405, lon: 73.1370 },
+  { name: 'Kalyan Station West', lat: 19.2360, lon: 73.1300 },
+  { name: 'Yogi Dham, Kalyan West', lat: 19.2570, lon: 73.1420 },
+  { name: 'Vasant Valley, Kalyan West', lat: 19.2580, lon: 73.1400 },
+  { name: 'Gandhar Nagar, Kalyan West', lat: 19.2490, lon: 73.1310 },
+  { name: 'Prem Nagar, Kalyan West', lat: 19.2460, lon: 73.1330 },
+  { name: 'Beturkar Pada, Kalyan West', lat: 19.2420, lon: 73.1290 },
+  { name: 'Bhoirwadi, Kalyan West', lat: 19.2470, lon: 73.1380 },
+
   { name: 'Kalyan East, Kalyan', lat: 19.2310, lon: 73.1380 },
-  { name: 'Dombivli West, Dombivli', lat: 19.2180, lon: 73.0860 },
+  { name: 'Chinchpada, Kalyan East', lat: 19.2280, lon: 73.1410 },
+  { name: 'Kolsewadi, Kalyan East', lat: 19.2340, lon: 73.1370 },
+  { name: 'Katemanivali, Kalyan East', lat: 19.2330, lon: 73.1420 },
+  { name: 'Netivli, Kalyan East', lat: 19.2270, lon: 73.1340 },
+
   { name: 'Dombivli East, Dombivli', lat: 19.2150, lon: 73.0920 },
-  { name: 'Ulhasnagar, Thane', lat: 19.2160, lon: 73.1580 },
+  { name: 'Dombivli West, Dombivli', lat: 19.2180, lon: 73.0860 },
+  { name: 'Lodha Palava, Dombivli East', lat: 19.1980, lon: 73.0760 },
+  { name: 'Casa Bella, Dombivli East', lat: 19.1990, lon: 73.0780 },
+  { name: 'Nilje, Dombivli', lat: 19.1950, lon: 73.0710 },
+  { name: 'Manpada, Dombivli East', lat: 19.2120, lon: 73.0980 },
+
   { name: 'Shahad, Kalyan', lat: 19.2580, lon: 73.1520 },
   { name: 'Ambivli, Thane', lat: 19.2780, lon: 73.1610 },
+  { name: 'Ulhasnagar 1, Thane', lat: 19.2250, lon: 73.1510 },
+  { name: 'Ulhasnagar 2, Thane', lat: 19.2210, lon: 73.1540 },
+  { name: 'Ulhasnagar 3, Thane', lat: 19.2180, lon: 73.1580 },
+  { name: 'Ulhasnagar 4, Thane', lat: 19.2140, lon: 73.1620 },
+  { name: 'Ulhasnagar 5, Thane', lat: 19.2100, lon: 73.1660 },
+
+  { name: 'Ambernath East, Thane', lat: 19.1860, lon: 73.1920 },
+  { name: 'Ambernath West, Thane', lat: 19.1910, lon: 73.1850 },
+  { name: 'Badlapur East, Thane', lat: 19.1660, lon: 73.2350 },
+  { name: 'Badlapur West, Thane', lat: 19.1680, lon: 73.2280 },
+
   { name: 'Titwala, Thane', lat: 19.3000, lon: 73.2000 },
-  { name: 'Thane West, Thane', lat: 19.2180, lon: 72.9780 },
-  { name: 'Badlapur, Thane', lat: 19.1660, lon: 73.2350 },
+  { name: 'Bhiwandi, Thane', lat: 19.2810, lon: 73.0480 },
   { name: 'Mumbra, Thane', lat: 19.1760, lon: 73.0230 },
+  { name: 'Thane West, Thane', lat: 19.2180, lon: 72.9780 },
+  { name: 'Majiwada, Thane West', lat: 19.2150, lon: 72.9850 },
+  { name: 'Ghodbunder Road, Thane', lat: 19.2650, lon: 72.9620 },
+  { name: 'Navi Mumbai', lat: 19.0330, lon: 73.0290 },
   { name: 'Mumbai Central, Mumbai', lat: 18.9690, lon: 72.8190 }
 ];
 
@@ -717,47 +791,46 @@ function nbDebounceSearch(val) {
   }, 300);
 }
 
-// UNRESTRICTED GLOBAL GEOCODING SEARCH
+// UNRESTRICTED GLOBAL GEOCODING SEARCH WITH MULTI-TOKEN FUZZY MATCH
 function nbPerformLocationSearch(query) {
   var dropdown = document.getElementById('nb-location-suggestions');
   if (!dropdown) return;
 
   var qLower = query.toLowerCase();
+  var tokens = qLower.split(/\s+/).filter(Boolean);
 
-  // Instant Local Dictionary Matches
+  // Multi-Token Fuzzy Match
   var localMatches = LOCAL_LANDMARKS.filter(function(item) {
-    return item.name.toLowerCase().includes(qLower);
+    var nameLower = item.name.toLowerCase();
+    return tokens.every(function(t) { return nameLower.includes(t); });
   });
 
   dropdown.style.display = 'block';
 
   var html = '';
   if (localMatches.length > 0) {
-    html += localMatches.map(function(item) {
+    html += localMatches.slice(0, 5).map(function(item) {
       return '<div class="nb-suggestion-item" onclick="nbSelectLocationResult(' + item.lat + ', ' + item.lon + ', \'' + item.name.replace(/'/g, "\\'") + '\')">📍 <strong>' + item.name + '</strong></div>';
     }).join('');
   }
 
-  dropdown.innerHTML = html + '<div class="nb-suggestion-item">🔍 Searching location across India...</div>';
+  dropdown.innerHTML = html + '<div class="nb-suggestion-item" style="color:#7A5C4A;">🔍 Searching Google Maps / OpenStreetMap...</div>';
 
-  // Unrestricted Nominatim Geocoding API (Matches any society, road, area, city in India / worldwide)
-  var searchUrl = 'https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&q=' + encodeURIComponent(query) + '&limit=20';
+  var searchUrl = 'https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&q=' + encodeURIComponent(query) + '&limit=15';
 
   fetch(searchUrl)
     .then(r => r.json())
     .then(data => {
       var apiResults = data || [];
-      
       if (apiResults.length === 0 && localMatches.length === 0) {
-        // Fallback global search without country filter
-        return fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query) + '&limit=20')
+        return fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query + ', Maharashtra, India') + '&limit=15')
           .then(r => r.json());
       }
       return apiResults;
     })
     .then(results => {
       if ((!results || results.length === 0) && localMatches.length === 0) {
-        dropdown.innerHTML = '<div class="nb-suggestion-item" style="color:#7A5C4A;">No matching location found. Please type area or society name.</div>';
+        dropdown.innerHTML = '<div class="nb-suggestion-item" style="color:#7A5C4A;">No matching location found. Please type area or landmark name.</div>';
         return;
       }
 
@@ -955,17 +1028,15 @@ function nbRenderCart(cart) {
   var checkoutBtn = document.getElementById('nb-checkout-submit-btn');
   var progressMsgEl = document.getElementById('nb-progress-msg');
   var progressFillEl = document.getElementById('nb-progress-fill');
+  var itemsFdNotice = document.getElementById('nb-items-fd-notice');
+  var itemsFdText = document.getElementById('nb-items-fd-text');
+  var itemsFdFill = document.getElementById('nb-items-fd-fill');
 
-  // UPDATE UPSELL BUTTON STATES BASED ON ACTUAL CART CONTENT
+  // UPDATE UPSELL BUTTON STATES BASED ON ACTUAL CART CONTENT (EXTRA RAITA ONLY)
   var hasRaitaInCart = false;
-  var hasCokeInCart = false;
-
   if (cart && cart.items) {
     hasRaitaInCart = cart.items.some(function(item) {
       return item.product_title.toLowerCase().includes('raita');
-    });
-    hasCokeInCart = cart.items.some(function(item) {
-      return item.product_title.toLowerCase().includes('coke');
     });
   }
 
@@ -977,17 +1048,6 @@ function nbRenderCart(cart) {
     } else {
       raitaBtn.textContent = '+ Add';
       raitaBtn.style.background = '#C8922A';
-    }
-  }
-
-  var cokeBtn = document.getElementById('nb-add-coke-btn');
-  if (cokeBtn) {
-    if (hasCokeInCart) {
-      cokeBtn.textContent = '✓ Added';
-      cokeBtn.style.background = '#2E7D32';
-    } else {
-      cokeBtn.textContent = '+ Add';
-      cokeBtn.style.background = '#C8922A';
     }
   }
 
@@ -1010,12 +1070,31 @@ function nbRenderCart(cart) {
     }
     progressFillEl.style.width = '0%';
     progressMsgEl.innerHTML = 'Add items to unlock <strong>FREE DELIVERY</strong>';
+    if (itemsFdNotice) itemsFdNotice.style.display = 'none';
     return;
   }
 
   var subtotalCents = cart.total_price;
   var subtotalRupees = Math.round(subtotalCents / 100);
   subtotalEl.textContent = '₹' + subtotalRupees;
+
+  // DETERMINE ACTIVE FREE DELIVERY THRESHOLD (₹799 FOR ZONE 1 / UNKNOWN, ₹1299 FOR ZONE 2)
+  var targetThreshold = (currentDeliveryZone === ZONES.ZONE_5_8_KM) ? NB_CONFIG.zone2Threshold : NB_CONFIG.zone1Threshold;
+
+  if (itemsFdNotice && itemsFdText && itemsFdFill) {
+    itemsFdNotice.style.display = 'block';
+    if (subtotalRupees >= targetThreshold) {
+      itemsFdText.innerHTML = '🎉 <strong style="color:#2E7D32;">You\'ve unlocked FREE Delivery!</strong>';
+      itemsFdFill.style.width = '100%';
+      itemsFdFill.style.background = '#2E7D32';
+    } else {
+      var neededAmount = targetThreshold - subtotalRupees;
+      var fillPct = Math.min(100, Math.round((subtotalRupees / targetThreshold) * 100));
+      itemsFdText.innerHTML = 'Add <strong>₹' + neededAmount + '</strong> more to get <strong style="color:#C8922A;">FREE Delivery</strong> (Free above ₹' + targetThreshold + ')';
+      itemsFdFill.style.width = fillPct + '%';
+      itemsFdFill.style.background = 'linear-gradient(90deg, #D49E35 0%, #C8922A 100%)';
+    }
+  }
 
   // DELIVERY CALCULATION: IF LOCATION NOT DETECTED -> DEFAULT DELIVERY IS ₹0
   var feeRupees = 0;
