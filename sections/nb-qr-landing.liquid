@@ -296,6 +296,29 @@
   display: none !important;
 }
 
+/* === HIDE STOREWIDE DEFAULT HEADER, FOOTER & MOBILE DOCK ON QR / REORDER PAGE === */
+#header-group,
+.header-wrapper,
+header-component,
+.header-section,
+.header,
+#footer-group,
+.footer-section,
+footer:not(.nb-qr-footer),
+.nb-footer-section,
+.nb-footer,
+#nb-mobile-dock {
+  display: none !important;
+}
+
+/* Ensure no top margin/padding above the hero on QR page */
+#MainContent,
+.content-for-layout,
+.page-wrapper {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
 /* === MASTER PAGE WRAPPER === */
 .nb-qr-page-container {
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
@@ -975,6 +998,35 @@
         });
       }
     });
+
+    /* 7. Hide default storewide header, footer & mobile dock on this dedicated landing page */
+    (function hideThemeHeaderFooter() {
+      function applyHide() {
+        var selectors = [
+          '#header-group',
+          '.header-wrapper',
+          'header-component',
+          '.header-section',
+          '.header',
+          '#footer-group',
+          '.footer-section',
+          'footer:not(.nb-qr-footer)',
+          '.nb-footer-section',
+          '.nb-footer',
+          '#nb-mobile-dock'
+        ];
+        selectors.forEach(function(sel) {
+          document.querySelectorAll(sel).forEach(function(el) {
+            if (el && !el.classList.contains('nb-qr-footer')) {
+              el.style.setProperty('display', 'none', 'important');
+            }
+          });
+        });
+      }
+      applyHide();
+      setTimeout(applyHide, 100);
+      setTimeout(applyHide, 500);
+    })();
 
   });
 })();
