@@ -1,5 +1,16 @@
 {% comment %} NIAMAT BIRYANI — Production-Grade Refined Cart Drawer {% endcomment %}
 
+{% liquid
+  assign is_instant_enabled = settings.nb_instant_delivery_enabled
+  if shop.metafields.niamat.instant_delivery_enabled != blank
+    if shop.metafields.niamat.instant_delivery_enabled == false or shop.metafields.niamat.instant_delivery_enabled == 'false'
+      assign is_instant_enabled = false
+    else
+      assign is_instant_enabled = true
+    endif
+  endif
+%}
+
 <div id="nb-drawer-overlay" onclick="nbCloseDrawer()"></div>
 
 <div id="nb-cart-drawer" role="dialog" aria-modal="true" aria-label="Your Order Cart">
