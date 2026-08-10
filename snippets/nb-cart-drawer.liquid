@@ -1194,11 +1194,21 @@ function nbGoToCheckout() {
   var input = document.getElementById('nb-location-search-input');
   var locText = input ? input.value.trim() : '';
 
+  var phone = localStorage.getItem('nb_phone') || '';
+  var name  = localStorage.getItem('nb_name')  || '';
+  var email = localStorage.getItem('nb_email') || '';
+  var targetUrl = typeof nbBuildCheckoutUrl === 'function' ? nbBuildCheckoutUrl(phone, name, email) : '/checkout';
+
   fetch('/cart/update.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       attributes: { 
+        'Phone': phone,
+        'Customer Phone': phone,
+        'Mobile Number': phone,
+        'Customer Name': name,
+        'Customer Email': email,
         'Instant Delivery Status': NB_CONFIG.instantDeliveryEnabled ? 'Available' : 'Paused',
         'Order & Delivery Instructions': instructions,
         'Delivery Location': locText,
@@ -1207,9 +1217,9 @@ function nbGoToCheckout() {
       note: instructions ? ('ORDER & DELIVERY INSTRUCTIONS: ' + instructions) : ''
     })
   }).then(function() {
-    window.location.href = '/checkout';
+    window.location.href = targetUrl;
   }).catch(function() {
-    window.location.href = '/checkout';
+    window.location.href = targetUrl;
   });
 }
 

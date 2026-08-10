@@ -362,7 +362,10 @@ function nbAuthSaveName() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       attributes: {
+        'Phone': phone,
         'Customer Phone': phone,
+        'Mobile Number': phone,
+        'WhatsApp Number': phone,
         'Customer Name': name,
         'Customer Email': customEmail,
         'WhatsApp Consent': promoConsent ? 'yes' : 'no'
@@ -375,10 +378,12 @@ function nbAuthSaveName() {
     }
     nbAuthClose();
 
+    var targetCheckoutUrl = nbBuildCheckoutUrl(phone, name, customEmail);
+
     if (nbAuthPendingAction === 'checkout') {
       nbAuthPendingAction = null;
       window.nbAuthSaving = false;
-      window.location.href = '/checkout';
+      window.location.href = targetCheckoutUrl;
 
     } else if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
       var pendingForm = nbAuthPendingForm;
@@ -411,7 +416,7 @@ function nbAuthSaveName() {
     } else if (nbAuthPendingAction === 'preorder') {
       nbAuthPendingAction = null;
       window.nbAuthSaving = false;
-      window.location.href = '/pages/family-feast';
+      window.location.href = '/pages/family-orders';
 
     } else {
       window.nbAuthSaving = false;
@@ -431,7 +436,35 @@ function nbAuthSaveName() {
 }
 
 function nbBuildCheckoutUrl(phone, name, customEmail) {
-  return '/checkout';
+  var p = (phone || '').trim().replace(/\D/g, '');
+  if (p.length === 10) {
+    p = '+91' + p;
+  } else if (p.length === 12 && p.startsWith('91')) {
+    p = '+' + p;
+  } else if (p && !p.startsWith('+')) {
+    p = '+' + p;
+  }
+
+  var params = [];
+  if (p) {
+    params.push('checkout[shipping_address][phone]=' + encodeURIComponent(p));
+    params.push('checkout[billing_address][phone]=' + encodeURIComponent(p));
+    params.push('checkout[phone]=' + encodeURIComponent(p));
+  }
+
+  if (name) {
+    var nameParts = name.trim().split(/\s+/);
+    var firstName = nameParts[0] || name;
+    var lastName = nameParts.slice(1).join(' ') || 'Customer';
+    params.push('checkout[shipping_address][first_name]=' + encodeURIComponent(firstName));
+    params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
+  }
+
+  if (customEmail && customEmail.includes('@')) {
+    params.push('checkout[email]=' + encodeURIComponent(customEmail));
+  }
+
+  return params.length > 0 ? ('/checkout?' + params.join('&')) : '/checkout';
 }
 
 function nbAuthSkip() {
