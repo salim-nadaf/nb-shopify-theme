@@ -1,173 +1,261 @@
 {% comment %}
-  NIAMAT BIRYANI — QR Reorder Landing Page
-  Mobile-first page for customers scanning packaging QR codes.
-  Full-width, uses existing Niamat design system.
-  URL: /pages/reorder?source=packaging_qr
+  NIAMAT BIRYANI — Dedicated QR Landing & Reorder Page
+  Mobile-First experience for customers scanning QR packaging sticker.
+  URL: /pages/reorder?source=packaging_qr or /pages/qr?source=packaging_qr
 {% endcomment %}
 
 {% liquid
   assign wa_number = settings.nb_whatsapp_number | default: '919082910863'
   assign review_url = settings.nb_review_url | default: 'https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review'
   assign menu_url = '/collections/instant-delivery'
+  
   assign logo_url = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/BP_by_Niamat-removebg-preview.png?v=1785663837'
+  if settings.logo != blank
+    assign logo_url = settings.logo | image_url: width: 360
+  endif
 %}
 
-<div class="nb-qr-page">
+<div class="nb-qr-page-container">
 
-  <!-- ═══════ 1. HERO ═══════ -->
+  <!-- ═══════ 1. HERO / WELCOME ═══════ -->
   <section class="nb-qr-hero">
-    <div class="nb-qr-wrap">
-      <img
-        src="{{ logo_url }}"
-        alt="Biryani Palace by Niamat"
-        class="nb-qr-hero__logo"
-        width="160" height="52"
-        fetchpriority="high"
-      >
-      <h1 class="nb-qr-hero__title">Ready for your next biryani?</h1>
-      <p class="nb-qr-hero__sub">Freshly prepared, just the way you like it.</p>
-      <div class="nb-qr-hero__ctas">
-        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn--gold nb-qr-btn--lg" id="qr-hero-order">
+    <div class="nb-qr-inner">
+      <div class="nb-qr-logo-wrap">
+        <img
+          src="{{ logo_url }}"
+          alt="Biryani Palace by Niamat"
+          class="nb-qr-logo"
+          width="160" height="55"
+          fetchpriority="high"
+        >
+      </div>
+      <h1 class="nb-qr-hero-headline">Ready for your next biryani?</h1>
+      <p class="nb-qr-hero-sub">Freshly prepared, just the way you like it.</p>
+      
+      <div class="nb-qr-hero-ctas">
+        <a href="#reorder-container" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-hero-order-btn">
           🍽️ Order Again
         </a>
-        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn--outline-light" id="qr-hero-menu">
-          Explore Our Menu →
+        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-outline" id="qr-hero-menu-btn">
+          Explore Our Menu
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ═══════ 2. REORDER PRODUCTS ═══════ -->
-  <section class="nb-qr-sec">
-    <div class="nb-qr-wrap">
-      <div class="nb-qr-sec__header">
-        <span class="nb-qr-badge">QUICK REORDER</span>
-        <h2 class="nb-qr-sec__title">Your next meal is just a few taps away.</h2>
+  <!-- ═══════ 2. REORDER-FIRST EXPERIENCE ═══════ -->
+  <section class="nb-qr-section nb-qr-reorder-wrap" id="reorder-container">
+    <div class="nb-qr-inner">
+      <div class="nb-qr-section-header">
+        <span class="nb-qr-badge-pill">⚡ QUICK REORDER</span>
+        <h2 class="nb-qr-section-title">Your next meal is just a few taps away.</h2>
       </div>
-      <div class="nb-qr-products">
-        {% assign qr_handles = 'dum-biryani,tandoori-biryani,signature-bucket-biryani' | split: ',' %}
-        {% for handle in qr_handles %}
-          {% assign p = all_products[handle] %}
-          {% if p %}
-            <div class="nb-qr-card">
-              <div class="nb-qr-card__img-wrap">
-                <img
-                  src="{{ p.featured_image | image_url: width: 240 }}"
-                  alt="{{ p.title | escape }}"
-                  class="nb-qr-card__img"
-                  loading="lazy"
-                  width="100" height="100"
-                >
+
+      {% comment %} DYNAMIC CUSTOMER REORDER RECOGNITION {% endcomment %}
+      {% if customer and customer.orders.size > 0 %}
+        {% assign last_order = customer.orders.first %}
+        <div class="nb-qr-customer-banner">
+          <div class="nb-qr-customer-info">
+            <span class="nb-qr-welcome-tag">WELCOME BACK, {{ customer.first_name | default: customer.name | upcase }}</span>
+            <p class="nb-qr-last-order-text">Repeat your last order (#{{ last_order.name }}) from {{ last_order.created_at | date: "%b %d" }}:</p>
+          </div>
+          <div class="nb-qr-last-order-items">
+            {% for line_item in last_order.line_items limit: 3 %}
+              <div class="nb-qr-last-item">
+                <span class="nb-qr-last-item-qty">{{ line_item.quantity }}x</span>
+                <span class="nb-qr-last-item-name">{{ line_item.title }}</span>
+                <span class="nb-qr-last-item-price">{{ line_item.final_price | money }}</span>
               </div>
-              <div class="nb-qr-card__body">
-                <h3 class="nb-qr-card__name">{{ p.title }}</h3>
-                {% if p.description != blank %}
-                  <p class="nb-qr-card__desc">{{ p.description | strip_html | truncate: 80 }}</p>
-                {% endif %}
-                {% if p.variants.size > 1 %}
-                  <div class="nb-qr-card__variants">
-                    {% for v in p.variants limit: 3 %}
-                      <span class="nb-qr-variant-pill">{{ v.title }} · {{ v.price | money }}</span>
-                    {% endfor %}
+            {% endfor %}
+          </div>
+          <a href="{{ last_order.reorder_url | default: menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-block margin-top-sm">
+            ↻ Repeat Last Order
+          </a>
+        </div>
+      {% endif %}
+
+      {% comment %} POPULAR / CURRENT BIRYANI OPTIONS {% endcomment %}
+      <div class="nb-qr-products-grid">
+        {% liquid
+          assign instant_coll = collections['instant-delivery']
+          if instant_coll == blank or instant_coll.products.size == 0
+            assign instant_coll = collections['all']
+          endif
+        %}
+
+        {% if instant_coll != blank and instant_coll.products.size > 0 %}
+          {% assign count = 0 %}
+          {% for product in instant_coll.products %}
+            {% liquid
+              assign p_title = product.title | downcase
+              assign is_target = false
+              if p_title contains 'biryani' or p_title contains 'dum' or p_title contains 'bucket' or p_title contains 'tandoori'
+                assign is_target = true
+              endif
+            %}
+            {% if is_target and count < 4 %}
+              {% assign count = count | plus: 1 %}
+              {% assign first_var = product.selected_or_first_available_variant %}
+              
+              <div class="nb-qr-product-card">
+                <div class="nb-qr-card-img-wrap">
+                  {% if product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 220 }}"
+                      alt="{{ product.title | escape }}"
+                      class="nb-qr-card-img"
+                      loading="lazy"
+                      width="90" height="90"
+                    >
+                  {% else %}
+                    <div class="nb-qr-img-placeholder">🍛</div>
+                  {% endif %}
+                  
+                  {% if p_title contains 'mutton' or p_title contains 'gosht' %}
+                    <span class="nb-qr-card-badge nb-badge-musttry">⭐ Must Try</span>
+                  {% elsif p_title contains 'murgh' or p_title contains 'chicken' %}
+                    <span class="nb-qr-card-badge nb-badge-popular">🔥 Popular</span>
+                  {% elsif p_title contains 'bucket' %}
+                    <span class="nb-qr-card-badge nb-badge-bestseller">🏆 Family</span>
+                  {% else %}
+                    <span class="nb-qr-card-badge nb-badge-chef">👑 Chef Special</span>
+                  {% endif %}
+                </div>
+
+                <div class="nb-qr-card-content">
+                  <h3 class="nb-qr-card-title">{{ product.title }}</h3>
+                  {% if product.description != blank %}
+                    <p class="nb-qr-card-desc">{{ product.description | strip_html | truncate: 75 }}</p>
+                  {% endif %}
+                  
+                  <div class="nb-qr-card-price-row">
+                    <span class="nb-qr-card-price">{{ first_var.price | money }}</span>
+                    {% if product.variants.size > 1 %}
+                      <span class="nb-qr-variant-count">{{ product.variants.size }} sizes available</span>
+                    {% endif %}
                   </div>
-                {% else %}
-                  <p class="nb-qr-card__price">{{ p.price | money }}</p>
-                {% endif %}
-                <form method="post" action="/cart/add" class="nb-qr-add-form">
-                  <input type="hidden" name="id" value="{{ p.variants.first.id }}">
-                  <input type="hidden" name="properties[source]" value="packaging_qr">
-                  <button type="submit" class="nb-qr-btn nb-qr-btn--gold nb-qr-btn--sm" data-qr-add>
-                    + Quick Add
-                  </button>
-                </form>
+
+                  {% if product.variants.size > 1 %}
+                    <div class="nb-qr-variant-pills" data-product-id="{{ product.id }}">
+                      {% for variant in product.variants limit: 3 %}
+                        <button
+                          type="button"
+                          class="nb-qr-v-pill {% if forloop.first %}active{% endif %}"
+                          data-variant-id="{{ variant.id }}"
+                          data-variant-price="{{ variant.price | money }}"
+                        >
+                          {{ variant.title }}
+                        </button>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+
+                  <form method="post" action="/cart/add" class="nb-qr-add-form">
+                    <input type="hidden" name="id" class="nb-qr-selected-variant-id" value="{{ first_var.id }}">
+                    <input type="hidden" name="properties[source]" value="packaging_qr">
+                    <button type="submit" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-sm nb-qr-add-btn" data-qr-add>
+                      + Quick Add
+                    </button>
+                  </form>
+                </div>
               </div>
-            </div>
-          {% endif %}
-        {% endfor %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </div>
+      
+      <div class="nb-qr-view-all-wrap">
+        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-link-btn">View Full Menu & Pricing →</a>
       </div>
     </div>
   </section>
 
   <!-- ═══════ 3. BRAND MOMENT ═══════ -->
-  <section class="nb-qr-sec nb-qr-sec--dark">
-    <div class="nb-qr-wrap">
-      <h2 class="nb-qr-sec__title nb-qr-sec__title--light">Thank you for choosing Niamat.</h2>
-      <p class="nb-qr-sec__body nb-qr-sec__body--light">
-        We started this journey with a simple idea — to prepare biryani with care,
-        keep learning, and become better with every order.
-      </p>
+  <section class="nb-qr-section nb-qr-brand-wrap">
+    <div class="nb-qr-inner">
+      <div class="nb-qr-brand-card">
+        <h2 class="nb-qr-section-title">Thank you for choosing Niamat.</h2>
+        <p class="nb-qr-brand-text">
+          We started this journey with a simple idea — to prepare biryani with care,
+          keep learning, and become better with every order.
+        </p>
+      </div>
     </div>
   </section>
 
-  <!-- ═══════ 4. SIGNATURE RAITA ═══════ -->
-  <section class="nb-qr-sec nb-qr-sec--alt">
-    <div class="nb-qr-wrap">
-      <div class="nb-qr-raita">
-        <span class="nb-qr-raita__icon">🥣</span>
-        <h3 class="nb-qr-raita__title">Niamat Signature Raita</h3>
-        <p class="nb-qr-raita__text">
-          Cool, creamy and lightly spiced — made to balance every bite of biryani.
+  <!-- ═══════ 4. SIGNATURE RAITA / FOOD DETAIL ═══════ -->
+  <section class="nb-qr-section nb-qr-raita-wrap">
+    <div class="nb-qr-inner">
+      <div class="nb-qr-raita-card">
+        <span class="nb-qr-raita-icon">🥣</span>
+        <h3 class="nb-qr-raita-title">Niamat Signature Raita</h3>
+        <p class="nb-qr-raita-desc">
+          Cool, creamy and lightly spiced — crafted thoughtfully to balance every bite of rich dum biryani.
         </p>
       </div>
     </div>
   </section>
 
   <!-- ═══════ 5. REVIEW / FEEDBACK ═══════ -->
-  <section class="nb-qr-sec">
-    <div class="nb-qr-wrap">
-      <div class="nb-qr-sec__header">
-        <span class="nb-qr-badge">YOUR FEEDBACK</span>
-        <h2 class="nb-qr-sec__title">How was your Niamat experience?</h2>
+  <section class="nb-qr-section nb-qr-feedback-wrap">
+    <div class="nb-qr-inner">
+      <div class="nb-qr-section-header">
+        <span class="nb-qr-badge-pill">YOUR FEEDBACK</span>
+        <h2 class="nb-qr-section-title">How was your Niamat experience?</h2>
       </div>
-      <div class="nb-qr-feedback">
-        <a href="{{ review_url }}" target="_blank" rel="noopener" class="nb-qr-feedback__card nb-qr-feedback__card--positive" id="qr-review-positive">
-          <span class="nb-qr-feedback__stars">★★★★★</span>
-          <span class="nb-qr-feedback__label">Loved it!</span>
-          <span class="nb-qr-feedback__hint">Leave a quick review</span>
+
+      <div class="nb-qr-feedback-grid">
+        <a href="{{ review_url }}" target="_blank" rel="noopener" class="nb-qr-feedback-card nb-qr-feedback-positive" id="qr-review-positive">
+          <span class="nb-qr-stars">★★★★★</span>
+          <span class="nb-qr-feedback-heading">Loved it</span>
+          <span class="nb-qr-feedback-sub">Rate & review us</span>
         </a>
-        <a href="https://wa.me/{{ wa_number }}?text=Hi%20Niamat%2C%20I%20have%20feedback%20about%20my%20recent%20order." target="_blank" rel="noopener" class="nb-qr-feedback__card nb-qr-feedback__card--improve" id="qr-review-feedback">
-          <span class="nb-qr-feedback__icon">💬</span>
-          <span class="nb-qr-feedback__label">Tell us how we can improve</span>
-          <span class="nb-qr-feedback__hint">Chat on WhatsApp</span>
+
+        <a href="https://wa.me/{{ wa_number }}?text=Hi%20Niamat%2C%20I%20have%20feedback%20about%20my%20recent%20order." target="_blank" rel="noopener" class="nb-qr-feedback-card nb-qr-feedback-improve" id="qr-review-feedback">
+          <span class="nb-qr-feedback-icon">💬</span>
+          <span class="nb-qr-feedback-heading">Tell us how we can improve</span>
+          <span class="nb-qr-feedback-sub">Direct WhatsApp support</span>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- ═══════ 6. WHATSAPP ═══════ -->
-  <section class="nb-qr-sec nb-qr-sec--alt">
-    <div class="nb-qr-wrap">
-      <h2 class="nb-qr-sec__title">Need anything?</h2>
-      <p class="nb-qr-sec__body">
-        Questions, feedback or help with your order?<br>We're just a WhatsApp message away.
-      </p>
-      <a href="https://wa.me/{{ wa_number }}?text=Hi%20Niamat%20Biryani%2C%20I%20scanned%20the%20QR%20on%20my%20order." class="nb-qr-btn nb-qr-btn--whatsapp nb-qr-btn--lg" id="qr-whatsapp" target="_blank" rel="noopener">
-        💬 Chat on WhatsApp
+  <!-- ═══════ 6. WHATSAPP SUPPORT ═══════ -->
+  <section class="nb-qr-section nb-qr-whatsapp-wrap">
+    <div class="nb-qr-inner">
+      <div class="nb-qr-whatsapp-card">
+        <h2 class="nb-qr-section-title">Need anything?</h2>
+        <p class="nb-qr-whatsapp-text">
+          Questions, feedback or help with your order?<br>We're just a WhatsApp message away.
+        </p>
+        <a href="https://wa.me/{{ wa_number }}?text=Hi%20Niamat%20Biryani%2C%20I%20scanned%20the%20QR%20code%20on%20my%20packaging." target="_blank" rel="noopener" class="nb-qr-btn nb-qr-btn-whatsapp nb-qr-btn-lg" id="qr-whatsapp-btn">
+          💬 Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 7. REORDER CTA ═══════ -->
+  <section class="nb-qr-section nb-qr-bottom-cta-wrap">
+    <div class="nb-qr-inner">
+      <h2 class="nb-qr-section-title">Craving it again?</h2>
+      <a href="#reorder-container" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-bottom-order-btn">
+        Order Again
       </a>
     </div>
   </section>
 
-  <!-- ═══════ 7. BOTTOM REORDER CTA ═══════ -->
-  <section class="nb-qr-sec nb-qr-sec--dark nb-qr-sec--cta">
-    <div class="nb-qr-wrap">
-      <h2 class="nb-qr-sec__title nb-qr-sec__title--light">Craving it again?</h2>
-      <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn--gold nb-qr-btn--lg" id="qr-bottom-order">
-        🍽️ Order Again
-      </a>
-    </div>
-  </section>
-
-  <!-- ═══════ 8. FOOTER ═══════ -->
+  <!-- ═══════ 8. MINIMAL FOOTER ═══════ -->
   <footer class="nb-qr-footer">
-    <div class="nb-qr-wrap">
-      <p class="nb-qr-footer__brand">Biryani Palace by Niamat</p>
-      <p class="nb-qr-footer__tag">Freshly Prepared Dum Biryani</p>
-      <nav class="nb-qr-footer__nav">
-        <a href="/collections/instant-delivery">Menu</a>
+    <div class="nb-qr-inner">
+      <p class="nb-qr-footer-brand">Biryani Palace by Niamat</p>
+      <p class="nb-qr-footer-tagline">Freshly Prepared Dum Biryani</p>
+      <nav class="nb-qr-footer-links">
+        <a href="{{ menu_url }}">Menu</a>
         <a href="/pages/about-us">About Us</a>
         <a href="/pages/contact">Contact</a>
         <a href="/pages/delivery-areas">Delivery Areas</a>
-        <a href="/policies/privacy-policy">Privacy</a>
+        <a href="/policies/privacy-policy">Privacy Policy</a>
         <a href="/policies/terms-of-service">Terms</a>
       </nav>
     </div>
@@ -175,484 +263,620 @@
 
 </div>
 
-<!-- ═══════ STICKY MOBILE REORDER BAR ═══════ -->
-<div class="nb-qr-sticky" id="nb-qr-sticky">
-  <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn--gold nb-qr-btn--sticky" id="qr-sticky-order">
+<!-- ═══════ STICKY BOTTOM MOBILE ORDER BAR ═══════ -->
+<div class="nb-qr-sticky-bar" id="nb-qr-sticky-bar">
+  <a href="#reorder-container" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-block" id="qr-sticky-order-btn">
     🍽️ Order Again
   </a>
 </div>
 
+<!-- ═════════════════════════════════════════════════════════
+     STYLES: EXACT NIAMAT DESIGN SYSTEM INTEGRATION
+     ========================================================= -->
 <style>
-/* =========================================================
-   NIAMAT QR LANDING PAGE — FULL-WIDTH, MOBILE-FIRST
-   ========================================================= */
+/* === OVERRIDE THEME PAGE CONTAINER RESTRICTIONS FOR THIS PAGE === */
+[data-template="page.qr"] .main-page,
+[data-template="page.reorder"] .main-page,
+.template-page-qr #MainContent,
+.template-page-reorder #MainContent,
+.template-page-qr .page-width,
+.template-page-reorder .page-width {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
 
-/* --- BREAKOUT: fill the entire viewport width --- */
-.nb-qr-page {
-  font-family: 'Inter', system-ui, sans-serif !important;
+/* Hide default page title on page.qr / page.reorder if present */
+.template-page-qr .main-page-title,
+.template-page-reorder .main-page-title,
+.template-page-qr .page-header,
+.template-page-reorder .page-header {
+  display: none !important;
+}
+
+/* === MASTER PAGE WRAPPER === */
+.nb-qr-page-container {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  background-color: #FFFAF4 !important;
   color: #2C1810 !important;
+  width: 100% !important;
+  min-height: 100vh;
+  box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
   line-height: 1.5;
-  width: 100vw !important;
-  position: relative !important;
-  left: 50% !important;
-  right: 50% !important;
-  margin-left: -50vw !important;
-  margin-right: -50vw !important;
-  overflow-x: hidden;
+  padding-bottom: 70px; /* Space for sticky bar on mobile */
 }
-.nb-qr-page *, .nb-qr-page *::before, .nb-qr-page *::after {
+
+.nb-qr-page-container *,
+.nb-qr-page-container *::before,
+.nb-qr-page-container *::after {
   box-sizing: border-box;
 }
 
-/* --- Inner wrap: constrains text content --- */
-.nb-qr-wrap {
-  max-width: 640px;
+/* === INNER CONTAINER (PREVENTS SQUISHED MIDDLE / BLANK GAPS) === */
+.nb-qr-inner {
+  max-width: 680px;
   margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0 16px;
+  width: 100%;
 }
 
-/* ===== HERO ===== */
+/* === HERO SECTION === */
 .nb-qr-hero {
-  background: linear-gradient(145deg, #2C1810 0%, #1E100A 100%);
-  padding: 36px 0 40px;
+  background: #FFFAF4;
+  padding: 28px 0 24px;
   text-align: center;
-  border-bottom: 3px solid #C8922A;
+  border-bottom: 1px solid rgba(200, 146, 42, 0.2);
 }
-.nb-qr-hero__logo {
-  height: 48px;
+.nb-qr-logo-wrap {
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: center;
+}
+.nb-qr-logo {
+  height: 52px;
   width: auto;
-  max-width: 180px;
   object-fit: contain;
-  margin-bottom: 20px;
 }
-.nb-qr-hero__title {
+.nb-qr-hero-headline {
   font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(1.5rem, 5vw, 2.1rem) !important;
   font-weight: 700 !important;
-  font-size: clamp(1.5rem, 5vw, 2rem);
-  line-height: 1.2;
-  color: #FDF6EC !important;
-  margin: 0 0 10px !important;
+  color: #2C1810 !important;
+  margin: 0 0 8px 0 !important;
+  line-height: 1.25 !important;
 }
-.nb-qr-hero__sub {
-  font-size: 0.95rem;
-  color: rgba(253,246,236,0.75) !important;
-  margin: 0 0 24px;
-  line-height: 1.45;
+.nb-qr-hero-sub {
+  font-size: 0.95rem !important;
+  color: #7A5C4A !important;
+  margin: 0 0 20px 0 !important;
 }
-.nb-qr-hero__ctas {
+.nb-qr-hero-ctas {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  max-width: 340px;
+  gap: 10px;
+  max-width: 360px;
   margin: 0 auto;
 }
 
-/* ===== BUTTONS ===== */
+/* === BUTTON SYSTEM === */
 .nb-qr-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-family: 'Inter', sans-serif !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
   font-weight: 700 !important;
-  font-size: 0.95rem;
   text-decoration: none !important;
-  border-radius: 12px;
-  padding: 14px 24px;
-  min-height: 50px;
+  border-radius: 12px !important;
+  padding: 13px 20px;
+  min-height: 48px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border: none;
   text-align: center;
-  line-height: 1.2;
+  box-sizing: border-box;
 }
-.nb-qr-btn--gold {
+.nb-qr-btn-primary {
   background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 16px rgba(200,146,42,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+  box-shadow: 0 4px 16px rgba(200, 146, 42, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
 }
-.nb-qr-btn--gold:hover {
+.nb-qr-btn-primary:hover,
+.nb-qr-btn-primary:active {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(200,146,42,0.45);
+  box-shadow: 0 8px 24px rgba(200, 146, 42, 0.45) !important;
 }
-.nb-qr-btn--outline-light {
+.nb-qr-btn-outline {
   background: transparent !important;
-  color: #FDF6EC !important;
-  border: 1.5px solid rgba(253,246,236,0.4);
+  color: #C8922A !important;
+  border: 1.5px solid #C8922A !important;
 }
-.nb-qr-btn--outline-light:hover {
-  background: rgba(253,246,236,0.08) !important;
-  border-color: rgba(253,246,236,0.7);
+.nb-qr-btn-outline:hover,
+.nb-qr-btn-outline:active {
+  background: rgba(200, 146, 42, 0.08) !important;
 }
-.nb-qr-btn--whatsapp {
+.nb-qr-btn-whatsapp {
   background: #25D366 !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3) !important;
 }
-.nb-qr-btn--whatsapp:hover {
-  box-shadow: 0 8px 24px rgba(37,211,102,0.45);
+.nb-qr-btn-whatsapp:hover,
+.nb-qr-btn-whatsapp:active {
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45) !important;
 }
-.nb-qr-btn--sm {
-  font-size: 0.82rem;
-  font-weight: 800 !important;
-  padding: 9px 16px;
-  min-height: 38px;
-  border-radius: 8px;
+.nb-qr-btn-lg {
+  font-size: 1rem !important;
+  padding: 15px 24px !important;
+  min-height: 52px !important;
 }
-.nb-qr-btn--lg {
-  font-size: 1.05rem;
-  padding: 16px 28px;
-  min-height: 54px;
+.nb-qr-btn-sm {
+  font-size: 0.82rem !important;
+  padding: 9px 16px !important;
+  min-height: 38px !important;
+  border-radius: 8px !important;
 }
-.nb-qr-btn--sm.added {
-  background: #2E7D32 !important;
-  pointer-events: none;
+.nb-qr-btn-block {
+  width: 100% !important;
+}
+.margin-top-sm {
+  margin-top: 10px;
 }
 
-/* ===== SECTIONS ===== */
-.nb-qr-sec {
-  padding: 32px 0;
-  background: #FFFAF4;
+/* === SECTION GENERAL === */
+.nb-qr-section {
+  padding: 24px 0;
+}
+.nb-qr-section-header {
   text-align: center;
+  margin-bottom: 16px;
 }
-.nb-qr-sec--alt {
-  background: #FDF6EC;
+.nb-qr-badge-pill {
+  display: inline-block;
+  font-size: 0.68rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.1em !important;
+  color: #C8922A !important;
+  background: rgba(200, 146, 42, 0.1) !important;
+  border: 1px solid rgba(200, 146, 42, 0.25) !important;
+  padding: 4px 12px !important;
+  border-radius: 20px !important;
+  margin-bottom: 8px;
 }
-.nb-qr-sec--dark {
-  background: linear-gradient(145deg, #2C1810 0%, #1E100A 100%);
-}
-.nb-qr-sec--cta {
-  padding: 36px 0;
+.nb-qr-section-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(1.2rem, 4vw, 1.5rem) !important;
+  font-weight: 700 !important;
+  color: #2C1810 !important;
+  margin: 0 0 6px 0 !important;
+  line-height: 1.3 !important;
 }
 
-/* ===== SECTION HEADERS ===== */
-.nb-qr-sec__header {
+/* === CUSTOMER BANNER (LOGGED IN REORDER) === */
+.nb-qr-customer-banner {
+  background: #FFFDF7;
+  border: 1.5px solid rgba(200, 146, 42, 0.35);
+  border-radius: 14px;
+  padding: 16px;
   margin-bottom: 20px;
 }
-.nb-qr-badge {
-  display: inline-block;
-  font-family: 'Inter', sans-serif !important;
-  font-size: 0.68rem;
+.nb-qr-welcome-tag {
+  font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #C8922A !important;
-  background: rgba(200,146,42,0.1);
-  border: 1px solid rgba(200,146,42,0.2);
-  padding: 4px 14px;
-  border-radius: 20px;
-  margin-bottom: 10px;
+  color: #C8922A;
+  letter-spacing: 0.08em;
 }
-.nb-qr-sec__title {
-  font-family: 'Playfair Display', Georgia, serif !important;
-  font-weight: 700 !important;
-  font-size: clamp(1.2rem, 4vw, 1.6rem);
-  line-height: 1.25;
-  color: #2C1810 !important;
-  margin: 0 0 12px !important;
+.nb-qr-last-order-text {
+  font-size: 0.88rem;
+  color: #2C1810;
+  margin: 4px 0 10px;
 }
-.nb-qr-sec__title--light {
-  color: #FDF6EC !important;
-}
-.nb-qr-sec__body {
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: #7A5C4A !important;
-  max-width: 400px;
-  margin: 0 auto 20px;
-}
-.nb-qr-sec__body--light {
-  color: rgba(253,246,236,0.75) !important;
-}
-
-/* ===== PRODUCT CARDS ===== */
-.nb-qr-products {
+.nb-qr-last-order-items {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 6px;
+  background: #FFFAF4;
+  padding: 10px;
+  border-radius: 8px;
 }
-.nb-qr-card {
+.nb-qr-last-item {
   display: flex;
-  gap: 14px;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  color: #2C1810;
+}
+.nb-qr-last-item-qty {
+  font-weight: 700;
+  color: #C8922A;
+}
+
+/* === PRODUCT CARDS GRID === */
+.nb-qr-products-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.nb-qr-product-card {
+  display: flex;
+  flex-direction: row;
   align-items: flex-start;
-  background: #FFFFFF;
-  border: 1px solid rgba(200,146,42,0.18);
+  gap: 12px;
+  background: #FFFAF4;
+  border: 1px solid rgba(200, 146, 42, 0.2);
   border-radius: 14px;
-  padding: 14px;
-  box-shadow: 0 2px 10px rgba(44,24,16,0.04);
-  text-align: left;
-  transition: box-shadow 0.2s;
+  padding: 12px;
+  transition: box-shadow 0.2s ease;
 }
-.nb-qr-card:hover {
-  box-shadow: 0 4px 20px rgba(44,24,16,0.1);
+.nb-qr-product-card:hover {
+  box-shadow: 0 4px 16px rgba(44, 24, 16, 0.08);
 }
-.nb-qr-card__img-wrap {
+.nb-qr-card-img-wrap {
+  position: relative;
   flex-shrink: 0;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   border-radius: 10px;
   overflow: hidden;
   background: #F5ECD7;
 }
-.nb-qr-card__img {
+.nb-qr-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.nb-qr-card__body {
+.nb-qr-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+.nb-qr-card-badge {
+  position: absolute !important;
+  top: 4px !important;
+  left: 4px !important;
+  font-size: 0.6rem !important;
+  font-weight: 800 !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  color: #ffffff !important;
+}
+.nb-badge-musttry { background: linear-gradient(135deg, #FF6B00 0%, #D35400 100%); }
+.nb-badge-popular { background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%); }
+.nb-badge-bestseller { background: linear-gradient(135deg, #D49E35 0%, #B07C1C 100%); }
+.nb-badge-chef { background: linear-gradient(135deg, #8E44AD 0%, #6C3483 100%); }
+
+.nb-qr-card-content {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
 }
-.nb-qr-card__name {
+.nb-qr-card-title {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 1rem;
+  font-size: 0.98rem !important;
   font-weight: 700 !important;
   color: #2C1810 !important;
-  line-height: 1.25;
-  margin: 0 !important;
+  margin: 0 0 2px 0 !important;
+  line-height: 1.3 !important;
 }
-.nb-qr-card__desc {
-  font-size: 0.78rem;
+.nb-qr-card-desc {
+  font-size: 0.78rem !important;
   color: #7A5C4A !important;
-  line-height: 1.4;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  margin: 0 0 6px 0 !important;
+  line-height: 1.35 !important;
 }
-.nb-qr-card__price {
-  font-size: 1rem;
+.nb-qr-card-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.nb-qr-card-price {
+  font-size: 0.98rem !important;
   font-weight: 800 !important;
   color: #C8922A !important;
-  margin: 2px 0 6px;
 }
-.nb-qr-card__variants {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin: 4px 0 8px;
-}
-.nb-qr-variant-pill {
-  display: inline-block;
+.nb-qr-variant-count {
   font-size: 0.72rem;
-  font-weight: 700;
-  background: #FDF6EC;
-  color: #2C1810;
-  padding: 4px 10px;
-  border-radius: 20px;
-  border: 1px solid rgba(200,146,42,0.25);
-}
-.nb-qr-add-form {
-  margin: 0;
+  color: #7A5C4A;
 }
 
-/* ===== RAITA HIGHLIGHT ===== */
-.nb-qr-raita {
-  background: linear-gradient(135deg, #FFFDF7 0%, #F5ECD7 100%);
-  border: 1px solid rgba(200,146,42,0.25);
+.nb-qr-variant-pills {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.nb-qr-v-pill {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  padding: 3px 8px !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(200, 146, 42, 0.3) !important;
+  background: #FDF6EC !important;
+  color: #2C1810 !important;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.nb-qr-v-pill.active,
+.nb-qr-v-pill:hover {
+  background: #C8922A !important;
+  color: #FFFFFF !important;
+  border-color: #C8922A !important;
+}
+
+.nb-qr-add-form {
+  margin-top: 4px;
+}
+.nb-qr-add-btn.added {
+  background: #2E7D32 !important;
+  pointer-events: none;
+}
+.nb-qr-view-all-wrap {
+  text-align: center;
+  margin-top: 16px;
+}
+.nb-qr-link-btn {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #C8922A;
+  text-decoration: none;
+}
+.nb-qr-link-btn:hover {
+  text-decoration: underline;
+}
+
+/* === BRAND MOMENT SECTION === */
+.nb-qr-brand-card {
+  background: #FDF6EC;
+  border: 1px solid rgba(200, 146, 42, 0.2);
   border-radius: 16px;
-  padding: 28px 24px;
+  padding: 24px 20px;
   text-align: center;
 }
-.nb-qr-raita__icon {
-  font-size: 2.2rem;
-  display: block;
-  margin-bottom: 10px;
-}
-.nb-qr-raita__title {
-  font-family: 'Playfair Display', Georgia, serif !important;
-  font-weight: 700 !important;
-  font-size: 1.15rem;
-  color: #2C1810 !important;
-  margin: 0 0 8px !important;
-}
-.nb-qr-raita__text {
-  font-size: 0.9rem;
+.nb-qr-brand-text {
+  font-size: 0.9rem !important;
   color: #7A5C4A !important;
-  line-height: 1.5;
-  margin: 0;
-  max-width: 340px;
-  margin: 0 auto;
+  line-height: 1.55 !important;
+  margin: 8px 0 0 0 !important;
 }
 
-/* ===== FEEDBACK CARDS ===== */
-.nb-qr-feedback {
+/* === SIGNATURE RAITA CARD === */
+.nb-qr-raita-card {
+  background: linear-gradient(135deg, #FFFDF7 0%, #F5ECD7 100%);
+  border: 1px solid rgba(200, 146, 42, 0.25);
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+}
+.nb-qr-raita-icon {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 6px;
+}
+.nb-qr-raita-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #2C1810 !important;
+  margin: 0 0 6px 0 !important;
+}
+.nb-qr-raita-desc {
+  font-size: 0.88rem !important;
+  color: #7A5C4A !important;
+  margin: 0 !important;
+  line-height: 1.45 !important;
+}
+
+/* === FEEDBACK GRID === */
+.nb-qr-feedback-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  max-width: 440px;
-  margin: 0 auto;
+  gap: 10px;
 }
-.nb-qr-feedback__card {
+.nb-qr-feedback-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 20px 12px;
+  padding: 16px 10px;
   border-radius: 14px;
   text-decoration: none !important;
   text-align: center;
-  transition: all 0.2s;
-  min-height: 120px;
+  transition: all 0.2s ease;
+  min-height: 115px;
+  box-sizing: border-box;
 }
-.nb-qr-feedback__card--positive {
-  background: #FFFFFF;
-  border: 2px solid rgba(200,146,42,0.3);
+.nb-qr-feedback-positive {
+  background: #FFFAF4;
+  border: 1.5px solid rgba(200, 146, 42, 0.35);
 }
-.nb-qr-feedback__card--positive:hover {
+.nb-qr-feedback-positive:hover {
   border-color: #C8922A;
-  box-shadow: 0 4px 16px rgba(200,146,42,0.15);
+  box-shadow: 0 4px 16px rgba(200, 146, 42, 0.15);
   transform: translateY(-2px);
 }
-.nb-qr-feedback__card--improve {
-  background: #FFFFFF;
-  border: 2px solid rgba(200,146,42,0.15);
+.nb-qr-feedback-improve {
+  background: #FFFAF4;
+  border: 1.5px solid rgba(200, 146, 42, 0.2);
 }
-.nb-qr-feedback__card--improve:hover {
+.nb-qr-feedback-improve:hover {
   border-color: #25D366;
-  box-shadow: 0 4px 16px rgba(37,211,102,0.12);
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.15);
   transform: translateY(-2px);
 }
-.nb-qr-feedback__stars {
-  font-size: 1.3rem;
-  color: #C8922A !important;
+.nb-qr-stars {
+  color: #C8922A;
+  font-size: 1.2rem;
   letter-spacing: 2px;
+  margin-bottom: 4px;
 }
-.nb-qr-feedback__icon {
-  font-size: 1.5rem;
+.nb-qr-feedback-icon {
+  font-size: 1.4rem;
+  margin-bottom: 4px;
 }
-.nb-qr-feedback__label {
-  font-size: 0.85rem;
+.nb-qr-feedback-heading {
+  font-size: 0.85rem !important;
   font-weight: 700 !important;
   color: #2C1810 !important;
-  line-height: 1.3;
+  line-height: 1.25 !important;
 }
-.nb-qr-feedback__hint {
-  font-size: 0.72rem;
+.nb-qr-feedback-sub {
+  font-size: 0.72rem !important;
   color: #7A5C4A !important;
+  margin-top: 3px;
 }
 
-/* ===== FOOTER ===== */
-.nb-qr-footer {
-  background: #1E100A !important;
-  padding: 28px 0 100px; /* extra for sticky bar */
+/* === WHATSAPP SECTION === */
+.nb-qr-whatsapp-card {
+  background: #FDF6EC;
+  border: 1px solid rgba(200, 146, 42, 0.2);
+  border-radius: 16px;
+  padding: 24px 20px;
   text-align: center;
+}
+.nb-qr-whatsapp-text {
+  font-size: 0.88rem !important;
+  color: #7A5C4A !important;
+  margin: 0 0 16px 0 !important;
+  line-height: 1.5 !important;
+}
+
+/* === BOTTOM REORDER CTA === */
+.nb-qr-bottom-cta-wrap {
+  text-align: center;
+  padding: 32px 0;
+  border-top: 1px solid rgba(200, 146, 42, 0.2);
+}
+
+/* === FOOTER === */
+.nb-qr-footer {
+  background: #1E100A;
+  color: #FDF6EC;
+  text-align: center;
+  padding: 28px 0 24px;
   border-top: 2px solid #C8922A;
 }
-.nb-qr-footer__brand {
+.nb-qr-footer-brand {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-weight: 700;
   font-size: 0.95rem;
-  color: #FDF6EC !important;
-  margin: 0 0 2px;
+  font-weight: 700;
+  color: #FDF6EC;
+  margin: 0 0 2px 0;
 }
-.nb-qr-footer__tag {
+.nb-qr-footer-tagline {
   font-size: 0.78rem;
-  color: rgba(253,246,236,0.6) !important;
-  margin: 0 0 16px;
+  color: rgba(253, 246, 236, 0.6);
+  margin: 0 0 16px 0;
 }
-.nb-qr-footer__nav {
+.nb-qr-footer-links {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px 16px;
 }
-.nb-qr-footer__nav a {
+.nb-qr-footer-links a {
   font-size: 0.78rem;
-  color: rgba(253,246,236,0.7) !important;
-  text-decoration: none !important;
+  color: rgba(253, 246, 236, 0.75);
+  text-decoration: none;
   transition: color 0.15s;
 }
-.nb-qr-footer__nav a:hover {
-  color: #C8922A !important;
+.nb-qr-footer-links a:hover {
+  color: #C8922A;
 }
 
-/* ===== STICKY MOBILE BAR ===== */
-.nb-qr-sticky {
+/* === STICKY BOTTOM BAR (MOBILE ONLY) === */
+.nb-qr-sticky-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 9999;
-  background: rgba(255,250,244,0.97);
-  border-top: 1px solid rgba(200,146,42,0.25);
+  background: rgba(255, 250, 244, 0.98);
+  border-top: 1.5px solid #C8922A;
   padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-  box-shadow: 0 -4px 20px rgba(44,24,16,0.1);
+  box-shadow: 0 -4px 20px rgba(44, 24, 16, 0.12);
   display: none;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-.nb-qr-btn--sticky {
-  width: 100%;
-  font-size: 1rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 430px) {
-  .nb-qr-hero { padding: 28px 0 32px; }
-  .nb-qr-sec { padding: 24px 0; }
-  .nb-qr-wrap { padding-left: 16px; padding-right: 16px; }
-  .nb-qr-card__img-wrap { width: 88px; height: 88px; }
-  .nb-qr-feedback { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .nb-qr-feedback__card { padding: 16px 10px; min-height: 110px; }
-}
-@media (min-width: 641px) {
-  .nb-qr-products {
+/* === DESKTOP & RESPONSIVE REFINEMENTS === */
+@media (min-width: 640px) {
+  .nb-qr-products-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 14px;
   }
-  .nb-qr-card {
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
-  }
-  .nb-qr-card__img-wrap { width: 140px; height: 140px; }
-  .nb-qr-card__body { align-items: center; }
-  .nb-qr-hero__ctas {
+  .nb-qr-hero-ctas {
     flex-direction: row;
     justify-content: center;
   }
-  .nb-qr-btn--lg { min-width: 200px; }
+  .nb-qr-btn-lg {
+    min-width: 180px;
+  }
 }
-@media (min-width: 769px) {
-  .nb-qr-sticky { display: none !important; }
-  .nb-qr-footer { padding-bottom: 28px; }
-  .nb-qr-wrap { max-width: 720px; }
+
+@media (max-width: 768px) {
+  .nb-qr-sticky-bar {
+    display: block;
+  }
 }
 </style>
 
-<!-- ═══════ MINIMAL JS ═══════ -->
+<!-- ═════════════════════════════════════════════════════════
+     LIGHTWEIGHT JAVASCRIPT & ANALYTICS
+     ========================================================= -->
 <script>
 (function() {
   'use strict';
 
-  /* Campaign source tracking */
-  (function() {
+  /* 1. Preserve source=packaging_qr param on internal links */
+  (function preserveSourceParam() {
+    var sourceParam = 'source=packaging_qr';
     if (window.location.search.indexOf('source=') === -1) {
       var sep = window.location.search ? '&' : '?';
-      var newUrl = window.location.pathname + window.location.search + sep + 'source=packaging_qr' + window.location.hash;
+      var newUrl = window.location.pathname + window.location.search + sep + sourceParam + window.location.hash;
       if (history.replaceState) history.replaceState(null, '', newUrl);
     }
   })();
 
   document.addEventListener('DOMContentLoaded', function() {
+    
+    /* 2. Variant selection in cards */
+    document.querySelectorAll('.nb-qr-variant-pills').forEach(function(pillContainer) {
+      pillContainer.addEventListener('click', function(e) {
+        var pill = e.target.closest('.nb-qr-v-pill');
+        if (!pill) return;
+        pillContainer.querySelectorAll('.nb-qr-v-pill').forEach(function(p) { p.classList.remove('active'); });
+        pill.classList.add('active');
 
-    /* AJAX add-to-cart */
+        var card = pillContainer.closest('.nb-qr-product-card');
+        if (!card) return;
+        var variantId = pill.getAttribute('data-variant-id');
+        var variantPrice = pill.getAttribute('data-variant-price');
+        
+        var hiddenInput = card.querySelector('.nb-qr-selected-variant-id');
+        if (hiddenInput && variantId) hiddenInput.value = variantId;
+        
+        var priceEl = card.querySelector('.nb-qr-card-price');
+        if (priceEl && variantPrice) priceEl.textContent = variantPrice;
+      });
+    });
+
+    /* 3. AJAX Quick Add to Cart */
     document.querySelectorAll('.nb-qr-add-form').forEach(function(form) {
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         var btn = form.querySelector('[data-qr-add]');
         if (!btn || btn.classList.contains('added')) return;
+
         var origText = btn.textContent;
         btn.textContent = 'Adding…';
         btn.disabled = true;
@@ -661,23 +885,33 @@
           method: 'POST',
           body: new FormData(form)
         })
-        .then(function(r) { return r.json(); })
-        .then(function() {
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
           btn.textContent = '✓ Added';
           btn.classList.add('added');
+          
+          /* Update theme cart drawer / counter */
+          if (typeof fetch !== 'undefined') {
+            fetch('/cart.js').then(function(r) { return r.json(); }).then(function(cart) {
+              document.querySelectorAll('[data-cart-count], .cart-count-badge, .cart-count').forEach(function(el) {
+                el.textContent = cart.item_count;
+              });
+              /* Open theme drawer if available */
+              if (window.Theme && window.Theme.cartDrawer) {
+                window.Theme.cartDrawer.open();
+              } else if (document.querySelector('cart-drawer')) {
+                document.querySelector('cart-drawer').open();
+              }
+            });
+          }
+
           setTimeout(function() {
             btn.textContent = origText;
             btn.classList.remove('added');
             btn.disabled = false;
           }, 2500);
-          /* Update cart badges */
-          fetch('/cart.js').then(function(r) { return r.json(); }).then(function(cart) {
-            document.querySelectorAll('[data-cart-count], .cart-count-badge').forEach(function(el) {
-              el.textContent = cart.item_count;
-            });
-          });
         })
-        .catch(function() {
+        .catch(function(err) {
           btn.textContent = 'Error';
           btn.disabled = false;
           setTimeout(function() { btn.textContent = origText; }, 2000);
@@ -685,48 +919,70 @@
       });
     });
 
-    /* Sticky bar visibility */
-    var sticky = document.getElementById('nb-qr-sticky');
-    if (sticky && window.innerWidth <= 768) {
-      sticky.style.display = 'none';
+    /* 4. Smooth scrolling for internal anchor links */
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var targetId = this.getAttribute('href');
+        if (targetId.length > 1) {
+          var targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            e.preventDefault();
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    /* 5. Sticky Bottom Bar Visibility on Scroll */
+    var stickyBar = document.getElementById('nb-qr-sticky-bar');
+    if (stickyBar && window.innerWidth <= 768) {
       var hero = document.querySelector('.nb-qr-hero');
       if (hero && 'IntersectionObserver' in window) {
-        new IntersectionObserver(function(entries) {
+        var observer = new IntersectionObserver(function(entries) {
           entries.forEach(function(entry) {
-            sticky.style.display = entry.isIntersecting ? 'none' : 'block';
+            stickyBar.style.display = entry.isIntersecting ? 'none' : 'block';
           });
-        }, { threshold: 0.05 }).observe(hero);
+        }, { threshold: 0.1 });
+        observer.observe(hero);
       }
     }
 
-    /* Analytics events */
-    function trackClick(id, label) {
-      var el = document.getElementById(id);
-      if (el) {
-        el.addEventListener('click', function() {
-          if (typeof gtag === 'function') {
-            gtag('event', label, { event_category: 'qr_landing', event_label: 'packaging_qr' });
-          }
-          if (typeof fbq === 'function') {
-            fbq('trackCustom', label);
-          }
-        });
+    /* 6. Event Analytics tracking */
+    function trackEvent(eventName, label) {
+      if (typeof gtag === 'function') {
+        gtag('event', eventName, { event_category: 'qr_landing_page', event_label: label });
+      }
+      if (typeof fbq === 'function') {
+        fbq('trackCustom', eventName, { label: label });
       }
     }
-    trackClick('qr-hero-order', 'qr_order_again_hero');
-    trackClick('qr-hero-menu', 'qr_explore_menu');
-    trackClick('qr-review-positive', 'qr_review_positive');
-    trackClick('qr-review-feedback', 'qr_review_feedback');
-    trackClick('qr-whatsapp', 'qr_whatsapp_click');
-    trackClick('qr-bottom-order', 'qr_order_again_bottom');
-    trackClick('qr-sticky-order', 'qr_order_again_sticky');
+
+    var eventMappings = [
+      { id: 'qr-hero-order-btn', event: 'qr_hero_order_again' },
+      { id: 'qr-hero-menu-btn', event: 'qr_hero_explore_menu' },
+      { id: 'qr-review-positive', event: 'qr_review_loved_it' },
+      { id: 'qr-review-feedback', event: 'qr_review_improve_feedback' },
+      { id: 'qr-whatsapp-btn', event: 'qr_whatsapp_click' },
+      { id: 'qr-bottom-order-btn', event: 'qr_bottom_order_again' },
+      { id: 'qr-sticky-order-btn', event: 'qr_sticky_order_again' }
+    ];
+
+    eventMappings.forEach(function(item) {
+      var el = document.getElementById(item.id);
+      if (el) {
+        el.addEventListener('click', function() {
+          trackEvent(item.event, 'packaging_qr');
+        });
+      }
+    });
+
   });
 })();
 </script>
 
 {% schema %}
 {
-  "name": "QR Reorder Page",
+  "name": "QR Reorder Landing Page",
   "settings": [
     {
       "type": "text",
@@ -737,7 +993,7 @@
     {
       "type": "url",
       "id": "review_url",
-      "label": "Review / Rating URL"
+      "label": "Review Destination URL"
     },
     {
       "type": "url",
@@ -747,7 +1003,7 @@
   ],
   "presets": [
     {
-      "name": "QR Reorder Page"
+      "name": "QR Reorder Landing Page"
     }
   ]
 }
