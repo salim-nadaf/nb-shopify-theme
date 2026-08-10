@@ -814,6 +814,15 @@ function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
 }
 
 var googlePlacesAutocomplete = null;
+var googlePlacesHasError = false;
+
+// CATCH GOOGLE MAPS API AUTH / SERVICE ERRORS (e.g. unenabled Places API or missing billing)
+window.gm_authFailure = function() {
+  googlePlacesHasError = true;
+  googlePlacesAutocomplete = null;
+  var pacContainers = document.querySelectorAll('.pac-container');
+  pacContainers.forEach(function(el) { el.style.display = 'none !important;'; });
+};
 
 function nbInitGooglePlaces() {
   var input = document.getElementById('nb-location-search-input');
@@ -852,7 +861,8 @@ function nbInitGooglePlaces() {
       if (clearBtn) clearBtn.style.display = 'inline-block';
     });
   } catch(e) {
-    console.warn('Google Places Autocomplete init warning:', e);
+    googlePlacesHasError = true;
+    googlePlacesAutocomplete = null;
   }
 }
 
@@ -863,17 +873,24 @@ function nbDebounceSearch(val) {
   
   if (!val || val.trim().length < 2) {
     if (dropdown) dropdown.style.display = 'none';
-    return;
-  }
-
-  if (googlePlacesAutocomplete) {
-    if (dropdown) dropdown.style.display = 'none';
+    var pac = document.querySelector('.pac-container');
+    if (pac) pac.style.display = 'none';
     return;
   }
 
   searchTimer = setTimeout(function() {
-    nbPerformLocationSearch(val.trim());
-  }, 300);
+    var pac = document.querySelector('.pac-container');
+    // Check if pac-container shows error exclamation items or failed query
+    var pacHasError = pac && (pac.innerText.includes('!') || pac.children.length === 0 || !pac.querySelector('.pac-item-query'));
+
+    if (googlePlacesHasError || pacHasError || !googlePlacesAutocomplete) {
+      if (pac) pac.style.display = 'none';
+      nbPerformLocationSearch(val.trim());
+    } else {
+      // Also trigger local search dropdown so results are guaranteed to display
+      nbPerformLocationSearch(val.trim());
+    }
+  }, 250);
 }
 
 // UNRESTRICTED GLOBAL GEOCODING SEARCH WITH MULTI-TOKEN FUZZY MATCH
