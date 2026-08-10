@@ -436,20 +436,17 @@ function nbAuthSaveName() {
 }
 
 function nbBuildCheckoutUrl(phone, name, customEmail) {
-  var p = (phone || '').trim().replace(/\D/g, '');
-  if (p.length === 10) {
-    p = '+91' + p;
-  } else if (p.length === 12 && p.startsWith('91')) {
-    p = '+' + p;
-  } else if (p && !p.startsWith('+')) {
-    p = '+' + p;
-  }
+  var rawDigits = (phone || '').trim().replace(/\D/g, '');
+  var tenDigits = rawDigits.length >= 10 ? rawDigits.slice(-10) : rawDigits;
 
   var params = [];
-  if (p) {
-    params.push('checkout[shipping_address][phone]=' + encodeURIComponent(p));
-    params.push('checkout[billing_address][phone]=' + encodeURIComponent(p));
-    params.push('checkout[phone]=' + encodeURIComponent(p));
+  if (tenDigits) {
+    params.push('checkout[shipping_address][phone]=' + encodeURIComponent(tenDigits));
+    params.push('checkout[billing_address][phone]=' + encodeURIComponent(tenDigits));
+    params.push('checkout[contact][phone]=' + encodeURIComponent(tenDigits));
+    params.push('checkout[email_or_phone]=' + encodeURIComponent(tenDigits));
+    params.push('checkout[phone]=' + encodeURIComponent(tenDigits));
+    params.push('phone=' + encodeURIComponent(tenDigits));
   }
 
   if (name) {
@@ -458,6 +455,8 @@ function nbBuildCheckoutUrl(phone, name, customEmail) {
     var lastName = nameParts.slice(1).join(' ') || 'Customer';
     params.push('checkout[shipping_address][first_name]=' + encodeURIComponent(firstName));
     params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
+    params.push('checkout[billing_address][first_name]=' + encodeURIComponent(firstName));
+    params.push('checkout[billing_address][last_name]=' + encodeURIComponent(lastName));
   }
 
   if (customEmail && customEmail.includes('@')) {
