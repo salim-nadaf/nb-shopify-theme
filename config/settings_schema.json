@@ -2124,13 +2124,13 @@
         "type": "text",
         "id": "nb_store_lat",
         "label": "Store Latitude (Central Kitchen)",
-        "default": "19.2402"
+        "default": "19.246662490615908"
       },
       {
         "type": "text",
         "id": "nb_store_lng",
         "label": "Store Longitude (Central Kitchen)",
-        "default": "73.1305"
+        "default": "73.12392957712152"
       },
       {
         "type": "number",
