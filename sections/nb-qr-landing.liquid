@@ -1,0 +1,631 @@
+{% comment %}
+  NIAMAT BIRYANI — QR Landing Page Section
+  Mobile-first page for customers scanning packaging QR codes.
+  Uses the existing Niamat design system.
+{% endcomment %}
+
+{% liquid
+  assign page_bg = '#FFFAF4'
+  assign alt_bg = '#FDF6EC'
+  assign gold = '#C8922A'
+  assign gold_dark = '#A67520'
+  assign text_dark = '#2C1810'
+  assign text_muted = '#7A5C4A'
+  assign card_bg = '#FFFFFF'
+  assign whatsapp_green = '#25D366'
+
+  assign wa_number = settings.nb_whatsapp_number | default: '919082910863'
+  assign review_url = settings.nb_review_url | default: 'https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review'
+  assign menu_url = '/collections/instant-delivery'
+  assign logo_url = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/BP_by_Niamat-removebg-preview.png?v=1785663837'
+%}
+
+<div class="nb-qr" style="
+  --nb-bg: {{ page_bg }};
+  --nb-alt: {{ alt_bg }};
+  --nb-gold: {{ gold }};
+  --nb-gold-dark: {{ gold_dark }};
+  --nb-dark: {{ text_dark }};
+  --nb-muted: {{ text_muted }};
+  --nb-card: {{ card_bg }};
+  --nb-wa: {{ whatsapp_green }};
+">
+
+  <!-- ═══════ 1. HERO ═══════ -->
+  <section class="nb-qr__hero">
+    <div class="nb-qr__hero-inner">
+      <img
+        src="{{ logo_url }}"
+        alt="Biryani Palace by Niamat"
+        class="nb-qr__logo"
+        width="140" height="48"
+        fetchpriority="high"
+      >
+      <h1 class="nb-qr__h1">Ready for your next biryani?</h1>
+      <p class="nb-qr__sub">Freshly prepared, just the way you like it.</p>
+      <div class="nb-qr__cta-stack">
+        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr__btn nb-qr__btn--primary" id="qr-hero-order">
+          🍽️ Order Again
+        </a>
+        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr__btn nb-qr__btn--outline" id="qr-hero-menu">
+          Explore Our Menu
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════ 2. REORDER PRODUCTS ═══════ -->
+  <section class="nb-qr__section">
+    <h2 class="nb-qr__h2">Your next meal is just a few taps away.</h2>
+    <div class="nb-qr__products">
+      {% assign qr_handles = 'dum-biryani,tandoori-biryani,signature-bucket-biryani' | split: ',' %}
+      {% for handle in qr_handles %}
+        {% assign p = all_products[handle] %}
+        {% if p %}
+          <div class="nb-qr__product-card">
+            <img
+              src="{{ p.featured_image | image_url: width: 200 }}"
+              alt="{{ p.title | escape }}"
+              class="nb-qr__product-img"
+              loading="lazy"
+              width="88" height="88"
+            >
+            <div class="nb-qr__product-body">
+              <h3 class="nb-qr__product-name">{{ p.title }}</h3>
+              {% if p.description != blank %}
+                <p class="nb-qr__product-desc">{{ p.description | strip_html | truncate: 70 }}</p>
+              {% endif %}
+              {% if p.variants.size > 1 %}
+                <p class="nb-qr__product-variants">
+                  {% for v in p.variants limit: 3 %}
+                    <span class="nb-qr__variant-tag">{{ v.title }} · {{ v.price | money }}</span>
+                  {% endfor %}
+                </p>
+              {% else %}
+                <p class="nb-qr__product-price">{{ p.price | money }}</p>
+              {% endif %}
+              <form method="post" action="/cart/add" class="nb-qr__add-form">
+                <input type="hidden" name="id" value="{{ p.variants.first.id }}">
+                <input type="hidden" name="properties[source]" value="packaging_qr">
+                <button type="submit" class="nb-qr__btn nb-qr__btn--add" data-qr-add>
+                  + Quick Add
+                </button>
+              </form>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ═══════ 3. BRAND MOMENT ═══════ -->
+  <section class="nb-qr__section nb-qr__section--alt nb-qr__brand">
+    <h2 class="nb-qr__h2">Thank you for choosing Niamat.</h2>
+    <p class="nb-qr__body-text">
+      We started this journey with a simple idea — to prepare biryani with care,
+      keep learning, and become better with every order.
+    </p>
+  </section>
+
+  <!-- ═══════ 4. SIGNATURE RAITA ═══════ -->
+  <section class="nb-qr__section nb-qr__raita-card">
+    <div class="nb-qr__raita-inner">
+      <span class="nb-qr__raita-emoji">🥣</span>
+      <h3 class="nb-qr__h3">Niamat Signature Raita</h3>
+      <p class="nb-qr__body-text">
+        Cool, creamy and lightly spiced — made to balance every bite of biryani.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════ 5. REVIEW / FEEDBACK ═══════ -->
+  <section class="nb-qr__section">
+    <h2 class="nb-qr__h2">How was your Niamat experience?</h2>
+    <div class="nb-qr__feedback-stack">
+      <a href="{{ review_url }}" target="_blank" rel="noopener" class="nb-qr__btn nb-qr__btn--primary" id="qr-review-positive">
+        ★★★★★ Loved it
+      </a>
+      <a href="https://wa.me/{{ wa_number }}?text=Hi%20Niamat%2C%20I%20have%20feedback%20about%20my%20recent%20order." class="nb-qr__btn nb-qr__btn--outline" id="qr-review-feedback" target="_blank" rel="noopener">
+        Tell us how we can improve
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══════ 6. WHATSAPP ═══════ -->
+  <section class="nb-qr__section nb-qr__section--alt">
+    <h2 class="nb-qr__h2">Need anything?</h2>
+    <p class="nb-qr__body-text">
+      Questions, feedback or help with your order?<br>We're just a WhatsApp message away.
+    </p>
+    <a href="https://wa.me/{{ wa_number }}?text=Hi%20Niamat%20Biryani%2C%20I%20scanned%20the%20QR%20on%20my%20order." class="nb-qr__btn nb-qr__btn--whatsapp" id="qr-whatsapp" target="_blank" rel="noopener">
+      💬 Chat on WhatsApp
+    </a>
+  </section>
+
+  <!-- ═══════ 7. BOTTOM REORDER CTA ═══════ -->
+  <section class="nb-qr__section nb-qr__bottom-cta">
+    <h2 class="nb-qr__h2">Craving it again?</h2>
+    <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr__btn nb-qr__btn--primary nb-qr__btn--lg" id="qr-bottom-order">
+      🍽️ Order Again
+    </a>
+  </section>
+
+  <!-- ═══════ 8. FOOTER ═══════ -->
+  <footer class="nb-qr__footer">
+    <p class="nb-qr__footer-brand">Biryani Palace by Niamat</p>
+    <p class="nb-qr__footer-tagline">Freshly Prepared Dum Biryani</p>
+    <nav class="nb-qr__footer-nav">
+      <a href="/collections/instant-delivery">Menu</a>
+      <a href="/pages/about-us">About Us</a>
+      <a href="/pages/contact">Contact</a>
+      <a href="/pages/delivery-areas">Delivery Areas</a>
+      <a href="/policies/privacy-policy">Privacy</a>
+      <a href="/policies/terms-of-service">Terms</a>
+    </nav>
+  </footer>
+
+  <!-- ═══════ STICKY MOBILE CTA ═══════ -->
+  <div class="nb-qr__sticky-bar" id="nb-qr-sticky">
+    <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr__btn nb-qr__btn--primary nb-qr__btn--sticky" id="qr-sticky-order">
+      🍽️ Order Again
+    </a>
+  </div>
+
+</div>
+
+<!-- ═══════════ STYLES ═══════════ -->
+<style>
+/* === RESET & BASE === */
+.nb-qr {
+  font-family: 'Inter', sans-serif;
+  color: var(--nb-dark);
+  background: var(--nb-bg);
+  max-width: 480px;
+  margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+.nb-qr *, .nb-qr *::before, .nb-qr *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+}
+
+/* === HERO === */
+.nb-qr__hero {
+  background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%);
+  padding: 28px 20px 32px;
+  text-align: center;
+}
+.nb-qr__hero-inner {
+  max-width: 360px;
+  margin: 0 auto;
+}
+.nb-qr__logo {
+  height: 44px;
+  width: auto;
+  max-width: 160px;
+  object-fit: contain;
+  margin-bottom: 16px;
+}
+.nb-qr__h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.55rem;
+  line-height: 1.2;
+  color: #FDF6EC;
+  margin-bottom: 8px;
+}
+.nb-qr__sub {
+  font-size: 0.92rem;
+  color: rgba(253,246,236,0.8);
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+/* === CTA STACK === */
+.nb-qr__cta-stack,
+.nb-qr__feedback-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+/* === BUTTONS === */
+.nb-qr__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-radius: 10px;
+  padding: 13px 20px;
+  min-height: 48px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  border: none;
+  text-align: center;
+}
+.nb-qr__btn--primary {
+  background: linear-gradient(135deg, var(--nb-gold) 0%, var(--nb-gold-dark) 100%);
+  color: #FFFFFF;
+  box-shadow: 0 3px 12px rgba(200,146,42,0.3);
+}
+.nb-qr__btn--primary:hover,
+.nb-qr__btn--primary:active {
+  box-shadow: 0 4px 16px rgba(200,146,42,0.45);
+  transform: translateY(-1px);
+}
+.nb-qr__btn--outline {
+  background: transparent;
+  color: var(--nb-gold);
+  border: 1.5px solid rgba(200,146,42,0.5);
+}
+.nb-qr__btn--outline:hover,
+.nb-qr__btn--outline:active {
+  background: rgba(200,146,42,0.08);
+  border-color: var(--nb-gold);
+}
+.nb-qr__btn--whatsapp {
+  background: var(--nb-wa);
+  color: #FFFFFF;
+  box-shadow: 0 3px 12px rgba(37,211,102,0.3);
+}
+.nb-qr__btn--whatsapp:hover {
+  box-shadow: 0 4px 16px rgba(37,211,102,0.45);
+}
+.nb-qr__btn--add {
+  background: var(--nb-gold);
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 8px 16px;
+  min-height: 36px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nb-qr__btn--add:hover { background: var(--nb-gold-dark); }
+.nb-qr__btn--add.added {
+  background: #2E7D32;
+  pointer-events: none;
+}
+.nb-qr__btn--lg {
+  font-size: 1.05rem;
+  padding: 15px 24px;
+  min-height: 52px;
+}
+
+/* === SECTIONS === */
+.nb-qr__section {
+  padding: 24px 20px;
+}
+.nb-qr__section--alt {
+  background: var(--nb-alt);
+}
+
+/* === TYPOGRAPHY === */
+.nb-qr__h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  color: var(--nb-dark);
+  margin-bottom: 14px;
+  text-align: center;
+}
+.nb-qr__h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--nb-dark);
+  margin-bottom: 6px;
+}
+.nb-qr__body-text {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--nb-muted);
+  text-align: center;
+  max-width: 320px;
+  margin: 0 auto 16px;
+}
+
+/* === PRODUCT CARDS === */
+.nb-qr__products {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.nb-qr__product-card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--nb-card);
+  border: 1px solid rgba(200,146,42,0.18);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 8px rgba(44,24,16,0.04);
+}
+.nb-qr__product-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--nb-alt);
+}
+.nb-qr__product-body {
+  flex: 1;
+  min-width: 0;
+}
+.nb-qr__product-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--nb-dark);
+  line-height: 1.25;
+  margin-bottom: 3px;
+}
+.nb-qr__product-desc {
+  font-size: 0.78rem;
+  color: var(--nb-muted);
+  line-height: 1.35;
+  margin-bottom: 4px;
+}
+.nb-qr__product-price {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--nb-gold);
+  margin-bottom: 8px;
+}
+.nb-qr__product-variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.nb-qr__variant-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--nb-alt);
+  color: var(--nb-dark);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(200,146,42,0.15);
+}
+.nb-qr__add-form {
+  margin: 0;
+}
+
+/* === BRAND MOMENT === */
+.nb-qr__brand {
+  text-align: center;
+  border-top: 1px solid rgba(200,146,42,0.15);
+  border-bottom: 1px solid rgba(200,146,42,0.15);
+}
+
+/* === RAITA CARD === */
+.nb-qr__raita-card {
+  padding: 20px;
+}
+.nb-qr__raita-inner {
+  background: linear-gradient(135deg, #FFFDF7 0%, #F8EED8 100%);
+  border: 1px solid rgba(200,146,42,0.25);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+}
+.nb-qr__raita-emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* === BOTTOM CTA === */
+.nb-qr__bottom-cta {
+  text-align: center;
+  background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%);
+  padding: 28px 20px;
+}
+.nb-qr__bottom-cta .nb-qr__h2 {
+  color: #FDF6EC;
+}
+
+/* === FEEDBACK === */
+.nb-qr__feedback-stack {
+  max-width: 300px;
+}
+
+/* === FOOTER === */
+.nb-qr__footer {
+  text-align: center;
+  padding: 24px 20px 100px; /* extra bottom for sticky bar */
+  border-top: 1px solid rgba(200,146,42,0.15);
+}
+.nb-qr__footer-brand {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--nb-dark);
+  margin-bottom: 2px;
+}
+.nb-qr__footer-tagline {
+  font-size: 0.78rem;
+  color: var(--nb-muted);
+  margin-bottom: 12px;
+}
+.nb-qr__footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+}
+.nb-qr__footer-nav a {
+  font-size: 0.78rem;
+  color: var(--nb-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nb-qr__footer-nav a:hover {
+  color: var(--nb-gold);
+}
+
+/* === STICKY MOBILE BAR === */
+.nb-qr__sticky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: var(--nb-bg);
+  border-top: 1px solid rgba(200,146,42,0.2);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 16px rgba(44,24,16,0.08);
+  display: none; /* shown via JS after scroll */
+}
+.nb-qr__btn--sticky {
+  width: 100%;
+  font-size: 1rem;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 430px) {
+  .nb-qr__hero { padding: 24px 16px 28px; }
+  .nb-qr__section { padding: 20px 16px; }
+  .nb-qr__product-img { width: 76px; height: 76px; }
+  .nb-qr__h1 { font-size: 1.4rem; }
+}
+@media (min-width: 481px) {
+  .nb-qr__sticky-bar { display: none !important; }
+  .nb-qr__footer { padding-bottom: 24px; }
+}
+</style>
+
+<!-- ═══════════ MINIMAL JS ═══════════ -->
+<script>
+(function() {
+  'use strict';
+
+  /* --- Campaign source tracking --- */
+  (function trackSource() {
+    if (window.location.search.indexOf('source=') === -1) {
+      var sep = window.location.search ? '&' : '?';
+      var newUrl = window.location.pathname + window.location.search + sep + 'source=packaging_qr' + window.location.hash;
+      if (history.replaceState) history.replaceState(null, '', newUrl);
+    }
+  })();
+
+  /* --- AJAX add-to-cart --- */
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.nb-qr__add-form').forEach(function(form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = form.querySelector('[data-qr-add]');
+        if (!btn || btn.classList.contains('added')) return;
+        var origText = btn.textContent;
+        btn.textContent = 'Adding…';
+        btn.disabled = true;
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          body: new FormData(form)
+        })
+        .then(function(r) { return r.json(); })
+        .then(function() {
+          btn.textContent = '✓ Added';
+          btn.classList.add('added');
+          setTimeout(function() {
+            btn.textContent = origText;
+            btn.classList.remove('added');
+            btn.disabled = false;
+          }, 2000);
+          /* Update header cart count if present */
+          if (typeof fetch !== 'undefined') {
+            fetch('/cart.js').then(function(r) { return r.json(); }).then(function(cart) {
+              var countEls = document.querySelectorAll('[data-cart-count], .cart-count-badge');
+              countEls.forEach(function(el) { el.textContent = cart.item_count; });
+            });
+          }
+        })
+        .catch(function() {
+          btn.textContent = 'Error';
+          btn.disabled = false;
+          setTimeout(function() { btn.textContent = origText; }, 2000);
+        });
+      });
+    });
+
+    /* --- Sticky bar visibility on scroll --- */
+    var sticky = document.getElementById('nb-qr-sticky');
+    if (sticky && window.innerWidth <= 480) {
+      var heroSection = document.querySelector('.nb-qr__hero');
+      if (heroSection) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            sticky.style.display = entry.isIntersecting ? 'none' : 'block';
+          });
+        }, { threshold: 0.1 });
+        observer.observe(heroSection);
+      }
+    }
+
+    /* --- Simple analytics event tracking --- */
+    function trackClick(id, label) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('click', function() {
+          if (typeof gtag === 'function') {
+            gtag('event', label, { event_category: 'qr_landing', event_label: 'packaging_qr' });
+          }
+          if (typeof fbq === 'function') {
+            fbq('trackCustom', label);
+          }
+        });
+      }
+    }
+    trackClick('qr-hero-order', 'qr_order_again_hero');
+    trackClick('qr-hero-menu', 'qr_explore_menu');
+    trackClick('qr-review-positive', 'qr_review_positive');
+    trackClick('qr-review-feedback', 'qr_review_feedback');
+    trackClick('qr-whatsapp', 'qr_whatsapp_click');
+    trackClick('qr-bottom-order', 'qr_order_again_bottom');
+    trackClick('qr-sticky-order', 'qr_order_again_sticky');
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "QR Landing Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "whatsapp_number",
+      "label": "WhatsApp Number (with country code, no +)",
+      "default": "919082910863"
+    },
+    {
+      "type": "url",
+      "id": "review_url",
+      "label": "Review / Rating URL"
+    },
+    {
+      "type": "url",
+      "id": "menu_url",
+      "label": "Menu / Ordering Page URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "QR Landing Page"
+    }
+  ]
+}
+{% endschema %}
