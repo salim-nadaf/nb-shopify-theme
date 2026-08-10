@@ -2121,6 +2121,30 @@
     "name": "Niamat Delivery Settings",
     "settings": [
       {
+        "type": "checkbox",
+        "id": "nb_instant_delivery_enabled",
+        "label": "Enable Instant Delivery",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "nb_instant_delivery_status_msg",
+        "label": "Status Message (When Instant Delivery is ON)",
+        "default": "Instant Delivery is available"
+      },
+      {
+        "type": "textarea",
+        "id": "nb_instant_delivery_off_msg",
+        "label": "Unavailable Message (When Instant Delivery is OFF)",
+        "default": "Instant Delivery is temporarily unavailable due to high order volume. We are currently handling a high volume of orders. Instant Delivery will resume shortly."
+      },
+      {
+        "type": "text",
+        "id": "nb_scheduled_ordering_url",
+        "label": "Scheduled / Pre-Order URL",
+        "default": "/pages/family-orders"
+      },
+      {
         "type": "text",
         "id": "nb_google_maps_api_key",
         "label": "Google Maps Places API Key",

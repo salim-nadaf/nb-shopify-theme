@@ -32,6 +32,18 @@
 
   <!-- MAIN DRAWER BODY -->
   <div class="nb-drawer__body">
+    {% unless is_instant_enabled %}
+      <div id="nb-instant-disabled-cart-notice" class="nb-instant-disabled-cart-notice" style="margin: 12px 16px 4px; padding: 14px 16px; background: #FFEBEE; border: 1px solid #EF9A9A; border-left: 4px solid #C62828; border-radius: 12px; font-size: 0.85rem;">
+        <div style="font-weight: 800; color: #C62828; margin-bottom: 4px;">🔴 Instant Delivery Currently Unavailable</div>
+        <p style="color: #5C4033; margin: 0 0 10px; font-size: 0.82rem; line-height: 1.35;">
+          {{ settings.nb_instant_delivery_off_msg | default: 'We are currently handling a high volume of orders. Instant Delivery will resume shortly.' }}
+        </p>
+        <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="display: block; text-align: center; text-decoration: none;">
+          📅 Choose a Scheduled / Pre-Order
+        </a>
+      </div>
+    {% endunless %}
+
     <!-- DYNAMIC FREE DELIVERY NOTICE BANNER JUST ABOVE ITEMS -->
     <div class="nb-drawer__items-fd-notice" id="nb-items-fd-notice">
       <div class="nb-fd-notice-content">
@@ -694,7 +706,22 @@
 
 <script>
 // ===== SINGLE SOURCE OF TRUTH CONFIGURATION =====
+{% liquid
+  assign is_instant_enabled = settings.nb_instant_delivery_enabled
+  if shop.metafields.niamat.instant_delivery_enabled != blank
+    if shop.metafields.niamat.instant_delivery_enabled == false or shop.metafields.niamat.instant_delivery_enabled == 'false'
+      assign is_instant_enabled = false
+    else
+      assign is_instant_enabled = true
+    endif
+  endif
+%}
+
 const NB_CONFIG = {
+  instantDeliveryEnabled: {{ is_instant_enabled | json }},
+  instantDeliveryStatusMsg: {{ settings.nb_instant_delivery_status_msg | default: 'Instant Delivery is available' | json }},
+  instantDeliveryOffMsg: {{ settings.nb_instant_delivery_off_msg | default: 'Instant Delivery is temporarily unavailable due to high order volume.' | json }},
+  scheduledOrderingUrl: {{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' | json }},
   storeLat: parseFloat("{{ settings.nb_store_lat | default: '19.246662490615908' }}") || 19.246662490615908,
   storeLng: parseFloat("{{ settings.nb_store_lng | default: '73.12392957712152' }}") || 73.12392957712152,
   zone1MaxKm: parseFloat("{{ settings.nb_zone1_max_km | default: 5 }}") || 5.0,
@@ -1150,6 +1177,13 @@ function nbSaveInstructions() {
 }
 
 function nbGoToCheckout() {
+  if (NB_CONFIG.instantDeliveryEnabled === false) {
+    nbShowToast('🔴 Instant Delivery is temporarily paused.');
+    var offNotice = document.getElementById('nb-instant-disabled-cart-notice');
+    if (offNotice) offNotice.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
   if (isLocationDetected && currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
     nbShowToast('Delivery is currently unavailable for your detected area.');
     return;
@@ -1165,6 +1199,7 @@ function nbGoToCheckout() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       attributes: { 
+        'Instant Delivery Status': NB_CONFIG.instantDeliveryEnabled ? 'Available' : 'Paused',
         'Order & Delivery Instructions': instructions,
         'Delivery Location': locText,
         'Delivery Zone': currentDeliveryZone
@@ -1193,6 +1228,22 @@ function nbRenderCart(cart) {
   var btnTotalEl = document.getElementById('nb-btn-total-val');
   var btnTextEl = document.getElementById('nb-checkout-btn-text');
   var checkoutBtn = document.getElementById('nb-checkout-submit-btn');
+
+  if (NB_CONFIG.instantDeliveryEnabled === false) {
+    if (btnTextEl) btnTextEl.textContent = '📅 Switch to Scheduled / Pre-Order';
+    if (checkoutBtn) {
+      checkoutBtn.onclick = function() {
+        window.location.href = NB_CONFIG.scheduledOrderingUrl;
+      };
+    }
+  } else {
+    if (btnTextEl) btnTextEl.textContent = 'Proceed to Checkout';
+    if (checkoutBtn) {
+      checkoutBtn.onclick = function() {
+        nbGoToCheckout();
+      };
+    }
+  }
   var progressMsgEl = document.getElementById('nb-progress-msg');
   var progressFillEl = document.getElementById('nb-progress-fill');
   var itemsFdNotice = document.getElementById('nb-items-fd-notice');

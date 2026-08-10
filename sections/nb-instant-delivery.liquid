@@ -1,10 +1,38 @@
 {% comment %} NIAMAT BIRYANI — Instant Delivery Section {% endcomment %}
 {% render 'food-card-styles' %}
 
+{% liquid
+  assign is_instant_enabled = settings.nb_instant_delivery_enabled
+  if shop.metafields.niamat.instant_delivery_enabled != blank
+    if shop.metafields.niamat.instant_delivery_enabled == false or shop.metafields.niamat.instant_delivery_enabled == 'false'
+      assign is_instant_enabled = false
+    else
+      assign is_instant_enabled = true
+    endif
+  endif
+%}
+
 <div class="nb-instant-section">
   <div class="nb-section-header">
-    <h2>⚡ Instant Delivery</h2>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
+      <h2 style="margin: 0;">⚡ Instant Delivery</h2>
+      {% render 'nb-instant-delivery-status' %}
+    </div>
     <p>Freshly prepared biryani & starters · Ready in 30–60 minutes · Kalyan & Nearby</p>
+
+    {% unless is_instant_enabled %}
+      <div class="nb-instant-off-banner" style="max-width: 680px; margin: 16px auto 0; padding: 20px 24px; background: #FFF3E0; border: 1px solid #FFE0B2; border-left: 4px solid #E65100; border-radius: 16px; text-align: center;">
+        <div style="font-weight: 800; font-size: 1.05rem; color: #C62828; margin-bottom: 6px;">
+          🔴 Instant Delivery Currently Unavailable
+        </div>
+        <p style="font-size: 0.92rem; color: #5C4033; margin: 0 0 14px;">
+          {{ settings.nb_instant_delivery_off_msg | default: "We're currently handling a high volume of orders. Instant Delivery will resume shortly." }}
+        </p>
+        <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold" style="display: inline-block;">
+          📅 Choose a Scheduled / Pre-Order
+        </a>
+      </div>
+    {% endunless %}
   </div>
 
   {% liquid
@@ -149,11 +177,15 @@
                 {{ first_variant.price | money }}
               </span>
               {% if is_available %}
-                <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
-                  <input type="hidden" name="id" value="{{ first_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
-                  <input type="hidden" name="quantity" value="1" />
-                  <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
-                </form>
+                {% if is_instant_enabled %}
+                  <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
+                    <input type="hidden" name="id" value="{{ first_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+                  </form>
+                {% else %}
+                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="font-size: 0.78rem;">📅 Pre-Order</a>
+                {% endif %}
               {% else %}
                 <button type="button" class="nb-btn nb-btn--disabled nb-btn--sm" disabled>Sold Out</button>
               {% endif %}

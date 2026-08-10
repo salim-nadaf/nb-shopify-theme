@@ -5,6 +5,25 @@
 <div class="nb-account-page-section">
   <div class="nb-account-container">
 
+    <!-- ORDER CONFIRMED BANNER -->
+    <div class="nb-order-confirmed-card" style="background: linear-gradient(135deg, #FFFDF7 0%, #FDF5E6 100%); border: 1px solid rgba(200,146,42,0.3); border-top: 4px solid #C8922A; border-radius: 20px; padding: 24px 28px; margin-bottom: 20px; text-align: center;">
+      <div style="font-size: 2.2rem; margin-bottom: 4px;">🎉</div>
+      <h1 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.8rem; color: #2C1810; margin: 0 0 6px;">Order Confirmed 🎉</h1>
+      <p style="font-size: 1rem; font-weight: 700; color: #C8922A; margin: 0 0 4px;">Thank you for ordering from Niamat.</p>
+      <p style="font-size: 0.9rem; color: #7A5C4A; margin: 0 0 16px;">Order {{ order.name }} • Your order confirmation has been sent to your email ({{ order.email }}).</p>
+
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        {% if order.order_status_url != blank %}
+          <a href="{{ order.order_status_url }}" class="nb-btn nb-btn--gold" style="padding: 10px 20px; font-size: 0.88rem; text-decoration: none;">
+            📍 Track Your Order
+          </a>
+        {% endif %}
+        <a href="https://wa.me/919167682582?text=Hi%20Niamat!%20I%20placed%20Order%20%23{{ order.name | remove: '#' }}%20and%20would%20like%20updates." target="_blank" rel="noopener" class="nb-btn" style="background: #25D366; color: #FFF; padding: 10px 20px; font-size: 0.88rem; text-decoration: none; border-radius: 12px; font-weight: 700;">
+          💬 Get WhatsApp Updates
+        </a>
+      </div>
+    </div>
+
     <!-- ORDER HEADER -->
     <div class="nb-account-header-card">
       <div class="nb-user-details">
