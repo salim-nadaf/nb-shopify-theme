@@ -2122,6 +2122,12 @@
     "settings": [
       {
         "type": "text",
+        "id": "nb_google_maps_api_key",
+        "label": "Google Maps Places API Key",
+        "default": "AIzaSyCzP1FLzi8wFjDsC9tZrkCo3nKj1F9U_b8"
+      },
+      {
+        "type": "text",
         "id": "nb_store_lat",
         "label": "Store Latitude (Central Kitchen)",
         "default": "19.246662490615908"
