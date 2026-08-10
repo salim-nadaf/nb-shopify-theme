@@ -815,13 +815,15 @@ function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
 
 var googlePlacesService = null;
 var googleGeocoder = null;
+var googleDistanceMatrixService = null;
 var googlePlacesHasError = false;
 
-// CATCH GOOGLE MAPS API AUTH / SERVICE ERRORS (e.g. unenabled Places API or missing billing)
+// CATCH GOOGLE MAPS API AUTH / SERVICE ERRORS
 window.gm_authFailure = function() {
   googlePlacesHasError = true;
   googlePlacesService = null;
   googleGeocoder = null;
+  googleDistanceMatrixService = null;
 };
 
 function nbInitGooglePlaces() {
@@ -829,6 +831,7 @@ function nbInitGooglePlaces() {
   try {
     googlePlacesService = new google.maps.places.AutocompleteService();
     googleGeocoder = new google.maps.Geocoder();
+    googleDistanceMatrixService = new google.maps.DistanceMatrixService();
   } catch(e) {
     googlePlacesHasError = true;
     googlePlacesService = null;
@@ -858,7 +861,7 @@ function nbPerformLocationSearch(query) {
   var qLower = query.toLowerCase();
   var tokens = qLower.split(/\s+/).filter(Boolean);
 
-  // 1. Instant Multi-Token Fuzzy Match from 40+ Local Landmarks
+  // 1. Instant Multi-Token Fuzzy Match from Local Landmarks
   var localMatches = LOCAL_LANDMARKS.filter(function(item) {
     var nameLower = item.name.toLowerCase();
     return tokens.every(function(t) { return nameLower.includes(t); });
@@ -873,7 +876,7 @@ function nbPerformLocationSearch(query) {
     }).join('');
   }
 
-  // 2. Try Google Places AutocompleteService (Programmatic, No .pac-container errors)
+  // 2. Try Google Places AutocompleteService (Programmatic)
   if (googlePlacesService && !googlePlacesHasError) {
     try {
       var storeCenter = new google.maps.LatLng(NB_CONFIG.storeLat, NB_CONFIG.storeLng);
@@ -887,7 +890,8 @@ function nbPerformLocationSearch(query) {
       googlePlacesService.getPlacePredictions(req, function(predictions, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK && predictions && predictions.length > 0) {
           var gHtml = predictions.slice(0, 6).map(function(p) {
-            var cleanName = p.description.split(',').slice(0, 3).join(',');
+            var parts = p.description.split(',').map(s => s.trim());
+            var cleanName = parts.slice(0, Math.min(2, parts.length)).join(', ');
             return '<div class="nb-suggestion-item" onclick="nbSelectGooglePlace(\'' + p.place_id + '\', \'' + cleanName.replace(/'/g, "\\'") + '\')">📍 <strong>' + cleanName + '</strong></div>';
           }).join('');
 
@@ -895,7 +899,6 @@ function nbPerformLocationSearch(query) {
           return;
         }
 
-        // If Google AutocompleteService returns 0 results or error status, fallback to Nominatim
         nbPerformNominatimFallback(query, localMatches, html);
       });
       return;
@@ -904,7 +907,6 @@ function nbPerformLocationSearch(query) {
     }
   }
 
-  // Fallback to OpenStreetMap / Local Dictionary
   nbPerformNominatimFallback(query, localMatches, html);
 }
 
@@ -922,14 +924,43 @@ function nbSelectGooglePlace(placeId, placeName) {
       if (status === 'OK' && results && results[0] && results[0].geometry) {
         var lat = results[0].geometry.location.lat();
         var lng = results[0].geometry.location.lng();
-        var distKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, lat, lng);
-        nbApplyLocationCalculation(distKm, placeName);
+        var rawAddr = results[0].formatted_address || placeName;
+        var parts = rawAddr.split(',').map(s => s.trim());
+        var cleanLabel = parts.slice(0, Math.min(2, parts.length)).join(', ');
+
+        if (input) input.value = cleanLabel;
+        nbCalculateDrivingDistance(lat, lng, cleanLabel);
       } else {
-        nbPerformNominatimSearch(placeName);
+        nbPerformNominatimFallback(placeName, [], '');
       }
     });
   } else {
-    nbPerformNominatimSearch(placeName);
+    nbPerformNominatimFallback(placeName, [], '');
+  }
+}
+
+function nbCalculateDrivingDistance(destLat, destLng, placeName) {
+  var origin = new google.maps.LatLng(NB_CONFIG.storeLat, NB_CONFIG.storeLng);
+  var destination = new google.maps.LatLng(parseFloat(destLat), parseFloat(destLng));
+
+  if (googleDistanceMatrixService) {
+    googleDistanceMatrixService.getDistanceMatrix({
+      origins: [origin],
+      destinations: [destination],
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC
+    }, function(response, status) {
+      if (status === 'OK' && response && response.rows && response.rows[0] && response.rows[0].elements && response.rows[0].elements[0].status === 'OK') {
+        var drivingDistKm = response.rows[0].elements[0].distance.value / 1000.0;
+        nbApplyLocationCalculation(drivingDistKm, placeName);
+      } else {
+        var straightKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, destLat, destLng);
+        nbApplyLocationCalculation(straightKm * 1.38, placeName);
+      }
+    });
+  } else {
+    var straightKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, destLat, destLng);
+    nbApplyLocationCalculation(straightKm * 1.38, placeName);
   }
 }
 
@@ -958,7 +989,8 @@ function nbPerformNominatimFallback(query, localMatches, html) {
       }
 
       var apiHtml = (results || []).map(function(item) {
-        var cleanName = item.display_name.split(',').slice(0, 3).join(',');
+        var parts = item.display_name.split(',').map(s => s.trim());
+        var cleanName = parts.slice(0, Math.min(2, parts.length)).join(', ');
         return '<div class="nb-suggestion-item" onclick="nbSelectLocationResult(' + item.lat + ', ' + item.lon + ', \'' + cleanName.replace(/'/g, "\\'") + '\')">📍 ' + cleanName + '</div>';
       }).join('');
 
@@ -976,12 +1008,14 @@ function nbSelectLocationResult(lat, lon, nameText) {
   var input = document.getElementById('nb-location-search-input');
   var clearBtn = document.getElementById('nb-clear-location-btn');
 
+  var parts = nameText.split(',').map(s => s.trim());
+  var cleanLabel = parts.slice(0, Math.min(2, parts.length)).join(', ');
+
   if (dropdown) dropdown.style.display = 'none';
-  if (input) input.value = nameText;
+  if (input) input.value = cleanLabel;
   if (clearBtn) clearBtn.style.display = 'inline-block';
 
-  var distKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, parseFloat(lat), parseFloat(lon));
-  nbApplyLocationCalculation(distKm, nameText);
+  nbCalculateDrivingDistance(parseFloat(lat), parseFloat(lon), cleanLabel);
 }
 
 function nbApplyLocationCalculation(distKm, placeName) {
@@ -1037,30 +1071,34 @@ function nbDetectLiveLocation() {
     function(position) {
       var userLat = position.coords.latitude;
       var userLng = position.coords.longitude;
-      var distKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, userLat, userLng);
 
       if (btn) btn.textContent = '🎯 Location Set';
       if (clearBtn) clearBtn.style.display = 'inline-block';
 
-      // Reverse Geocode
-      fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + userLat + '&lon=' + userLng)
-        .then(r => r.json())
-        .then(data => {
-          var cleanName = (data && data.display_name) ? data.display_name.split(',').slice(0, 2).join(',') : 'Live GPS Position';
+      if (googleGeocoder) {
+        googleGeocoder.geocode({ location: { lat: userLat, lng: userLng } }, function(results, status) {
+          var cleanName = 'Live GPS Position';
+          if (status === 'OK' && results && results[0] && results[0].formatted_address) {
+            var parts = results[0].formatted_address.split(',').map(s => s.trim());
+            cleanName = parts.slice(0, Math.min(2, parts.length)).join(', ');
+          }
           var input = document.getElementById('nb-location-search-input');
           if (input) input.value = cleanName;
-          nbApplyLocationCalculation(distKm, cleanName);
-        })
-        .catch(() => {
-          nbApplyLocationCalculation(distKm, 'Live GPS Location');
+
+          nbCalculateDrivingDistance(userLat, userLng, cleanName);
         });
+      } else {
+        var input = document.getElementById('nb-location-search-input');
+        if (input) input.value = 'Live GPS Position';
+        nbCalculateDrivingDistance(userLat, userLng, 'Live GPS Position');
+      }
 
       localStorage.setItem('nb_user_lat', userLat);
       localStorage.setItem('nb_user_lng', userLng);
     },
     function(error) {
       if (btn) btn.textContent = '🎯 Use Live Location';
-      nbShowToast('Location access was unavailable. Search your area in the text box.');
+      nbShowToast('Location access was unavailable. Type your area in the search box.');
     },
     { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
   );
