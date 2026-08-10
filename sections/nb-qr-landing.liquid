@@ -33,7 +33,7 @@
       <p class="nb-qr-hero-sub">Freshly prepared, just the way you like it.</p>
       
       <div class="nb-qr-hero-ctas">
-        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-hero-order-btn">
+        <a href="{{ menu_url }}" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-hero-order-btn">
           🍽️ Order Again
         </a>
       </div>
@@ -65,7 +65,7 @@
               </div>
             {% endfor %}
           </div>
-          <a href="{{ last_order.reorder_url | default: menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-block margin-top-sm">
+          <a href="{{ last_order.reorder_url | default: menu_url }}" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-block margin-top-sm">
             ↻ Repeat Last Order
           </a>
         </div>
@@ -149,7 +149,6 @@
 
                   <form method="post" action="/cart/add" class="nb-qr-add-form">
                     <input type="hidden" name="id" class="nb-qr-selected-variant-id" value="{{ first_var.id }}">
-                    <input type="hidden" name="properties[source]" value="packaging_qr">
                     <button type="submit" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-sm nb-qr-add-btn" data-qr-add>
                       + Quick Add
                     </button>
@@ -162,7 +161,7 @@
       </div>
       
       <div class="nb-qr-view-all-wrap">
-        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-link-btn">View Full Menu & Pricing →</a>
+        <a href="{{ menu_url }}" class="nb-qr-link-btn">View Full Menu & Pricing →</a>
       </div>
     </div>
   </section>
@@ -236,7 +235,7 @@
   <section class="nb-qr-section nb-qr-bottom-cta-wrap">
     <div class="nb-qr-inner">
       <h2 class="nb-qr-section-title">Craving it again?</h2>
-      <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-bottom-order-btn">
+      <a href="{{ menu_url }}" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-bottom-order-btn">
         Order Again
       </a>
     </div>
@@ -262,7 +261,7 @@
 
 <!-- ═══════ STICKY BOTTOM MOBILE ORDER BAR ═══════ -->
 <div class="nb-qr-sticky-bar" id="nb-qr-sticky-bar">
-  <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-block" id="qr-sticky-order-btn">
+  <a href="{{ menu_url }}" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-block" id="qr-sticky-order-btn">
     🍽️ Order Again
   </a>
 </div>
@@ -870,16 +869,6 @@ footer:not(.nb-qr-footer),
 <script>
 (function() {
   'use strict';
-
-  /* 1. Preserve source=packaging_qr param on internal links */
-  (function preserveSourceParam() {
-    var sourceParam = 'source=packaging_qr';
-    if (window.location.search.indexOf('source=') === -1) {
-      var sep = window.location.search ? '&' : '?';
-      var newUrl = window.location.pathname + window.location.search + sep + sourceParam + window.location.hash;
-      if (history.replaceState) history.replaceState(null, '', newUrl);
-    }
-  })();
 
   document.addEventListener('DOMContentLoaded', function() {
     
