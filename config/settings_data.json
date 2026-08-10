@@ -85,8 +85,7 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",
-    "popover_border": "none",
-    "nb_instant_delivery_enabled": true,
+    "nb_instant_delivery_enabled": false,
     "nb_instant_delivery_status_msg": "Instant Delivery is available",
     "nb_instant_delivery_off_msg": "Instant Delivery is temporarily unavailable due to high order volume. We are currently handling a high volume of orders. Instant Delivery will resume shortly.",
     "nb_scheduled_ordering_url": "/pages/family-orders",
@@ -101,6 +100,7 @@
     "nb_zone2_free_threshold": 1299,
     "nb_eta_min": 45,
     "nb_eta_max": 60,
+    "popover_border": "none",
     "content_for_index": [],
     "blocks": {
       "14060646107696862457": {
