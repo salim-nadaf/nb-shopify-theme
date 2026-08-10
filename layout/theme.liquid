@@ -659,8 +659,9 @@
             if (!mainContent) return;
 
             var is404 = document.body.classList.contains('template-404') || !!document.querySelector('.template-404');
-            if (!is404 && mainContent.children.length > 0) {
-              // Page exists natively in Shopify, do not override
+            var isEmptyPage = (!is404 && mainContent.textContent.trim().length < 50 && !mainContent.querySelector('.nb-bulk-container, .nb-calc-container, .nb-family-container'));
+            if (!is404 && !isEmptyPage && mainContent.children.length > 0) {
+              // Page exists natively in Shopify and is populated, do not override
               return;
             }
 
