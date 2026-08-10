@@ -1,0 +1,116 @@
+{% comment %}
+QR Landing Page Section – mobile-first, uses existing design system.
+{% endcomment %}
+
+<div class="qr-landing">
+  <!-- HERO -->
+  <section class="qr-hero" style="padding:1rem;text-align:center;">
+    <img src="{{ 'logo.png' | asset_url }}" alt="Biryani Palace by Niamat" style="max-width:120px;margin:auto;">
+    <h1 class="qr-hero-headline" style="font-size:1.5rem;margin:0.5rem 0;">Ready for your next biryani?</h1>
+    <p class="qr-hero-sub" style="font-size:1rem;color:#555;margin-bottom:1rem;">Freshly prepared, just the way you like it.</p>
+    <div class="qr-cta-group" style="display:flex;flex-direction:column;gap:0.5rem;">
+      <a href="/collections/all?source=packaging_qr" class="btn btn-primary btn-block" style="background:#C8922A;color:#fff;padding:0.75rem;">Order Again</a>
+      <a href="/pages/menu?source=packaging_qr" class="btn btn-outline btn-block" style="border:1px solid #C8922A;color:#C8922A;padding:0.75rem;">Explore Our Menu</a>
+    </div>
+  </section>
+
+  <!-- REORDER CARD -->
+  <section class="qr-reorder" style="padding:1rem;">
+    <h2 style="font-size:1.25rem;margin-bottom:0.75rem;">Your next meal is just a few taps away.</h2>
+    <div class="qr-products" style="display:grid;grid-template-columns:1fr;gap:1rem;">
+      {% assign product_handles = "dum-biryani,tandoori-biryani,signature-bucket-biryani" | split: "," %}
+      {% for handle in product_handles %}
+        {% assign product = all_products[handle] %}
+        {% if product %}
+        <div class="qr-product-card" style="border:1px solid #eee;border-radius:8px;padding:0.75rem;display:flex;gap:0.75rem;align-items:center;">
+          <img src="{{ product.featured_image | img_url: '200x' }}" alt="{{ product.title }}" style="width:80px;height:auto;border-radius:4px;">
+          <div class="qr-product-info" style="flex:1;">
+            <h3 style="margin:0;font-size:1rem;">{{ product.title }}</h3>
+            {% if product.description != blank %}
+            <p style="margin:0.25rem 0;font-size:0.85rem;color:#555;">{{ product.description | strip_html | truncate: 80 }}</p>
+            {% endif %}
+            <p style="margin:0.25rem 0;font-weight:700;">{{ product.price | money }}</p>
+            <form method="post" action="/cart/add" class="qr-add-form" style="margin-top:0.5rem;">
+              <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+              <button type="submit" class="btn btn-primary btn-sm" style="background:#C8922A;color:#fff;padding:0.5rem 1rem;">+ Add</button>
+            </form>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- BRAND MOMENT -->
+  <section class="qr-brand" style="padding:1rem;text-align:center;">
+    <h2 style="font-size:1.25rem;margin-bottom:0.5rem;">Thank you for choosing Niamat.</h2>
+    <p style="font-size:1rem;color:#555;max-width:320px;margin:auto;">
+      We started this journey with a simple idea — to prepare biryani with care, keep learning, and become better with every order.
+    </p>
+  </section>
+
+  <!-- SIGNATURE RAITA -->
+  <section class="qr-raita" style="padding:1rem;text-align:center;background:#FFF8E1;border-radius:8px;margin:1rem;">
+    <h3 style="font-size:1.15rem;margin-bottom:0.5rem;">Niamat Signature Raita</h3>
+    <p style="font-size:1rem;color:#555;">Cool, creamy and lightly spiced — made to balance every bite of biryani.</p>
+  </section>
+
+  <!-- REVIEW / FEEDBACK -->
+  <section class="qr-feedback" style="padding:1rem;text-align:center;">
+    <h2 style="font-size:1.25rem;margin-bottom:0.5rem;">How was your Niamat experience?</h2>
+    <div style="display:flex;flex-direction:column;gap:0.5rem;max-width:300px;margin:auto;">
+      <a href="{{ shop.url }}/apps/review?source=packaging_qr" class="btn btn-primary" style="background:#C8922A;color:#fff;padding:0.75rem;">★★★★★ Loved it</a>
+      <a href="https://wa.me/{{ shop.phone | replace: '+', '' }}?text=I%20have%20feedback%20about%20my%20order" class="btn btn-outline" style="border:1px solid #C8922A;color:#C8922A;padding:0.75rem;">Tell us how we can improve</a>
+    </div>
+  </section>
+
+  <!-- WHATSAPP CTA -->
+  <section class="qr-whatsapp" style="padding:1rem;text-align:center;">
+    <h2 style="font-size:1.25rem;margin-bottom:0.5rem;">Need anything?</h2>
+    <p style="font-size:1rem;color:#555;margin-bottom:0.75rem;">Questions, feedback or help with your order? We're just a WhatsApp message away.</p>
+    <a href="https://wa.me/{{ shop.phone | replace: '+', '' }}?text=Hello%20Niamat%20Biryani" class="btn btn-primary" style="background:#25D366;color:#fff;padding:0.75rem;">Chat on WhatsApp</a>
+  </section>
+
+  <!-- REORDER CTA BOTTOM -->
+  <section class="qr-reorder-cta" style="padding:1rem;text-align:center;">
+    <h2 style="font-size:1.25rem;margin-bottom:0.5rem;">Craving it again?</h2>
+    <a href="/collections/all?source=packaging_qr" class="btn btn-primary" style="background:#C8922A;color:#fff;padding:0.75rem;">Order Again</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="qr-footer" style="padding:1rem;text-align:center;font-size:0.85rem;color:#666;">
+    <p style="margin:0;">Biryani Palace by Niamat – Freshly Prepared Dum Biryani</p>
+    <nav style="margin-top:0.5rem;">
+      <a href="/collections/all" style="margin:0 0.5rem;">Menu</a>
+      <a href="/pages/about-us" style="margin:0 0.5rem;">About Us</a>
+      <a href="/pages/contact" style="margin:0 0.5rem;">Contact</a>
+      <a href="/pages/delivery-areas" style="margin:0 0.5rem;">Delivery Areas</a>
+      <a href="/policies/privacy-policy" style="margin:0 0.5rem;">Privacy Policy</a>
+      <a href="/policies/terms-of-service" style="margin:0 0.5rem;">Terms</a>
+    </nav>
+  </footer>
+</div>
+
+<style>
+/* Sticky bottom CTA for mobile */
+@media (max-width: 430px) {
+  .qr-hero .btn-primary { position:sticky; bottom:0; left:0; right:0; margin:0; border-radius:0; }
+}
+</style>
+
+<script>
+// Minimal add-to-cart via fetch to avoid page reload
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.qr-add-form').forEach(function(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var formData = new FormData(form);
+      fetch('/cart/add.js', {method:'POST',body:formData})
+        .then(r=>r.json())
+        .then(data=>{
+          alert('Added to cart!');
+        }).catch(err=>{alert('Error adding to cart');});
+    });
+  });
+});
+</script>
