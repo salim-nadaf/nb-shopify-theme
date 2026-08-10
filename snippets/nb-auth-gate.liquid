@@ -466,6 +466,7 @@ function nbAuthSaveName() {
 function nbBuildCheckoutUrl(phone, name, customEmail) {
   var rawDigits = (phone || '').trim().replace(/\D/g, '');
   var tenDigits = rawDigits.length >= 10 ? rawDigits.slice(-10) : rawDigits;
+  var formattedWithPlus = tenDigits ? ('+91' + tenDigits) : '';
 
   var params = [];
   if (tenDigits) {
@@ -477,6 +478,14 @@ function nbBuildCheckoutUrl(phone, name, customEmail) {
     params.push('phone=' + encodeURIComponent(tenDigits));
   }
 
+  if (customEmail && customEmail.includes('@')) {
+    var cleanEmail = customEmail.trim();
+    params.push('checkout[email]=' + encodeURIComponent(cleanEmail));
+    params.push('checkout[contact][email]=' + encodeURIComponent(cleanEmail));
+    params.push('checkout[email_or_phone]=' + encodeURIComponent(cleanEmail));
+    params.push('email=' + encodeURIComponent(cleanEmail));
+  }
+
   if (name) {
     var nameParts = name.trim().split(/\s+/);
     var firstName = nameParts[0] || name;
@@ -485,10 +494,6 @@ function nbBuildCheckoutUrl(phone, name, customEmail) {
     params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
     params.push('checkout[billing_address][first_name]=' + encodeURIComponent(firstName));
     params.push('checkout[billing_address][last_name]=' + encodeURIComponent(lastName));
-  }
-
-  if (customEmail && customEmail.includes('@')) {
-    params.push('checkout[email]=' + encodeURIComponent(customEmail));
   }
 
   return params.length > 0 ? ('/checkout?' + params.join('&')) : '/checkout';
