@@ -1,0 +1,45 @@
+{% comment %}
+  NIAMAT BIRYANI — Order Gate Popup Snippet
+  Saves gate_phone & gate_name, updates /cart/update.js attributes,
+  pre-fills checkout URL parameters, and auto-fills telephone fields across pages.
+{% endcomment %}
+
+{% render 'nb-auth-gate' %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var storedPhone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone');
+  var storedName = localStorage.getItem('gate_name') || localStorage.getItem('nb_name');
+  var storedEmail = localStorage.getItem('gate_email') || localStorage.getItem('nb_email');
+
+  if (storedPhone) {
+    // 1. Auto-fill any visible tel/phone inputs on load
+    var phoneInputs = document.querySelectorAll('input[type="tel"], input[name*="phone"], input[id*="phone"]');
+    phoneInputs.forEach(function(input) {
+      if (input && !input.value) {
+        input.value = storedPhone;
+      }
+    });
+
+    // 2. Auto-fill any visible name inputs
+    if (storedName) {
+      var nameInputs = document.querySelectorAll('input[name*="name"], input[id*="name"]');
+      nameInputs.forEach(function(input) {
+        if (input && !input.value && input.id !== 'nb-location-search-input') {
+          input.value = storedName;
+        }
+      });
+    }
+
+    // 3. Auto-fill any visible email inputs
+    if (storedEmail) {
+      var emailInputs = document.querySelectorAll('input[type="email"], input[name*="email"], input[id*="email"]');
+      emailInputs.forEach(function(input) {
+        if (input && !input.value) {
+          input.value = storedEmail;
+        }
+      });
+    }
+  }
+});
+</script>

@@ -217,8 +217,17 @@ var nbAuthPendingAction = null;
 var nbAuthPendingForm   = null;
 
 function nbShowAuthGate(action, form) {
-  if (action === 'checkout') {
-    window.location.href = '/checkout';
+  var existingPhone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone');
+  var existingName  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name');
+  var existingEmail = localStorage.getItem('gate_email') || localStorage.getItem('nb_email');
+
+  // Do not show popup again if gate_phone is already set in localStorage
+  if (existingPhone && (existingName || action !== 'cart')) {
+    if (action === 'checkout') {
+      window.location.href = nbBuildCheckoutUrl(existingPhone, existingName, existingEmail);
+      return;
+    }
+    nbAuthExecutePendingAction(action, form);
     return;
   }
 
@@ -273,12 +282,28 @@ function nbAuthSubmitPhone() {
   var promoConsent  = promoCheckbox ? promoCheckbox.checked : false;
   var formattedPhone = '+91' + phone;
 
+  // Save to localStorage as gate_phone & nb_phone
+  localStorage.setItem('gate_phone', formattedPhone);
   localStorage.setItem('nb_phone', formattedPhone);
   localStorage.setItem('nb_promo_consent', promoConsent ? 'yes' : 'no');
   localStorage.setItem('nb_consent_date', new Date().toISOString());
 
+  // Immediately POST to /cart/update.js using fetch to set cart attributes
+  fetch('/cart/update.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      attributes: {
+        'Customer Phone': formattedPhone,
+        'Phone': formattedPhone,
+        'Mobile Number': formattedPhone,
+        'WhatsApp Number': formattedPhone
+      }
+    })
+  }).catch(function(e) {});
+
   // Pre-fill name if returning customer
-  var savedName = localStorage.getItem('nb_name');
+  var savedName = localStorage.getItem('gate_name') || localStorage.getItem('nb_name');
   var nameInput = document.getElementById('nb-name-input');
   var returningMsg = document.getElementById('nb-returning-msg');
 
@@ -318,14 +343,17 @@ function nbAuthSaveName() {
     btn.disabled = true;
   }
 
+  localStorage.setItem('gate_name', name);
   localStorage.setItem('nb_name', name);
+
   var emailInput = document.getElementById('nb-email-input');
   var customEmail = emailInput ? emailInput.value.trim() : '';
   if (customEmail) {
+    localStorage.setItem('gate_email', customEmail);
     localStorage.setItem('nb_email', customEmail);
   }
 
-  var phone = localStorage.getItem('nb_phone') || '';
+  var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
   var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
 
   // 1. Instant background lead push to Shopify Admin Customers database (only if real email provided)
