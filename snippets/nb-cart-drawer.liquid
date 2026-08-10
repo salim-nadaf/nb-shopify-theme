@@ -1018,10 +1018,16 @@ function nbSelectLocationResult(lat, lon, nameText) {
   nbCalculateDrivingDistance(parseFloat(lat), parseFloat(lon), cleanLabel);
 }
 
+function nbFormatKmText(distKm) {
+  if (distKm < 0.05) return '0.1';
+  return distKm.toFixed(1);
+}
+
 function nbApplyLocationCalculation(distKm, placeName) {
   isLocationDetected = true;
   localStorage.setItem('nb_gps_detected', 'true');
   var badge = document.getElementById('nb-location-status-badge');
+  var distStr = nbFormatKmText(distKm);
 
   if (distKm <= NB_CONFIG.zone1MaxKm) {
     currentDeliveryZone = ZONES.ZONE_0_5_KM;
@@ -1030,7 +1036,7 @@ function nbApplyLocationCalculation(distKm, placeName) {
       badge.style.background = '#E8F5E9';
       badge.style.color = '#2E7D32';
       badge.style.borderColor = '#A5D6A7';
-      badge.innerHTML = '🎯 Detected: <strong>' + (placeName || 'Your Location') + ' (~' + (distKm <= 1.2 ? 0 : distKm.toFixed(1)) + ' km)</strong> • ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
+      badge.innerHTML = '🎯 Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distStr + ' km)</strong> • ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
     }
   } else if (distKm <= NB_CONFIG.zone2MaxKm) {
     currentDeliveryZone = ZONES.ZONE_5_8_KM;
@@ -1039,7 +1045,7 @@ function nbApplyLocationCalculation(distKm, placeName) {
       badge.style.background = '#FFF3E0';
       badge.style.color = '#E65100';
       badge.style.borderColor = '#FFE0B2';
-      badge.innerHTML = '🎯 Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distKm.toFixed(1) + ' km)</strong> • Extended ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
+      badge.innerHTML = '🎯 Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distStr + ' km)</strong> • Extended ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
     }
   } else {
     currentDeliveryZone = ZONES.OUTSIDE_SERVICE_AREA;
@@ -1048,7 +1054,7 @@ function nbApplyLocationCalculation(distKm, placeName) {
       badge.style.background = '#FFEBEE';
       badge.style.color = '#C62828';
       badge.style.borderColor = '#EF9A9A';
-      badge.innerHTML = '⚠️ Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distKm.toFixed(1) + ' km)</strong> • Outside direct delivery service area.';
+      badge.innerHTML = '⚠️ Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distStr + ' km)</strong> • Outside direct delivery service area.';
     }
   }
 
