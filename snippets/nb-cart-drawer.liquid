@@ -44,10 +44,10 @@
       <div class="nb-upsell-grid">
         <div class="nb-upsell-pill-card">
           <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">Extra Niamat Raita</span>
+            <span class="nb-upsell-pill-name">Extra Raita</span>
             <span class="nb-upsell-pill-price">₹29</span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Niamat Raita', 2900)">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Raita', 2900)">+ Add</button>
         </div>
         <div class="nb-upsell-pill-card">
           <div class="nb-upsell-pill-info">
@@ -71,7 +71,7 @@
       </ul>
     </div>
 
-    <!-- LIVE ZOMATO/SWIGGY STYLE LOCATION SEARCH & GPS DETECTOR -->
+    <!-- LIVE ZOMATO/SWIGGY/ZEPTO UNRESTRICTED LOCATION SEARCH & GPS DETECTOR -->
     <div class="nb-drawer__location-box">
       <div class="nb-location-header">
         <label for="nb-location-search-input">📍 Delivery Location</label>
@@ -87,7 +87,7 @@
 
       <div class="nb-search-input-wrap">
         <input type="text" id="nb-location-search-input"
-               placeholder="Search area, landmark or society (e.g. Raunak City...)"
+               placeholder="Search any area, society, building or city..."
                onkeyup="nbDebounceSearch(this.value)">
         <div id="nb-location-suggestions" class="nb-suggestions-dropdown" style="display:none;"></div>
       </div>
@@ -317,7 +317,7 @@
 .nb-qty-btn:hover, .nb-qty-btn:active { background: #C8922A; color: #fff; }
 .nb-qty-num { font-size: 0.92rem; font-weight: 800; color: #2C1810; min-width: 20px; text-align: center; }
 
-/* UPSELL SECTION (ONLY COKE & EXTRA RAITA) */
+/* SYMMETRICAL UPSELL PILL CARDS */
 .nb-drawer__upsell-section {
   background: #FFFDF7;
   border: 1px dashed rgba(200,146,42,0.35);
@@ -342,22 +342,51 @@
   justify-content: space-between;
   background: #fff;
   border: 1px solid rgba(200,146,42,0.2);
-  border-radius: 8px;
-  padding: 6px 8px;
+  border-radius: 10px;
+  padding: 8px 10px;
+  min-height: 56px;
+  box-sizing: border-box;
 }
-.nb-upsell-pill-info { display: flex; flex-direction: column; }
-.nb-upsell-pill-name { font-size: 0.78rem; font-weight: 700; color: #2C1810; }
-.nb-upsell-pill-price { font-size: 0.74rem; font-weight: 800; color: #C8922A; }
+.nb-upsell-pill-info {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   gap: 4px;
+   flex: 1;
+   min-width: 0;
+   padding-right: 6px;
+ }
+.nb-upsell-pill-name {
+       font-size: 0.8rem;
+       font-weight: 700;
+       color: #2C1810;
+       line-height: 1.2;
+       white-space: normal;
+       overflow: visible;
+       text-overflow: clip;
+       flex: 1;
+     }
+.nb-upsell-pill-price {
+      font-size: 0.76rem;
+      font-weight: 800;
+      color: #C8922A;
+      margin-left: auto;
+    }
 .nb-upsell-pill-add {
   background: #C8922A;
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 6px 12px;
-  min-height: 32px;
+  padding: 6px 10px;
+  min-width: 64px;
+  height: 34px;
   font-size: 0.74rem;
   font-weight: 800;
   cursor: pointer;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: background 0.15s;
 }
 .nb-upsell-pill-add:hover { background: #A67520; }
@@ -439,17 +468,17 @@
   box-sizing: border-box;
 }
 .nb-suggestions-dropdown {
-  position: absolute;
-  top: 100%; left: 0; right: 0;
-  background: #fff;
-  border: 1px solid rgba(200,146,42,0.3);
-  border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  z-index: 99;
-  max-height: 180px;
-  overflow-y: auto;
-  margin-top: 4px;
-}
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      background: #fff;
+      border: 1px solid rgba(200,146,42,0.3);
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+      z-index: 99;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-top: 4px;
+    }
 .nb-suggestion-item {
   padding: 8px 10px;
   font-size: 0.78rem;
@@ -609,6 +638,27 @@ const ZONES = {
   OUTSIDE_SERVICE_AREA: 'OUTSIDE_SERVICE_AREA'
 };
 
+// INSTANT LOCAL LANDMARK DICTIONARY
+const LOCAL_LANDMARKS = [
+  { name: 'Raunak City, Kalyan West', lat: 19.2550, lon: 73.1380 },
+  { name: 'Khadakpada, Kalyan West', lat: 19.2520, lon: 73.1410 },
+  { name: 'Kalyan Station, Kalyan West', lat: 19.2360, lon: 73.1300 },
+  { name: 'Wayle Nagar, Kalyan West', lat: 19.2480, lon: 73.1360 },
+  { name: 'Chikanghar, Kalyan West', lat: 19.2440, lon: 73.1390 },
+  { name: 'Rambaug, Kalyan West', lat: 19.2390, lon: 73.1320 },
+  { name: 'Kalyan East, Kalyan', lat: 19.2310, lon: 73.1380 },
+  { name: 'Dombivli West, Dombivli', lat: 19.2180, lon: 73.0860 },
+  { name: 'Dombivli East, Dombivli', lat: 19.2150, lon: 73.0920 },
+  { name: 'Ulhasnagar, Thane', lat: 19.2160, lon: 73.1580 },
+  { name: 'Shahad, Kalyan', lat: 19.2580, lon: 73.1520 },
+  { name: 'Ambivli, Thane', lat: 19.2780, lon: 73.1610 },
+  { name: 'Titwala, Thane', lat: 19.3000, lon: 73.2000 },
+  { name: 'Thane West, Thane', lat: 19.2180, lon: 72.9780 },
+  { name: 'Badlapur, Thane', lat: 19.1660, lon: 73.2350 },
+  { name: 'Mumbra, Thane', lat: 19.1760, lon: 73.0230 },
+  { name: 'Mumbai Central, Mumbai', lat: 18.9690, lon: 72.8190 }
+];
+
 var currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
 var isLocationDetected = false;
 var searchTimer = null;
@@ -657,49 +707,71 @@ function nbDebounceSearch(val) {
   clearTimeout(searchTimer);
   var dropdown = document.getElementById('nb-location-suggestions');
   
-  if (!val || val.trim().length < 3) {
+  if (!val || val.trim().length < 2) {
     if (dropdown) dropdown.style.display = 'none';
     return;
   }
 
   searchTimer = setTimeout(function() {
     nbPerformLocationSearch(val.trim());
-  }, 400);
+  }, 300);
 }
 
-// OPENSTREETMAP NOMINATIM REAL GEOCODING SEARCH
+// UNRESTRICTED GLOBAL GEOCODING SEARCH
 function nbPerformLocationSearch(query) {
   var dropdown = document.getElementById('nb-location-suggestions');
   if (!dropdown) return;
 
-  dropdown.style.display = 'block';
-  dropdown.innerHTML = '<div class="nb-suggestion-item">🔍 Searching location...</div>';
+  var qLower = query.toLowerCase();
 
-  var searchUrl = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query + ', Kalyan, Maharashtra, India') + '&limit=5';
+  // Instant Local Dictionary Matches
+  var localMatches = LOCAL_LANDMARKS.filter(function(item) {
+    return item.name.toLowerCase().includes(qLower);
+  });
+
+  dropdown.style.display = 'block';
+
+  var html = '';
+  if (localMatches.length > 0) {
+    html += localMatches.map(function(item) {
+      return '<div class="nb-suggestion-item" onclick="nbSelectLocationResult(' + item.lat + ', ' + item.lon + ', \'' + item.name.replace(/'/g, "\\'") + '\')">📍 <strong>' + item.name + '</strong></div>';
+    }).join('');
+  }
+
+  dropdown.innerHTML = html + '<div class="nb-suggestion-item">🔍 Searching location across India...</div>';
+
+  // Unrestricted Nominatim Geocoding API (Matches any society, road, area, city in India / worldwide)
+  var searchUrl = 'https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&q=' + encodeURIComponent(query) + '&limit=20';
 
   fetch(searchUrl)
     .then(r => r.json())
     .then(data => {
-      if (!data || data.length === 0) {
-        // Fallback search without Kalyan prefix
-        return fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query + ', Thane, Maharashtra, India') + '&limit=5')
+      var apiResults = data || [];
+      
+      if (apiResults.length === 0 && localMatches.length === 0) {
+        // Fallback global search without country filter
+        return fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query) + '&limit=20')
           .then(r => r.json());
       }
-      return data;
+      return apiResults;
     })
     .then(results => {
-      if (!results || results.length === 0) {
-        dropdown.innerHTML = '<div class="nb-suggestion-item" style="color:#7A5C4A;">No matching location found. Try adding Kalyan or landmark.</div>';
+      if ((!results || results.length === 0) && localMatches.length === 0) {
+        dropdown.innerHTML = '<div class="nb-suggestion-item" style="color:#7A5C4A;">No matching location found. Please type area or society name.</div>';
         return;
       }
 
-      dropdown.innerHTML = results.map(function(item) {
+      var apiHtml = (results || []).map(function(item) {
         var cleanName = item.display_name.split(',').slice(0, 3).join(',');
         return '<div class="nb-suggestion-item" onclick="nbSelectLocationResult(' + item.lat + ', ' + item.lon + ', \'' + cleanName.replace(/'/g, "\\'") + '\')">📍 ' + cleanName + '</div>';
       }).join('');
+
+      dropdown.innerHTML = (localMatches.length > 0 ? html : '') + apiHtml;
     })
     .catch(() => {
-      dropdown.style.display = 'none';
+      if (localMatches.length === 0) {
+        dropdown.style.display = 'none';
+      }
     });
 }
 
