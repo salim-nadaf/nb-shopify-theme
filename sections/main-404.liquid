@@ -6,11 +6,14 @@
   endif
 %}
 
-{% if request.path contains 'bulk-orders' or request.path contains 'bulk' %}
+{% if request.path contains 'bulk-orders' or request.path contains 'bulk' or request.path contains 'catering' %}
+  <style>[data-template="404"] [class*="product_list"], .template-404 [class*="product_list"], [data-template="404"] .product-list, .template-404 .product-list { display: none !important; }</style>
   {% render 'nb-bulk-orders-snippet' %}
 {% elsif request.path contains 'biryani-calculator' or request.path contains 'calculator' %}
+  <style>[data-template="404"] [class*="product_list"], .template-404 [class*="product_list"], [data-template="404"] .product-list, .template-404 .product-list { display: none !important; }</style>
   {% render 'nb-biryani-calculator-snippet' %}
-{% elsif request.path contains 'family-orders' or request.path contains 'family-feast' %}
+{% elsif request.path contains 'family-orders' or request.path contains 'family-feast' or request.path contains 'family' %}
+  <style>[data-template="404"] [class*="product_list"], .template-404 [class*="product_list"], [data-template="404"] .product-list, .template-404 .product-list { display: none !important; }</style>
   {% render 'nb-family-orders-snippet' %}
 {% else %}
   <div
