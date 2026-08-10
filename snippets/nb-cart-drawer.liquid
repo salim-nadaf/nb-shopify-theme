@@ -20,7 +20,7 @@
   <div class="nb-drawer__delivery-progress" id="nb-delivery-progress-banner">
     <div class="nb-progress-text-wrap">
       <span class="nb-progress-icon">🚚</span>
-      <span id="nb-progress-msg">Please select your delivery area below</span>
+      <span id="nb-progress-msg">Please select your delivery policy below</span>
     </div>
     <div class="nb-progress-bar-bg">
       <div class="nb-progress-bar-fill" id="nb-progress-fill" style="width: 0%;"></div>
@@ -73,22 +73,15 @@
         </div>
       </div>
 
-      <!-- CONTROLLED AREA DROPDOWN (NO BLIND ASSUMPTIONS) -->
+      <!-- CONTROLLED AREA DROPDOWN (POLICY SELECTOR) -->
       <div class="nb-select-wrap">
         <select id="nb-delivery-zone-select" onchange="nbSelectDeliveryZone(this.value)">
-          <option value="LOCATION_UNKNOWN">-- Select Your Delivery Area --</option>
+          <option value="LOCATION_UNKNOWN">-- Delivery policy --</option>
           <option value="ZONE_0_5_KM">Kalyan / Nearby Area (0–5 km) • ₹39 Delivery</option>
           <option value="ZONE_5_8_KM">Extended Area (5–8 km) • ₹89 Delivery</option>
           <option value="OUTSIDE_SERVICE_AREA">Outside Delivery Radius (>8 km)</option>
         </select>
         <span class="nb-select-arrow">›</span>
-      </div>
-
-      <!-- OPTIONAL SEARCH TEXT INPUT -->
-      <div class="nb-location-input-wrap" style="margin-top: 6px;">
-        <input type="text" id="nb-manual-location-input"
-               placeholder="Or type landmark/area (e.g. Raunak City, Kalyan West...)"
-               oninput="nbHandleLocationTextInput(this.value)">
       </div>
 
       <div id="nb-location-status-badge" class="nb-location-status" style="display: none;"></div>
@@ -114,7 +107,7 @@
       </div>
       <div class="nb-summary-row">
         <span>Delivery</span>
-        <span id="nb-delivery-val" class="nb-delivery-highlight">Select Area</span>
+        <span id="nb-delivery-val" class="nb-delivery-highlight">Select Policy</span>
       </div>
       <div class="nb-summary-row nb-total-row">
         <span>TOTAL</span>
@@ -127,7 +120,7 @@
     </div>
 
     <button class="nb-drawer__checkout-btn disabled" id="nb-checkout-submit-btn" onclick="nbGoToCheckout()" disabled>
-      <span class="nb-checkout-btn-text" id="nb-checkout-btn-text">Select Delivery Area</span>
+      <span class="nb-checkout-btn-text" id="nb-checkout-btn-text">Select Delivery Policy</span>
       <span id="nb-btn-total-val" class="nb-checkout-btn-price" style="display:none;">₹0</span>
     </button>
 
@@ -425,19 +418,6 @@
   pointer-events: none; font-weight: 800;
 }
 
-.nb-location-input-wrap input {
-  width: 100%;
-  background: #FFFDF7;
-  border: 1px solid rgba(200,146,42,0.3);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #2C1810;
-  outline: none;
-  box-sizing: border-box;
-}
-
 .nb-location-status {
   margin-top: 6px;
   font-size: 0.74rem;
@@ -629,7 +609,7 @@ function nbSelectDeliveryZone(zoneKey) {
       badge.style.background = '#E8F5E9';
       badge.style.color = '#2E7D32';
       badge.style.borderColor = '#A5D6A7';
-      badge.innerHTML = '📍 Delivery Zone: <strong>Central Kalyan / Nearby (0–5 km)</strong> • ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
+      badge.innerHTML = '📍 Delivery Policy: <strong>Kalyan / Nearby (0–5 km)</strong> • ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
     }
     if (clearBtn) clearBtn.style.display = 'inline-block';
   } else if (currentDeliveryZone === ZONES.ZONE_5_8_KM) {
@@ -638,7 +618,7 @@ function nbSelectDeliveryZone(zoneKey) {
       badge.style.background = '#FFF3E0';
       badge.style.color = '#E65100';
       badge.style.borderColor = '#FFE0B2';
-      badge.innerHTML = '📍 Delivery Zone: <strong>Extended Area (5–8 km)</strong> • ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
+      badge.innerHTML = '📍 Delivery Policy: <strong>Extended Area (5–8 km)</strong> • ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
     }
     if (clearBtn) clearBtn.style.display = 'inline-block';
   } else if (currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
@@ -658,61 +638,15 @@ function nbSelectDeliveryZone(zoneKey) {
   nbRefreshCart();
 }
 
-// CONTROLLED TEXT INPUT RESOLUTION (NO BLIND ASSUMPTIONS)
-function nbHandleLocationTextInput(val) {
-  var inputVal = (val || '').trim();
-  var select = document.getElementById('nb-delivery-zone-select');
-
-  if (!inputVal) {
-    nbSelectDeliveryZone(ZONES.LOCATION_UNKNOWN);
-    if (select) select.value = ZONES.LOCATION_UNKNOWN;
-    return;
-  }
-
-  localStorage.setItem('nb_manual_location', inputVal);
-
-  var lower = inputVal.toLowerCase();
-  var isZone1 = lower.includes('kalyan') || lower.includes('khadakpada') || lower.includes('raunak') || lower.includes('station') || lower.includes('wayle') || lower.includes('chikanghar');
-  var isZone2 = lower.includes('dombivli') || lower.includes('ulhasnagar') || lower.includes('shahad') || lower.includes('ambivli') || lower.includes('titwala');
-  var isOutside = lower.includes('outside') || lower.includes('badlapur') || lower.includes('thane') || lower.includes('mumbra') || lower.includes('mumbai');
-
-  if (isOutside) {
-    nbSelectDeliveryZone(ZONES.OUTSIDE_SERVICE_AREA);
-    if (select) select.value = ZONES.OUTSIDE_SERVICE_AREA;
-  } else if (isZone2) {
-    nbSelectDeliveryZone(ZONES.ZONE_5_8_KM);
-    if (select) select.value = ZONES.ZONE_5_8_KM;
-  } else if (isZone1) {
-    nbSelectDeliveryZone(ZONES.ZONE_0_5_KM);
-    if (select) select.value = ZONES.ZONE_0_5_KM;
-  } else {
-    // Unclassified location text -> Ask customer to pick zone explicitly
-    currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
-    if (select) select.value = ZONES.LOCATION_UNKNOWN;
-    var badge = document.getElementById('nb-location-status-badge');
-    if (badge) {
-      badge.style.display = 'block';
-      badge.style.background = '#FFF8E1';
-      badge.style.color = '#F57F17';
-      badge.style.borderColor = '#FFE082';
-      badge.innerHTML = '🔍 Please select your delivery area from the dropdown above to calculate delivery charges.';
-    }
-    nbRefreshCart();
-  }
-}
-
 function nbClearLocation() {
-  localStorage.removeItem('nb_manual_location');
   localStorage.removeItem('nb_user_lat');
   localStorage.removeItem('nb_user_lng');
   localStorage.removeItem('nb_delivery_zone');
   currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
 
-  var input = document.getElementById('nb-manual-location-input');
   var select = document.getElementById('nb-delivery-zone-select');
   var btn = document.getElementById('nb-use-location-btn');
 
-  if (input) input.value = '';
   if (select) select.value = ZONES.LOCATION_UNKNOWN;
   if (btn) btn.textContent = '🎯 Use My Location';
 
@@ -733,10 +667,9 @@ function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
 function nbDetectLiveLocation() {
   var btn = document.getElementById('nb-use-location-btn');
   var select = document.getElementById('nb-delivery-zone-select');
-  var input = document.getElementById('nb-manual-location-input');
 
   if (!navigator.geolocation) {
-    nbShowToast('Geolocation is not supported by your browser. Please select your delivery zone below.');
+    nbShowToast('Geolocation is not supported by your browser. Please select your delivery policy below.');
     return;
   }
 
@@ -753,15 +686,12 @@ function nbDetectLiveLocation() {
       if (distKm <= NB_CONFIG.zone1MaxKm) {
         nbSelectDeliveryZone(ZONES.ZONE_0_5_KM);
         if (select) select.value = ZONES.ZONE_0_5_KM;
-        if (input && !input.value) input.value = 'Central Kalyan (~' + (distKm <= 1.2 ? 0 : distKm.toFixed(1)) + ' km)';
       } else if (distKm <= NB_CONFIG.zone2MaxKm) {
         nbSelectDeliveryZone(ZONES.ZONE_5_8_KM);
         if (select) select.value = ZONES.ZONE_5_8_KM;
-        if (input && !input.value) input.value = 'Extended Zone (~' + distKm.toFixed(1) + ' km)';
       } else {
         nbSelectDeliveryZone(ZONES.OUTSIDE_SERVICE_AREA);
         if (select) select.value = ZONES.OUTSIDE_SERVICE_AREA;
-        if (input && !input.value) input.value = 'Outside Service Area (~' + distKm.toFixed(1) + ' km)';
       }
 
       localStorage.setItem('nb_user_lat', userLat);
@@ -769,7 +699,7 @@ function nbDetectLiveLocation() {
     },
     function(error) {
       if (btn) btn.textContent = '🎯 Use My Location';
-      nbShowToast('Location access was unavailable. Please select your delivery area from the dropdown below.');
+      nbShowToast('Location access was unavailable. Please select your delivery policy from the dropdown below.');
     },
     { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
   );
@@ -792,7 +722,7 @@ function nbSaveInstructions() {
 
 function nbGoToCheckout() {
   if (currentDeliveryZone === ZONES.LOCATION_UNKNOWN) {
-    nbShowToast('Please select your delivery area before proceeding to checkout.');
+    nbShowToast('Please select your delivery policy before proceeding to checkout.');
     return;
   }
   if (currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
@@ -802,8 +732,6 @@ function nbGoToCheckout() {
 
   var textarea = document.getElementById('nb-cooking-instructions');
   var instructions = textarea ? textarea.value.trim() : '';
-  var locInput = document.getElementById('nb-manual-location-input');
-  var locationText = locInput ? locInput.value.trim() : '';
 
   fetch('/cart/update.js', {
     method: 'POST',
@@ -811,7 +739,6 @@ function nbGoToCheckout() {
     body: JSON.stringify({
       attributes: { 
         'Order & Delivery Instructions': instructions,
-        'Delivery Location': locationText,
         'Delivery Zone': currentDeliveryZone
       },
       note: instructions ? ('ORDER & DELIVERY INSTRUCTIONS: ' + instructions) : ''
@@ -841,6 +768,41 @@ function nbRenderCart(cart) {
   var progressMsgEl = document.getElementById('nb-progress-msg');
   var progressFillEl = document.getElementById('nb-progress-fill');
 
+  // UPDATE UPSELL BUTTON STATES BASED ON ACTUAL CART CONTENT
+  var hasRaitaInCart = false;
+  var hasCokeInCart = false;
+
+  if (cart && cart.items) {
+    hasRaitaInCart = cart.items.some(function(item) {
+      return item.product_title.toLowerCase().includes('raita');
+    });
+    hasCokeInCart = cart.items.some(function(item) {
+      return item.product_title.toLowerCase().includes('coke');
+    });
+  }
+
+  var raitaBtn = document.getElementById('nb-add-raita-btn');
+  if (raitaBtn) {
+    if (hasRaitaInCart) {
+      raitaBtn.textContent = '✓ Added';
+      raitaBtn.style.background = '#2E7D32';
+    } else {
+      raitaBtn.textContent = '+ Add';
+      raitaBtn.style.background = '#C8922A';
+    }
+  }
+
+  var cokeBtn = document.getElementById('nb-add-coke-btn');
+  if (cokeBtn) {
+    if (hasCokeInCart) {
+      cokeBtn.textContent = '✓ Added';
+      cokeBtn.style.background = '#2E7D32';
+    } else {
+      cokeBtn.textContent = '+ Add';
+      cokeBtn.style.background = '#C8922A';
+    }
+  }
+
   if (!cart || cart.item_count === 0) {
     container.innerHTML = [
       '<div class="nb-drawer__empty" style="text-align: center; padding: 30px 16px;">',
@@ -850,10 +812,10 @@ function nbRenderCart(cart) {
     ].join('');
 
     subtotalEl.textContent = '₹0';
-    deliveryEl.textContent = 'Select Area';
+    deliveryEl.textContent = 'Select Policy';
     grandTotalEl.textContent = '₹0';
     if (btnTotalEl) btnTotalEl.style.display = 'none';
-    if (btnTextEl) btnTextEl.textContent = 'Select Delivery Area';
+    if (btnTextEl) btnTextEl.textContent = 'Select Delivery Policy';
     if (checkoutBtn) {
       checkoutBtn.disabled = true;
       checkoutBtn.classList.add('disabled');
@@ -926,13 +888,13 @@ function nbRenderCart(cart) {
   } else {
     // LOCATION_UNKNOWN
     feeRupees = 0;
-    deliveryEl.textContent = 'Select Area';
+    deliveryEl.textContent = 'Select Policy';
     deliveryEl.style.color = '#7A5C4A';
     progressFillEl.style.width = '0%';
-    progressMsgEl.innerHTML = 'Please select your delivery area to calculate delivery charges';
+    progressMsgEl.innerHTML = 'Please select your delivery policy to calculate delivery charges';
 
     if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.add('disabled'); }
-    if (btnTextEl) btnTextEl.textContent = 'Select Delivery Area';
+    if (btnTextEl) btnTextEl.textContent = 'Select Delivery Policy';
   }
 
   var grandTotalRupees = subtotalRupees + feeRupees;
@@ -947,9 +909,26 @@ function nbRenderCart(cart) {
     if (btnTotalEl) btnTotalEl.style.display = 'none';
   }
 
-  // RENDER CART ITEMS WITH LINE INDEX
-  container.innerHTML = cart.items.map(function(item, idx) {
-    var lineNum = idx + 1;
+  // PARTITION CART ITEMS: MAIN FOOD ITEMS FIRST, ADDONS AT THE VERY BOTTOM
+  var indexedItems = cart.items.map(function(item, idx) {
+    return { item: item, originalLineNum: idx + 1 };
+  });
+
+  indexedItems.sort(function(a, b) {
+    var aTitle = a.item.product_title.toLowerCase();
+    var bTitle = b.item.product_title.toLowerCase();
+    var aIsAddon = aTitle.includes('raita') || aTitle.includes('coke') || aTitle.includes('drink');
+    var bIsAddon = bTitle.includes('raita') || bTitle.includes('coke') || bTitle.includes('drink');
+
+    if (aIsAddon && !bIsAddon) return 1;
+    if (!aIsAddon && bIsAddon) return -1;
+    return a.originalLineNum - b.originalLineNum;
+  });
+
+  // RENDER SORTED CART ITEMS
+  container.innerHTML = indexedItems.map(function(entry) {
+    var item = entry.item;
+    var lineNum = entry.originalLineNum;
     var isBiryani = item.product_title.toLowerCase().includes('biryani') || (item.product_type && item.product_type.toLowerCase().includes('biryani'));
     var raitaHtml = isBiryani ? '<div class="nb-raita-tag"><span>✓</span> Raita included</div>' : '';
 
@@ -1057,12 +1036,6 @@ function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
 
 document.addEventListener('DOMContentLoaded', function() {
   var savedZone = localStorage.getItem('nb_delivery_zone');
-  var savedLoc = localStorage.getItem('nb_manual_location');
-
-  if (savedLoc) {
-    var input = document.getElementById('nb-manual-location-input');
-    if (input) input.value = savedLoc;
-  }
 
   if (savedZone && ZONES[savedZone]) {
     var select = document.getElementById('nb-delivery-zone-select');
