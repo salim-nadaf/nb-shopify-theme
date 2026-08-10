@@ -122,6 +122,19 @@
       <div id="nb-location-status-badge" class="nb-location-status" style="display: none;"></div>
     </div>
 
+    <!-- PRE-FILLED CUSTOMER CONTACT DETAILS CARD (AUTO-POPULATED BEFORE ORDERING) -->
+    <div class="nb-drawer__customer-card" id="nb-customer-contact-card" style="margin: 12px 16px; padding: 14px 16px; background: linear-gradient(135deg, #FFFDF7 0%, #FDF5E6 100%); border: 1px solid rgba(200, 146, 42, 0.28); border-left: 4px solid #C8922A; border-radius: 14px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span style="font-weight: 800; font-size: 0.88rem; color: #2C1810;">📱 Verified Contact Details</span>
+        <button type="button" onclick="nbEditCustomerDetails()" style="background: none; border: none; color: #C8922A; font-size: 0.8rem; font-weight: 700; cursor: pointer; text-decoration: underline;">✏️ Change</button>
+      </div>
+      <div style="font-size: 0.85rem; color: #5C4033; line-height: 1.4;">
+        <div><strong>Phone:</strong> <span id="nb-cart-contact-phone">+919876543210</span></div>
+        <div id="nb-cart-contact-name-row"><strong>Name:</strong> <span id="nb-cart-contact-name">Rahul</span></div>
+        <div id="nb-cart-contact-email-row" style="display:none;"><strong>Email:</strong> <span id="nb-cart-contact-email"></span></div>
+      </div>
+    </div>
+
     <!-- ORDER & DELIVERY INSTRUCTIONS -->
     <div class="nb-drawer__instructions-box">
       <label for="nb-cooking-instructions">📝 Order & Delivery Instructions</label>
@@ -1243,6 +1256,47 @@ function nbGoToCheckout() {
   });
 }
 
+function nbUpdateCartCustomerCard() {
+  var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
+  var name  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name')  || '';
+  var email = localStorage.getItem('gate_email') || localStorage.getItem('nb_email') || '';
+
+  var card = document.getElementById('nb-customer-contact-card');
+  var phoneEl = document.getElementById('nb-cart-contact-phone');
+  var nameEl = document.getElementById('nb-cart-contact-name');
+  var nameRow = document.getElementById('nb-cart-contact-name-row');
+  var emailEl = document.getElementById('nb-cart-contact-email');
+  var emailRow = document.getElementById('nb-cart-contact-email-row');
+
+  if (phone) {
+    if (card) card.style.display = 'block';
+    if (phoneEl) phoneEl.textContent = phone;
+    if (name) {
+      if (nameEl) nameEl.textContent = name;
+      if (nameRow) nameRow.style.display = 'block';
+    } else if (nameRow) {
+      nameRow.style.display = 'none';
+    }
+
+    if (email) {
+      if (emailEl) emailEl.textContent = email;
+      if (emailRow) emailRow.style.display = 'block';
+    } else if (emailRow) {
+      emailRow.style.display = 'none';
+    }
+  } else if (card) {
+    card.style.display = 'none';
+  }
+}
+
+function nbEditCustomerDetails() {
+  localStorage.removeItem('gate_phone');
+  localStorage.removeItem('nb_phone');
+  if (typeof nbShowAuthGate === 'function') {
+    nbShowAuthGate('cart', null);
+  }
+}
+
 function nbContinueOrdering() {
   nbCloseDrawer();
   if (window.innerWidth > 768) {
@@ -1251,6 +1305,7 @@ function nbContinueOrdering() {
 }
 
 function nbRenderCart(cart) {
+  nbUpdateCartCustomerCard();
   var container = document.getElementById('nb-cart-items');
   var subtotalEl = document.getElementById('nb-subtotal-val');
   var deliveryEl = document.getElementById('nb-delivery-val');
