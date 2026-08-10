@@ -5,8 +5,8 @@
 {% endcomment %}
 
 {% liquid
-  assign wa_number = settings.nb_whatsapp_number | default: '919082910863'
-  assign review_url = settings.nb_review_url | default: 'https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review'
+  assign wa_number = '919167682582'
+  assign review_url = 'https://g.page/r/CdyJgLbadF31EBM/review'
   assign menu_url = '/collections/instant-delivery'
   
   assign logo_url = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/BP_by_Niamat-removebg-preview.png?v=1785663837'
@@ -33,11 +33,8 @@
       <p class="nb-qr-hero-sub">Freshly prepared, just the way you like it.</p>
       
       <div class="nb-qr-hero-ctas">
-        <a href="#reorder-container" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-hero-order-btn">
+        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-hero-order-btn">
           🍽️ Order Again
-        </a>
-        <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-outline" id="qr-hero-menu-btn">
-          Explore Our Menu
         </a>
       </div>
     </div>
@@ -239,7 +236,7 @@
   <section class="nb-qr-section nb-qr-bottom-cta-wrap">
     <div class="nb-qr-inner">
       <h2 class="nb-qr-section-title">Craving it again?</h2>
-      <a href="#reorder-container" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-bottom-order-btn">
+      <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-lg" id="qr-bottom-order-btn">
         Order Again
       </a>
     </div>
@@ -265,7 +262,7 @@
 
 <!-- ═══════ STICKY BOTTOM MOBILE ORDER BAR ═══════ -->
 <div class="nb-qr-sticky-bar" id="nb-qr-sticky-bar">
-  <a href="#reorder-container" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-block" id="qr-sticky-order-btn">
+  <a href="{{ menu_url }}?source=packaging_qr" class="nb-qr-btn nb-qr-btn-primary nb-qr-btn-block" id="qr-sticky-order-btn">
     🍽️ Order Again
   </a>
 </div>
@@ -927,18 +924,25 @@ footer:not(.nb-qr-footer),
           btn.textContent = '✓ Added';
           btn.classList.add('added');
           
-          /* Update theme cart drawer / counter */
+          /* Update theme cart counter & open cart drawer */
+          if (typeof window.nbOpenDrawer === 'function') {
+            window.nbOpenDrawer();
+          } else if (typeof nbOpenDrawer === 'function') {
+            nbOpenDrawer();
+          } else {
+            var drawerEl = document.getElementById('nb-cart-drawer');
+            var overlayEl = document.getElementById('nb-drawer-overlay');
+            if (drawerEl) drawerEl.classList.add('active');
+            if (overlayEl) overlayEl.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (typeof window.nbRefreshCart === 'function') window.nbRefreshCart();
+          }
+
           if (typeof fetch !== 'undefined') {
             fetch('/cart.js').then(function(r) { return r.json(); }).then(function(cart) {
               document.querySelectorAll('[data-cart-count], .cart-count-badge, .cart-count').forEach(function(el) {
                 el.textContent = cart.item_count;
               });
-              /* Open theme drawer if available */
-              if (window.Theme && window.Theme.cartDrawer) {
-                window.Theme.cartDrawer.open();
-              } else if (document.querySelector('cart-drawer')) {
-                document.querySelector('cart-drawer').open();
-              }
             });
           }
 
