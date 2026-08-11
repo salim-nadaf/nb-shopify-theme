@@ -184,15 +184,16 @@
   <!-- 2. HERO BANNER -->
   {% unless section.settings.show_hero == false %}
     <div class="nb-hero-banner">
+      {% if section.settings.hero_image != blank %}
+        <img src="{{ section.settings.hero_image | image_url: width: 1400 }}" alt="Biryani Palace" class="nb-hero-bg-img" width="1400" height="700" loading="eager" fetchpriority="high" decoding="async" />
+        <div class="nb-hero-overlay"></div>
+      {% endif %}
       {% if section.settings.hero_video_url != blank %}
-        <video autoplay muted loop playsinline class="nb-hero-bg">
+        <video autoplay muted loop playsinline preload="none" class="nb-hero-bg">
           <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
         </video>
         <div class="nb-hero-overlay"></div>
-      {% elsif section.settings.hero_image != blank %}
-        <img src="{{ section.settings.hero_image | image_url: width: 1400 }}" alt="Biryani Palace" class="nb-hero-bg-img" width="1400" height="700" loading="eager" />
-        <div class="nb-hero-overlay"></div>
-      {% else %}
+      {% elsif section.settings.hero_image == blank %}
         <div class="nb-hero-glow"></div>
       {% endif %}
 

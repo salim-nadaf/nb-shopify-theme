@@ -171,17 +171,19 @@
           {% assign mob_video = section.settings.hero_video_url %}
         {% endif %}
 
+        {% if section.settings.hero_mobile_image != blank %}
+          <img src="{{ section.settings.hero_mobile_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
+        {% elsif section.settings.hero_desktop_image != blank %}
+          <img src="{{ section.settings.hero_desktop_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
+        {% elsif section.settings.hero_image != blank %}
+          <img src="{{ section.settings.hero_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
+        {% endif %}
+
         {% if mob_video != blank %}
-          <video autoplay muted loop playsinline class="nb-hero-bg">
+          <video autoplay muted loop playsinline preload="none" class="nb-hero-bg">
             <source src="{{ mob_video }}" type="video/mp4" />
           </video>
-        {% elsif section.settings.hero_mobile_image != blank %}
-          <img src="{{ section.settings.hero_mobile_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" />
-        {% elsif section.settings.hero_desktop_image != blank %}
-          <img src="{{ section.settings.hero_desktop_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" />
-        {% elsif section.settings.hero_image != blank %}
-          <img src="{{ section.settings.hero_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" />
-        {% else %}
+        {% elsif section.settings.hero_mobile_image == blank and section.settings.hero_desktop_image == blank and section.settings.hero_image == blank %}
           <div class="nb-hero-glow"></div>
         {% endif %}
       </div>
@@ -189,18 +191,20 @@
       <!-- DESKTOP HERO MEDIA (Shown on screens >= 768px) -->
       <div class="nb-hero-desktop-media">
         {% if section.settings.hero_desktop_image != blank %}
-          <img src="{{ section.settings.hero_desktop_image | image_url: width: 1800 }}" alt="Biryani Palace Desktop" class="nb-hero-bg-img" width="1800" height="900" loading="eager" />
-        {% elsif section.settings.hero_desktop_video_url != blank %}
-          <video autoplay muted loop playsinline class="nb-hero-bg">
+          <img src="{{ section.settings.hero_desktop_image | image_url: width: 1800 }}" alt="Biryani Palace Desktop" class="nb-hero-bg-img" width="1800" height="900" loading="eager" fetchpriority="high" decoding="async" />
+        {% elsif section.settings.hero_image != blank %}
+          <img src="{{ section.settings.hero_image | image_url: width: 1800 }}" alt="Biryani Palace Desktop" class="nb-hero-bg-img" width="1800" height="900" loading="eager" fetchpriority="high" decoding="async" />
+        {% endif %}
+
+        {% if section.settings.hero_desktop_video_url != blank %}
+          <video autoplay muted loop playsinline preload="none" class="nb-hero-bg">
             <source src="{{ section.settings.hero_desktop_video_url }}" type="video/mp4" />
           </video>
-        {% elsif section.settings.hero_image != blank %}
-          <img src="{{ section.settings.hero_image | image_url: width: 1800 }}" alt="Biryani Palace Desktop" class="nb-hero-bg-img" width="1800" height="900" loading="eager" />
         {% elsif section.settings.hero_video_url != blank %}
-          <video autoplay muted loop playsinline class="nb-hero-bg">
+          <video autoplay muted loop playsinline preload="none" class="nb-hero-bg">
             <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
           </video>
-        {% else %}
+        {% elsif section.settings.hero_desktop_image == blank and section.settings.hero_image == blank %}
           <div class="nb-hero-glow"></div>
         {% endif %}
       </div>

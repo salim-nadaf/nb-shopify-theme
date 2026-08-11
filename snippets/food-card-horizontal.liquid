@@ -96,10 +96,13 @@
     {%- if product.featured_media -%}
       <img
         src="{{ product.featured_media | image_url: width: 200 }}"
+        srcset="{{ product.featured_media | image_url: width: 160 }} 160w, {{ product.featured_media | image_url: width: 320 }} 320w"
+        sizes="120px"
         alt="{{ product.featured_media.alt | escape }}"
         width="120"
         height="120"
         loading="lazy"
+        decoding="async"
       >
     {%- else -%}
       <div class="nb-food-card__image-placeholder">🍛</div>

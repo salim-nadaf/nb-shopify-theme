@@ -1651,4 +1651,32 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{ settings.nb_google_maps_api_key | default: 'AIzaSyCzP1FLzi8wFjDsC9tZrkCo3nKj1F9U_b8' }}&libraries=places&callback=nbInitGooglePlaces" async defer></script>
+<script>
+(function() {
+  var nbMapsLoaded = false;
+  function nbLoadGoogleMapsSDK() {
+    if (nbMapsLoaded) return;
+    nbMapsLoaded = true;
+    var script = document.createElement('script');
+    script.src = "https://maps.googleapis.com/maps/api/js?key={{ settings.nb_google_maps_api_key | default: 'AIzaSyCzP1FLzi8wFjDsC9tZrkCo3nKj1F9U_b8' }}&libraries=places&callback=nbInitGooglePlaces";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+
+  window.nbLoadGoogleMapsSDK = nbLoadGoogleMapsSDK;
+
+  // Load after initial page paint (3s) or on user interaction
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(function() { setTimeout(nbLoadGoogleMapsSDK, 2500); });
+  } else {
+    window.addEventListener('load', function() { setTimeout(nbLoadGoogleMapsSDK, 3000); });
+  }
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('#nb-location-search-input, #nb-use-location-btn, .nb-drawer__location-box, #nb-customer-contact-card')) {
+      nbLoadGoogleMapsSDK();
+    }
+  });
+})();
+</script>
