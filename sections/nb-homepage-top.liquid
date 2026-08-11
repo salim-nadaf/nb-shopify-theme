@@ -178,7 +178,7 @@
           <img src="{{ mob_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
         {% elsif section.settings.hero_mobile_video_url != blank or section.settings.hero_video_url != blank %}
           {% assign mob_video = section.settings.hero_mobile_video_url | default: section.settings.hero_video_url %}
-          <video autoplay muted loop playsinline preload="none" class="nb-hero-bg">
+          <video autoplay muted loop playsinline preload="none" poster="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp" class="nb-hero-bg">
             <source src="{{ mob_video }}" type="video/mp4" />
           </video>
         {% else %}
@@ -195,11 +195,11 @@
         {% endif %}
 
         {% if section.settings.hero_desktop_video_url != blank %}
-          <video autoplay muted loop playsinline preload="none" class="nb-hero-bg">
+          <video autoplay muted loop playsinline preload="none" poster="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp" class="nb-hero-bg">
             <source src="{{ section.settings.hero_desktop_video_url }}" type="video/mp4" />
           </video>
         {% elsif section.settings.hero_video_url != blank %}
-          <video autoplay muted loop playsinline preload="none" class="nb-hero-bg">
+          <video autoplay muted loop playsinline preload="none" poster="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp" class="nb-hero-bg">
             <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
           </video>
         {% elsif section.settings.hero_desktop_image == blank and section.settings.hero_image == blank %}
