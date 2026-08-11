@@ -166,24 +166,22 @@
 
       <!-- MOBILE HERO MEDIA (Shown on screens < 768px) -->
       <div class="nb-hero-mobile-media">
-        {% assign mob_video = section.settings.hero_mobile_video_url %}
-        {% if mob_video == blank %}
-          {% assign mob_video = section.settings.hero_video_url %}
+        {% assign mob_image = section.settings.hero_mobile_image %}
+        {% if mob_image == blank %}
+          {% assign mob_image = section.settings.hero_desktop_image %}
+        {% endif %}
+        {% if mob_image == blank %}
+          {% assign mob_image = section.settings.hero_image %}
         {% endif %}
 
-        {% if section.settings.hero_mobile_image != blank %}
-          <img src="{{ section.settings.hero_mobile_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
-        {% elsif section.settings.hero_desktop_image != blank %}
-          <img src="{{ section.settings.hero_desktop_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
-        {% elsif section.settings.hero_image != blank %}
-          <img src="{{ section.settings.hero_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
-        {% endif %}
-
-        {% if mob_video != blank %}
+        {% if mob_image != blank %}
+          <img src="{{ mob_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
+        {% elsif section.settings.hero_mobile_video_url != blank or section.settings.hero_video_url != blank %}
+          {% assign mob_video = section.settings.hero_mobile_video_url | default: section.settings.hero_video_url %}
           <video autoplay muted loop playsinline preload="none" class="nb-hero-bg">
             <source src="{{ mob_video }}" type="video/mp4" />
           </video>
-        {% elsif section.settings.hero_mobile_image == blank and section.settings.hero_desktop_image == blank and section.settings.hero_image == blank %}
+        {% else %}
           <div class="nb-hero-glow"></div>
         {% endif %}
       </div>
