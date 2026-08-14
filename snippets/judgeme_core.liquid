@@ -1,5 +1,23 @@
 {% comment %}
-  JUDGE.ME CORE SCRIPT INTEGRATION
-  Enables Judge.me Reviews, Star Ratings, and App Embeds storewide
+  JUDGE.ME CORE SCRIPT INTEGRATION — Deferred Loader
 {% endcomment %}
-<script type="text/javascript" src="https://cdn.judge.me/shopify_v2.js" async></script>
+<script>
+  (function() {
+    var judgeLoaded = false;
+    function loadJudge() {
+      if (judgeLoaded) return;
+      judgeLoaded = true;
+      var scr = document.createElement('script');
+      scr.src = "https://cdn.judge.me/shopify_v2.js";
+      scr.async = true;
+      document.head.appendChild(scr);
+    }
+    // Load after 3.5s or on first user interaction (scroll/click/touchstart)
+    window.addEventListener('load', function() {
+      setTimeout(loadJudge, 3500);
+    });
+    ['click', 'scroll', 'touchstart'].forEach(function(ev) {
+      document.addEventListener(ev, loadJudge, { passive: true, once: true });
+    });
+  })();
+</script>
