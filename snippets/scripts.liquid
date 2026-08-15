@@ -56,6 +56,7 @@
   defer
 ></script>
 
+{%- comment -%}
 <script
   src="{{ 'view-transitions.js' | asset_url }}"
   async
@@ -63,6 +64,7 @@
     blocking="render"
   {% endif %}
 ></script>
+{%- endcomment -%}
 
 <link
   rel="modulepreload"
