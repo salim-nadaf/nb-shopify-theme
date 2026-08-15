@@ -841,6 +841,9 @@ function nbOpenDrawer() {
   document.getElementById('nb-drawer-overlay').classList.add('active');
   document.body.style.overflow = 'hidden';
   nbRefreshCart();
+  if (typeof window.nbLoadGoogleMapsSDK === 'function') {
+    window.nbLoadGoogleMapsSDK();
+  }
 }
 
 function nbCloseDrawer() {
@@ -1665,13 +1668,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   window.nbLoadGoogleMapsSDK = nbLoadGoogleMapsSDK;
-
-  // Load after initial page paint (3s) or on user interaction
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(function() { setTimeout(nbLoadGoogleMapsSDK, 2500); });
-  } else {
-    window.addEventListener('load', function() { setTimeout(nbLoadGoogleMapsSDK, 3000); });
-  }
 
   document.addEventListener('click', function(e) {
     if (e.target.closest('#nb-location-search-input, #nb-use-location-btn, .nb-drawer__location-box, #nb-customer-contact-card')) {

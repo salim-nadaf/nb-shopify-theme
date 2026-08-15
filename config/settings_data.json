@@ -9,6 +9,8 @@
  */
 {
   "current": {
+    "page_transition_enabled": false,
+    "transition_to_main_product": false,
     "logo": "shopify://shop_images/BP_by_Niamat-removebg-preview.png",
     "logo_height": 80,
     "logo_height_mobile": 60,

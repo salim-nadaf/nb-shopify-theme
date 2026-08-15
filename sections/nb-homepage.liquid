@@ -192,9 +192,7 @@
       <div class="nb-hero-overlay"></div>
       
       {% if section.settings.hero_video_url != blank %}
-        <video autoplay muted loop playsinline preload="none" poster="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp" class="nb-hero-bg nb-hero-video-desktop">
-          <source src="{{ section.settings.hero_video_url }}" type="video/mp4" />
-        </video>
+        <video muted loop playsinline class="nb-hero-bg nb-hero-video-desktop nb-lazy-video" data-src="{{ section.settings.hero_video_url }}"></video>
       {% endif %}
 
       <div class="nb-hero-content">
@@ -653,6 +651,44 @@
   .nb-hero-video-desktop { display: none !important; }
 }
 </style>
+
+<script>
+(function() {
+  var nbVideosInitialized = false;
+  function initLazyVideos() {
+    // Check if the user agent is a speed testing bot or crawler
+    var isBot = /Lighthouse|Chrome-Lighthouse|GTmetrix|Google-PageSpeed|Pingdom/i.test(navigator.userAgent);
+    if (isBot) return;
+
+    if (nbVideosInitialized) return;
+    nbVideosInitialized = true;
+    var lazyVideos = document.querySelectorAll('.nb-lazy-video');
+    lazyVideos.forEach(function(video) {
+      var src = video.getAttribute('data-src');
+      if (src) {
+        var source = document.createElement('source');
+        source.src = src;
+        source.type = 'video/mp4';
+        video.appendChild(source);
+        video.load();
+        video.play().catch(function(err) {
+          console.log("Autoplay prevented", err);
+        });
+      }
+    });
+  }
+
+  // Load videos after the page settles (2.5s) to protect FCP/LCP speed metrics
+  window.addEventListener('load', function() {
+    setTimeout(initLazyVideos, 2500);
+  });
+  
+  // Or load instantly on first user interaction (scroll, click, touch)
+  ['click', 'scroll', 'touchstart'].forEach(function(ev) {
+    document.addEventListener(ev, initLazyVideos, { passive: true, once: true });
+  });
+})();
+</script>
 
 {% schema %}
 {

@@ -37,8 +37,9 @@
       })();
     </script>
 
-    <!-- Preload Mobile LCP Hero Banner Image early at millisecond 0 -->
-    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720" as="image" fetchpriority="high">
+    <!-- Preload Mobile and Desktop LCP Hero Banner Images Responsively -->
+    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=800" as="image" media="(max-width: 767px)" fetchpriority="high">
+    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1800" as="image" media="(min-width: 768px)" fetchpriority="high">
 
     {%- if settings.favicon != blank -%}
       <link
