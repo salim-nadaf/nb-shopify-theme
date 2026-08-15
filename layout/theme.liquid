@@ -6,35 +6,14 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
-    <!-- Google tag (gtag.js) - Optimized Non-blocking Loader -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G"></script>
     <script>
-      (function() {
-        var gaLoaded = false;
-        function loadGA() {
-          if (gaLoaded) return;
-          gaLoaded = true;
-          
-          var scr = document.createElement('script');
-          scr.src = "https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G";
-          scr.async = true;
-          document.head.appendChild(scr);
-          
-          scr.onload = function() {
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-3BFH8J5E3G');
-          };
-        }
-        
-        // Load GA after 3.5s or on first user interaction (scroll/click/touchstart/mousemove)
-        window.addEventListener('load', function() {
-          setTimeout(loadGA, 3500);
-        });
-        ['click', 'scroll', 'touchstart', 'mousemove'].forEach(function(ev) {
-          document.addEventListener(ev, loadGA, { passive: true, once: true });
-        });
-      })();
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-3BFH8J5E3G');
     </script>
 
     <!-- Preload Mobile and Desktop LCP Hero Banner Images Responsively -->

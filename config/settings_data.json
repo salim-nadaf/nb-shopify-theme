@@ -9,6 +9,8 @@
  */
 {
   "current": {
+    "page_transition_enabled": false,
+    "transition_to_main_product": false,
     "logo": "shopify://shop_images/BP_by_Niamat-removebg-preview.png",
     "logo_height": 80,
     "logo_height_mobile": 60,
@@ -33,8 +35,6 @@
     "type_size_h6": "16",
     "page_background_color": "#fffaf4",
     "page_width": "wide",
-    "page_transition_enabled": false,
-    "transition_to_main_product": false,
     "badge_position": "top-left",
     "badge_corner_radius": 40,
     "badge_sale_background_color": "#c8922a",
@@ -110,17 +110,17 @@
         "disabled": false,
         "settings": {}
       },
+      "13047258039897440615": {
+        "type": "shopify://apps/judge-me-reviews/blocks/cart_drawer_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {
+          "widget_type": "review-widget"
+        }
+      },
       "5091004626459974968": {
         "type": "shopify://apps/moose-whatsapp/blocks/whatsapp/b77db749-c44a-4265-8135-8b842af1b111",
         "disabled": false,
         "settings": {}
-      },
-      "13047258039897440615": {
-        "type": "shopify://apps/judge-me-reviews/blocks/cart_drawer_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": true,
-        "settings": {
-          "widget_type": "review-widget"
-        }
       }
     },
     "color_palette": {
