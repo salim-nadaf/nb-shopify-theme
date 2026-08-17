@@ -166,47 +166,18 @@
 
       <!-- MOBILE HERO MEDIA (Shown on screens < 768px) -->
       <div class="nb-hero-mobile-media">
-        {% assign mob_image = section.settings.hero_mobile_image %}
-        {% if mob_image == blank %}
-          {% assign mob_image = section.settings.hero_desktop_image %}
-        {% endif %}
-        {% if mob_image == blank %}
-          {% assign mob_image = section.settings.hero_image %}
-        {% endif %}
-
-        {% if mob_image != blank %}
-          <img
-            src="{{ mob_image | image_url: width: 750, format: 'webp' }}"
-            srcset="{{ mob_image | image_url: width: 400, format: 'webp' }} 400w, {{ mob_image | image_url: width: 600, format: 'webp' }} 600w, {{ mob_image | image_url: width: 750, format: 'webp' }} 750w"
-            sizes="100vw"
-            alt="Biryani Palace by Niamat"
-            class="nb-hero-bg-img"
-            width="750"
-            height="560"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        {% else %}
-          <img
-            src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750"
-            srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=400 400w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750 750w"
-            sizes="100vw"
-            alt="Biryani Palace by Niamat"
-            class="nb-hero-bg-img"
-            width="750"
-            height="560"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-        {% endif %}
-
-        {% if section.settings.hero_mobile_video_url != blank %}
-          <video muted loop playsinline preload="none" class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_mobile_video_url }}"></video>
-        {% elsif section.settings.hero_video_url != blank %}
-          <video muted loop playsinline preload="none" class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_video_url }}"></video>
-        {% endif %}
+        <img
+          src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750"
+          srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=400 400w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750 750w"
+          sizes="100vw"
+          alt="Biryani Palace by Niamat"
+          class="nb-hero-bg-img"
+          width="750"
+          height="560"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
       </div>
 
       <!-- DESKTOP HERO MEDIA (Shown on screens >= 768px) -->
@@ -707,36 +678,28 @@
 (function() {
   var nbVideosInitialized = false;
   function initLazyVideos() {
-    // Check if the user agent is a speed testing bot or crawler
-    var isBot = /Lighthouse|Chrome-Lighthouse|GTmetrix|Google-PageSpeed|Pingdom/i.test(navigator.userAgent);
-    if (isBot) return;
-
+    if (window.innerWidth < 768) return;
     if (nbVideosInitialized) return;
     nbVideosInitialized = true;
     var lazyVideos = document.querySelectorAll('.nb-lazy-video');
     lazyVideos.forEach(function(video) {
-      var src = video.getAttribute('data-src');
-      if (src) {
-        var source = document.createElement('source');
-        source.src = src;
-        source.type = 'video/mp4';
-        video.appendChild(source);
-        video.load();
-        video.play().catch(function(err) {
-          console.log("Autoplay prevented", err);
-        });
+      if (video.closest('.nb-hero-desktop-media')) {
+        var src = video.getAttribute('data-src');
+        if (src) {
+          var source = document.createElement('source');
+          source.src = src;
+          source.type = 'video/mp4';
+          video.appendChild(source);
+          video.load();
+          video.play().catch(function(err) {});
+        }
       }
     });
   }
 
-  // Load videos after the page settles (2.5s) to protect FCP/LCP speed metrics
-  window.addEventListener('load', function() {
-    setTimeout(initLazyVideos, 2500);
-  });
-  
-  // Or load instantly on first user interaction (scroll, click, touch)
-  ['click', 'scroll', 'touchstart'].forEach(function(ev) {
-    document.addEventListener(ev, initLazyVideos, { passive: true, once: true });
+  // Strictly load on user interaction (scroll, click, touch, mousemove)
+  ['click', 'scroll', 'touchstart', 'mousemove'].forEach(function(ev) {
+    window.addEventListener(ev, initLazyVideos, { passive: true, once: true });
   });
 })();
 </script>

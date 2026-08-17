@@ -659,36 +659,28 @@
 (function() {
   var nbVideosInitialized = false;
   function initLazyVideos() {
-    // Check if the user agent is a speed testing bot or crawler
-    var isBot = /Lighthouse|Chrome-Lighthouse|GTmetrix|Google-PageSpeed|Pingdom/i.test(navigator.userAgent);
-    if (isBot) return;
-
+    if (window.innerWidth < 768) return;
     if (nbVideosInitialized) return;
     nbVideosInitialized = true;
     var lazyVideos = document.querySelectorAll('.nb-lazy-video');
     lazyVideos.forEach(function(video) {
-      var src = video.getAttribute('data-src');
-      if (src) {
-        var source = document.createElement('source');
-        source.src = src;
-        source.type = 'video/mp4';
-        video.appendChild(source);
-        video.load();
-        video.play().catch(function(err) {
-          console.log("Autoplay prevented", err);
-        });
+      if (video.closest('.nb-hero-desktop-media')) {
+        var src = video.getAttribute('data-src');
+        if (src) {
+          var source = document.createElement('source');
+          source.src = src;
+          source.type = 'video/mp4';
+          video.appendChild(source);
+          video.load();
+          video.play().catch(function(err) {});
+        }
       }
     });
   }
 
-  // Load videos after the page settles (2.5s) to protect FCP/LCP speed metrics
-  window.addEventListener('load', function() {
-    setTimeout(initLazyVideos, 2500);
-  });
-  
-  // Or load instantly on first user interaction (scroll, click, touch)
-  ['click', 'scroll', 'touchstart'].forEach(function(ev) {
-    document.addEventListener(ev, initLazyVideos, { passive: true, once: true });
+  // Strictly load on user interaction (scroll, click, touch, mousemove)
+  ['click', 'scroll', 'touchstart', 'mousemove'].forEach(function(ev) {
+    window.addEventListener(ev, initLazyVideos, { passive: true, once: true });
   });
 })();
 </script>
