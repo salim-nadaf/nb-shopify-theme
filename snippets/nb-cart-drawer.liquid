@@ -98,29 +98,6 @@
       </ul>
     </div>
 
-    <!-- LIVE ZOMATO/SWIGGY/ZEPTO UNRESTRICTED LOCATION SEARCH & GPS DETECTOR -->
-    <div class="nb-drawer__location-box">
-      <div class="nb-location-header">
-        <label for="nb-location-search-input">📍 Delivery Location</label>
-        <div class="nb-loc-btn-group">
-          <button type="button" class="nb-use-location-btn" id="nb-use-location-btn" onclick="nbDetectLiveLocation()">
-            🎯 Use Live Location
-          </button>
-          <button type="button" class="nb-clear-location-btn" id="nb-clear-location-btn" onclick="nbClearLocation()" style="display:none;">
-            ✕ Clear
-          </button>
-        </div>
-      </div>
-
-      <div class="nb-search-input-wrap">
-        <input type="text" id="nb-location-search-input"
-               placeholder="Search any area, society, building or city..."
-               onkeyup="nbDebounceSearch(this.value)">
-        <div id="nb-location-suggestions" class="nb-suggestions-dropdown" style="display:none;"></div>
-      </div>
-
-      <div id="nb-location-status-badge" class="nb-location-status" style="display: none;"></div>
-    </div>
 
     <!-- PRE-FILLED CUSTOMER CONTACT DETAILS CARD (AUTO-POPULATED BEFORE ORDERING) -->
     <div class="nb-drawer__customer-card" id="nb-customer-contact-card" style="margin: 12px 16px; padding: 14px 16px; background: linear-gradient(135deg, #FFFDF7 0%, #FDF5E6 100%); border: 1px solid rgba(200, 146, 42, 0.28); border-left: 4px solid #C8922A; border-radius: 14px;">
@@ -451,97 +428,6 @@
 }
 .nb-policy-list li { margin-bottom: 2px; }
 
-/* LOCATION BOX & SEARCH SUGGESTIONS */
-.nb-drawer__location-box {
-  background: #fff;
-  border: 1px solid rgba(200,146,42,0.2);
-  border-radius: 12px;
-  padding: 10px;
-  position: relative;
-}
-.nb-location-header {
-  display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 6px; flex-wrap: wrap;
-}
-.nb-location-header label {
-  font-size: 0.8rem; font-weight: 700; color: #2C1810; margin: 0;
-}
-.nb-loc-btn-group { display: flex; gap: 6px; align-items: center; }
-.nb-use-location-btn {
-  background: rgba(200,146,42,0.12);
-  color: #C8922A;
-  border: 1px solid rgba(200,146,42,0.4);
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  min-height: 32px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.nb-use-location-btn:hover { background: #C8922A; color: #fff; }
-
-.nb-clear-location-btn {
-  background: rgba(229,62,62,0.1);
-  color: #E53E3E;
-  border: 1px solid rgba(229,62,62,0.3);
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 4px 8px;
-  min-height: 32px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.nb-search-input-wrap {
-  position: relative;
-}
-.nb-search-input-wrap input {
-  width: 100%;
-  background: #FFFDF7;
-  border: 1px solid rgba(200,146,42,0.3);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #2C1810;
-  outline: none;
-  box-sizing: border-box;
-}
-.nb-suggestions-dropdown {
-      position: absolute;
-      top: 100%; left: 0; right: 0;
-      background: #fff;
-      border: 1px solid rgba(200,146,42,0.3);
-      border-radius: 8px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-      z-index: 99;
-      max-height: 400px;
-      overflow-y: auto;
-      margin-top: 4px;
-    }
-.nb-suggestion-item {
-  padding: 8px 10px;
-  font-size: 0.78rem;
-  color: #2C1810;
-  cursor: pointer;
-  border-bottom: 1px solid rgba(200,146,42,0.1);
-}
-.nb-suggestion-item:hover {
-  background: #FDF6EC;
-  color: #C8922A;
-}
-
-.nb-location-status {
-  margin-top: 6px;
-  font-size: 0.74rem;
-  font-weight: 700;
-  padding: 5px 8px;
-  border-radius: 6px;
-  background: #E8F5E9;
-  color: #2E7D32;
-  border: 1px solid #A5D6A7;
-  line-height: 1.3;
-}
 
 /* DYNAMIC FREE DELIVERY BANNER ABOVE CART ITEMS */
 .nb-drawer__items-fd-notice {
@@ -690,42 +576,7 @@
   .nb-drawer__footer { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important; }
 }
 
-/* GOOGLE MAPS PLACES AUTOCOMPLETE THEMED DROPDOWN */
-.pac-container {
-  background-color: #FFFDF7 !important;
-  border: 1.5px solid #C8922A !important;
-  border-radius: 12px !important;
-  box-shadow: 0 8px 24px rgba(44, 24, 16, 0.25) !important;
-  font-family: inherit !important;
-  margin-top: 4px !important;
-  z-index: 999999 !important;
-  overflow: hidden !important;
-}
-.pac-item {
-  padding: 10px 14px !important;
-  font-size: 0.86rem !important;
-  color: #2C1810 !important;
-  border-top: 1px solid rgba(200, 146, 42, 0.15) !important;
-  cursor: pointer !important;
-}
-.pac-item:first-child {
-  border-top: none !important;
-}
-.pac-item:hover, .pac-item-selected {
-  background-color: #FDF6EC !important;
-}
-.pac-icon {
-  margin-right: 8px !important;
-}
-.pac-item-query {
-  font-size: 0.88rem !important;
-  color: #2C1810 !important;
-  font-weight: 700 !important;
-}
-.pac-matched {
-  color: #C8922A !important;
-  font-weight: 800 !important;
-}
+
 </style>
 
 <script>
@@ -746,84 +597,11 @@ const NB_CONFIG = {
   instantDeliveryStatusMsg: {{ settings.nb_instant_delivery_status_msg | default: 'Instant Delivery is available' | json }},
   instantDeliveryOffMsg: {{ settings.nb_instant_delivery_off_msg | default: 'Instant Delivery is temporarily unavailable due to high order volume.' | json }},
   scheduledOrderingUrl: {{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' | json }},
-  storeLat: parseFloat("{{ settings.nb_store_lat | default: '19.246662490615908' }}") || 19.246662490615908,
-  storeLng: parseFloat("{{ settings.nb_store_lng | default: '73.12392957712152' }}") || 73.12392957712152,
-  zone1MaxKm: parseFloat("{{ settings.nb_zone1_max_km | default: 5 }}") || 5.0,
-  zone1Fee: parseInt("{{ settings.nb_zone1_fee | default: 39 }}", 10) || 39,
   zone1Threshold: parseInt("{{ settings.nb_zone1_free_threshold | default: 799 }}", 10) || 799,
-  zone2MaxKm: parseFloat("{{ settings.nb_zone2_max_km | default: 8 }}") || 8.0,
-  zone2Fee: parseInt("{{ settings.nb_zone2_fee | default: 89 }}", 10) || 89,
   zone2Threshold: parseInt("{{ settings.nb_zone2_free_threshold | default: 1299 }}", 10) || 1299,
   etaMin: parseInt("{{ settings.nb_eta_min | default: 45 }}", 10) || 45,
   etaMax: parseInt("{{ settings.nb_eta_max | default: 60 }}", 10) || 60
 };
-
-// EXPLICIT ZONE STATES
-const ZONES = {
-  LOCATION_UNKNOWN: 'LOCATION_UNKNOWN',
-  ZONE_0_5_KM: 'ZONE_0_5_KM',
-  ZONE_5_8_KM: 'ZONE_5_8_KM',
-  OUTSIDE_SERVICE_AREA: 'OUTSIDE_SERVICE_AREA'
-};
-
-// INSTANT LOCAL LANDMARK DICTIONARY (40+ POPULAR SOCIETIES & AREAS)
-const LOCAL_LANDMARKS = [
-  { name: 'Raunak City, Kalyan West', lat: 19.2550, lon: 73.1380 },
-  { name: 'Khadakpada, Kalyan West', lat: 19.2520, lon: 73.1410 },
-  { name: 'Godrej Hill, Kalyan West', lat: 19.2540, lon: 73.1320 },
-  { name: 'Wayle Nagar, Kalyan West', lat: 19.2480, lon: 73.1360 },
-  { name: 'Chikanghar, Kalyan West', lat: 19.2440, lon: 73.1390 },
-  { name: 'Rambaug, Kalyan West', lat: 19.2390, lon: 73.1320 },
-  { name: 'Syndicate, Kalyan West', lat: 19.2410, lon: 73.1350 },
-  { name: 'Agra Road, Kalyan West', lat: 19.2395, lon: 73.1340 },
-  { name: 'Murbad Road, Kalyan West', lat: 19.2405, lon: 73.1370 },
-  { name: 'Kalyan Station West', lat: 19.2360, lon: 73.1300 },
-  { name: 'Yogi Dham, Kalyan West', lat: 19.2570, lon: 73.1420 },
-  { name: 'Vasant Valley, Kalyan West', lat: 19.2580, lon: 73.1400 },
-  { name: 'Gandhar Nagar, Kalyan West', lat: 19.2490, lon: 73.1310 },
-  { name: 'Prem Nagar, Kalyan West', lat: 19.2460, lon: 73.1330 },
-  { name: 'Beturkar Pada, Kalyan West', lat: 19.2420, lon: 73.1290 },
-  { name: 'Bhoirwadi, Kalyan West', lat: 19.2470, lon: 73.1380 },
-
-  { name: 'Kalyan East, Kalyan', lat: 19.2310, lon: 73.1380 },
-  { name: 'Chinchpada, Kalyan East', lat: 19.2280, lon: 73.1410 },
-  { name: 'Kolsewadi, Kalyan East', lat: 19.2340, lon: 73.1370 },
-  { name: 'Katemanivali, Kalyan East', lat: 19.2330, lon: 73.1420 },
-  { name: 'Netivli, Kalyan East', lat: 19.2270, lon: 73.1340 },
-
-  { name: 'Dombivli East, Dombivli', lat: 19.2150, lon: 73.0920 },
-  { name: 'Dombivli West, Dombivli', lat: 19.2180, lon: 73.0860 },
-  { name: 'Lodha Palava, Dombivli East', lat: 19.1980, lon: 73.0760 },
-  { name: 'Casa Bella, Dombivli East', lat: 19.1990, lon: 73.0780 },
-  { name: 'Nilje, Dombivli', lat: 19.1950, lon: 73.0710 },
-  { name: 'Manpada, Dombivli East', lat: 19.2120, lon: 73.0980 },
-
-  { name: 'Shahad, Kalyan', lat: 19.2580, lon: 73.1520 },
-  { name: 'Ambivli, Thane', lat: 19.2780, lon: 73.1610 },
-  { name: 'Ulhasnagar 1, Thane', lat: 19.2250, lon: 73.1510 },
-  { name: 'Ulhasnagar 2, Thane', lat: 19.2210, lon: 73.1540 },
-  { name: 'Ulhasnagar 3, Thane', lat: 19.2180, lon: 73.1580 },
-  { name: 'Ulhasnagar 4, Thane', lat: 19.2140, lon: 73.1620 },
-  { name: 'Ulhasnagar 5, Thane', lat: 19.2100, lon: 73.1660 },
-
-  { name: 'Ambernath East, Thane', lat: 19.1860, lon: 73.1920 },
-  { name: 'Ambernath West, Thane', lat: 19.1910, lon: 73.1850 },
-  { name: 'Badlapur East, Thane', lat: 19.1660, lon: 73.2350 },
-  { name: 'Badlapur West, Thane', lat: 19.1680, lon: 73.2280 },
-
-  { name: 'Titwala, Thane', lat: 19.3000, lon: 73.2000 },
-  { name: 'Bhiwandi, Thane', lat: 19.2810, lon: 73.0480 },
-  { name: 'Mumbra, Thane', lat: 19.1760, lon: 73.0230 },
-  { name: 'Thane West, Thane', lat: 19.2180, lon: 72.9780 },
-  { name: 'Majiwada, Thane West', lat: 19.2150, lon: 72.9850 },
-  { name: 'Ghodbunder Road, Thane', lat: 19.2650, lon: 72.9620 },
-  { name: 'Navi Mumbai', lat: 19.0330, lon: 73.0290 },
-  { name: 'Mumbai Central, Mumbai', lat: 18.9690, lon: 72.8190 }
-];
-
-var currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
-var isLocationDetected = false;
-var searchTimer = null;
 
 function nbShowToast(msg, duration) {
   var toast = document.getElementById('nb-cart-toast');
@@ -841,9 +619,6 @@ function nbOpenDrawer() {
   document.getElementById('nb-drawer-overlay').classList.add('active');
   document.body.style.overflow = 'hidden';
   nbRefreshCart();
-  if (typeof window.nbLoadGoogleMapsSDK === 'function') {
-    window.nbLoadGoogleMapsSDK();
-  }
 }
 
 function nbCloseDrawer() {
@@ -854,338 +629,6 @@ function nbCloseDrawer() {
 
 function nbFormatMoney(cents) {
   return '₹' + (cents / 100).toFixed(0);
-}
-
-function nbCalculateDistanceKm(lat1, lon1, lat2, lon2) {
-  var R = 6371;
-  var dLat = (lat2 - lat1) * Math.PI / 180;
-  var dLon = (lon2 - lon1) * Math.PI / 180;
-  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-          Math.sin(dLon/2) * Math.sin(dLon/2);
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  return R * c;
-}
-
-var googlePlacesService = null;
-var googleGeocoder = null;
-var googleDistanceMatrixService = null;
-var googlePlacesHasError = false;
-
-// CATCH GOOGLE MAPS API AUTH / SERVICE ERRORS
-window.gm_authFailure = function() {
-  googlePlacesHasError = true;
-  googlePlacesService = null;
-  googleGeocoder = null;
-  googleDistanceMatrixService = null;
-};
-
-function nbInitGooglePlaces() {
-  if (!window.google || !window.google.maps || !window.google.maps.places) return;
-  try {
-    googlePlacesService = new google.maps.places.AutocompleteService();
-    googleGeocoder = new google.maps.Geocoder();
-    googleDistanceMatrixService = new google.maps.DistanceMatrixService();
-  } catch(e) {
-    googlePlacesHasError = true;
-    googlePlacesService = null;
-  }
-}
-
-// ZOMATO/SWIGGY / GOOGLE MAPS HYBRID SEARCH DEBOUNCE
-function nbDebounceSearch(val) {
-  clearTimeout(searchTimer);
-  var dropdown = document.getElementById('nb-location-suggestions');
-  
-  if (!val || val.trim().length < 2) {
-    if (dropdown) dropdown.style.display = 'none';
-    return;
-  }
-
-  searchTimer = setTimeout(function() {
-    nbPerformLocationSearch(val.trim());
-  }, 250);
-}
-
-// PROGRAMMATIC GOOGLE PLACES & LOCAL HYBRID SEARCH
-function nbPerformLocationSearch(query) {
-  var dropdown = document.getElementById('nb-location-suggestions');
-  if (!dropdown) return;
-
-  var qLower = query.toLowerCase();
-  var tokens = qLower.split(/\s+/).filter(Boolean);
-
-  // 1. Instant Multi-Token Fuzzy Match from Local Landmarks
-  var localMatches = LOCAL_LANDMARKS.filter(function(item) {
-    var nameLower = item.name.toLowerCase();
-    return tokens.every(function(t) { return nameLower.includes(t); });
-  });
-
-  dropdown.style.display = 'block';
-
-  var html = '';
-  if (localMatches.length > 0) {
-    html += localMatches.slice(0, 4).map(function(item) {
-      return '<div class="nb-suggestion-item" onclick="nbSelectLocationResult(' + item.lat + ', ' + item.lon + ', \'' + item.name.replace(/'/g, "\\'") + '\')">📍 <strong>' + item.name + '</strong></div>';
-    }).join('');
-  }
-
-  // 2. Try Google Places AutocompleteService (Programmatic)
-  if (googlePlacesService && !googlePlacesHasError) {
-    try {
-      var storeCenter = new google.maps.LatLng(NB_CONFIG.storeLat, NB_CONFIG.storeLng);
-      var req = {
-        input: query,
-        componentRestrictions: { country: 'in' },
-        location: storeCenter,
-        radius: 15000
-      };
-
-      googlePlacesService.getPlacePredictions(req, function(predictions, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK && predictions && predictions.length > 0) {
-          var gHtml = predictions.slice(0, 6).map(function(p) {
-            var parts = p.description.split(',').map(s => s.trim());
-            var cleanName = parts.slice(0, Math.min(2, parts.length)).join(', ');
-            return '<div class="nb-suggestion-item" onclick="nbSelectGooglePlace(\'' + p.place_id + '\', \'' + cleanName.replace(/'/g, "\\'") + '\')">📍 <strong>' + cleanName + '</strong></div>';
-          }).join('');
-
-          dropdown.innerHTML = (localMatches.length > 0 ? html : '') + gHtml;
-          return;
-        }
-
-        nbPerformNominatimFallback(query, localMatches, html);
-      });
-      return;
-    } catch(err) {
-      googlePlacesHasError = true;
-    }
-  }
-
-  nbPerformNominatimFallback(query, localMatches, html);
-}
-
-function nbSelectGooglePlace(placeId, placeName) {
-  var dropdown = document.getElementById('nb-location-suggestions');
-  var input = document.getElementById('nb-location-search-input');
-  var clearBtn = document.getElementById('nb-clear-location-btn');
-
-  if (dropdown) dropdown.style.display = 'none';
-  if (input) input.value = placeName;
-  if (clearBtn) clearBtn.style.display = 'inline-block';
-
-  if (googleGeocoder) {
-    googleGeocoder.geocode({ placeId: placeId }, function(results, status) {
-      if (status === 'OK' && results && results[0] && results[0].geometry) {
-        var lat = results[0].geometry.location.lat();
-        var lng = results[0].geometry.location.lng();
-        var rawAddr = results[0].formatted_address || placeName;
-        var parts = rawAddr.split(',').map(s => s.trim());
-        var cleanLabel = parts.slice(0, Math.min(2, parts.length)).join(', ');
-
-        if (input) input.value = cleanLabel;
-        nbCalculateDrivingDistance(lat, lng, cleanLabel);
-      } else {
-        nbPerformNominatimFallback(placeName, [], '');
-      }
-    });
-  } else {
-    nbPerformNominatimFallback(placeName, [], '');
-  }
-}
-
-function nbCalculateDrivingDistance(destLat, destLng, placeName) {
-  var origin = new google.maps.LatLng(NB_CONFIG.storeLat, NB_CONFIG.storeLng);
-  var destination = new google.maps.LatLng(parseFloat(destLat), parseFloat(destLng));
-
-  if (googleDistanceMatrixService) {
-    googleDistanceMatrixService.getDistanceMatrix({
-      origins: [origin],
-      destinations: [destination],
-      travelMode: google.maps.TravelMode.DRIVING,
-      unitSystem: google.maps.UnitSystem.METRIC
-    }, function(response, status) {
-      if (status === 'OK' && response && response.rows && response.rows[0] && response.rows[0].elements && response.rows[0].elements[0].status === 'OK') {
-        var drivingDistKm = response.rows[0].elements[0].distance.value / 1000.0;
-        nbApplyLocationCalculation(drivingDistKm, placeName);
-      } else {
-        var straightKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, destLat, destLng);
-        nbApplyLocationCalculation(straightKm * 1.38, placeName);
-      }
-    });
-  } else {
-    var straightKm = nbCalculateDistanceKm(NB_CONFIG.storeLat, NB_CONFIG.storeLng, destLat, destLng);
-    nbApplyLocationCalculation(straightKm * 1.38, placeName);
-  }
-}
-
-function nbPerformNominatimFallback(query, localMatches, html) {
-  var dropdown = document.getElementById('nb-location-suggestions');
-  if (!dropdown) return;
-
-  dropdown.innerHTML = html + '<div class="nb-suggestion-item" style="color:#7A5C4A;">🔍 Searching location...</div>';
-
-  var searchUrl = 'https://nominatim.openstreetmap.org/search?format=json&countrycodes=in&q=' + encodeURIComponent(query) + '&limit=15';
-
-  fetch(searchUrl)
-    .then(r => r.json())
-    .then(data => {
-      var apiResults = data || [];
-      if (apiResults.length === 0 && localMatches.length === 0) {
-        return fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query + ', Maharashtra, India') + '&limit=15')
-          .then(r => r.json());
-      }
-      return apiResults;
-    })
-    .then(results => {
-      if ((!results || results.length === 0) && localMatches.length === 0) {
-        dropdown.innerHTML = '<div class="nb-suggestion-item" style="color:#7A5C4A;">No matching location found. Please type area or landmark name.</div>';
-        return;
-      }
-
-      var apiHtml = (results || []).map(function(item) {
-        var parts = item.display_name.split(',').map(s => s.trim());
-        var cleanName = parts.slice(0, Math.min(2, parts.length)).join(', ');
-        return '<div class="nb-suggestion-item" onclick="nbSelectLocationResult(' + item.lat + ', ' + item.lon + ', \'' + cleanName.replace(/'/g, "\\'") + '\')">📍 ' + cleanName + '</div>';
-      }).join('');
-
-      dropdown.innerHTML = (localMatches.length > 0 ? html : '') + apiHtml;
-    })
-    .catch(() => {
-      if (localMatches.length === 0) {
-        dropdown.style.display = 'none';
-      }
-    });
-}
-
-function nbSelectLocationResult(lat, lon, nameText) {
-  var dropdown = document.getElementById('nb-location-suggestions');
-  var input = document.getElementById('nb-location-search-input');
-  var clearBtn = document.getElementById('nb-clear-location-btn');
-
-  var parts = nameText.split(',').map(s => s.trim());
-  var cleanLabel = parts.slice(0, Math.min(2, parts.length)).join(', ');
-
-  if (dropdown) dropdown.style.display = 'none';
-  if (input) input.value = cleanLabel;
-  if (clearBtn) clearBtn.style.display = 'inline-block';
-
-  nbCalculateDrivingDistance(parseFloat(lat), parseFloat(lon), cleanLabel);
-}
-
-function nbFormatKmText(distKm) {
-  if (distKm < 0.05) return '0.1';
-  return distKm.toFixed(1);
-}
-
-function nbApplyLocationCalculation(distKm, placeName) {
-  isLocationDetected = true;
-  localStorage.setItem('nb_gps_detected', 'true');
-  var badge = document.getElementById('nb-location-status-badge');
-  var distStr = nbFormatKmText(distKm);
-
-  if (distKm <= NB_CONFIG.zone1MaxKm) {
-    currentDeliveryZone = ZONES.ZONE_0_5_KM;
-    if (badge) {
-      badge.style.display = 'block';
-      badge.style.background = '#E8F5E9';
-      badge.style.color = '#2E7D32';
-      badge.style.borderColor = '#A5D6A7';
-      badge.innerHTML = '🎯 Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distStr + ' km)</strong> • ₹' + NB_CONFIG.zone1Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone1Threshold + ')';
-    }
-  } else if (distKm <= NB_CONFIG.zone2MaxKm) {
-    currentDeliveryZone = ZONES.ZONE_5_8_KM;
-    if (badge) {
-      badge.style.display = 'block';
-      badge.style.background = '#FFF3E0';
-      badge.style.color = '#E65100';
-      badge.style.borderColor = '#FFE0B2';
-      badge.innerHTML = '🎯 Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distStr + ' km)</strong> • Extended ₹' + NB_CONFIG.zone2Fee + ' Delivery (Free > ₹' + NB_CONFIG.zone2Threshold + ')';
-    }
-  } else {
-    currentDeliveryZone = ZONES.OUTSIDE_SERVICE_AREA;
-    if (badge) {
-      badge.style.display = 'block';
-      badge.style.background = '#FFEBEE';
-      badge.style.color = '#C62828';
-      badge.style.borderColor = '#EF9A9A';
-      badge.innerHTML = '⚠️ Detected: <strong>' + (placeName || 'Your Location') + ' (~' + distStr + ' km)</strong> • Outside direct delivery service area.';
-    }
-  }
-
-  localStorage.setItem('nb_delivery_zone', currentDeliveryZone);
-  nbRefreshCart();
-}
-
-function nbDetectLiveLocation() {
-  var btn = document.getElementById('nb-use-location-btn');
-  var clearBtn = document.getElementById('nb-clear-location-btn');
-
-  if (!navigator.geolocation) {
-    nbShowToast('Geolocation is not supported by your browser.');
-    return;
-  }
-
-  if (btn) btn.textContent = '⌛ Locating...';
-
-  navigator.geolocation.getCurrentPosition(
-    function(position) {
-      var userLat = position.coords.latitude;
-      var userLng = position.coords.longitude;
-
-      if (btn) btn.textContent = '🎯 Location Set';
-      if (clearBtn) clearBtn.style.display = 'inline-block';
-
-      if (googleGeocoder) {
-        googleGeocoder.geocode({ location: { lat: userLat, lng: userLng } }, function(results, status) {
-          var cleanName = 'Live GPS Position';
-          if (status === 'OK' && results && results[0] && results[0].formatted_address) {
-            var parts = results[0].formatted_address.split(',').map(s => s.trim());
-            cleanName = parts.slice(0, Math.min(2, parts.length)).join(', ');
-          }
-          var input = document.getElementById('nb-location-search-input');
-          if (input) input.value = cleanName;
-
-          nbCalculateDrivingDistance(userLat, userLng, cleanName);
-        });
-      } else {
-        var input = document.getElementById('nb-location-search-input');
-        if (input) input.value = 'Live GPS Position';
-        nbCalculateDrivingDistance(userLat, userLng, 'Live GPS Position');
-      }
-
-      localStorage.setItem('nb_user_lat', userLat);
-      localStorage.setItem('nb_user_lng', userLng);
-    },
-    function(error) {
-      if (btn) btn.textContent = '🎯 Use Live Location';
-      nbShowToast('Location access was unavailable. Type your area in the search box.');
-    },
-    { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
-  );
-}
-
-function nbClearLocation() {
-  localStorage.removeItem('nb_user_lat');
-  localStorage.removeItem('nb_user_lng');
-  localStorage.removeItem('nb_gps_detected');
-  localStorage.removeItem('nb_delivery_zone');
-  
-  isLocationDetected = false;
-  currentDeliveryZone = ZONES.LOCATION_UNKNOWN;
-
-  var input = document.getElementById('nb-location-search-input');
-  var btn = document.getElementById('nb-use-location-btn');
-  var clearBtn = document.getElementById('nb-clear-location-btn');
-  var badge = document.getElementById('nb-location-status-badge');
-  var dropdown = document.getElementById('nb-location-suggestions');
-
-  if (input) input.value = '';
-  if (btn) btn.textContent = '🎯 Use Live Location';
-  if (clearBtn) clearBtn.style.display = 'none';
-  if (badge) badge.style.display = 'none';
-  if (dropdown) dropdown.style.display = 'none';
-
-  nbRefreshCart();
 }
 
 function nbSaveInstructions() {
@@ -1211,15 +654,8 @@ function nbGoToCheckout() {
     return;
   }
 
-  if (isLocationDetected && currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
-    nbShowToast('Delivery is currently unavailable for your detected area.');
-    return;
-  }
-
   var textarea = document.getElementById('nb-cooking-instructions');
   var instructions = textarea ? textarea.value.trim() : '';
-  var input = document.getElementById('nb-location-search-input');
-  var locText = input ? input.value.trim() : '';
 
   var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
   var name  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name')  || '';
@@ -1246,9 +682,7 @@ function nbGoToCheckout() {
         'Customer Email': email,
         'Email': email,
         'Instant Delivery Status': NB_CONFIG.instantDeliveryEnabled ? 'Available' : 'Paused',
-        'Order & Delivery Instructions': instructions,
-        'Delivery Location': locText,
-        'Delivery Zone': currentDeliveryZone
+        'Order & Delivery Instructions': instructions
       },
       note: noteText
     })
@@ -1384,8 +818,8 @@ function nbRenderCart(cart) {
   var subtotalRupees = Math.round(subtotalCents / 100);
   subtotalEl.textContent = '₹' + subtotalRupees;
 
-  // DETERMINE ACTIVE FREE DELIVERY THRESHOLD (₹799 FOR ZONE 1 / UNKNOWN, ₹1299 FOR ZONE 2)
-  var targetThreshold = (currentDeliveryZone === ZONES.ZONE_5_8_KM) ? NB_CONFIG.zone2Threshold : NB_CONFIG.zone1Threshold;
+  // FREE DELIVERY THRESHOLD (₹799)
+  var targetThreshold = NB_CONFIG.zone1Threshold || 799;
 
   if (itemsFdNotice && itemsFdText && itemsFdFill) {
     itemsFdNotice.style.display = 'block';
@@ -1402,81 +836,33 @@ function nbRenderCart(cart) {
     }
   }
 
-  // DELIVERY CALCULATION: IF LOCATION NOT DETECTED -> DEFAULT DELIVERY IS ₹0
-  var feeRupees = 0;
-
-  if (!isLocationDetected) {
-    feeRupees = 0;
-    deliveryEl.textContent = '₹0';
-    deliveryEl.style.color = '#2E7D32';
-    progressFillEl.style.width = '0%';
-    progressMsgEl.innerHTML = 'Search area or tap 🎯 <strong>Use Live Location</strong> to verify delivery fee';
-
-    if (checkoutBtn) { checkoutBtn.disabled = false; checkoutBtn.classList.remove('disabled'); }
-    if (btnTextEl) btnTextEl.textContent = 'Proceed to Checkout';
-
+  // DELIVERY STATUS IN CART SUMMARY
+  if (subtotalRupees >= targetThreshold) {
+    deliveryEl.textContent = 'FREE 🎉';
+    deliveryEl.style.color = '#25D366';
+    progressFillEl.style.width = '100%';
+    progressMsgEl.innerHTML = '🎉 You\'ve unlocked <strong>FREE DELIVERY</strong>!';
   } else {
-    // LOCATION DETECTED
-    if (currentDeliveryZone === ZONES.ZONE_0_5_KM) {
-      var thresholdRupees = NB_CONFIG.zone1Threshold;
-      if (subtotalRupees >= thresholdRupees) {
-        feeRupees = 0;
-        deliveryEl.textContent = 'FREE 🎉';
-        deliveryEl.style.color = '#25D366';
-        progressFillEl.style.width = '100%';
-        progressMsgEl.innerHTML = '🎉 You\'ve unlocked <strong>FREE DELIVERY</strong>!';
-      } else {
-        feeRupees = NB_CONFIG.zone1Fee;
-        deliveryEl.textContent = '₹' + feeRupees;
-        deliveryEl.style.color = '#C8922A';
-        var needed = thresholdRupees - subtotalRupees;
-        var pct = Math.min(100, Math.round((subtotalRupees / thresholdRupees) * 100));
-        progressFillEl.style.width = pct + '%';
-        progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed + '</strong> more for <strong>FREE DELIVERY</strong>';
-      }
-
-      if (checkoutBtn) { checkoutBtn.disabled = false; checkoutBtn.classList.remove('disabled'); }
-      if (btnTextEl) btnTextEl.textContent = 'Proceed to Checkout';
-
-    } else if (currentDeliveryZone === ZONES.ZONE_5_8_KM) {
-      var thresholdRupees2 = NB_CONFIG.zone2Threshold;
-      if (subtotalRupees >= thresholdRupees2) {
-        feeRupees = 0;
-        deliveryEl.textContent = 'FREE 🎉';
-        deliveryEl.style.color = '#25D366';
-        progressFillEl.style.width = '100%';
-        progressMsgEl.innerHTML = '🎉 You\'ve unlocked <strong>FREE DELIVERY</strong>!';
-      } else {
-        feeRupees = NB_CONFIG.zone2Fee;
-        deliveryEl.textContent = '₹' + feeRupees;
-        deliveryEl.style.color = '#C8922A';
-        var needed2 = thresholdRupees2 - subtotalRupees;
-        var pct2 = Math.min(100, Math.round((subtotalRupees / thresholdRupees2) * 100));
-        progressFillEl.style.width = pct2 + '%';
-        progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed2 + '</strong> more for <strong>FREE DELIVERY</strong>';
-      }
-
-      if (checkoutBtn) { checkoutBtn.disabled = false; checkoutBtn.classList.remove('disabled'); }
-      if (btnTextEl) btnTextEl.textContent = 'Proceed to Checkout';
-
-    } else if (currentDeliveryZone === ZONES.OUTSIDE_SERVICE_AREA) {
-      feeRupees = 0;
-      deliveryEl.textContent = 'Unavailable';
-      deliveryEl.style.color = '#C62828';
-      progressFillEl.style.width = '0%';
-      progressMsgEl.innerHTML = '⚠️ Delivery is currently unavailable for your area';
-
-      if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.add('disabled'); }
-      if (btnTextEl) btnTextEl.textContent = 'Delivery Unavailable';
-    }
+    var needed = targetThreshold - subtotalRupees;
+    var pct = Math.min(100, Math.round((subtotalRupees / targetThreshold) * 100));
+    deliveryEl.textContent = 'Calculated at checkout';
+    deliveryEl.style.color = '#C8922A';
+    progressFillEl.style.width = pct + '%';
+    progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed + '</strong> more for <strong>FREE DELIVERY</strong> (above ₹' + targetThreshold + ')';
   }
 
-  var grandTotalRupees = subtotalRupees + feeRupees;
-  grandTotalEl.textContent = '₹' + grandTotalRupees;
+  if (checkoutBtn) {
+    checkoutBtn.disabled = false;
+    checkoutBtn.classList.remove('disabled');
+  }
+  if (btnTextEl && NB_CONFIG.instantDeliveryEnabled !== false) {
+    btnTextEl.textContent = 'Proceed to Checkout';
+  }
 
+  grandTotalEl.textContent = '₹' + subtotalRupees;
   if (btnTotalEl) {
     btnTotalEl.style.display = 'inline-block';
-    btnTotalEl.textContent = '₹' + grandTotalRupees;
+    btnTotalEl.textContent = '₹' + subtotalRupees;
   }
 
   // PARTITION CART ITEMS: MAIN FOOD ITEMS FIRST, ADDONS AT THE VERY BOTTOM
@@ -1605,20 +991,6 @@ function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  var savedGps = localStorage.getItem('nb_gps_detected');
-  if (savedGps === 'true') {
-    isLocationDetected = true;
-    var clearBtn = document.getElementById('nb-clear-location-btn');
-    if (clearBtn) clearBtn.style.display = 'inline-block';
-  }
-
-  document.addEventListener('click', function(e) {
-    var dropdown = document.getElementById('nb-location-suggestions');
-    if (dropdown && !e.target.closest('.nb-search-input-wrap')) {
-      dropdown.style.display = 'none';
-    }
-  });
-
   document.addEventListener('submit', function(e) {
     var form = e.target;
     if (!form.classList.contains('nb-quick-form')) return;
@@ -1652,27 +1024,4 @@ document.addEventListener('DOMContentLoaded', function() {
     nbOpenDrawer();
   });
 });
-</script>
-
-<script>
-(function() {
-  var nbMapsLoaded = false;
-  function nbLoadGoogleMapsSDK() {
-    if (nbMapsLoaded) return;
-    nbMapsLoaded = true;
-    var script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key={{ settings.nb_google_maps_api_key | default: 'AIzaSyCzP1FLzi8wFjDsC9tZrkCo3nKj1F9U_b8' }}&libraries=places&callback=nbInitGooglePlaces";
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
-  }
-
-  window.nbLoadGoogleMapsSDK = nbLoadGoogleMapsSDK;
-
-  document.addEventListener('click', function(e) {
-    if (e.target.closest('#nb-location-search-input, #nb-use-location-btn, .nb-drawer__location-box, #nb-customer-contact-card')) {
-      nbLoadGoogleMapsSDK();
-    }
-  });
-})();
 </script>

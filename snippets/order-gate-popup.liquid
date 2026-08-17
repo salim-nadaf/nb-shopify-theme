@@ -30,7 +30,7 @@
       if (storedName) {
         var nameInputs = document.querySelectorAll('input[name*="name"], input[id*="name"]');
         nameInputs.forEach(function(input) {
-          if (input && !input.value && input.id !== 'nb-name-input' && input.id !== 'nb-location-search-input') {
+          if (input && !input.value && input.id !== 'nb-name-input') {
             input.value = storedName;
             input.dispatchEvent(new Event('input', { bubbles: true }));
             input.dispatchEvent(new Event('change', { bubbles: true }));
