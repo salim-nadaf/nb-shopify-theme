@@ -350,7 +350,7 @@
 }
 .nb-upsell-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 8px;
 }
 .nb-upsell-pill-card {
@@ -358,53 +358,48 @@
   align-items: center;
   justify-content: space-between;
   background: #fff;
-  border: 1px solid rgba(200,146,42,0.2);
+  border: 1px solid rgba(200,146,42,0.25);
   border-radius: 10px;
-  padding: 8px 10px;
-  min-height: 56px;
+  padding: 8px 12px;
+  min-height: 52px;
   box-sizing: border-box;
+  gap: 8px;
 }
 .nb-upsell-pill-info {
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   gap: 4px;
-   flex: 1;
-   min-width: 0;
-   padding-right: 6px;
- }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
 .nb-upsell-pill-name {
-       font-size: 0.8rem;
-       font-weight: 700;
-       color: #2C1810;
-       line-height: 1.2;
-       white-space: normal;
-       overflow: visible;
-       text-overflow: clip;
-       flex: 1;
-     }
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #2C1810;
+  line-height: 1.2;
+}
 .nb-upsell-pill-price {
-      font-size: 0.76rem;
-      font-weight: 800;
-      color: #C8922A;
-      margin-left: auto;
-    }
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #C8922A;
+}
 .nb-upsell-pill-add {
   background: #C8922A;
   color: #fff;
   border: none;
   border-radius: 6px;
-  padding: 6px 10px;
-  min-width: 64px;
+  padding: 6px 12px;
+  min-width: 72px;
   height: 34px;
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   font-weight: 800;
   cursor: pointer;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
+  transition: all 0.15s;
 }
 .nb-upsell-pill-add:hover { background: #A67520; }
 
@@ -646,6 +641,43 @@ function nbSaveInstructions() {
   });
 }
 
+function nbBuildCheckoutUrl(phone, name, email) {
+  var rawDigits = (phone || '').trim().replace(/\D/g, '');
+  var tenDigits = rawDigits.length >= 10 ? rawDigits.slice(-10) : rawDigits;
+  var formattedWithPlus = tenDigits ? ('+91' + tenDigits) : '';
+
+  var params = [];
+  if (tenDigits) {
+    params.push('checkout[shipping_address][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
+    params.push('checkout[shipping_address][country]=India');
+    params.push('checkout[billing_address][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
+    params.push('checkout[contact][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
+    params.push('checkout[email_or_phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
+    params.push('checkout[phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
+    params.push('phone=' + encodeURIComponent(tenDigits));
+  }
+
+  if (email && email.includes('@')) {
+    var cleanEmail = email.trim();
+    params.push('checkout[email]=' + encodeURIComponent(cleanEmail));
+    params.push('checkout[contact][email]=' + encodeURIComponent(cleanEmail));
+    params.push('email=' + encodeURIComponent(cleanEmail));
+  }
+
+  if (name) {
+    var nameParts = name.trim().split(/\s+/);
+    var firstName = nameParts[0] || name;
+    var lastName = nameParts.slice(1).join(' ') || 'Customer';
+    params.push('checkout[shipping_address][first_name]=' + encodeURIComponent(firstName));
+    params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
+    params.push('checkout[billing_address][first_name]=' + encodeURIComponent(firstName));
+    params.push('checkout[billing_address][last_name]=' + encodeURIComponent(lastName));
+    params.push('checkout[name]=' + encodeURIComponent(name));
+  }
+
+  return params.length > 0 ? ('/checkout?' + params.join('&')) : '/checkout';
+}
+
 function nbGoToCheckout() {
   if (NB_CONFIG.instantDeliveryEnabled === false) {
     nbShowToast('🔴 Instant Delivery is temporarily paused.');
@@ -662,7 +694,7 @@ function nbGoToCheckout() {
   var email = localStorage.getItem('gate_email') || localStorage.getItem('nb_email') || '';
 
   var cleanPhone = phone.replace(/\D/g, '').slice(-10);
-  var targetUrl = typeof nbBuildCheckoutUrl === 'function' ? nbBuildCheckoutUrl(cleanPhone, name, email) : '/checkout';
+  var targetUrl = nbBuildCheckoutUrl(cleanPhone, name, email);
 
   var noteText = 'WhatsApp/Delivery Phone: ' + (cleanPhone ? ('+91' + cleanPhone) : 'Not provided');
   if (name) noteText += ' | Name: ' + name;
@@ -773,17 +805,19 @@ function nbRenderCart(cart) {
   var itemsFdFill = document.getElementById('nb-items-fd-fill');
 
   // UPDATE UPSELL BUTTON STATES BASED ON ACTUAL CART CONTENT (EXTRA RAITA ONLY)
-  var hasRaitaInCart = false;
+  var raitaCount = 0;
   if (cart && cart.items) {
-    hasRaitaInCart = cart.items.some(function(item) {
-      return item.product_title.toLowerCase().includes('raita');
+    cart.items.forEach(function(item) {
+      if (item.product_title.toLowerCase().includes('extra raita') || item.product_title.toLowerCase().includes('raita')) {
+        raitaCount += item.quantity;
+      }
     });
   }
 
   var raitaBtn = document.getElementById('nb-add-raita-btn');
   if (raitaBtn) {
-    if (hasRaitaInCart) {
-      raitaBtn.textContent = '✓ Added';
+    if (raitaCount > 0) {
+      raitaBtn.textContent = '+ Add More (' + raitaCount + ')';
       raitaBtn.style.background = '#2E7D32';
     } else {
       raitaBtn.textContent = '+ Add';
@@ -884,7 +918,6 @@ function nbRenderCart(cart) {
   // RENDER SORTED CART ITEMS
   container.innerHTML = indexedItems.map(function(entry) {
     var item = entry.item;
-    var lineNum = entry.originalLineNum;
     var isBiryani = item.product_title.toLowerCase().includes('biryani') || (item.product_type && item.product_type.toLowerCase().includes('biryani'));
     var raitaHtml = isBiryani ? '<div class="nb-raita-tag"><span>✓</span> Raita included</div>' : '';
 
@@ -898,9 +931,9 @@ function nbRenderCart(cart) {
           '<div class="nb-cart-item__bottom">',
             '<span class="nb-cart-item__price">' + nbFormatMoney(item.final_line_price) + '</span>',
             '<div class="nb-qty-control">',
-              '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity - 1) + ', ' + lineNum + ')" aria-label="Decrease quantity">−</button>',
+              '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity - 1) + ')" aria-label="Decrease quantity">−</button>',
               '<span class="nb-qty-num">' + item.quantity + '</span>',
-              '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity + 1) + ', ' + lineNum + ')" aria-label="Increase quantity">+</button>',
+              '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity + 1) + ')" aria-label="Increase quantity">+</button>',
             '</div>',
           '</div>',
         '</div>',
@@ -918,14 +951,12 @@ function nbRefreshCart() {
     });
 }
 
-function nbUpdateQty(key, qty, lineNum) {
+function nbUpdateQty(key, qty) {
   if (qty < 0) qty = 0;
-  var payload = lineNum ? { line: lineNum, quantity: qty } : { id: key, quantity: qty };
-
   fetch('/cart/change.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    body: JSON.stringify({ id: key, quantity: qty })
   })
   .then(function(r) { return r.json(); })
   .then(function(cart) { nbRenderCart(cart); })
@@ -937,6 +968,7 @@ function nbUpdateQty(key, qty, lineNum) {
 
 // MULTI-TIER ADD-ON LOOKUP (PREVENTS SILENT FAILS & REPEATED SEARCHES)
 function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
+  var originalText = btn.textContent;
   btn.textContent = 'Adding...';
 
   function tryAddToCart(variantId) {
