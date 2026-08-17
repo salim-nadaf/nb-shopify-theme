@@ -537,10 +537,15 @@
         box-sizing: border-box !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
+        padding: 10px 10px !important;
+        gap: 10px !important;
+        overflow: hidden !important;
       }
       .nb-food-card__image {
-        width: 90px !important;
-        height: 90px !important;
+        width: 85px !important;
+        height: 85px !important;
+        min-width: 85px !important;
+        max-width: 85px !important;
         position: relative !important;
         overflow: hidden !important;
         border-radius: 10px !important;
@@ -562,7 +567,73 @@
         text-overflow: ellipsis !important;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35) !important;
       }
-      .nb-food-card__title { font-size: 0.88rem !important; }
+      .nb-food-card__body {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+      }
+      .nb-food-card__title {
+        font-size: 0.88rem !important;
+        margin-bottom: 2px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+      }
+      .nb-food-card__desc {
+        font-size: 0.72rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 3px !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical !important;
+        overflow: hidden !important;
+      }
+      .nb-food-card__meta {
+        gap: 4px !important;
+        margin-bottom: 4px !important;
+      }
+      .nb-meta-tag {
+        font-size: 0.65rem !important;
+        padding: 1.5px 6px !important;
+        border-radius: 10px !important;
+      }
+      .nb-food-card__bottom {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 4px !important;
+        width: 100% !important;
+        margin-top: auto !important;
+        padding-top: 2px !important;
+        box-sizing: border-box !important;
+      }
+      .nb-food-card__price {
+        font-size: 0.95rem !important;
+        font-weight: 800 !important;
+        color: #C8922A !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
+      .nb-food-card .nb-btn,
+      .nb-food-card .nb-btn--outline,
+      .nb-btn--outline {
+        padding: 5px 10px !important;
+        font-size: 0.72rem !important;
+        font-weight: 800 !important;
+        border-radius: 6px !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 28px !important;
+        box-sizing: border-box !important;
+      }
     }
     </style>
   </head>
