@@ -73,36 +73,9 @@
         "why_point_4": {
           "type": "why_point",
           "settings": {
-            "icon": "👨‍👩‍👧‍👦",
-            "title": "Family Friendly",
-            "body": "Portions sized perfectly for daily cravings as well as big family celebrations."
-          }
-        },
-        "menu_item_1": {
-          "type": "menu_item",
-          "settings": {
-            "image": "shopify://shop_images/ustaadi-murgh-dum.webp",
-            "name": "Ustaadi Murgh Dum Biryani",
-            "description": "Tender chicken marinated in aromatic spices and slow-cooked classic with basmati rice.",
-            "price": "₹999/Kg"
-          }
-        },
-        "menu_item_2": {
-          "type": "menu_item",
-          "settings": {
-            "image": "shopify://shop_images/gosht-e-dum-mazedaar.webp",
-            "name": "Gosht-e-Dum Mazedaar",
-            "description": "Juicy mutton pieces dum-cooked in rich basmari rice.",
-            "price": "₹1,599/Kg"
-          }
-        },
-        "menu_item_3": {
-          "type": "menu_item",
-          "settings": {
-            "image": "shopify://shop_images/shahi-murgh-rolls.webp",
-            "name": "Shahi Murgh Rolls",
-            "description": "Cheese filled chicken kebab rolls, fried and bursting with spice.",
-            "price": "₹549 (12 pcs)"
+            "icon": "⚖️",
+            "title": "1:1 Meat & Rice Ratio",
+            "body": "When you order 1 Kg Biryani, you get 1 Kg fresh meat + 1 Kg aromatic Basmati rice (total ~2 Kg, serves 6–7). ½ Kg = 500g meat + 500g rice!"
           }
         },
         "delivery_zone_1": {
@@ -139,9 +112,6 @@
         "why_point_2",
         "why_point_3",
         "why_point_4",
-        "menu_item_1",
-        "menu_item_2",
-        "menu_item_3",
         "delivery_zone_1",
         "delivery_zone_2",
         "delivery_zone_3"
@@ -168,22 +138,48 @@
         "hero_btn1_text": "Order Now",
         "hero_btn1_url": "shopify://collections/instant-delivery",
         "hero_btn2_text": "See Full Menu",
-        "hero_btn2_url": "shopify://collections/our-menu",
-        "hero_desktop_image": "shopify://shop_images/hero-biryani-optimized.webp",
-        "hero_mobile_image": "shopify://shop_images/hero-biryani-optimized.webp",
+        "hero_btn2_url": "shopify://collections/instant-delivery",
+        "hero_desktop_image": "shopify://shop_images/WhatsApp_Image_2026-03-24_at_12.39.26_PM.jpg",
+        "hero_mobile_image": "shopify://shop_images/WhatsApp_Image_2026-03-24_at_12.39.26_PM.jpg",
         "hero_desktop_video_url": "",
         "hero_mobile_video_url": "https://cdn.shopify.com/videos/c/o/v/d9d77b9d67f2417b8243214b4f77fd47.mp4",
         "hero_video_url": "",
-        "show_today": true,
+        "show_today": false,
         "today_heading": "What's Ready Today",
         "today_subheading": "Freshly prepared items currently available for instant delivery.",
         "today_cta_text": "Order Instant Items",
-        "today_cta_url": "/collections/instant-delivery",
+        "today_cta_url": "shopify://collections/instant-delivery",
         "show_family": true,
         "family_heading": "Feeding a Crowd?",
-        "family_subheading": "From curated 5 Kg to 15 Kg pre-made catering packages to grand wedding feasts and large corporate events, freshly prepared biryani in traditional handis tailored for any occasion.",
-        "family_cta_text": "Plan Bulk Order",
-        "family_cta_url": "/pages/bulk-orders"
+        "family_subheading": "Planning a party, family gathering or office lunch? Pre-order authentic 1 Kg to 10 Kg Handis (1 Kg = 1 Kg Meat + 1 Kg Rice) with scheduled delivery.",
+        "family_cta_text": "Plan Family Order",
+        "family_cta_url": "shopify://pages/family-orders",
+        "family_image": "shopify://shop_images/family-feast.webp"
+      }
+    },
+    "nb_experience_cards": {
+      "type": "nb-experience-cards",
+      "settings": {
+        "show_section": true,
+        "badge_text": "TWO WAYS TO ENJOY",
+        "heading": "Order Your Biryani Experience",
+        "subheading": "Choose instant delivery for today, or plan a family feast in advance.",
+        "instant_badge": "⚡ READY NOW",
+        "instant_title": "Instant Delivery",
+        "instant_desc": "Hot, freshly prepared single portions delivered to your doorstep in 30-45 minutes.",
+        "instant_cta_text": "Order Instant Delivery →",
+        "instant_cta_url": "shopify://collections/instant-delivery",
+        "family_badge": "👑 PRE-ORDER ONLY",
+        "family_title": "Family Orders & Handis",
+        "family_desc": "Planning a gathering? Pre-order 1 Kg (1 Kg Meat + 1 Kg Rice, serves 6–7) and above with scheduled delivery.",
+        "family_cta_text": "Plan Family Order →",
+        "family_cta_url": "shopify://pages/family-orders",
+        "bg_color": "#fffaf4",
+        "card_bg": "#ffffff",
+        "accent_gold": "#c8922a",
+        "text_dark": "#2c1810",
+        "text_muted": "#7a5c4a",
+        "border_color": "rgba(200, 146, 42, 0.18)"
       }
     },
     "nb_google_reviews": {
@@ -246,8 +242,8 @@
         "faq_item_2": {
           "type": "faq_item",
           "settings": {
-            "question": "What are the minimum order quantities and available portion sizes for Biryani?",
-            "answer": "The minimum quantity for pre-order is 1 kg. We offer a half kg option (sufficient for 3-4 people) for Alishaan Tandoor or Dum Biryani, subject to availability."
+            "question": "What are the portion sizes and how does your 1:1 quantity convention work?",
+            "answer": "Our portions follow an honest 1:1 convention: when we state ½ Kg (500 g) or 1 Kg, it refers to the meat portion and the rice portion separately! ½ Kg = 500 g meat + 500 g Basmati rice (serves 3–4 people, ~1 Kg total). 1 Kg = 1 Kg meat + 1 Kg Basmati rice (serves 6–7 people, ~2 Kg total)."
           }
         },
         "faq_item_3": {
@@ -261,28 +257,28 @@
           "type": "faq_item",
           "settings": {
             "question": "How many portions are there in 1 kg Biryani?",
-            "answer": "1 kg Biryani contains 6-7 generous portions."
+            "answer": "1 Kg Biryani contains 1 Kg meat + 1 Kg long-grain Basmati rice (~2 Kg total prepared dish), giving you 6–7 generous, hearty portions."
           }
         },
         "faq_item_5": {
           "type": "faq_item",
           "settings": {
             "question": "Do you offer any special deals for family orders?",
-            "answer": "Our popular 2 KG Family Biryani @ ₹2099 includes freshly prepared, generous portions & FREE raita."
+            "answer": "Our popular 2 KG Family Biryani @ ₹2099 includes 2 Kg tender meat + 2 Kg fragrant Basmati rice (serves 10–12 people) & FREE raita."
           }
         },
         "faq_item_6": {
           "type": "faq_item",
           "settings": {
             "question": "What is your pricing?",
-            "answer": "Our pricing starts at ₹849/Kg for Veg Biryani, ₹999/Kg for Chicken Dum Biryani, and ₹1,599/Kg for Mutton Dum Biryani (all include FREE raita and serve 6-7 people). We also offer 2 Kg Family Deals @ ₹2,099, and Kebabs starting at ₹549 for 12 pieces."
+            "answer": "Our pricing starts at ₹849/Kg for Veg Biryani, ₹999/Kg for Chicken Dum Biryani, and ₹1,599/Kg for Mutton Dum Biryani (each 1 Kg order contains 1 Kg meat + 1 Kg rice, includes FREE raita and serves 6–7 people). We also offer 2 Kg Family Deals @ ₹2,099 (2 Kg meat + 2 Kg rice, serves 10–12), and Kebabs starting at ₹549 for 12 pieces."
           }
         },
         "faq_item_7": {
           "type": "faq_item",
           "settings": {
             "question": "What are the recommended quantities for large groups?",
-            "answer": "For large events and family gatherings, we recommend 7 kg for 40 people and 9 kg for 50 people."
+            "answer": "For large events and family gatherings, with our 1:1 meat-to-rice portions, we recommend 7 kg for 40–45 people and 9 kg for 50–55 people."
           }
         },
         "faq_item_8": {
@@ -296,7 +292,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Do you offer dine-in services?",
-            "answer": "We offer delivery services only. Our minimum pre-order quantity starts from 1 kg."
+            "answer": "We offer delivery services only. Our minimum pre-order quantity starts from 1 kg (1 Kg meat + 1 Kg rice)."
           }
         },
         "faq_item_10": {
@@ -310,7 +306,7 @@
           "type": "faq_item",
           "settings": {
             "question": "How is the biryani made and what are the portion proportions?",
-            "answer": "Our biryani is prepared using 1 kg chicken + 1 kg rice proportion. 1 KG is usually enough for 6-7 people, and 2 KG works well for 10–12 people."
+            "answer": "Our biryani is slow-cooked on coal dum using an authentic 1:1 proportion — 1 Kg meat + 1 Kg aged Basmati rice for 1 Kg orders (serves 6–7), and 500 g meat + 500 g rice for ½ Kg orders (serves 3–4)."
           }
         }
       },

@@ -318,10 +318,10 @@
           <div class="nb-food-card__body">
             <div class="nb-food-card__top">
               <h3 class="nb-food-card__title">Ustaadi Murgh Dum Bucket</h3>
-              <p class="nb-food-card__desc">Packed in a bucket container that is easy to carry, 100% food grade, reusable & recyclable.</p>
+              <p class="nb-food-card__desc">½ Kg portion = 500 g tender chicken + 500 g fragrant Basmati rice (serves 3–4). Reusable food-grade bucket.</p>
               <div class="nb-food-card__meta">
-                <span class="nb-meta-tag">Half Kg Bucket</span>
-                <span class="nb-meta-tag">♻️ Reusable</span>
+                <span class="nb-meta-tag">½ Kg (500g Meat + 500g Rice)</span>
+                <span class="nb-meta-tag">♻️ Reusable Bucket</span>
               </div>
             </div>
             <div class="nb-food-card__bottom">
@@ -340,10 +340,10 @@
           <div class="nb-food-card__body">
             <div class="nb-food-card__top">
               <h3 class="nb-food-card__title">Alishaan Tandoori Bucket</h3>
-              <p class="nb-food-card__desc">Packed in a bucket container that is easy to carry, 100% food grade, reusable & recyclable.</p>
+              <p class="nb-food-card__desc">½ Kg portion = 500 g tandoori chicken + 500 g fragrant Basmati rice (serves 3–4). Reusable food-grade bucket.</p>
               <div class="nb-food-card__meta">
-                <span class="nb-meta-tag">Half Kg Bucket</span>
-                <span class="nb-meta-tag">♻️ Reusable</span>
+                <span class="nb-meta-tag">½ Kg (500g Meat + 500g Rice)</span>
+                <span class="nb-meta-tag">♻️ Reusable Bucket</span>
               </div>
             </div>
             <div class="nb-food-card__bottom">
@@ -362,10 +362,10 @@
           <div class="nb-food-card__body">
             <div class="nb-food-card__top">
               <h3 class="nb-food-card__title">Ustaadi Murgh Dum Bucket</h3>
-              <p class="nb-food-card__desc">Packed in a bucket container that is easy to carry, 100% food grade, reusable & recyclable.</p>
+              <p class="nb-food-card__desc">1 Kg portion = 1 Kg tender chicken + 1 Kg fragrant Basmati rice (serves 6–7). Reusable food-grade bucket.</p>
               <div class="nb-food-card__meta">
-                <span class="nb-meta-tag">1 Kg Full Bucket</span>
-                <span class="nb-meta-tag">♻️ Reusable</span>
+                <span class="nb-meta-tag">1 Kg (1Kg Meat + 1Kg Rice)</span>
+                <span class="nb-meta-tag">♻️ Reusable Bucket</span>
               </div>
             </div>
             <div class="nb-food-card__bottom">
@@ -384,10 +384,10 @@
           <div class="nb-food-card__body">
             <div class="nb-food-card__top">
               <h3 class="nb-food-card__title">Alishaan Tandoori Bucket</h3>
-              <p class="nb-food-card__desc">Packed in a bucket container that is easy to carry, 100% food grade, reusable & recyclable.</p>
+              <p class="nb-food-card__desc">1 Kg portion = 1 Kg tandoori chicken + 1 Kg fragrant Basmati rice (serves 6–7). Reusable food-grade bucket.</p>
               <div class="nb-food-card__meta">
-                <span class="nb-meta-tag">1 Kg Full Bucket</span>
-                <span class="nb-meta-tag">♻️ Reusable</span>
+                <span class="nb-meta-tag">1 Kg (1Kg Meat + 1Kg Rice)</span>
+                <span class="nb-meta-tag">♻️ Reusable Bucket</span>
               </div>
             </div>
             <div class="nb-food-card__bottom">
@@ -400,42 +400,9 @@
     </div>
   </div>
 
-  <!-- 6. SIGNATURE MENU (DISH CARDS) -->
-  <div class="nb-section-block nb-bg-alt" style="padding: 56px 0 !important; margin: 32px 0 !important;">
-    <div class="nb-container">
-      <div class="nb-section-header">
-        <span class="nb-tag-badge">House Specialties</span>
-        <h2>Signature Dum Biryanis & Starters</h2>
-      </div>
-
-      <div class="nb-grid-3">
-        {% for block in section.blocks %}
-          {% if block.type == 'menu_item' %}
-            <div class="nb-dish-card" {{ block.shopify_attributes }}>
-              <div class="nb-dish-img-wrap">
-                {% if block.settings.image != blank %}
-                  <img src="{{ block.settings.image | image_url: width: 300 }}" alt="{{ block.settings.name }}" width="300" height="200" loading="lazy" />
-                {% else %}
-                  <div class="nb-dish-placeholder">🍛</div>
-                {% endif %}
-              </div>
-              <div class="nb-dish-content">
-                <div class="nb-dish-header">
-                  <h4>{{ block.settings.name }}</h4>
-                  <span class="nb-dish-price">{{ block.settings.price }}</span>
-                </div>
-                <p>{{ block.settings.description }}</p>
-              </div>
-            </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-
-  <!-- 7. FAMILY ORDERS -->
+  <!-- 7. FAMILY ORDERS & BULK CATERING -->
   {% unless section.settings.show_family == false %}
-    <div class="nb-section-block" style="padding: 56px 0 !important; margin: 32px 0 !important;">
+    <div class="nb-section-block nb-bg-alt" style="padding: 56px 0 !important; margin: 0 !important;">
       <div class="nb-container">
         <div class="nb-family-banner">
           <div class="nb-family-text">
@@ -463,7 +430,7 @@
   {% endunless %}
 
   <!-- 8. DELIVERY AREAS -->
-  <div class="nb-section-block nb-bg-alt" style="padding: 52px 0 !important; margin: 32px 0 !important;">
+  <div class="nb-section-block" style="padding: 52px 0 !important; margin: 0 !important;">
     <div class="nb-container">
       <div class="nb-section-header">
         <span class="nb-tag-badge">Coverage</span>
@@ -1048,35 +1015,6 @@
           "id": "body",
           "label": "Body",
           "default": "Cooked fresh in small batches."
-        }
-      ]
-    },
-    {
-      "type": "menu_item",
-      "name": "Signature Dish Card",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Dish Image"
-        },
-        {
-          "type": "text",
-          "id": "name",
-          "label": "Dish Name",
-          "default": "Chicken Dum Biryani"
-        },
-        {
-          "type": "textarea",
-          "id": "description",
-          "label": "Description",
-          "default": "Tender chicken marinated in spices."
-        },
-        {
-          "type": "text",
-          "id": "price",
-          "label": "Price",
-          "default": "₹280"
         }
       ]
     },
