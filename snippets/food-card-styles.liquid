@@ -5,13 +5,13 @@
 .nb-food-card {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
   gap: 14px;
   background: #FFFAF4;
-  border: 1px solid rgba(200,146,42,0.18);
+  border: 1px solid rgba(200,146,42,0.2);
   border-radius: 14px;
   padding: 14px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   position: relative;
   transition: box-shadow 0.2s ease;
   width: 100% !important;
@@ -108,8 +108,8 @@ span.nb-badge,
 
 @media (max-width: 768px) {
   .nb-food-card__image {
-    width: 90px !important;
-    height: 90px !important;
+    width: 95px !important;
+    height: 95px !important;
     position: relative !important;
     overflow: hidden !important;
     border-radius: 10px !important;
@@ -138,7 +138,7 @@ span.nb-badge,
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 100px;
+  min-height: 95px;
   min-width: 0 !important;
   width: 100% !important;
   box-sizing: border-box !important;
@@ -148,14 +148,14 @@ span.nb-badge,
   font-size: 0.95rem;
   font-weight: 700;
   color: #2C1810;
-  margin: 0 0 4px;
+  margin: 0 0 3px;
   line-height: 1.25;
   word-break: break-word;
 }
 .nb-food-card__desc {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: #7A5C4A;
-  margin: 0 0 6px;
+  margin: 0 0 5px;
   line-height: 1.35;
   word-break: break-word;
 }
@@ -163,7 +163,7 @@ span.nb-badge,
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .nb-meta-tag {
   font-size: 0.72rem;
@@ -180,19 +180,22 @@ span.nb-badge,
   gap: 8px;
   width: 100% !important;
   box-sizing: border-box !important;
+  margin-top: auto;
+  padding-top: 4px;
 }
 .nb-food-card__price {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #2C1810;
+  color: #C8922A;
   white-space: nowrap;
 }
 
 @media (max-width: 767px) {
   .nb-food-card {
-    padding: 10px !important;
+    padding: 12px 10px !important;
     gap: 10px !important;
     border-radius: 12px !important;
+    margin-bottom: 12px !important;
   }
   .nb-food-card__image {
     width: 90px !important;
@@ -200,18 +203,18 @@ span.nb-badge,
     border-radius: 8px !important;
   }
   .nb-food-card__title {
-    font-size: 0.90rem !important;
+    font-size: 0.88rem !important;
     line-height: 1.25 !important;
-    margin-bottom: 3px !important;
+    margin-bottom: 2px !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
   }
   .nb-food-card__desc {
-    font-size: 0.74rem !important;
+    font-size: 0.72rem !important;
     line-height: 1.3 !important;
-    margin-bottom: 5px !important;
+    margin-bottom: 4px !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
@@ -219,27 +222,34 @@ span.nb-badge,
   }
   .nb-food-card__meta {
     gap: 4px !important;
-    margin-bottom: 5px !important;
+    margin-bottom: 4px !important;
   }
   .nb-meta-tag {
-    font-size: 0.66rem !important;
+    font-size: 0.65rem !important;
     padding: 1.5px 6px !important;
     border-radius: 10px !important;
   }
   .nb-food-card__bottom {
     gap: 6px !important;
-    margin-top: 2px !important;
+    margin-top: auto !important;
+    padding-top: 2px !important;
   }
   .nb-food-card__price {
-    font-size: 0.95rem !important;
+    font-size: 0.98rem !important;
+    font-weight: 800 !important;
+    color: #C8922A !important;
   }
   .nb-food-card .nb-btn {
-    padding: 5px 10px !important;
-    font-size: 0.72rem !important;
-    font-weight: 700 !important;
-    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    font-size: 0.74rem !important;
+    font-weight: 800 !important;
+    border-radius: 8px !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 32px !important;
   }
 }
 
@@ -252,21 +262,31 @@ span.nb-badge,
   border: none;
   cursor: pointer;
   text-decoration: none;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   white-space: nowrap;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
 .nb-btn--gold {
   background: #C8922A;
   color: #fff;
+  box-shadow: 0 2px 6px rgba(200,146,42,0.25);
 }
 .nb-btn--gold:hover { background: #A67520; color: #fff; }
 .nb-btn--outline {
-  background: transparent;
+  background: #FFFDF7;
   border: 1.5px solid #C8922A;
   color: #C8922A;
+  font-weight: 800;
+  box-shadow: 0 2px 6px rgba(200,146,42,0.12);
 }
-.nb-btn--outline:hover { background: #C8922A; color: #fff; }
+.nb-btn--outline:hover,
+.nb-btn--outline:active {
+  background: #C8922A;
+  color: #fff;
+  border-color: #C8922A;
+}
 .nb-btn--disabled {
   background: #E0D5C8;
   color: #999;
