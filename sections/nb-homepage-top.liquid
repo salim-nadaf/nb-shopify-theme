@@ -175,31 +175,74 @@
         {% endif %}
 
         {% if mob_image != blank %}
-          <img src="{{ mob_image | image_url: width: 800 }}" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
+          <img
+            src="{{ mob_image | image_url: width: 750, format: 'webp' }}"
+            srcset="{{ mob_image | image_url: width: 400, format: 'webp' }} 400w, {{ mob_image | image_url: width: 600, format: 'webp' }} 600w, {{ mob_image | image_url: width: 750, format: 'webp' }} 750w"
+            sizes="100vw"
+            alt="Biryani Palace by Niamat"
+            class="nb-hero-bg-img"
+            width="750"
+            height="560"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
         {% else %}
-          <!-- Bulletproof Fallback LCP Image aligned with preload query parameters -->
-          <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=800" alt="Biryani Palace Mobile" class="nb-hero-bg-img" width="800" height="600" loading="eager" fetchpriority="high" decoding="async" />
+          <img
+            src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750"
+            srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=400 400w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750 750w"
+            sizes="100vw"
+            alt="Biryani Palace by Niamat"
+            class="nb-hero-bg-img"
+            width="750"
+            height="560"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
         {% endif %}
 
         {% if section.settings.hero_mobile_video_url != blank %}
-          <video muted loop playsinline class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_mobile_video_url }}"></video>
+          <video muted loop playsinline preload="none" class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_mobile_video_url }}"></video>
         {% elsif section.settings.hero_video_url != blank %}
-          <video muted loop playsinline class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_video_url }}"></video>
+          <video muted loop playsinline preload="none" class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_video_url }}"></video>
         {% endif %}
       </div>
 
       <!-- DESKTOP HERO MEDIA (Shown on screens >= 768px) -->
       <div class="nb-hero-desktop-media">
         {% if section.settings.hero_desktop_image != blank %}
-          <img src="{{ section.settings.hero_desktop_image | image_url: width: 1800 }}" alt="Biryani Palace Desktop" class="nb-hero-bg-img" width="1800" height="900" loading="eager" fetchpriority="high" decoding="async" />
+          <img
+            src="{{ section.settings.hero_desktop_image | image_url: width: 1600, format: 'webp' }}"
+            srcset="{{ section.settings.hero_desktop_image | image_url: width: 1000, format: 'webp' }} 1000w, {{ section.settings.hero_desktop_image | image_url: width: 1600, format: 'webp' }} 1600w"
+            sizes="100vw"
+            alt="Biryani Palace Desktop"
+            class="nb-hero-bg-img"
+            width="1600"
+            height="800"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
         {% elsif section.settings.hero_image != blank %}
-          <img src="{{ section.settings.hero_image | image_url: width: 1800 }}" alt="Biryani Palace Desktop" class="nb-hero-bg-img" width="1800" height="900" loading="eager" fetchpriority="high" decoding="async" />
+          <img
+            src="{{ section.settings.hero_image | image_url: width: 1600, format: 'webp' }}"
+            srcset="{{ section.settings.hero_image | image_url: width: 1000, format: 'webp' }} 1000w, {{ section.settings.hero_image | image_url: width: 1600, format: 'webp' }} 1600w"
+            sizes="100vw"
+            alt="Biryani Palace Desktop"
+            class="nb-hero-bg-img"
+            width="1600"
+            height="800"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
         {% endif %}
 
         {% if section.settings.hero_desktop_video_url != blank %}
-          <video muted loop playsinline class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_desktop_video_url }}"></video>
+          <video muted loop playsinline preload="none" class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_desktop_video_url }}"></video>
         {% elsif section.settings.hero_video_url != blank %}
-          <video muted loop playsinline class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_video_url }}"></video>
+          <video muted loop playsinline preload="none" class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_video_url }}"></video>
         {% elsif section.settings.hero_desktop_image == blank and section.settings.hero_image == blank %}
           <div class="nb-hero-glow"></div>
         {% endif %}
@@ -312,7 +355,16 @@
         <!-- CARD 1: Half Kg Dum Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
-            <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720" alt="Ustaadi Murgh Dum Biryani Bucket (Half Kg)" width="110" height="110" loading="lazy" />
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Ustaadi Murgh Dum Biryani Bucket (Half Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="nb-badge nb-tag--musttry">⭐ Must try</span>
           </div>
           <div class="nb-food-card__body">
@@ -334,7 +386,16 @@
         <!-- CARD 2: Half Kg Tandoori Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
-            <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720" alt="Alishaan Tandoori Biryani Bucket (Half Kg)" width="110" height="110" loading="lazy" />
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Alishaan Tandoori Biryani Bucket (Half Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="nb-badge nb-tag--bestseller">🏆 Bestseller</span>
           </div>
           <div class="nb-food-card__body">
@@ -356,7 +417,16 @@
         <!-- CARD 3: 1 Kg Dum Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
-            <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720" alt="Ustaadi Murgh Dum Biryani Bucket (1 Kg)" width="110" height="110" loading="lazy" />
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Ustaadi Murgh Dum Biryani Bucket (1 Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="nb-badge nb-tag--popular">🔥 Popular</span>
           </div>
           <div class="nb-food-card__body">
@@ -378,7 +448,16 @@
         <!-- CARD 4: 1 Kg Tandoori Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
-            <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720" alt="Alishaan Tandoori Biryani Bucket (1 Kg)" width="110" height="110" loading="lazy" />
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Alishaan Tandoori Biryani Bucket (1 Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="nb-badge nb-tag--chef">👑 Classic</span>
           </div>
           <div class="nb-food-card__body">
@@ -416,7 +495,7 @@
           </div>
           <div class="nb-family-media">
             {% if section.settings.family_image != blank %}
-              <img src="{{ section.settings.family_image | image_url: width: 500 }}" alt="Family Feast" width="500" height="350" loading="lazy" />
+              <img src="{{ section.settings.family_image | image_url: width: 500, format: 'webp' }}" alt="Family Feast" width="500" height="350" loading="lazy" decoding="async" />
             {% else %}
               <div class="nb-family-box">
                 <span class="nb-crown">🎉</span>
@@ -443,7 +522,7 @@
           {% if block.type == 'delivery_zone' %}
             <div class="nb-zone-card" {{ block.shopify_attributes }}>
               <div class="nb-zone-icon">📍</div>
-              <h4>{{ block.settings.zone_name }}</h4>
+              <h3>{{ block.settings.zone_name }}</h3>
               <p>⏳ {{ block.settings.eta }}</p>
               <span class="nb-zone-fee">{{ block.settings.delivery_fee }}</span>
             </div>
@@ -451,7 +530,7 @@
         {% endfor %}
       </div>
 
-      <div class="nb-delivery-policy-note" style="margin-top: 24px; background: #FFFDF7; border: 1px dashed rgba(200,146,42,0.4); border-radius: 14px; padding: 16px 20px; text-align: center; font-size: 0.88rem; color: #7A5C4A; line-height: 1.5;">
+      <div class="nb-delivery-policy-note" style="margin-top: 24px; background: #FFFDF7; border: 1px dashed rgba(200,146,42,0.4); border-radius: 14px; padding: 16px 20px; text-align: center; font-size: 0.88rem; color: #5C4033; line-height: 1.5;">
         <strong>💡 Pre-Order & Delivery Policy:</strong> All biryanis are slow-cooked fresh on order (Minimum 3 hours advance notice required). FREE delivery on 1 Kg+ orders or within 5 km radius. Delivery charges for locations beyond 5 kms will be calculated and updated upon order placement.
       </div>
     </div>
@@ -460,8 +539,6 @@
 </div>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&display=swap');
-
 .nb-homepage-wrapper { background-color: var(--nb-page-bg) !important; color: var(--nb-text-dark) !important; font-family: inherit; width: 100%; overflow-x: hidden; }
 .nb-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
 .nb-section-block { padding: 48px 0 !important; margin-bottom: 24px !important; }
@@ -478,11 +555,6 @@
 .nb-pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #22c55e; }
 
 .nb-gold-highlight {
-  background: linear-gradient(135deg, #FFE082 0%, #E6AC3C 40%, #C8922A 75%, #A06D14 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-  color: transparent !important;
   font-weight: 800 !important;
   display: inline;
 }

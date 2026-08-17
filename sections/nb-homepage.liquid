@@ -296,7 +296,16 @@
         <!-- CARD 1: Half Kg Dum Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
-            <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720" alt="Ustaadi Murgh Dum Biryani Bucket (Half Kg)" width="110" height="110" loading="lazy" />
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Ustaadi Murgh Dum Biryani Bucket (Half Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="nb-badge nb-tag--musttry">⭐ Must try</span>
           </div>
           <div class="nb-food-card__body">
@@ -318,7 +327,16 @@
         <!-- CARD 2: Half Kg Tandoori Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
-            <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720" alt="Alishaan Tandoori Biryani Bucket (Half Kg)" width="110" height="110" loading="lazy" />
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Alishaan Tandoori Biryani Bucket (Half Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="nb-badge nb-tag--bestseller">🏆 Bestseller</span>
           </div>
           <div class="nb-food-card__body">
@@ -340,7 +358,16 @@
         <!-- CARD 3: 1 Kg Dum Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
-            <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720" alt="Ustaadi Murgh Dum Biryani Bucket (1 Kg)" width="110" height="110" loading="lazy" />
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Ustaadi Murgh Dum Biryani Bucket (1 Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="nb-badge nb-tag--popular">🔥 Popular</span>
           </div>
           <div class="nb-food-card__body">
@@ -362,7 +389,16 @@
         <!-- CARD 4: 1 Kg Tandoori Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
-            <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720" alt="Alishaan Tandoori Biryani Bucket (1 Kg)" width="110" height="110" loading="lazy" />
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Alishaan Tandoori Biryani Bucket (1 Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
             <span class="nb-badge nb-tag--chef">👑 Classic</span>
           </div>
           <div class="nb-food-card__body">
@@ -397,7 +433,7 @@
           </div>
           <div class="nb-family-media">
             {% if section.settings.family_image != blank %}
-              <img src="{{ section.settings.family_image | image_url: width: 500 }}" alt="Family Feast" width="500" height="350" loading="lazy" />
+              <img src="{{ section.settings.family_image | image_url: width: 500, format: 'webp' }}" alt="Family Feast" width="500" height="350" loading="lazy" decoding="async" />
             {% else %}
               <div class="nb-family-box">
                 <span class="nb-crown">👑</span>
@@ -424,7 +460,7 @@
           {% if block.type == 'delivery_zone' %}
             <div class="nb-zone-card" {{ block.shopify_attributes }}>
               <div class="nb-zone-icon">📍</div>
-              <h4>{{ block.settings.zone_name }}</h4>
+              <h3>{{ block.settings.zone_name }}</h3>
               <p>ETA: {{ block.settings.eta }}</p>
               <span class="nb-zone-fee">Fee: {{ block.settings.delivery_fee }}</span>
             </div>

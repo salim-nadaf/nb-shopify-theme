@@ -8,8 +8,8 @@
   <head>
   
     <!-- Preload Mobile and Desktop LCP Hero Banner Images Responsively -->
-    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=800" as="image" media="(max-width: 767px)" fetchpriority="high">
-    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1800" as="image" media="(min-width: 768px)" fetchpriority="high">
+    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750" as="image" media="(max-width: 767px)" fetchpriority="high">
+    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1600" as="image" media="(min-width: 768px)" fetchpriority="high">
 
     {%- if settings.favicon != blank -%}
       <link
@@ -31,8 +31,8 @@
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Inter:wght@400;500;600;700;800&display=swap"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;600;700;800&display=swap"></noscript>
 
     {%- render 'meta-tags' -%}
     {%- render 'stylesheets' -%}
@@ -653,36 +653,41 @@
 
       <script>
         (function setHeaderHeighCustomProperties() {
-          const header = document.querySelector('header-component');
-          const headerGroup = document.querySelector('#header-group');
-          const hasHeaderSection = headerGroup?.querySelector('.header-section');
-          if (!header || !headerGroup) return;
-          const headerTopRow = header.querySelector('.header__row--top');
-          const headerHeight = header.offsetHeight;
-          let headerGroupHeight = 0;
-          const children = headerGroup.children;
-          for (let i = 0; i < children.length; i++) {
-            const element = children[i];
-            if (element === header || !(element instanceof HTMLElement)) continue;
-            headerGroupHeight += element.offsetHeight;
-          }
-          if (header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
-            headerGroupHeight += headerHeight;
-          }
-          document.body.style.setProperty('--header-height', `${headerHeight}px`);
-          document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
-          if (headerTopRow) {
-            window.requestAnimationFrame(function () {
+          function calculateHeaderHeights() {
+            const header = document.querySelector('header-component');
+            const headerGroup = document.querySelector('#header-group');
+            const hasHeaderSection = headerGroup?.querySelector('.header-section');
+            if (!header || !headerGroup) return;
+            const headerTopRow = header.querySelector('.header__row--top');
+            const headerHeight = header.offsetHeight;
+            let headerGroupHeight = 0;
+            const children = headerGroup.children;
+            for (let i = 0; i < children.length; i++) {
+              const element = children[i];
+              if (element === header || !(element instanceof HTMLElement)) continue;
+              headerGroupHeight += element.offsetHeight;
+            }
+            if (header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+              headerGroupHeight += headerHeight;
+            }
+            document.body.style.setProperty('--header-height', `${headerHeight}px`);
+            document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
+            if (headerTopRow) {
               document.body.style.setProperty('--top-row-height', `${headerTopRow.offsetHeight}px`);
-            });
+            }
+            if (!hasHeaderSection || !header?.hasAttribute('transparent')) {
+              document.body.style.setProperty('--transparent-header-offset-boolean', '0');
+              return;
+            }
+            const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
+            const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
+            document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
           }
-          if (!hasHeaderSection || !header?.hasAttribute('transparent')) {
-            document.body.style.setProperty('--transparent-header-offset-boolean', '0');
-            return;
+          if (window.requestAnimationFrame) {
+            window.requestAnimationFrame(calculateHeaderHeights);
+          } else {
+            calculateHeaderHeights();
           }
-          const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
-          const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
-          document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
         })();
 
         (function setHeaderMenuStyle() {

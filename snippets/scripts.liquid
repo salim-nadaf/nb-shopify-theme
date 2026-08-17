@@ -110,11 +110,13 @@
   href="{{ 'focus.js' | asset_url }}"
   fetchpriority="low"
 >
-<link
-  rel="modulepreload"
-  href="{{ 'recently-viewed-products.js' | asset_url }}"
-  fetchpriority="low"
->
+{% if template.name == 'product' %}
+  <link
+    rel="modulepreload"
+    href="{{ 'recently-viewed-products.js' | asset_url }}"
+    fetchpriority="low"
+  >
+{% endif %}
 <link
   rel="modulepreload"
   href="{{ 'scrolling.js' | asset_url }}"

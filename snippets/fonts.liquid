@@ -1,12 +1,4 @@
-{%- unless settings.type_body_font.system? -%}
-  {{ settings.type_body_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
-{%- endunless -%}
-{%- unless settings.type_subheading_font.system? -%}
-  {{ settings.type_subheading_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
-{%- endunless -%}
-{%- unless settings.type_heading_font.system? -%}
-  {{ settings.type_heading_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
-{%- endunless -%}
-{%- unless settings.type_accent_font.system? -%}
-  {{ settings.type_accent_font | font_url | preload_tag: as: 'font', type: 'font/woff2', fetchpriority: 'low' }}
-{%- endunless -%}
+{%- comment -%}
+  Google Fonts (Playfair Display & Inter) are loaded and preconnected in layout/theme.liquid.
+  Unused Shopify CDN font preloads are disabled here to eliminate wasted network payload and critical chain latency.
+{%- endcomment -%}
