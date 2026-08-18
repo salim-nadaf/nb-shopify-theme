@@ -121,6 +121,11 @@
         "type": "shopify://apps/moose-whatsapp/blocks/whatsapp/b77db749-c44a-4265-8135-8b842af1b111",
         "disabled": false,
         "settings": {}
+      },
+      "1582949288676309259": {
+        "type": "shopify://apps/swift-speed-optimize/blocks/swift-speed/a10b8339-a20a-4621-a093-32380d49773b",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_palette": {
