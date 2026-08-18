@@ -544,4 +544,58 @@ span.nb-badge,
   background: linear-gradient(135deg, #E2A73E 0%, #D49E35 100%) !important;
   box-shadow: 0 5px 12px rgba(200, 146, 42, 0.4) !important;
 }
+
+/* ===== FEATURED FULL-WIDTH MEAL CARDS (NIAMAT MEALS) ===== */
+.nb-food-card--meal {
+  border: 1.5px solid rgba(200, 146, 42, 0.45) !important;
+  background: linear-gradient(135deg, #FFFDF9 0%, #FDF7EC 100%) !important;
+  box-shadow: 0 8px 24px rgba(200, 146, 42, 0.12) !important;
+}
+
+.nb-food-card--meal .nb-food-card__title {
+  font-size: 1.25rem !important;
+  color: #2C1810 !important;
+}
+
+.nb-food-card--meal .nb-variant-selector {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin: 12px 0 !important;
+}
+
+.nb-food-card--meal .nb-variant-pill {
+  font-size: 0.8rem !important;
+  padding: 8px 12px !important;
+  text-align: left !important;
+  line-height: 1.3 !important;
+  display: flex !important;
+  align-items: center !important;
+  border-radius: 12px !important;
+  white-space: normal !important;
+}
+
+@media (min-width: 769px) {
+  .nb-food-card--meal {
+    grid-column: 1 / -1 !important;
+    padding: 20px !important;
+    gap: 20px !important;
+  }
+  .nb-food-card--meal .nb-food-card__image {
+    width: 160px !important;
+    height: 160px !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .nb-food-card--meal .nb-variant-selector {
+    grid-template-columns: 1fr !important;
+  }
+  .nb-food-card--meal .nb-variant-pill {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
 </style>

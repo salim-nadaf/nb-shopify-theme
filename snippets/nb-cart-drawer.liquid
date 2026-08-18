@@ -69,19 +69,38 @@
     <!-- CART ITEMS CONTAINER -->
     <div id="nb-cart-items" class="nb-drawer__items"></div>
 
-    <!-- COMPLETE YOUR ORDER (EXTRA RAITA ONLY) -->
+    <!-- COMPLETE YOUR ORDER (EXTRA RAITA, SHAMI KEBAB, GULAB JAMUN) -->
     <div class="nb-drawer__upsell-section">
       <div class="nb-upsell-header">
         <span>🥣</span>
         <h4>Complete your order</h4>
       </div>
-      <div class="nb-upsell-grid nb-upsell-grid--single">
+      <div class="nb-upsell-grid">
+        <!-- 1. Extra Raita -->
         <div class="nb-upsell-pill-card">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">Niamat Extra Raita</span>
-            <span class="nb-upsell-pill-price">₹29</span>
+            <span class="nb-upsell-pill-price">₹49</span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Raita', 2900)">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Raita', 4900)">+ Add</button>
+        </div>
+
+        <!-- 2. Chicken Shami Kebab -->
+        <div class="nb-upsell-pill-card">
+          <div class="nb-upsell-pill-info">
+            <span class="nb-upsell-pill-name">Chicken Shami Kebab</span>
+            <span class="nb-upsell-pill-price">₹69</span>
+          </div>
+          <button class="nb-upsell-pill-add" id="nb-add-kebab-btn" onclick="nbAddUpsell(this, 'shami-kebab', 'Chicken Shami Kebab', 6900)">+ Add</button>
+        </div>
+
+        <!-- 3. Gulab Jamun -->
+        <div class="nb-upsell-pill-card">
+          <div class="nb-upsell-pill-info">
+            <span class="nb-upsell-pill-name">Gulab Jamun</span>
+            <span class="nb-upsell-pill-price">₹99</span>
+          </div>
+          <button class="nb-upsell-pill-add" id="nb-add-jamun-btn" onclick="nbAddUpsell(this, 'gulab-jamun', 'Gulab Jamun', 9900)">+ Add</button>
         </div>
       </div>
     </div>
@@ -804,12 +823,20 @@ function nbRenderCart(cart) {
   var itemsFdText = document.getElementById('nb-items-fd-text');
   var itemsFdFill = document.getElementById('nb-items-fd-fill');
 
-  // UPDATE UPSELL BUTTON STATES BASED ON ACTUAL CART CONTENT (EXTRA RAITA ONLY)
+  // UPDATE UPSELL BUTTON STATES BASED ON ACTUAL CART CONTENT (RAITA, SHAMI KEBAB, GULAB JAMUN)
   var raitaCount = 0;
+  var kebabCount = 0;
+  var jamunCount = 0;
+
   if (cart && cart.items) {
     cart.items.forEach(function(item) {
-      if (item.product_title.toLowerCase().includes('extra raita') || item.product_title.toLowerCase().includes('raita')) {
+      var title = (item.product_title || '').toLowerCase();
+      if (title.includes('extra raita') || title.includes('raita')) {
         raitaCount += item.quantity;
+      } else if (title.includes('shami kebab') || title.includes('shami')) {
+        kebabCount += item.quantity;
+      } else if (title.includes('gulab jamun') || title.includes('jamun')) {
+        jamunCount += item.quantity;
       }
     });
   }
@@ -822,6 +849,28 @@ function nbRenderCart(cart) {
     } else {
       raitaBtn.textContent = '+ Add';
       raitaBtn.style.background = '#C8922A';
+    }
+  }
+
+  var kebabBtn = document.getElementById('nb-add-kebab-btn');
+  if (kebabBtn) {
+    if (kebabCount > 0) {
+      kebabBtn.textContent = '+ Add More (' + kebabCount + ')';
+      kebabBtn.style.background = '#2E7D32';
+    } else {
+      kebabBtn.textContent = '+ Add';
+      kebabBtn.style.background = '#C8922A';
+    }
+  }
+
+  var jamunBtn = document.getElementById('nb-add-jamun-btn');
+  if (jamunBtn) {
+    if (jamunCount > 0) {
+      jamunBtn.textContent = '+ Add More (' + jamunCount + ')';
+      jamunBtn.style.background = '#2E7D32';
+    } else {
+      jamunBtn.textContent = '+ Add';
+      jamunBtn.style.background = '#C8922A';
     }
   }
 
