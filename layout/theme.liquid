@@ -539,38 +539,46 @@
       .nb-food-grid {
         display: block !important;
         width: 100% !important;
-        box-sizing: border-box !important;
-      }
-      .nb-food-card {
+        box-sizing: border-box !i      .nb-food-card {
         width: 100% !important;
         box-sizing: border-box !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
-        padding: 10px 10px !important;
-        gap: 10px !important;
+        padding: 12px !important;
+        gap: 12px !important;
         overflow: hidden !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: flex-start !important;
+        border-radius: 14px !important;
       }
       .nb-food-card__image {
-        width: 85px !important;
-        height: 85px !important;
-        min-width: 85px !important;
-        max-width: 85px !important;
+        width: 95px !important;
+        height: 95px !important;
+        min-width: 95px !important;
+        max-width: 95px !important;
         position: relative !important;
         overflow: hidden !important;
         border-radius: 10px !important;
         flex-shrink: 0 !important;
       }
+      .nb-food-card__image img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center !important;
+      }
       .nb-badge,
       span.nb-badge,
       .nb-food-card .nb-badge {
-        top: 3px !important;
-        left: 3px !important;
-        font-size: 0.50rem !important;
+        top: 4px !important;
+        left: 4px !important;
+        font-size: 0.55rem !important;
         font-weight: 800 !important;
-        padding: 2px 4px !important;
-        border-radius: 5px !important;
+        padding: 2px 6px !important;
+        border-radius: 6px !important;
         letter-spacing: 0.1px !important;
-        max-width: calc(100% - 6px) !important;
+        max-width: calc(100% - 8px) !important;
         white-space: nowrap !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -580,46 +588,113 @@
         flex: 1 1 0 !important;
         min-width: 0 !important;
         width: 100% !important;
-        overflow: hidden !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: space-between !important;
         box-sizing: border-box !important;
       }
       .nb-food-card__title {
-        font-size: 0.88rem !important;
-        margin-bottom: 2px !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        white-space: nowrap !important;
+        font-size: 0.94rem !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        margin-bottom: 4px !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        color: #2C1810 !important;
       }
       .nb-food-card__desc {
-        font-size: 0.72rem !important;
-        line-height: 1.25 !important;
-        margin-bottom: 3px !important;
-        display: -webkit-box !important;
-        -webkit-line-clamp: 2 !important;
-        -webkit-box-orient: vertical !important;
-        overflow: hidden !important;
+        font-size: 0.78rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 6px !important;
+        display: block !important;
+        overflow: visible !important;
+        color: #66554B !important;
+        word-break: break-word !important;
       }
       .nb-food-card__meta {
         gap: 4px !important;
-        margin-bottom: 4px !important;
+        margin-bottom: 6px !important;
       }
       .nb-meta-tag {
-        font-size: 0.65rem !important;
-        padding: 1.5px 6px !important;
-        border-radius: 10px !important;
+        font-size: 0.68rem !important;
+        padding: 2px 6px !important;
+        border-radius: 8px !important;
       }
       .nb-food-card__bottom {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
-        gap: 4px !important;
+        gap: 6px !important;
         width: 100% !important;
-        margin-top: auto !important;
-        padding-top: 2px !important;
+        margin-top: 6px !important;
+      }
+
+      /* MOBILE SPECIFIC: FEATURED FULL-WIDTH MEAL CARD */
+      .nb-food-card--meal {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 14px !important;
+        gap: 12px !important;
+        background: linear-gradient(135deg, #FFFDF9 0%, #FDF7EC 100%) !important;
+        border: 1.5px solid rgba(200, 146, 42, 0.45) !important;
+        box-shadow: 0 4px 16px rgba(200, 146, 42, 0.12) !important;
+      }
+      .nb-food-card--meal .nb-food-card__image {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 100% !important;
+        height: 190px !important;
+        border-radius: 12px !important;
+        margin: 0 !important;
+        background: #2C1810 !important;
+      }
+      .nb-food-card--meal .nb-food-card__image img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center 65% !important;
+      }
+      .nb-food-card--meal .nb-food-card__body {
+        width: 100% !important;
+        display: block !important;
+      }
+      .nb-food-card--meal .nb-food-card__title {
+        font-size: 1.2rem !important;
+        font-weight: 800 !important;
+        color: #2C1810 !important;
+        margin-bottom: 4px !important;
+      }
+      .nb-food-card--meal .nb-food-card__desc {
+        font-size: 0.84rem !important;
+        line-height: 1.45 !important;
+        color: #5C4033 !important;
+        margin-bottom: 12px !important;
+      }
+      .nb-food-card--meal .nb-variant-selector {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        width: 100% !important;
+        margin: 10px 0 !important;
+      }
+      .nb-food-card--meal .nb-variant-pill {
+        width: 100% !important;
         box-sizing: border-box !important;
+        padding: 10px 14px !important;
+        font-size: 0.82rem !important;
+        line-height: 1.35 !important;
+        border-radius: 10px !important;
+        white-space: normal !important;
+        text-align: left !important;
+      }
+      .nb-food-card--meal .nb-food-card__bottom {
+        margin-top: 12px !important;
+        padding-top: 10px !important;
+        border-top: 1px solid rgba(200, 146, 42, 0.2) !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
       }
       .nb-food-card__price {
         font-size: 0.95rem !important;
