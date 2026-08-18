@@ -74,7 +74,7 @@
               <div>
                 <h3 class="nb-food-card__title">{{ product.title }}</h3>
                 {% if product.description != blank %}
-                  <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 75 }}</p>
+                  <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
                 {% endif %}
               </div>
 
@@ -224,7 +224,7 @@
               <div>
                 <h3 class="nb-food-card__title">{{ product.title }}</h3>
                 {% if product.description != blank %}
-                  <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 55 }}</p>
+                  <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
                 {% endif %}
               </div>
 

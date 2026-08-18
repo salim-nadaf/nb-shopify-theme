@@ -118,7 +118,7 @@
     <div class="nb-food-card__top">
       <h3 class="nb-food-card__title">{{ product.title }}</h3>
       {%- if product.description != blank -%}
-        <p class="nb-food-card__desc">{{ product.description | strip_html | truncate: 60 }}</p>
+        <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
       {%- endif -%}
       <div class="nb-food-card__meta">
         {%- if is_preorder -%}
