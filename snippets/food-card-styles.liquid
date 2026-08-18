@@ -586,6 +586,8 @@ span.nb-badge,
 }
 
 @media (min-width: 769px) {
+  .nb-mobile-only-intro { display: none !important; }
+  .nb-desktop-only-intro { display: block !important; }
   .nb-food-card--meal {
     grid-column: 1 / -1 !important;
     padding: 22px !important;
@@ -594,47 +596,26 @@ span.nb-badge,
     flex-direction: row !important;
     align-items: flex-start !important;
   }
+  .nb-food-card--meal .nb-food-card__header-row {
+    display: contents !important;
+  }
   .nb-food-card--meal .nb-food-card__image {
     width: 180px !important;
     height: 180px !important;
     flex-shrink: 0 !important;
     border-radius: 12px !important;
   }
-}
-
-@media (max-width: 768px) {
-  .nb-food-card--meal {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    padding: 14px !important;
-    gap: 12px !important;
-  }
-  .nb-food-card--meal .nb-food-card__image {
-    width: 100% !important;
-    height: 170px !important;
-    border-radius: 12px !important;
-    margin: 0 0 4px 0 !important;
-  }
-  .nb-food-card--meal .nb-food-card__image img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-  .nb-food-card--meal .nb-food-card__body {
-    width: 100% !important;
+  .nb-food-card--meal .nb-food-card__actions {
+    flex: 1 1 0 !important;
     display: flex !important;
     flex-direction: column !important;
   }
   .nb-food-card--meal .nb-variant-selector {
-    grid-template-columns: 1fr !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 8px !important;
-    margin: 10px 0 !important;
-  }
-  .nb-food-card--meal .nb-variant-pill {
     width: 100% !important;
-    box-sizing: border-box !important;
-    font-size: 0.82rem !important;
+    margin: 12px 0 !important;
   }
 }
 </style>

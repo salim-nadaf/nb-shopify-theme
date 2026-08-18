@@ -59,19 +59,30 @@
             assign badge_icon = '👑'
           %}
           <div class="nb-food-card nb-food-card--meal {% unless is_available %}nb-food-card--soldout{% endunless %}">
-            <div class="nb-food-card__image">
-              {% if product.featured_media %}
-                <img src="{{ product.featured_media | image_url: width: 320 }}"
-                     alt="{{ product.featured_media.alt | escape }}"
-                     width="160" height="160" loading="lazy" />
-              {% else %}
-                <div class="nb-food-card__image-placeholder">🍛</div>
-              {% endif %}
-              <span class="nb-badge {{ badge_class }}">{{ badge_icon }} {{ item_badge }}</span>
+            <div class="nb-food-card__header-row">
+              <div class="nb-food-card__image">
+                {% if product.featured_media %}
+                  <img src="{{ product.featured_media | image_url: width: 360 }}"
+                       alt="{{ product.featured_media.alt | escape }}"
+                       width="180" height="180" loading="lazy" />
+                {% else %}
+                  <div class="nb-food-card__image-placeholder">🍛</div>
+                {% endif %}
+                <span class="nb-badge {{ badge_class }}">{{ badge_icon }} {{ item_badge }}</span>
+              </div>
+
+              <!-- Mobile Top Row Title & Description -->
+              <div class="nb-food-card__intro nb-mobile-only-intro">
+                <h3 class="nb-food-card__title">{{ product.title }}</h3>
+                {% if product.description != blank %}
+                  <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
+                {% endif %}
+              </div>
             </div>
 
-            <div class="nb-food-card__body">
-              <div>
+            <div class="nb-food-card__actions">
+              <!-- Desktop Right Column Title & Description -->
+              <div class="nb-food-card__intro nb-desktop-only-intro">
                 <h3 class="nb-food-card__title">{{ product.title }}</h3>
                 {% if product.description != blank %}
                   <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
