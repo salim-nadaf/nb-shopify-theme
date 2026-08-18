@@ -87,7 +87,7 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",
-    "nb_instant_delivery_enabled": true,
+    "nb_instant_delivery_enabled": false,
     "nb_instant_delivery_status_msg": "Instant Delivery is available",
     "nb_instant_delivery_off_msg": "We’ll be back shortly. Thank you for your patience.",
     "nb_scheduled_ordering_url": "/pages/family-orders",
