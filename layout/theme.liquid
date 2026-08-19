@@ -1000,25 +1000,6 @@
         } catch(e) {}
       }
 
-      function fixContactLinks() {
-        captureOrderSession();
-        var links = document.querySelectorAll('a');
-        links.forEach(function(a) {
-          var text = (a.innerText || a.textContent || '').toLowerCase().trim();
-          var href = (a.getAttribute('href') || '').toLowerCase();
-          if (text.includes('contact us') || text.includes('contact support') || text.includes('need help') || href.includes('contact') || href.includes('mailto:')) {
-            var currentPhone = (localStorage.getItem('nb_phone') || '').replace(/\D/g, '').slice(-10);
-            var waMsg = "Hi Niamat Biryani! I have a question about my order.";
-            if (currentPhone) {
-              waMsg += " My mobile number is +91" + currentPhone + ".";
-            }
-            a.setAttribute('href', 'https://wa.me/919920042456?text=' + encodeURIComponent(waMsg));
-            a.setAttribute('target', '_blank');
-            a.setAttribute('rel', 'noopener');
-          }
-        });
-      }
-
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', fixContactLinks);
       } else {
