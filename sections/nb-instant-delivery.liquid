@@ -64,7 +64,7 @@
                 {% if product.featured_media %}
                   <img src="{{ product.featured_media | image_url: width: 360 }}"
                        alt="{{ product.featured_media.alt | escape }}"
-                       width="180" height="180" loading="lazy" />
+                       width="180" height="180" loading="lazy" decoding="async" />
                 {% else %}
                   <div class="nb-food-card__image-placeholder">🍛</div>
                 {% endif %}
@@ -218,7 +218,7 @@
               {% if product.featured_media %}
                 <img src="{{ product.featured_media | image_url: width: 260 }}"
                      alt="{{ product.featured_media.alt | escape }}"
-                     width="130" height="130" loading="lazy" />
+                     width="130" height="130" loading="lazy" decoding="async" />
               {% else %}
                 <div class="nb-food-card__image-placeholder">🍛</div>
               {% endif %}

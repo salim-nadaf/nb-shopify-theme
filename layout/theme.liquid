@@ -6,19 +6,40 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
-    <!-- Google tag (gtag.js) - Niamat Biryani -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GT-T9KR5T2Q"></script>
+    {%- # theme-check-disable RemoteAsset, AssetPreload -%}
+    <!-- Google tag (gtag.js) - Niamat Biryani (Non-blocking Async DataLayer Queue) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'GT-T9KR5T2Q');
+
+      (function() {
+        var gtmLoaded = false;
+        function loadGtag() {
+          if (gtmLoaded) return;
+          gtmLoaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=GT-T9KR5T2Q';
+          document.head.appendChild(s);
+        }
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGtag, { timeout: 2500 });
+        } else {
+          window.addEventListener('load', function() { setTimeout(loadGtag, 1000); });
+        }
+        ['click', 'scroll', 'touchstart'].forEach(function(e) {
+          document.addEventListener(e, loadGtag, { passive: true, once: true });
+        });
+      })();
     </script>
 
-    <!-- Preload Mobile and Desktop LCP Hero Banner Images Responsively -->
-    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750" as="image" media="(max-width: 767px)" fetchpriority="high">
-    <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1600" as="image" media="(min-width: 768px)" fetchpriority="high">
+    {%- if template.name == 'index' -%}
+      <!-- Preload Mobile and Desktop LCP Hero Banner Images Responsively -->
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1600" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
+    {%- endif -%}
 
     {%- if settings.favicon != blank -%}
       <link
@@ -40,8 +61,9 @@
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@400;600;700;800&display=swap"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap"></noscript>
+    {%- # theme-check-enable RemoteAsset, AssetPreload -%}
 
     {%- render 'meta-tags' -%}
     {%- render 'stylesheets' -%}
@@ -55,7 +77,6 @@
     {% endif %}
 
     {{ content_for_header }}
-    {% render 'judgeme_core' %}
 
     <style>
     /* ===== NIAMAT BIRYANI PALACE — ULTRA-PREMIUM STOREWIDE MASTER STYLES ===== */
@@ -750,8 +771,9 @@
 
     {% render 'chat-drawer' %}
     {% render 'nb-cart-drawer' %}
-    {% render 'nb-auth-gate' %}
-    {% render 'nb-form-styles' %}
+    {% unless template.name == 'index' %}
+      {% render 'nb-form-styles' %}
+    {% endunless %}
 
     <div class="page-wrapper">
       <div id="header-group">
@@ -761,49 +783,59 @@
       <script>
         (function setHeaderHeighCustomProperties() {
           function calculateHeaderHeights() {
-            const header = document.querySelector('header-component');
-            const headerGroup = document.querySelector('#header-group');
-            const hasHeaderSection = headerGroup?.querySelector('.header-section');
+            var header = document.querySelector('header-component');
+            var headerGroup = document.querySelector('#header-group');
             if (!header || !headerGroup) return;
-            const headerTopRow = header.querySelector('.header__row--top');
-            const headerHeight = header.offsetHeight;
-            let headerGroupHeight = 0;
-            const children = headerGroup.children;
-            for (let i = 0; i < children.length; i++) {
-              const element = children[i];
+            var headerTopRow = header.querySelector('.header__row--top');
+            var headerHeight = header.offsetHeight;
+            var headerGroupHeight = 0;
+            var children = headerGroup.children;
+            for (var i = 0; i < children.length; i++) {
+              var element = children[i];
               if (element === header || !(element instanceof HTMLElement)) continue;
               headerGroupHeight += element.offsetHeight;
             }
-            if (header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+            if (header.hasAttribute('transparent') && header.parentElement && header.parentElement.nextElementSibling) {
               headerGroupHeight += headerHeight;
             }
-            document.body.style.setProperty('--header-height', `${headerHeight}px`);
-            document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
-            if (headerTopRow) {
-              document.body.style.setProperty('--top-row-height', `${headerTopRow.offsetHeight}px`);
-            }
-            if (!hasHeaderSection || !header?.hasAttribute('transparent')) {
+            var topRowHeight = headerTopRow ? headerTopRow.offsetHeight : 0;
+
+            // Batch style writes after reads to prevent forced synchronous reflow
+            window.requestAnimationFrame(function() {
+              document.body.style.setProperty('--header-height', headerHeight + 'px');
+              document.body.style.setProperty('--header-group-height', headerGroupHeight + 'px');
+              if (topRowHeight > 0) {
+                document.body.style.setProperty('--top-row-height', topRowHeight + 'px');
+              }
               document.body.style.setProperty('--transparent-header-offset-boolean', '0');
-              return;
-            }
-            const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
-            const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
-            document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
+            });
           }
-          if (window.requestAnimationFrame) {
-            window.requestAnimationFrame(calculateHeaderHeights);
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', calculateHeaderHeights, { passive: true });
           } else {
-            calculateHeaderHeights();
+            if (window.requestAnimationFrame) {
+              window.requestAnimationFrame(calculateHeaderHeights);
+            } else {
+              calculateHeaderHeights();
+            }
           }
         })();
 
         (function setHeaderMenuStyle() {
-          const headerComponent = document.querySelector('#header-component');
-          if (headerComponent) {
-            const isTouchDevice = 'ontouchstart' in window && navigator.maxTouchPoints > 0;
-            const overflowList = headerComponent?.querySelector('overflow-list');
-            const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
-            headerComponent.dataset.menuStyle = isTouchDevice || hasReachedMinimum ? 'drawer' : 'menu';
+          function initMenuStyle() {
+            var headerComponent = document.querySelector('#header-component');
+            if (headerComponent) {
+              var isTouchDevice = 'ontouchstart' in window && navigator.maxTouchPoints > 0;
+              var overflowList = headerComponent.querySelector('overflow-list');
+              var hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
+              headerComponent.dataset.menuStyle = isTouchDevice || hasReachedMinimum ? 'drawer' : 'menu';
+            }
+          }
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initMenuStyle, { passive: true });
+          } else {
+            initMenuStyle();
           }
         })();
       </script>
@@ -819,15 +851,17 @@
         {{ content_for_layout }}
       </main>
 
-      <div id="nb-bulk-orders-template" style="display:none !important;" aria-hidden="true">
-        {% render 'nb-bulk-orders-snippet' %}
-      </div>
-      <div id="nb-biryani-calculator-template" style="display:none !important;" aria-hidden="true">
-        {% render 'nb-biryani-calculator-snippet' %}
-      </div>
-      <div id="nb-family-orders-template" style="display:none !important;" aria-hidden="true">
-        {% render 'nb-family-orders-snippet' %}
-      </div>
+      {% unless template.name == 'index' %}
+        <div id="nb-bulk-orders-template" style="display:none !important;" aria-hidden="true">
+          {% render 'nb-bulk-orders-snippet' %}
+        </div>
+        <div id="nb-biryani-calculator-template" style="display:none !important;" aria-hidden="true">
+          {% render 'nb-biryani-calculator-snippet' %}
+        </div>
+        <div id="nb-family-orders-template" style="display:none !important;" aria-hidden="true">
+          {% render 'nb-family-orders-snippet' %}
+        </div>
+      {% endunless %}
 
       <script>
         (function nbPageFallbackEngine() {
@@ -940,23 +974,23 @@
 
     <!-- NIAMAT BIRYANI: Mobile Bottom Dock -->
 <div id="nb-mobile-dock">
-  <a href="/">
+  <a href="{{ routes.root_url }}">
     <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     <span>Home</span>
   </a>
-  <a href="/collections/family-orders">
+  <a href="{{ routes.collections_url }}/family-orders">
     <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
     <span>Menu</span>
   </a>
-  <a href="/collections/instant-delivery">
+  <a href="{{ routes.collections_url }}/instant-delivery">
     <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
     <span>Instant</span>
   </a>
-  <a href="/pages/family-orders">
+  <a href="{{ pages['family-orders'].url | default: '/pages/family-orders' }}">
     <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
     <span>Family</span>
   </a>
-  <a href="/cart" onclick="event.preventDefault(); nbOpenDrawer();">
+  <a href="{{ routes.cart_url }}" onclick="event.preventDefault(); nbOpenDrawer();">
     <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
     <span>Cart</span>
   </a>
@@ -1001,12 +1035,10 @@
       }
 
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', fixContactLinks);
+        document.addEventListener('DOMContentLoaded', captureOrderSession, { passive: true });
       } else {
-        fixContactLinks();
+        captureOrderSession();
       }
-      setTimeout(fixContactLinks, 1000);
-      setTimeout(fixContactLinks, 2500);
     })();
   </script>
 

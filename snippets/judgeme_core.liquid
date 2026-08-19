@@ -1,21 +1,25 @@
 {% comment %}
-  JUDGE.ME CORE SCRIPT INTEGRATION — Deferred Loader
+  JUDGE.ME CORE SCRIPT INTEGRATION — Deferred Loader with Deduplication Guard
 {% endcomment %}
 <script>
   (function() {
     var judgeLoaded = false;
     function loadJudge() {
-      if (judgeLoaded) return;
+      if (judgeLoaded || (window.jdgm && window.jdgm.CDN_HOST)) return;
       judgeLoaded = true;
       var scr = document.createElement('script');
       scr.src = "https://cdn.judge.me/shopify_v2.js";
       scr.async = true;
       document.head.appendChild(scr);
     }
-    // Load after 3.5s or on first user interaction (scroll/click/touchstart)
-    window.addEventListener('load', function() {
-      setTimeout(loadJudge, 3500);
-    });
+    // Load during idle or on first user interaction (scroll/click/touchstart)
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadJudge, { timeout: 3500 });
+    } else {
+      window.addEventListener('load', function() {
+        setTimeout(loadJudge, 3000);
+      });
+    }
     ['click', 'scroll', 'touchstart'].forEach(function(ev) {
       document.addEventListener(ev, loadJudge, { passive: true, once: true });
     });

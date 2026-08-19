@@ -163,59 +163,40 @@
   <!-- 2. HERO BANNER -->
   {% unless section.settings.show_hero == false %}
     <div class="nb-hero-banner">
-
-      <!-- MOBILE HERO MEDIA (Shown on screens < 768px) -->
-      <div class="nb-hero-mobile-media">
-        <img
-          src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750"
-          srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=400 400w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750 750w"
-          sizes="100vw"
-          alt="Biryani Palace by Niamat"
-          class="nb-hero-bg-img"
-          width="750"
-          height="560"
-          loading="eager"
-          fetchpriority="high"
-          decoding="async"
-        />
-      </div>
-
-      <!-- DESKTOP HERO MEDIA (Shown on screens >= 768px) -->
-      <div class="nb-hero-desktop-media">
-        {% if section.settings.hero_desktop_image != blank %}
+      <!-- UNIFIED RESPONSIVE HERO MEDIA -->
+      <div class="nb-hero-media">
+        {% liquid
+          assign hero_img_obj = section.settings.hero_desktop_image
+          if hero_img_obj == blank
+            assign hero_img_obj = section.settings.hero_image
+          endif
+        %}
+        {% if hero_img_obj != blank %}
           <img
-            src="{{ section.settings.hero_desktop_image | image_url: width: 1600, format: 'webp' }}"
-            srcset="{{ section.settings.hero_desktop_image | image_url: width: 1000, format: 'webp' }} 1000w, {{ section.settings.hero_desktop_image | image_url: width: 1600, format: 'webp' }} 1600w"
+            src="{{ hero_img_obj | image_url: width: 750, format: 'webp' }}"
+            srcset="{{ hero_img_obj | image_url: width: 390, format: 'webp' }} 390w, {{ hero_img_obj | image_url: width: 750, format: 'webp' }} 750w, {{ hero_img_obj | image_url: width: 1100, format: 'webp' }} 1100w, {{ hero_img_obj | image_url: width: 1600, format: 'webp' }} 1600w"
             sizes="100vw"
-            alt="Biryani Palace Desktop"
+            alt="Biryani Palace by Niamat"
             class="nb-hero-bg-img"
-            width="1600"
-            height="800"
+            width="750"
+            height="560"
             loading="eager"
             fetchpriority="high"
             decoding="async"
           />
-        {% elsif section.settings.hero_image != blank %}
+        {% else %}
           <img
-            src="{{ section.settings.hero_image | image_url: width: 1600, format: 'webp' }}"
-            srcset="{{ section.settings.hero_image | image_url: width: 1000, format: 'webp' }} 1000w, {{ section.settings.hero_image | image_url: width: 1600, format: 'webp' }} 1600w"
+            src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750"
+            srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=390 390w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750 750w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1100 1100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1600 1600w"
             sizes="100vw"
-            alt="Biryani Palace Desktop"
+            alt="Biryani Palace by Niamat"
             class="nb-hero-bg-img"
-            width="1600"
-            height="800"
+            width="750"
+            height="560"
             loading="eager"
             fetchpriority="high"
             decoding="async"
           />
-        {% endif %}
-
-        {% if section.settings.hero_desktop_video_url != blank %}
-          <video muted loop playsinline preload="none" class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_desktop_video_url }}"></video>
-        {% elsif section.settings.hero_video_url != blank %}
-          <video muted loop playsinline preload="none" class="nb-hero-bg nb-lazy-video" data-src="{{ section.settings.hero_video_url }}"></video>
-        {% elsif section.settings.hero_desktop_image == blank and section.settings.hero_image == blank %}
-          <div class="nb-hero-glow"></div>
         {% endif %}
       </div>
 
@@ -349,7 +330,7 @@
             </div>
             <div class="nb-food-card__bottom">
               <span class="nb-food-card__price">₹599</span>
-              <a href="https://wa.me/919920042456?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20order%20Ustaadi%20Murgh%20Dum%20Biryani%20Bucket%20(Half%20Kg%20-%20%E2%82%B9599)" target="_blank" class="nb-btn nb-btn--outline">Pre-Order →</a>
+              <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20order%20Ustaadi%20Murgh%20Dum%20Biryani%20Bucket%20(Half%20Kg%20-%20%E2%82%B9599)" target="_blank" class="nb-btn nb-btn--outline">Pre-Order →</a>
             </div>
           </div>
         </div>
@@ -380,7 +361,7 @@
             </div>
             <div class="nb-food-card__bottom">
               <span class="nb-food-card__price">₹599</span>
-              <a href="https://wa.me/919920042456?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20order%20Alishaan%20Tandoori%20Biryani%20Bucket%20(Half%20Kg%20-%20%E2%82%B9599)" target="_blank" class="nb-btn nb-btn--outline">Pre-Order →</a>
+              <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20order%20Alishaan%20Tandoori%20Biryani%20Bucket%20(Half%20Kg%20-%20%E2%82%B9599)" target="_blank" class="nb-btn nb-btn--outline">Pre-Order →</a>
             </div>
           </div>
         </div>
@@ -411,7 +392,7 @@
             </div>
             <div class="nb-food-card__bottom">
               <span class="nb-food-card__price">₹1,028</span>
-              <a href="https://wa.me/919920042456?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20order%20Ustaadi%20Murgh%20Dum%20Biryani%20Bucket%20(1%20Kg%20-%20%E2%82%B91028)" target="_blank" class="nb-btn nb-btn--outline">Pre-Order →</a>
+              <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20order%20Ustaadi%20Murgh%20Dum%20Biryani%20Bucket%20(1%20Kg%20-%20%E2%82%B91028)" target="_blank" class="nb-btn nb-btn--outline">Pre-Order →</a>
             </div>
           </div>
         </div>
@@ -442,7 +423,7 @@
             </div>
             <div class="nb-food-card__bottom">
               <span class="nb-food-card__price">₹1,128</span>
-              <a href="https://wa.me/919920042456?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20order%20Alishaan%20Tandoori%20Biryani%20Bucket%20(1%20Kg%20-%20%E2%82%B91128)" target="_blank" class="nb-btn nb-btn--outline">Pre-Order →</a>
+              <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20order%20Alishaan%20Tandoori%20Biryani%20Bucket%20(1%20Kg%20-%20%E2%82%B91128)" target="_blank" class="nb-btn nb-btn--outline">Pre-Order →</a>
             </div>
           </div>
         </div>
@@ -540,9 +521,7 @@
 }
 
 .nb-hero-banner { position: relative; background: linear-gradient(135deg, #160B07 0%, var(--nb-dark-bg) 100%) !important; color: #fff; padding: 48px 16px !important; width: 100vw !important; left: 50% !important; right: 50% !important; margin-left: -50vw !important; margin-right: -50vw !important; min-height: 480px !important; height: 75vh !important; max-height: 600px !important; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; box-sizing: border-box; }
-.nb-hero-mobile-media { display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-.nb-hero-desktop-media { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-.nb-hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.nb-hero-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 .nb-hero-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 .nb-hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, var(--nb-overlay-opac)) !important; z-index: 2; }
 .nb-hero-glow { position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(230,179,61,0.38) 0%, transparent 70%); pointer-events: none; z-index: 1; }
@@ -657,8 +636,6 @@
 
 @media (min-width: 768px) {
   .nb-hero-banner { min-height: 480px !important; height: 65vh !important; max-height: 580px !important; padding: 56px 24px !important; width: 100vw !important; margin-left: -50vw !important; margin-right: -50vw !important; }
-  .nb-hero-mobile-media { display: none !important; }
-  .nb-hero-desktop-media { display: block !important; }
   .nb-grid-2 { grid-template-columns: 1fr 1fr; gap: 24px; }
   .nb-grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
   .nb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
@@ -667,42 +644,8 @@
   .nb-hero-buttons .nb-btn-outline { width: auto; min-width: 200px; }
   .nb-section-header h2 { font-size: 2.2rem; }
   .nb-hero-title { font-size: 3rem; }
-  .nb-hero-video-desktop { display: none !important; }
-}
-@media (max-width: 767px) {
-  .nb-hero-video-desktop { display: none !important; }
 }
 </style>
-
-<script>
-(function() {
-  var nbVideosInitialized = false;
-  function initLazyVideos() {
-    if (window.innerWidth < 768) return;
-    if (nbVideosInitialized) return;
-    nbVideosInitialized = true;
-    var lazyVideos = document.querySelectorAll('.nb-lazy-video');
-    lazyVideos.forEach(function(video) {
-      if (video.closest('.nb-hero-desktop-media')) {
-        var src = video.getAttribute('data-src');
-        if (src) {
-          var source = document.createElement('source');
-          source.src = src;
-          source.type = 'video/mp4';
-          video.appendChild(source);
-          video.load();
-          video.play().catch(function(err) {});
-        }
-      }
-    });
-  }
-
-  // Strictly load on user interaction (scroll, click, touch, mousemove)
-  ['click', 'scroll', 'touchstart', 'mousemove'].forEach(function(ev) {
-    window.addEventListener(ev, initLazyVideos, { passive: true, once: true });
-  });
-})();
-</script>
 
 {% schema %}
 {

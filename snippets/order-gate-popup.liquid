@@ -1,7 +1,7 @@
 {% comment %}
   NIAMAT BIRYANI — Order Gate Popup Snippet
-  Saves gate_phone, gate_name, gate_email, updates /cart/update.js attributes,
-  pre-fills checkout URL parameters, and auto-fills fields across pages.
+  Saves gate_phone & gate_name to localStorage, updates /cart/update.js attributes via async/await,
+  logs cart attribute response to console, and auto-fills fields across pages.
 {% endcomment %}
 
 {% render 'nb-auth-gate' %}
@@ -10,17 +10,18 @@
 (function() {
   function nbAutoFillGateFields() {
     var storedPhone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone');
-    var storedName = localStorage.getItem('gate_name') || localStorage.getItem('nb_name');
+    var storedName  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name');
     var storedEmail = localStorage.getItem('gate_email') || localStorage.getItem('nb_email');
 
-    var cleanDigits = storedPhone ? storedPhone.replace(/\D/g, '').slice(-10) : '';
+    if (storedPhone) {
+      var cleanPhone = storedPhone.replace(/\D/g, '').slice(-10);
+      var phoneValue = cleanPhone || storedPhone;
 
-    if (cleanDigits) {
-      // 1. Auto-fill any visible tel/phone inputs on load
+      // 1. Auto-fill any input[type="tel"], input[name*="phone"], and input[id*="phone"] fields found in the DOM
       var phoneInputs = document.querySelectorAll('input[type="tel"], input[name*="phone"], input[id*="phone"]');
       phoneInputs.forEach(function(input) {
         if (input && !input.value && input.id !== 'nb-phone-input') {
-          input.value = cleanDigits;
+          input.value = phoneValue;
           input.dispatchEvent(new Event('input', { bubbles: true }));
           input.dispatchEvent(new Event('change', { bubbles: true }));
         }
@@ -38,7 +39,7 @@
         });
       }
 
-      // 3. Auto-fill any visible email inputs (Optional Email Feature)
+      // 3. Auto-fill any visible email inputs (if present)
       if (storedEmail) {
         var emailInputs = document.querySelectorAll('input[type="email"], input[name*="email"], input[id*="email"]');
         emailInputs.forEach(function(input) {
@@ -52,13 +53,19 @@
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', nbAutoFillGateFields);
-  } else {
-    nbAutoFillGateFields();
+  function scheduleIdleFill() {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(nbAutoFillGateFields, { timeout: 2000 });
+    } else {
+      setTimeout(nbAutoFillGateFields, 250);
+    }
   }
 
-  setTimeout(nbAutoFillGateFields, 500);
-  setTimeout(nbAutoFillGateFields, 1500);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleIdleFill, { passive: true });
+  } else {
+    scheduleIdleFill();
+  }
 })();
 </script>
+

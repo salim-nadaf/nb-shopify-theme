@@ -22,7 +22,11 @@
     <div class="nb-drawer__header-logo-wrap">
       <img src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/BP_by_Niamat-removebg-preview.png?v=1785663837"
            alt="Biryani Palace by Niamat"
-           class="nb-drawer__logo">
+           class="nb-drawer__logo"
+           width="140"
+           height="40"
+           loading="lazy"
+           decoding="async">
     </div>
     <button class="nb-drawer__close" onclick="nbCloseDrawer()" aria-label="Close Cart">✕</button>
   </div>
@@ -69,38 +73,29 @@
     <!-- CART ITEMS CONTAINER -->
     <div id="nb-cart-items" class="nb-drawer__items"></div>
 
-    <!-- COMPLETE YOUR ORDER (EXTRA RAITA, SHAMI KEBAB, GULAB JAMUN) -->
+    <!-- COMPLETE YOUR ORDER (CHICKEN SHAMI KEBAB, GULAB JAMUN) -->
     <div class="nb-drawer__upsell-section">
       <div class="nb-upsell-header">
-        <span>🥣</span>
+        <span>🍽️</span>
         <h4>Complete your order</h4>
       </div>
       <div class="nb-upsell-grid">
-        <!-- 1. Extra Raita -->
-        <div class="nb-upsell-pill-card">
-          <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">Niamat Extra Raita</span>
-            <span class="nb-upsell-pill-price">₹49</span>
-          </div>
-          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Raita', 4900)">+ Add</button>
-        </div>
-
-        <!-- 2. Chicken Shami Kebab -->
+        <!-- 1. Chicken Shami Kebab -->
         <div class="nb-upsell-pill-card">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">Chicken Shami Kebab</span>
-            <span class="nb-upsell-pill-price">₹69</span>
+            <span class="nb-upsell-pill-price">₹29</span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-kebab-btn" onclick="nbAddUpsell(this, 'shami-kebab', 'Chicken Shami Kebab', 6900)">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-kebab-btn" onclick="nbAddUpsell(this, 'chicken-shami-kebab', 'Chicken Shami Kebab', 2900)">+ Add</button>
         </div>
 
-        <!-- 3. Gulab Jamun -->
+        <!-- 2. Gulab Jamun -->
         <div class="nb-upsell-pill-card">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">Gulab Jamun</span>
-            <span class="nb-upsell-pill-price">₹99</span>
+            <span class="nb-upsell-pill-price">₹39</span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-jamun-btn" onclick="nbAddUpsell(this, 'gulab-jamun', 'Gulab Jamun', 9900)">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-jamun-btn" onclick="nbAddUpsell(this, 'gulab-jamun', 'Gulab Jamun', 3900)">+ Add</button>
         </div>
       </div>
     </div>
@@ -661,43 +656,11 @@ function nbSaveInstructions() {
 }
 
 function nbBuildCheckoutUrl(phone, name, email) {
-  var rawDigits = (phone || '').trim().replace(/\D/g, '');
-  var tenDigits = rawDigits.length >= 10 ? rawDigits.slice(-10) : rawDigits;
-  var formattedWithPlus = tenDigits ? ('+91' + tenDigits) : '';
-
-  var params = [];
-  if (tenDigits) {
-    params.push('checkout[shipping_address][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('checkout[shipping_address][country]=India');
-    params.push('checkout[billing_address][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('checkout[contact][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('checkout[email_or_phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('checkout[phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('phone=' + encodeURIComponent(tenDigits));
-  }
-
-  if (email && email.includes('@')) {
-    var cleanEmail = email.trim();
-    params.push('checkout[email]=' + encodeURIComponent(cleanEmail));
-    params.push('checkout[contact][email]=' + encodeURIComponent(cleanEmail));
-    params.push('email=' + encodeURIComponent(cleanEmail));
-  }
-
-  if (name) {
-    var nameParts = name.trim().split(/\s+/);
-    var firstName = nameParts[0] || name;
-    var lastName = nameParts.slice(1).join(' ') || 'Customer';
-    params.push('checkout[shipping_address][first_name]=' + encodeURIComponent(firstName));
-    params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
-    params.push('checkout[billing_address][first_name]=' + encodeURIComponent(firstName));
-    params.push('checkout[billing_address][last_name]=' + encodeURIComponent(lastName));
-    params.push('checkout[name]=' + encodeURIComponent(name));
-  }
-
-  return params.length > 0 ? ('/checkout?' + params.join('&')) : '/checkout';
+  // Shopify Basic plan does not support checkout URL params pre-filling
+  return '/checkout';
 }
 
-function nbGoToCheckout() {
+async function nbGoToCheckout() {
   if (NB_CONFIG.instantDeliveryEnabled === false) {
     nbShowToast('🔴 Instant Delivery is temporarily paused.');
     var offNotice = document.getElementById('nb-instant-disabled-cart-notice');
@@ -713,35 +676,38 @@ function nbGoToCheckout() {
   var email = localStorage.getItem('gate_email') || localStorage.getItem('nb_email') || '';
 
   var cleanPhone = phone.replace(/\D/g, '').slice(-10);
-  var targetUrl = nbBuildCheckoutUrl(cleanPhone, name, email);
 
   var noteText = 'WhatsApp/Delivery Phone: ' + (cleanPhone ? ('+91' + cleanPhone) : 'Not provided');
   if (name) noteText += ' | Name: ' + name;
   if (email) noteText += ' | Email: ' + email;
   if (instructions) noteText += ' | Instructions: ' + instructions;
 
-  fetch('/cart/update.js', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      attributes: { 
-        'Phone': cleanPhone ? ('+91' + cleanPhone) : '',
-        'Customer Phone': cleanPhone ? ('+91' + cleanPhone) : '',
-        'Mobile Number': cleanPhone ? ('+91' + cleanPhone) : '',
-        'WhatsApp Number': cleanPhone ? ('+91' + cleanPhone) : '',
-        'Customer Name': name,
-        'Customer Email': email,
-        'Email': email,
-        'Instant Delivery Status': NB_CONFIG.instantDeliveryEnabled ? 'Available' : 'Paused',
-        'Order & Delivery Instructions': instructions
-      },
-      note: noteText
-    })
-  }).then(function() {
-    window.location.href = targetUrl;
-  }).catch(function() {
-    window.location.href = targetUrl;
-  });
+  try {
+    var response = await fetch('/cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        attributes: { 
+          'Phone': cleanPhone ? ('+91' + cleanPhone) : '',
+          'Customer Phone': cleanPhone ? ('+91' + cleanPhone) : '',
+          'Mobile Number': cleanPhone ? ('+91' + cleanPhone) : '',
+          'WhatsApp Number': cleanPhone ? ('+91' + cleanPhone) : '',
+          'Customer Name': name,
+          'Customer Email': email,
+          'Email': email,
+          'Instant Delivery Status': NB_CONFIG.instantDeliveryEnabled ? 'Available' : 'Paused',
+          'Order & Delivery Instructions': instructions
+        },
+        note: noteText
+      })
+    });
+    var cartData = await response.json();
+    console.log('Cart drawer checkout update response:', cartData);
+  } catch (e) {
+    console.error('Cart drawer checkout update error:', e);
+  }
+
+  window.location.href = '/checkout';
 }
 
 function nbUpdateCartCustomerCard() {
@@ -823,33 +789,19 @@ function nbRenderCart(cart) {
   var itemsFdText = document.getElementById('nb-items-fd-text');
   var itemsFdFill = document.getElementById('nb-items-fd-fill');
 
-  // UPDATE UPSELL BUTTON STATES BASED ON ACTUAL CART CONTENT (RAITA, SHAMI KEBAB, GULAB JAMUN)
-  var raitaCount = 0;
+  // UPDATE UPSELL BUTTON STATES BASED ON ACTUAL CART CONTENT (SHAMI KEBAB, GULAB JAMUN)
   var kebabCount = 0;
   var jamunCount = 0;
 
   if (cart && cart.items) {
     cart.items.forEach(function(item) {
       var title = (item.product_title || '').toLowerCase();
-      if (title.includes('extra raita') || title.includes('raita')) {
-        raitaCount += item.quantity;
-      } else if (title.includes('shami kebab') || title.includes('shami')) {
+      if (title.includes('shami kebab') || title.includes('shami') || title.includes('kebab')) {
         kebabCount += item.quantity;
       } else if (title.includes('gulab jamun') || title.includes('jamun')) {
         jamunCount += item.quantity;
       }
     });
-  }
-
-  var raitaBtn = document.getElementById('nb-add-raita-btn');
-  if (raitaBtn) {
-    if (raitaCount > 0) {
-      raitaBtn.textContent = '+ Add More (' + raitaCount + ')';
-      raitaBtn.style.background = '#2E7D32';
-    } else {
-      raitaBtn.textContent = '+ Add';
-      raitaBtn.style.background = '#C8922A';
-    }
   }
 
   var kebabBtn = document.getElementById('nb-add-kebab-btn');

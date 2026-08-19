@@ -17,6 +17,10 @@
                maxlength="10" pattern="[0-9]{10}" inputmode="numeric"
                autocomplete="tel-national">
       </div>
+      <div class="nb-checkout-sync-notice">
+        <span class="nb-sync-icon">📱</span>
+        <span>Please use this same mobile number on the final checkout page so that you will get order confirmation and tracking details.</span>
+      </div>
       <p class="nb-auth-consent">
         📋 Your number will be used only for order confirmations and delivery updates. We will never share it with third parties.
       </p>
@@ -47,6 +51,10 @@
       <div>
         <input type="email" id="nb-email-input" class="nb-name-input"
                placeholder="Email address (Optional for official receipts)" autocomplete="email" inputmode="email">
+      </div>
+      <div class="nb-checkout-sync-notice" style="margin-top: 10px;">
+        <span class="nb-sync-icon">💡</span>
+        <span>Use this same mobile number on final checkout to receive live WhatsApp updates.</span>
       </div>
       <p class="nb-auth-returning" id="nb-returning-msg" style="display:none; margin-top: 8px;">
         ✅ Welcome back! We found your previous orders.
@@ -180,6 +188,26 @@
 .nb-promo-consent span { font-size: 0.82rem; color: #2C1810; line-height: 1.4; font-weight: 500; }
 .nb-promo-note { font-size: 0.72rem; color: #9A8070; margin: 0 0 0 28px; }
 
+.nb-checkout-sync-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(200, 146, 42, 0.12);
+  border: 1px solid rgba(200, 146, 42, 0.35);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 12px 0 8px;
+  font-size: 0.82rem;
+  color: #2C1810;
+  line-height: 1.45;
+  text-align: left;
+}
+.nb-sync-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
 .nb-auth-returning {
   font-size: 0.85rem; color: #2C7A2C; font-weight: 600;
   text-align: center; padding: 10px;
@@ -219,12 +247,11 @@ var nbAuthPendingForm   = null;
 function nbShowAuthGate(action, form) {
   var existingPhone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone');
   var existingName  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name');
-  var existingEmail = localStorage.getItem('gate_email') || localStorage.getItem('nb_email');
 
   // Do not show popup again if gate_phone is already set in localStorage
   if (existingPhone && (existingName || action !== 'cart')) {
     if (action === 'checkout') {
-      window.location.href = nbBuildCheckoutUrl(existingPhone, existingName, existingEmail);
+      window.location.href = '/checkout';
       return;
     }
     nbAuthExecutePendingAction(action, form);
@@ -288,19 +315,8 @@ function nbAuthSubmitPhone() {
   localStorage.setItem('nb_promo_consent', promoConsent ? 'yes' : 'no');
   localStorage.setItem('nb_consent_date', new Date().toISOString());
 
-  // Immediately POST to /cart/update.js using fetch to set cart attributes
-  fetch('/cart/update.js', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      attributes: {
-        'Customer Phone': formattedPhone,
-        'Phone': formattedPhone,
-        'Mobile Number': formattedPhone,
-        'WhatsApp Number': formattedPhone
-      }
-    })
-  }).catch(function(e) {});
+  // Trigger instant notification email
+  nbSendLeadContactEmail(formattedPhone, '', '', promoConsent);
 
   // Pre-fill name if returning customer
   var savedName = localStorage.getItem('gate_name') || localStorage.getItem('nb_name');
@@ -324,7 +340,39 @@ function nbAuthSubmitPhone() {
   }, 200);
 }
 
-function nbAuthSaveName() {
+function nbSendLeadContactEmail(phone, name, customEmail, promoConsent) {
+  try {
+    var cleanPhone10 = (phone || '').replace(/\D/g,'').slice(-10);
+    if (!cleanPhone10) return;
+    
+    var leadEmail = (customEmail && customEmail.indexOf('@') > 0) 
+      ? customEmail 
+      : ('customer_' + cleanPhone10 + '@niamatbiryani.in');
+    
+    var leadFormData = new FormData();
+    leadFormData.append('form_type', 'contact');
+    leadFormData.append('utf8', '✓');
+    leadFormData.append('contact[name]', name || ('Online Customer (+91 ' + cleanPhone10 + ')'));
+    leadFormData.append('contact[email]', leadEmail);
+    leadFormData.append('contact[phone]', '+91' + cleanPhone10);
+    leadFormData.append('contact[body]', [
+      '🔔 NEW ORDER GATE POPUP LEAD / PHONE CAPTURED:',
+      '• Mobile / WhatsApp: +91 ' + cleanPhone10,
+      '• Customer Name: ' + (name || 'Not provided yet'),
+      '• Email: ' + (customEmail || 'Not provided'),
+      '• WhatsApp Offers Consent: ' + (promoConsent ? 'YES (Opted In)' : 'NO (Transactional Only)'),
+      '• Time: ' + new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      '• Note: Captured from Order Gate popup before checkout.'
+    ].join('\n'));
+
+    fetch('/contact', {
+      method: 'POST',
+      body: leadFormData
+    }).catch(function(e) {});
+  } catch(err) {}
+}
+
+async function nbAuthSaveName() {
   if (window.nbAuthSaving) return;
 
   var nameInput = document.getElementById('nb-name-input');
@@ -343,7 +391,12 @@ function nbAuthSaveName() {
     btn.disabled = true;
   }
 
+  var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
+
+  // 1. On submit, save gate_phone and gate_name to localStorage
+  localStorage.setItem('gate_phone', phone);
   localStorage.setItem('gate_name', name);
+  localStorage.setItem('nb_phone', phone);
   localStorage.setItem('nb_name', name);
 
   var emailInput = document.getElementById('nb-email-input');
@@ -353,147 +406,93 @@ function nbAuthSaveName() {
     localStorage.setItem('nb_email', customEmail);
   }
 
-  var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
   var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
 
-  // 1. Instant background lead push to Shopify Admin Customers database
+  // Send store owner notification email via Shopify Contact Engine
+  nbSendLeadContactEmail(phone, name, customEmail, promoConsent);
+
+  // 2. Use await fetch('/cart/update.js', ...) to save cart attributes and log response JSON
   try {
-    var leadEmail = (customEmail && customEmail.indexOf('@') > 0) ? customEmail : ('customer_' + (phone.replace(/\D/g,'').slice(-10) || Date.now()) + '@niamatbiryani.in');
-    var leadFormData = new FormData();
-    leadFormData.append('form_type', 'customer');
-    leadFormData.append('utf8', '✓');
-    leadFormData.append('contact[email]', leadEmail);
-    leadFormData.append('contact[phone]', phone ? (phone.startsWith('+') ? phone : '+91' + phone.replace(/\D/g,'').slice(-10)) : '');
-    leadFormData.append('contact[first_name]', name);
-    leadFormData.append('contact[tags]', 'AuthGateLead, PreCheckoutLead');
-    if (promoConsent) {
-      leadFormData.append('contact[accepts_marketing]', 'true');
-    }
-
-    fetch('/contact#contact_form', {
+    var response = await fetch('/cart/update.js', {
       method: 'POST',
-      body: leadFormData
-    }).catch(function(e) {});
-  } catch(e) {}
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        attributes: {
+          'Customer Phone': phone,
+          'Customer Name': name,
+          'Phone': phone,
+          'Mobile Number': phone,
+          'WhatsApp Number': phone,
+          'Customer Email': customEmail,
+          'WhatsApp Consent': promoConsent ? 'yes' : 'no'
+        }
+      })
+    });
 
-  // 2. Save to Shopify cart attributes & Order Note
-  var cleanPhone = phone.replace(/\D/g, '').slice(-10);
-  var formattedPhone = cleanPhone ? ('+91' + cleanPhone) : '';
+    var cartData = await response.json();
+    console.log('Cart attributes updated response:', cartData);
+  } catch (err) {
+    console.error('Error updating cart attributes:', err);
+  }
 
-  fetch('/cart/update.js', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      attributes: {
-        'Phone': formattedPhone || cleanPhone,
-        'Customer Phone': formattedPhone || cleanPhone,
-        'Mobile Number': formattedPhone || cleanPhone,
-        'WhatsApp Number': formattedPhone || cleanPhone,
-        'Customer Name': name,
-        'Customer Email': customEmail,
-        'Email': customEmail,
-        'WhatsApp Consent': promoConsent ? 'yes' : 'no'
-      }
-    })
-  }).then(function() {
-    if (btn) {
-      btn.textContent = "Let's Order! 🍛";
-      btn.disabled = false;
-    }
-    nbAuthClose();
+  if (btn) {
+    btn.textContent = "Let's Order! 🍛";
+    btn.disabled = false;
+  }
+  nbAuthClose();
 
-    var targetCheckoutUrl = nbBuildCheckoutUrl(phone, name, customEmail);
+  // 3. After cart attributes are saved, redirect to the target URL (collection or page) without checkout URL params
+  if (nbAuthPendingAction === 'checkout') {
+    nbAuthPendingAction = null;
+    window.nbAuthSaving = false;
+    window.location.href = '/checkout';
 
-    if (nbAuthPendingAction === 'checkout') {
-      nbAuthPendingAction = null;
-      window.nbAuthSaving = false;
-      window.location.href = targetCheckoutUrl;
+  } else if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
+    var pendingForm = nbAuthPendingForm;
+    nbAuthPendingAction = null;
+    nbAuthPendingForm   = null;
 
-    } else if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
-      var pendingForm = nbAuthPendingForm;
-      nbAuthPendingAction = null;
-      nbAuthPendingForm   = null;
+    if (window.nbCartAdding) return;
+    window.nbCartAdding = true;
 
-      if (window.nbCartAdding) return;
-      window.nbCartAdding = true;
-
-      var variantId = pendingForm.querySelector('[name="id"]').value;
-      fetch('/cart/add.js', {
+    var variantId = pendingForm.querySelector('[name="id"]').value;
+    try {
+      await fetch('/cart/add.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
-      })
-      .then(function() {
-        if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
-        else window.location.href = '/cart';
-      })
-      .catch(function(err) {
-        console.error('Cart add error:', err);
-      })
-      .finally(function() {
-        setTimeout(function() {
-          window.nbCartAdding = false;
-          window.nbAuthSaving = false;
-        }, 800);
       });
-
-    } else if (nbAuthPendingAction === 'preorder') {
-      nbAuthPendingAction = null;
-      window.nbAuthSaving = false;
-      window.location.href = '/pages/family-orders';
-
-    } else {
-      window.nbAuthSaving = false;
       if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+      else window.location.href = '/cart';
+    } catch(cartErr) {
+      console.error('Cart add error:', cartErr);
+    } finally {
+      setTimeout(function() {
+        window.nbCartAdding = false;
+        window.nbAuthSaving = false;
+      }, 800);
     }
 
-  }).catch(function(err) {
-    console.error('Cart update error:', err);
-    if (btn) {
-      btn.textContent = "Let's Order! 🍛";
-      btn.disabled = false;
-    }
+  } else if (nbAuthPendingAction === 'preorder') {
+    nbAuthPendingAction = null;
     window.nbAuthSaving = false;
-    nbAuthClose();
+    window.location.href = '/pages/family-orders';
+
+  } else if (typeof nbAuthPendingAction === 'string' && nbAuthPendingAction.startsWith('/')) {
+    var target = nbAuthPendingAction;
+    nbAuthPendingAction = null;
+    window.nbAuthSaving = false;
+    window.location.href = target;
+
+  } else {
+    window.nbAuthSaving = false;
     if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
-  });
+  }
 }
 
 function nbBuildCheckoutUrl(phone, name, customEmail) {
-  var rawDigits = (phone || '').trim().replace(/\D/g, '');
-  var tenDigits = rawDigits.length >= 10 ? rawDigits.slice(-10) : rawDigits;
-  var formattedWithPlus = tenDigits ? ('+91' + tenDigits) : '';
-
-  var params = [];
-  if (tenDigits) {
-    params.push('checkout[shipping_address][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('checkout[shipping_address][country]=India');
-    params.push('checkout[billing_address][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('checkout[contact][phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('checkout[email_or_phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('checkout[phone]=' + encodeURIComponent(formattedWithPlus || tenDigits));
-    params.push('phone=' + encodeURIComponent(tenDigits));
-  }
-
-  if (customEmail && customEmail.includes('@')) {
-    var cleanEmail = customEmail.trim();
-    params.push('checkout[email]=' + encodeURIComponent(cleanEmail));
-    params.push('checkout[contact][email]=' + encodeURIComponent(cleanEmail));
-    params.push('email=' + encodeURIComponent(cleanEmail));
-  }
-
-  if (name) {
-    var nameParts = name.trim().split(/\s+/);
-    var firstName = nameParts[0] || name;
-    var lastName = nameParts.slice(1).join(' ') || 'Customer';
-    params.push('checkout[shipping_address][first_name]=' + encodeURIComponent(firstName));
-    params.push('checkout[shipping_address][last_name]=' + encodeURIComponent(lastName));
-    params.push('checkout[billing_address][first_name]=' + encodeURIComponent(firstName));
-    params.push('checkout[billing_address][last_name]=' + encodeURIComponent(lastName));
-    params.push('checkout[name]=' + encodeURIComponent(name));
-  }
-
-  return params.length > 0 ? ('/checkout?' + params.join('&')) : '/checkout';
+  // Shopify Basic plan does not support checkout URL params pre-filling
+  return '/checkout';
 }
 
 function nbAuthSkip() {
@@ -520,12 +519,14 @@ function nbAuthSkip() {
     });
   } else if (nbAuthPendingAction === 'preorder') {
     nbAuthPendingAction = null;
-    window.location.href = '/pages/family-feast';
+    window.location.href = '/pages/family-orders';
   } else if (nbAuthPendingAction === 'checkout') {
-    var phone = localStorage.getItem('nb_phone') || '';
-    var name  = localStorage.getItem('nb_name')  || '';
     nbAuthPendingAction = null;
-    window.location.href = nbBuildCheckoutUrl(phone, name);
+    window.location.href = '/checkout';
+  } else if (typeof nbAuthPendingAction === 'string' && nbAuthPendingAction.startsWith('/')) {
+    var target = nbAuthPendingAction;
+    nbAuthPendingAction = null;
+    window.location.href = target;
   } else {
     if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
   }

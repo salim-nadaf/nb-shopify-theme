@@ -12,7 +12,6 @@
     "logo": "shopify://shop_images/BP_by_Niamat-removebg-preview.png",
     "logo_height": 80,
     "logo_height_mobile": 60,
-    "favicon": "shopify://shop_images/ChatGPT_Image_Aug_20_2026_12_14_46_AM.png",
     "page_text_color": "#2c1810",
     "type_body_font": "inter_n4",
     "type_subheading_font": "inter_n5",
@@ -90,7 +89,7 @@
     "variant_button_width": "equal-width-buttons",
     "nb_instant_delivery_enabled": false,
     "nb_instant_delivery_status_msg": "Instant Delivery is available",
-    "nb_instant_delivery_off_msg": "We’ll be back shortly. Thank you for your patience.",
+    "nb_instant_delivery_off_msg": "Instant Delivery is temporarily unavailable due to high order volume. We are currently handling a high volume of orders. Instant Delivery will resume shortly.",
     "nb_scheduled_ordering_url": "/pages/family-orders",
     "nb_google_maps_api_key": "AIzaSyCzP1FLzi8wFjDsC9tZrkCo3nKj1F9U_b8",
     "nb_store_lat": "19.246662490615908",
@@ -111,17 +110,17 @@
         "disabled": false,
         "settings": {}
       },
+      "13047258039897440615": {
+        "type": "shopify://apps/judge-me-reviews/blocks/cart_drawer_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+        "disabled": false,
+        "settings": {
+          "widget_type": "review-widget"
+        }
+      },
       "5091004626459974968": {
         "type": "shopify://apps/moose-whatsapp/blocks/whatsapp/b77db749-c44a-4265-8135-8b842af1b111",
         "disabled": false,
         "settings": {}
-      },
-      "13047258039897440615": {
-        "type": "shopify://apps/judge-me-reviews/blocks/cart_drawer_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": true,
-        "settings": {
-          "widget_type": "review-widget"
-        }
       }
     },
     "color_palette": {
