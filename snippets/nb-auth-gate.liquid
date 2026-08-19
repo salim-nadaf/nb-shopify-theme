@@ -19,7 +19,7 @@
       </div>
       <div class="nb-checkout-sync-notice">
         <span class="nb-sync-icon">📱</span>
-        <span>Please use this same mobile number on the final checkout page so that you will get order confirmation and tracking details.</span>
+        <span>Please use the same mobile number at checkout so you receive your order confirmation and tracking details.</span>
       </div>
       <p class="nb-auth-consent">
         📋 Your number will be used only for order confirmations and delivery updates. We will never share it with third parties.
@@ -54,7 +54,7 @@
       </div>
       <div class="nb-checkout-sync-notice" style="margin-top: 10px;">
         <span class="nb-sync-icon">💡</span>
-        <span>Use this same mobile number on final checkout to receive live WhatsApp updates.</span>
+        <span>Please use the same mobile number at checkout so you receive your order confirmation and tracking details.</span>
       </div>
       <p class="nb-auth-returning" id="nb-returning-msg" style="display:none; margin-top: 8px;">
         ✅ Welcome back! We found your previous orders.
@@ -67,8 +67,10 @@
     </div>
 </div>
 
-<!-- HIDDEN LIQUID CONTACT FORM FOR AUTHENTIC STORE OWNER EMAIL NOTIFICATIONS -->
-{% form 'contact', id: 'nb-gate-liquid-contact-form', style: 'display: none !important;' %}
+<!-- HIDDEN IFRAME & AUTHENTIC LIQUID CONTACT FORM FOR INSTANT ADMIN NOTIFICATION EMAILS -->
+<iframe name="nb-contact-submit-frame" id="nb-contact-submit-frame" title="Background Lead Form" style="display:none !important; width:0; height:0; border:0; visibility:hidden;"></iframe>
+
+{% form 'contact', id: 'nb-gate-liquid-contact-form', target: 'nb-contact-submit-frame', style: 'display: none !important;' %}
   <input type="hidden" name="contact[name]" id="nb-gate-lead-name" value="New Customer Lead">
   <input type="hidden" name="contact[email]" id="nb-gate-lead-email" value="customer@niamatbiryani.com">
   <input type="hidden" name="contact[phone]" id="nb-gate-lead-phone" value="">
@@ -378,11 +380,19 @@ function nbSendLeadContactEmail(phone, name, customEmail, promoConsent) {
       if (phoneField) phoneField.value = '+91 ' + cleanPhone10;
       if (bodyField) bodyField.value = detailsBody;
 
-      var formData = new FormData(formEl);
-      fetch(formEl.action || '/contact#contact_form', {
-        method: 'POST',
-        body: formData
-      }).catch(function(e) {});
+      // 1. Submit through the iframe (native browser POST triggers Shopify notification email)
+      try {
+        formEl.submit();
+      } catch(e) {}
+
+      // 2. Also send via fetch as parallel fallback
+      try {
+        var formData = new FormData(formEl);
+        fetch(formEl.action || '/contact#contact_form', {
+          method: 'POST',
+          body: formData
+        }).catch(function(e) {});
+      } catch(e) {}
     } else {
       var leadFormData = new FormData();
       leadFormData.append('form_type', 'contact');
