@@ -1,6 +1,418 @@
+{% doc %}
+  @prompt
+    Create a high-converting promotional banner section for a premium dark-themed Indian restaurant store. The section should showcase a limited introductory offer: "₹99 New Customer Trial Biryani". Design requirements: dark background (#111111), gold accent color (#C89116), bold headline with the offer price prominently displayed, a short persuasive subheading like "Your First Biryani, Just ₹99 — New Customers Only", a countdown-style urgency element or "Limited Offer" badge, a single strong CTA button in gold linking to the product page, and a mouth-watering food image placeholder. The layout should be mobile-first, full-width, and optimized for customers arriving from a Meta (Facebook/Instagram) ad. No rounded corners. Fonts: Alata for headings, Montserrat for body text.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-promo-banner-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-promo-banner__container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-promo-banner__container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr 1fr;
+      min-height: {{ block.settings.desktop_height }}px;
+    }
+  }
+
+  .ai-promo-banner__content-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-promo-banner__content-{{ ai_gen_id }} {
+      padding: 60px 80px;
+      gap: 24px;
+    }
+  }
+
+  .ai-promo-banner__badge-{{ ai_gen_id }} {
+    display: inline-block;
+    background-color: {{ block.settings.badge_background }};
+    color: {{ block.settings.badge_text_color }};
+    padding: 8px 16px;
+    font-family: {{ block.settings.body_font.family }}, {{ block.settings.body_font.fallback_families }};
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .ai-promo-banner__headline-{{ ai_gen_id }} {
+    font-family: {{ block.settings.heading_font.family }}, {{ block.settings.heading_font.fallback_families }};
+    font-weight: {{ block.settings.heading_font.weight }};
+    font-style: {{ block.settings.heading_font.style }};
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.heading_size_mobile }}px;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-promo-banner__headline-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size }}px;
+    }
+  }
+
+  .ai-promo-banner__price-{{ ai_gen_id }} {
+    color: {{ block.settings.accent_color }};
+    font-weight: 700;
+  }
+
+  .ai-promo-banner__subheading-{{ ai_gen_id }} {
+    font-family: {{ block.settings.body_font.family }}, {{ block.settings.body_font.fallback_families }};
+    font-weight: {{ block.settings.body_font.weight }};
+    font-style: {{ block.settings.body_font.style }};
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.subheading_size_mobile }}px;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.9;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-promo-banner__subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size }}px;
+    }
+  }
+
+  .ai-promo-banner__cta-{{ ai_gen_id }} {
+    display: inline-block;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    padding: 16px 40px;
+    font-family: {{ block.settings.body_font.family }}, {{ block.settings.body_font.fallback_families }};
+    font-weight: 600;
+    font-size: {{ block.settings.button_size }}px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+
+  .ai-promo-banner__cta-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .ai-promo-banner__image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-promo-banner__image-wrapper-{{ ai_gen_id }} {
+      height: 100%;
+    }
+  }
+
+  .ai-promo-banner__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .ai-promo-banner__image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-promo-banner__image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 300px;
+    max-height: 300px;
+    opacity: 0.3;
+  }
+
+  .ai-promo-banner__empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    font-size: 14px;
+    text-align: center;
+    pointer-events: none;
+    font-family: {{ block.settings.body_font.family }}, {{ block.settings.body_font.fallback_families }};
+  }
+{% endstyle %}
+
+<div class="ai-promo-banner-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-promo-banner__container-{{ ai_gen_id }}">
+    <div class="ai-promo-banner__content-{{ ai_gen_id }}">
+      {% if block.settings.show_badge and block.settings.badge_text != blank %}
+        <span class="ai-promo-banner__badge-{{ ai_gen_id }}">
+          {{ block.settings.badge_text }}
+        </span>
+      {% endif %}
+
+      {% if block.settings.headline != blank %}
+        <h1 class="ai-promo-banner__headline-{{ ai_gen_id }}">
+          {{ block.settings.headline }}
+        </h1>
+      {% endif %}
+
+      {% if block.settings.subheading != blank %}
+        <p class="ai-promo-banner__subheading-{{ ai_gen_id }}">
+          {{ block.settings.subheading }}
+        </p>
+      {% endif %}
+
+      {% if block.settings.cta_text != blank %}
+        <a
+          href="{{ block.settings.cta_link }}"
+          class="ai-promo-banner__cta-{{ ai_gen_id }}"
+        >
+          {{ block.settings.cta_text }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="ai-promo-banner__image-wrapper-{{ ai_gen_id }}">
+      {% if block.settings.image %}
+        <img
+          src="{{ block.settings.image | image_url: width: 1400 }}"
+          alt="{{ block.settings.image.alt | escape }}"
+          loading="lazy"
+          width="{{ block.settings.image.width }}"
+          height="{{ block.settings.image.height }}"
+          class="ai-promo-banner__image-{{ ai_gen_id }}"
+        >
+      {% else %}
+        <div class="ai-promo-banner__image-placeholder-{{ ai_gen_id }}">
+          {{ 'product-1' | placeholder_svg_tag }}
+          <div class="ai-promo-banner__empty-state-{{ ai_gen_id }}">
+            Next, add a food image
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "₹99 trial promo banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "Limited Offer"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "headline",
+      "label": "Headline",
+      "default": "Your First Biryani, Just ₹99"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "New Customers Only — Experience Premium Biryani"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "Order Now"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Food image"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop height",
+      "min": 400,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (price)",
+      "default": "#C89116"
+    },
+    {
+      "type": "color",
+      "id": "badge_background",
+      "label": "Badge background",
+      "default": "#C89116"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#C89116"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button hover background",
+      "default": "#d9a01f"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size (desktop)",
+      "min": 32,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size (mobile)",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size (desktop)",
+      "min": 14,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_mobile",
+      "label": "Subheading size (mobile)",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "label": "Button text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    }
+  ],
+  "presets": [
+    {
+      "name": "₹99 trial promo banner"
+    }
+  ]
+}
 {% endschema %}
