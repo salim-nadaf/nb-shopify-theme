@@ -1,4 +1,4 @@
-{% comment %} NIAMAT BIRYANI — Instant Delivery Section {% endcomment %}
+{% comment %} NIAMAT BIRYANI — Instant Delivery Section with ₹99 Trial Hero {% endcomment %}
 {% render 'food-card-styles' %}
 
 {% liquid
@@ -10,12 +10,134 @@
       assign is_instant_enabled = true
     endif
   endif
+
+  assign trial_prod = all_products[section.settings.trial_product]
+  if trial_prod == blank
+    for p in collections.all.products
+      assign p_title = p.title | downcase
+      if p_title contains 'trial' or p_title contains '99'
+        assign trial_prod = p
+        break
+      endif
+    endfor
+  endif
+
+  assign trial_cta_url = section.settings.trial_cta_url
+  if trial_cta_url == blank
+    if trial_prod != blank
+      assign trial_cta_url = '/discount/TRIAL99?redirect=' | append: trial_prod.url
+    else
+      assign trial_cta_url = '/discount/TRIAL99?redirect=/collections/instant-delivery'
+    endif
+  endif
+
+  assign trial_img_url = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600'
+  if trial_prod != blank and trial_prod.featured_media != blank
+    assign trial_img_url = trial_prod.featured_media | image_url: width: 600
+  endif
 %}
 
 <div class="nb-instant-section">
+
+  <!-- ===== 1. NEW CUSTOMER ₹99 BIRYANI TRIAL HERO SECTION ===== -->
+  <section class="nb-trial-hero" aria-labelledby="nb-trial-heading">
+    <div class="nb-trial-card">
+      <div class="nb-trial-card__inner">
+        
+        <!-- Left / Content Area -->
+        <div class="nb-trial-content">
+          <!-- Small Badge -->
+          <div class="nb-trial-badge">
+            <span class="nb-trial-badge-fire">🔥</span>
+            <span>{{ section.settings.trial_badge_text | default: 'NEW CUSTOMER SPECIAL' }}</span>
+          </div>
+
+          <!-- Main Headline -->
+          <h1 id="nb-trial-heading" class="nb-trial-title">
+            {{ section.settings.trial_heading_prefix | default: 'TRY NIAMAT BIRYANI FOR' }} <span class="nb-trial-price-highlight">{{ section.settings.trial_price | default: '₹99' }}</span>
+          </h1>
+
+          <!-- Supporting Headline -->
+          <p class="nb-trial-subtitle">
+            {{ section.settings.trial_subheading | default: 'Your first taste of Biryani Palace by Niamat — now at an introductory price.' }}
+          </p>
+
+          <!-- Price & Portion Callout Cards -->
+          <div class="nb-trial-specs">
+            <div class="nb-trial-spec-box nb-trial-spec-price">
+              <span class="nb-trial-spec-lbl">Special Price</span>
+              <span class="nb-trial-spec-val nb-trial-price-big">{{ section.settings.trial_price | default: '₹99' }}</span>
+            </div>
+            <div class="nb-trial-spec-box nb-trial-spec-portion">
+              <span class="nb-trial-spec-lbl">Portion</span>
+              <span class="nb-trial-spec-val">{{ section.settings.trial_portion | default: '200 g Trial Portion' }}</span>
+            </div>
+          </div>
+
+          <!-- Supporting Copy -->
+          <p class="nb-trial-copy">
+            {{ section.settings.trial_copy | default: 'A specially priced trial portion for customers ordering from us for the first time.' }}
+          </p>
+
+          <!-- CTA Area -->
+          <div class="nb-trial-cta-block">
+            <a href="{{ trial_cta_url }}" class="nb-trial-btn" id="nb-trial-cta-button">
+              {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 BIRYANI' }}
+            </a>
+
+            <div class="nb-trial-meta-row">
+              <div class="nb-trial-code-tag">
+                <span>Use Code:</span> <strong class="nb-trial-code-text">{{ section.settings.trial_code | default: 'TRIAL99' }}</strong>
+              </div>
+              <div class="nb-trial-eligibility-tag">
+                <span>✨</span> <span>{{ section.settings.trial_eligibility | default: 'New customers only' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Existing Customer Note -->
+          <div class="nb-trial-existing-note">
+            Already ordered from us? <a href="#nb-regular-portions-menu">Explore our regular portions below ↓</a>
+          </div>
+        </div>
+
+        <!-- Right / Image Area -->
+        <div class="nb-trial-visual">
+          <div class="nb-trial-img-wrap">
+            <img
+              src="{{ trial_img_url }}"
+              alt="Biryani Palace by Niamat Kalyan — Authentic Dum Biryani Trial Portion"
+              width="360"
+              height="260"
+              loading="eager"
+              decoding="async"
+              class="nb-trial-img"
+            />
+            <span class="nb-trial-img-badge">👑 Royal Taste</span>
+          </div>
+          <div class="nb-trial-trust-pills">
+            <span>⚡ Coal Dum Cooked</span>
+            <span>📍 Kalyan Delivery</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Transition to Regular Menu -->
+    <div class="nb-trial-transition" id="nb-regular-portions-menu">
+      <div class="nb-transition-divider"></div>
+      <div class="nb-transition-content">
+        <h2 class="nb-transition-heading">Looking for a regular portion?</h2>
+        <p class="nb-transition-subheading">Single • Double • Half Kg &amp; more</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. EXISTING REGULAR MENU HEADER & BANNER ===== -->
   <div class="nb-section-header">
     <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
-      <h2 style="margin: 0;">⚡ Instant Delivery</h2>
+      <h3 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: #2C1810;">⚡ Instant Delivery</h3>
       {% render 'nb-instant-delivery-status' %}
     </div>
     <p>Freshly prepared biryani & starters · Ready in 30–60 minutes · Kalyan & Nearby</p>
@@ -314,13 +436,316 @@
 </div>
 
 <style>
-.nb-instant-section { padding: 20px 16px 100px; max-width: 900px; margin: 0 auto; }
+.nb-instant-section { padding: 16px 14px 100px; max-width: 960px; margin: 0 auto; }
 .nb-section-header { margin-bottom: 24px; text-align: center; }
-.nb-section-header h2 { font-size: 1.6rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; text-align: center; }
+.nb-section-header h3 { font-size: 1.4rem; font-weight: 800; color: #2C1810; margin: 0 0 6px; text-align: center; }
 .nb-section-header p { font-size: 0.88rem; color: #7A5C4A; margin: 0; text-align: center; }
+
+/* ===== NEW CUSTOMER ₹99 BIRYANI TRIAL HERO STYLES ===== */
+.nb-trial-hero {
+  margin-bottom: 24px;
+}
+
+.nb-trial-card {
+  background: linear-gradient(135deg, #FFFDF9 0%, #FDF7EC 100%);
+  border: 1.5px solid rgba(200, 146, 42, 0.45);
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(44, 24, 16, 0.07);
+  position: relative;
+  overflow: hidden;
+}
+
+.nb-trial-card__inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.nb-trial-content {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.nb-trial-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFF2DC;
+  border: 1px solid rgba(200, 146, 42, 0.6);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #8C5E0B;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.nb-trial-badge-fire {
+  font-size: 0.85rem;
+}
+
+.nb-trial-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2C1810;
+  margin: 0 0 8px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.nb-trial-price-highlight {
+  color: #C8922A;
+  text-shadow: 0 1px 2px rgba(200, 146, 42, 0.2);
+}
+
+.nb-trial-subtitle {
+  font-size: 0.98rem;
+  color: #5C4033;
+  line-height: 1.45;
+  margin: 0 0 14px;
+  font-weight: 500;
+}
+
+.nb-trial-specs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.nb-trial-spec-box {
+  flex: 1;
+  min-width: 130px;
+  background: #FFF9F0;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nb-trial-spec-lbl {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #7A5C4A;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.nb-trial-spec-val {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #2C1810;
+}
+
+.nb-trial-price-big {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #C8922A;
+  line-height: 1;
+}
+
+.nb-trial-copy {
+  font-size: 0.84rem;
+  color: #66554B;
+  line-height: 1.4;
+  margin: 0 0 16px;
+}
+
+.nb-trial-cta-block {
+  width: 100%;
+}
+
+.nb-trial-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%);
+  color: #FFFFFF !important;
+  font-size: 1rem;
+  font-weight: 800;
+  padding: 14px 20px;
+  border-radius: 12px;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgba(200, 146, 42, 0.35);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  letter-spacing: 0.3px;
+}
+
+.nb-trial-btn:hover,
+.nb-trial-btn:active {
+  background: linear-gradient(135deg, #E2A73E 0%, #D49E35 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(200, 146, 42, 0.45);
+}
+
+.nb-trial-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.nb-trial-code-tag {
+  background: #FFF5E5;
+  border: 1px dashed #C8922A;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #2C1810;
+}
+
+.nb-trial-code-text {
+  color: #C8922A;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.nb-trial-eligibility-tag {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #7A5C4A;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nb-trial-existing-note {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(200, 146, 42, 0.2);
+  font-size: 0.8rem;
+  color: #7A5C4A;
+  text-align: center;
+}
+
+.nb-trial-existing-note a {
+  color: #C8922A;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.nb-trial-visual {
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.nb-trial-img-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 200px;
+  box-shadow: 0 4px 14px rgba(44, 24, 16, 0.1);
+  background: #2C1810;
+}
+
+.nb-trial-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.nb-trial-img-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(44, 24, 16, 0.85);
+  color: #FFFDF9;
+  border: 1px solid #C8922A;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.nb-trial-trust-pills {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.nb-trial-trust-pills span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #66554B;
+  background: rgba(200, 146, 42, 0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(200, 146, 42, 0.2);
+}
+
+.nb-trial-transition {
+  margin: 32px auto 20px;
+  text-align: center;
+  position: relative;
+}
+
+.nb-transition-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(200, 146, 42, 0.4) 50%, transparent 100%);
+  margin-bottom: 20px;
+}
+
+.nb-transition-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #2C1810;
+  margin: 0 0 4px;
+}
+
+.nb-transition-subheading {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #C8922A;
+  margin: 0;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 768px) {
+  .nb-trial-card {
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+  .nb-trial-card__inner {
+    flex-direction: column;
+    gap: 16px;
+  }
+  .nb-trial-visual {
+    width: 100%;
+    order: -1;
+  }
+  .nb-trial-img-wrap {
+    height: 150px;
+  }
+  .nb-trial-title {
+    font-size: 1.65rem;
+  }
+}
+
 @media (min-width: 769px) {
   .nb-instant-section { padding: 32px 24px 80px; }
-  .nb-section-header h2 { font-size: 2rem; }
+  .nb-section-header h3 { font-size: 1.8rem; }
 }
 </style>
 
@@ -377,7 +802,77 @@
   "name": "Instant Delivery",
   "tag": "section",
   "class": "section",
-  "settings": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "₹99 Trial Hero Section"
+    },
+    {
+      "type": "product",
+      "id": "trial_product",
+      "label": "Trial Product"
+    },
+    {
+      "type": "url",
+      "id": "trial_cta_url",
+      "label": "Custom CTA URL (optional)",
+      "info": "Leave blank to auto-link to the trial product with TRIAL99 code applied."
+    },
+    {
+      "type": "text",
+      "id": "trial_badge_text",
+      "label": "Badge Text",
+      "default": "NEW CUSTOMER SPECIAL"
+    },
+    {
+      "type": "text",
+      "id": "trial_heading_prefix",
+      "label": "Heading Prefix",
+      "default": "TRY NIAMAT BIRYANI FOR"
+    },
+    {
+      "type": "text",
+      "id": "trial_price",
+      "label": "Trial Price",
+      "default": "₹99"
+    },
+    {
+      "type": "text",
+      "id": "trial_portion",
+      "label": "Portion Text",
+      "default": "200 g Trial Portion"
+    },
+    {
+      "type": "text",
+      "id": "trial_subheading",
+      "label": "Supporting Headline",
+      "default": "Your first taste of Biryani Palace by Niamat — now at an introductory price."
+    },
+    {
+      "type": "textarea",
+      "id": "trial_copy",
+      "label": "Supporting Copy",
+      "default": "A specially priced trial portion for customers ordering from us for the first time."
+    },
+    {
+      "type": "text",
+      "id": "trial_cta_text",
+      "label": "CTA Button Text",
+      "default": "GET YOUR ₹99 BIRYANI"
+    },
+    {
+      "type": "text",
+      "id": "trial_code",
+      "label": "Discount Code",
+      "default": "TRIAL99"
+    },
+    {
+      "type": "text",
+      "id": "trial_eligibility",
+      "label": "Eligibility Text",
+      "default": "New customers only"
+    }
+  ],
   "presets": [
     {
       "name": "Instant Delivery"
