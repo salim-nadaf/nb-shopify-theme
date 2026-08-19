@@ -350,6 +350,10 @@
               {% else %}
                 <span class="nb-badge nb-badge--soldout">Sold Out</span>
               {% endif %}
+
+              {% if title_lower contains 'alishaan' or title_lower contains 'ustaadi murgh dum' or title_lower contains 'ustaadi' %}
+                <span class="nb-badge-coke">🥤 Free Coke</span>
+              {% endif %}
             </div>
 
             <div class="nb-food-card__body">
@@ -357,6 +361,13 @@
                 <h3 class="nb-food-card__title">{{ product.title }}</h3>
                 {% if product.description != blank %}
                   <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
+                {% endif %}
+
+                {% if title_lower contains 'alishaan' or title_lower contains 'ustaadi murgh dum' or title_lower contains 'ustaadi' %}
+                  <div class="nb-coke-free-pill">
+                    <span class="nb-coke-icon">🥤</span>
+                    <span><strong>Free Chilled Coke</strong> included</span>
+                  </div>
                 {% endif %}
               </div>
 

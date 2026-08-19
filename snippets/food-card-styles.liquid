@@ -173,6 +173,56 @@ span.nb-badge,
   border-radius: 20px;
   font-weight: 600;
 }
+
+/* Free Coke Promo Tag & Badge */
+.nb-coke-free-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+  border: 1px solid rgba(230, 81, 0, 0.4);
+  color: #BF360C;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin: 4px 0 8px 0;
+  box-shadow: 0 1px 4px rgba(230, 81, 0, 0.08);
+  width: fit-content;
+}
+
+.nb-coke-free-pill strong {
+  color: #D84315;
+  font-weight: 800;
+}
+
+.nb-badge-coke {
+  position: absolute !important;
+  bottom: 6px !important;
+  left: 6px !important;
+  background: linear-gradient(135deg, #E53935 0%, #C62828 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+  padding: 2px 7px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+  letter-spacing: 0.3px !important;
+  z-index: 10 !important;
+  text-transform: uppercase !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  line-height: 1.2 !important;
+}
+
+@media (max-width: 768px) {
+  .nb-badge-coke {
+    bottom: 4px !important;
+    left: 4px !important;
+    font-size: 0.54rem !important;
+    padding: 2px 5px !important;
+  }
+}
+
 .nb-food-card__bottom {
   display: flex;
   align-items: center;
