@@ -65,8 +65,15 @@
         Let's Order! 🍛
       </button>
     </div>
-  </div>
 </div>
+
+<!-- HIDDEN LIQUID CONTACT FORM FOR AUTHENTIC STORE OWNER EMAIL NOTIFICATIONS -->
+{% form 'contact', id: 'nb-gate-liquid-contact-form', style: 'display: none !important;' %}
+  <input type="hidden" name="contact[name]" id="nb-gate-lead-name" value="New Customer Lead">
+  <input type="hidden" name="contact[email]" id="nb-gate-lead-email" value="customer@niamatbiryani.com">
+  <input type="hidden" name="contact[phone]" id="nb-gate-lead-phone" value="">
+  <textarea name="contact[body]" id="nb-gate-lead-body" style="display: none;"></textarea>
+{% endform %}
 
 <style>
 #nb-auth-overlay {
@@ -343,32 +350,53 @@ function nbAuthSubmitPhone() {
 function nbSendLeadContactEmail(phone, name, customEmail, promoConsent) {
   try {
     var cleanPhone10 = (phone || '').replace(/\D/g,'').slice(-10);
-    if (!cleanPhone10) return;
+    if (!cleanPhone10 || cleanPhone10.length < 10) return;
     
+    var formEl = document.getElementById('nb-gate-liquid-contact-form');
     var leadEmail = (customEmail && customEmail.indexOf('@') > 0) 
       ? customEmail 
-      : ('customer_' + cleanPhone10 + '@niamatbiryani.in');
+      : ('customer_' + cleanPhone10 + '@niamatbiryani.com');
     
-    var leadFormData = new FormData();
-    leadFormData.append('form_type', 'contact');
-    leadFormData.append('utf8', '✓');
-    leadFormData.append('contact[name]', name || ('Online Customer (+91 ' + cleanPhone10 + ')'));
-    leadFormData.append('contact[email]', leadEmail);
-    leadFormData.append('contact[phone]', '+91' + cleanPhone10);
-    leadFormData.append('contact[body]', [
-      '🔔 NEW ORDER GATE POPUP LEAD / PHONE CAPTURED:',
+    var nameField = document.getElementById('nb-gate-lead-name');
+    var emailField = document.getElementById('nb-gate-lead-email');
+    var phoneField = document.getElementById('nb-gate-lead-phone');
+    var bodyField = document.getElementById('nb-gate-lead-body');
+
+    var detailsBody = [
+      '🔔 NEW ORDER GATE POPUP LEAD CAPTURED:',
       '• Mobile / WhatsApp: +91 ' + cleanPhone10,
       '• Customer Name: ' + (name || 'Not provided yet'),
       '• Email: ' + (customEmail || 'Not provided'),
-      '• WhatsApp Offers Consent: ' + (promoConsent ? 'YES (Opted In)' : 'NO (Transactional Only)'),
-      '• Time: ' + new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-      '• Note: Captured from Order Gate popup before checkout.'
-    ].join('\n'));
+      '• WhatsApp Marketing Opt-In: ' + (promoConsent ? 'YES' : 'NO'),
+      '• Date & Time: ' + new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+      '• Source: Order Gate Verification Popup on Website'
+    ].join('\n');
 
-    fetch('/contact', {
-      method: 'POST',
-      body: leadFormData
-    }).catch(function(e) {});
+    if (formEl) {
+      if (nameField) nameField.value = name || ('Customer (+91 ' + cleanPhone10 + ')');
+      if (emailField) emailField.value = leadEmail;
+      if (phoneField) phoneField.value = '+91 ' + cleanPhone10;
+      if (bodyField) bodyField.value = detailsBody;
+
+      var formData = new FormData(formEl);
+      fetch(formEl.action || '/contact#contact_form', {
+        method: 'POST',
+        body: formData
+      }).catch(function(e) {});
+    } else {
+      var leadFormData = new FormData();
+      leadFormData.append('form_type', 'contact');
+      leadFormData.append('utf8', '✓');
+      leadFormData.append('contact[name]', name || ('Customer (+91 ' + cleanPhone10 + ')'));
+      leadFormData.append('contact[email]', leadEmail);
+      leadFormData.append('contact[phone]', '+91 ' + cleanPhone10);
+      leadFormData.append('contact[body]', detailsBody);
+
+      fetch('/contact#contact_form', {
+        method: 'POST',
+        body: leadFormData
+      }).catch(function(e) {});
+    }
   } catch(err) {}
 }
 
