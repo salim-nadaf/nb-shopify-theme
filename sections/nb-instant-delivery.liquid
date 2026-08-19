@@ -50,7 +50,7 @@
 
 <div class="nb-instant-section">
 
-  <!-- ===== 1. NEW CUSTOMER ₹99 BIRYANI TRIAL HERO SECTION ===== -->
+  <!-- ===== 1. ₹99 BIRYANI SPECIAL TRIAL OFFER HERO SECTION ===== -->
   <section class="nb-trial-hero" aria-labelledby="nb-trial-heading">
     <div class="nb-trial-card">
       <div class="nb-trial-card__inner">
@@ -59,8 +59,7 @@
         <div class="nb-trial-content">
           <!-- Small Badge -->
           <div class="nb-trial-badge">
-            <span class="nb-trial-badge-fire">🔥</span>
-            <span>{{ section.settings.trial_badge_text | default: 'NEW CUSTOMER SPECIAL' }}</span>
+            <span>{{ section.settings.trial_badge_text | default: '🍽️ SPECIAL TRIAL OFFER' }}</span>
           </div>
 
           <!-- Main Headline -->
@@ -70,14 +69,14 @@
 
           <!-- Supporting Headline -->
           <p class="nb-trial-subtitle">
-            {{ section.settings.trial_subheading | default: 'Your first taste of Biryani Palace by Niamat — now at an introductory price.' }}
+            {{ section.settings.trial_subheading | default: 'Your first taste of Biryani Palace by Niamat — at a special introductory price.' }}
           </p>
 
           <!-- Price & Portion Display (Portion as subtle small line) -->
           <div class="nb-trial-price-container">
             <div class="nb-trial-price-display">
               <span class="nb-trial-price-main">{{ section.settings.trial_price | default: '₹99' }}</span>
-              <span class="nb-trial-price-badge-intro">Special Intro Price</span>
+              <span class="nb-trial-price-badge-intro">Introductory Price</span>
             </div>
             <div class="nb-trial-portion-subtext">
               <span>🥣</span> <span>{{ section.settings.trial_portion | default: '200 g Trial Portion' }}</span>
@@ -86,7 +85,7 @@
 
           <!-- Supporting Copy -->
           <p class="nb-trial-copy">
-            {{ section.settings.trial_copy | default: 'A specially priced trial portion for customers ordering from us for the first time.' }}
+            {{ section.settings.trial_copy | default: 'A special introductory offer to experience Niamat Biryani.' }}
           </p>
 
           <!-- CTA Area: Submits to Cart Directly via AJAX Quick-Form -->
@@ -103,15 +102,7 @@
               <div class="nb-trial-code-tag">
                 <span>Use Code:</span> <strong class="nb-trial-code-text">{{ section.settings.trial_code | default: 'TRIAL99' }}</strong>
               </div>
-              <div class="nb-trial-eligibility-tag">
-                <span>✨</span> <span>{{ section.settings.trial_eligibility | default: 'New customers only' }}</span>
-              </div>
             </div>
-          </div>
-
-          <!-- Existing Customer Note -->
-          <div class="nb-trial-existing-note">
-            Already ordered from us? <a href="#nb-regular-portions-menu">Explore our regular portions below ↓</a>
           </div>
         </div>
 
@@ -863,7 +854,7 @@
       "type": "text",
       "id": "trial_badge_text",
       "label": "Badge Text",
-      "default": "NEW CUSTOMER SPECIAL"
+      "default": "🍽️ SPECIAL TRIAL OFFER"
     },
     {
       "type": "text",
@@ -887,13 +878,13 @@
       "type": "text",
       "id": "trial_subheading",
       "label": "Supporting Headline",
-      "default": "Your first taste of Biryani Palace by Niamat — now at an introductory price."
+      "default": "Your first taste of Biryani Palace by Niamat — at a special introductory price."
     },
     {
       "type": "textarea",
       "id": "trial_copy",
       "label": "Supporting Copy",
-      "default": "A specially priced trial portion for customers ordering from us for the first time."
+      "default": "A special introductory offer to experience Niamat Biryani."
     },
     {
       "type": "text",
@@ -906,12 +897,6 @@
       "id": "trial_code",
       "label": "Discount Code",
       "default": "TRIAL99"
-    },
-    {
-      "type": "text",
-      "id": "trial_eligibility",
-      "label": "Eligibility Text",
-      "default": "New customers only"
     }
   ],
   "presets": [
