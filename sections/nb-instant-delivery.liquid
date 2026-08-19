@@ -21,15 +21,26 @@
       endif
     endfor
   endif
-
-  assign trial_cta_url = section.settings.trial_cta_url
-  if trial_cta_url == blank
-    if trial_prod != blank
-      assign trial_cta_url = '/discount/TRIAL99?redirect=' | append: trial_prod.url
-    else
-      assign trial_cta_url = '/discount/TRIAL99?redirect=/collections/instant-delivery'
-    endif
+  if trial_prod == blank
+    for p in collections['instant-delivery'].products
+      assign p_title = p.title | downcase
+      if p_title contains 'trial' or p_title contains '99'
+        assign trial_prod = p
+        break
+      endif
+    endfor
   endif
+  if trial_prod == blank
+    assign trial_prod = all_products['99-new-customer-trial-biryani']
+  endif
+  if trial_prod == blank
+    assign trial_prod = all_products['new-customer-trial-biryani']
+  endif
+  if trial_prod == blank
+    assign trial_prod = all_products['trial-biryani']
+  endif
+
+  assign trial_variant = trial_prod.selected_or_first_available_variant | default: trial_prod.variants.first
 
   assign trial_img_url = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600'
   if trial_prod != blank and trial_prod.featured_media != blank
@@ -62,15 +73,14 @@
             {{ section.settings.trial_subheading | default: 'Your first taste of Biryani Palace by Niamat — now at an introductory price.' }}
           </p>
 
-          <!-- Price & Portion Callout Cards -->
-          <div class="nb-trial-specs">
-            <div class="nb-trial-spec-box nb-trial-spec-price">
-              <span class="nb-trial-spec-lbl">Special Price</span>
-              <span class="nb-trial-spec-val nb-trial-price-big">{{ section.settings.trial_price | default: '₹99' }}</span>
+          <!-- Price & Portion Display (Portion as subtle small line) -->
+          <div class="nb-trial-price-container">
+            <div class="nb-trial-price-display">
+              <span class="nb-trial-price-main">{{ section.settings.trial_price | default: '₹99' }}</span>
+              <span class="nb-trial-price-badge-intro">Special Intro Price</span>
             </div>
-            <div class="nb-trial-spec-box nb-trial-spec-portion">
-              <span class="nb-trial-spec-lbl">Portion</span>
-              <span class="nb-trial-spec-val">{{ section.settings.trial_portion | default: '200 g Trial Portion' }}</span>
+            <div class="nb-trial-portion-subtext">
+              <span>🥣</span> <span>{{ section.settings.trial_portion | default: '200 g Trial Portion' }}</span>
             </div>
           </div>
 
@@ -79,11 +89,15 @@
             {{ section.settings.trial_copy | default: 'A specially priced trial portion for customers ordering from us for the first time.' }}
           </p>
 
-          <!-- CTA Area -->
+          <!-- CTA Area: Submits to Cart Directly via AJAX Quick-Form -->
           <div class="nb-trial-cta-block">
-            <a href="{{ trial_cta_url }}" class="nb-trial-btn" id="nb-trial-cta-button">
-              {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 BIRYANI' }}
-            </a>
+            <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id }}">
+              <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
+              <input type="hidden" name="quantity" value="1" />
+              <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
+                {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 BIRYANI' }}
+              </button>
+            </form>
 
             <div class="nb-trial-meta-row">
               <div class="nb-trial-code-tag">
@@ -511,45 +525,46 @@
   font-weight: 500;
 }
 
-.nb-trial-specs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-.nb-trial-spec-box {
-  flex: 1;
-  min-width: 130px;
-  background: #FFF9F0;
-  border: 1px solid rgba(200, 146, 42, 0.3);
-  border-radius: 10px;
-  padding: 8px 12px;
+.nb-trial-price-container {
+  margin: 0 0 14px 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 4px;
 }
 
-.nb-trial-spec-lbl {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: #7A5C4A;
-  letter-spacing: 0.5px;
-  margin-bottom: 2px;
+.nb-trial-price-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.nb-trial-spec-val {
-  font-size: 0.92rem;
-  font-weight: 800;
-  color: #2C1810;
-}
-
-.nb-trial-price-big {
-  font-size: 1.35rem;
+.nb-trial-price-main {
+  font-size: 2.2rem;
   font-weight: 900;
   color: #C8922A;
   line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.nb-trial-price-badge-intro {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #FFF2DC;
+  border: 1px solid rgba(200, 146, 42, 0.45);
+  color: #8C5E0B;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.nb-trial-portion-subtext {
+  font-size: 0.84rem;
+  color: #66554B;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .nb-trial-copy {
@@ -789,10 +804,36 @@
     });
   }
 
+  function initTrialProduct() {
+    var trialInput = document.getElementById('nb-trial-variant-input');
+    if (trialInput && (!trialInput.value || trialInput.value === '')) {
+      fetch('/products.json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data && data.products) {
+            var p = data.products.find(function(item) {
+              var t = (item.title || '').toLowerCase();
+              return t.includes('trial') || t.includes('99');
+            });
+            if (p && p.variants && p.variants.length > 0) {
+              trialInput.value = p.variants[0].id;
+              var form = document.getElementById('nb-trial-add-form');
+              if (form) form.dataset.product = p.id;
+            }
+          }
+        })
+        .catch(function() {});
+    }
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initInstantDelivery);
+    document.addEventListener('DOMContentLoaded', function() {
+      initInstantDelivery();
+      initTrialProduct();
+    });
   } else {
     initInstantDelivery();
+    initTrialProduct();
   }
 })();
 </script>
