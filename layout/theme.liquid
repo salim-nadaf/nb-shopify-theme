@@ -128,8 +128,28 @@
       background-color: #FFFAF4 !important;
     }
 
-    /* ===== NIAMAT LUXURY CUSTOMER ACCOUNT & PROFILE MODAL THEME ===== */
+    /* ===== HEADER ACTION ICONS CONSISTENCY ===== */
+    .account-button,
     shopify-account,
+    .account-button__icon,
+    shopify-account svg {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      color: #FDF6EC !important;
+    }
+    shopify-account svg path {
+      stroke: currentColor !important;
+    }
+
+    /* ===== NIAMAT LUXURY CUSTOMER ACCOUNT & PROFILE MODAL THEME (POPUP ONLY) ===== */
+    shopify-account {
+      --shopify-account-color-background: #FFFAF4;
+      --shopify-account-color-text: #2C1810;
+      --shopify-account-color-accent: #C8922A;
+      --shopify-account-color-accent-text: #FFFFFF;
+    }
+
     shopify-account::part(dialog),
     shopify-account::part(popover),
     .shopify-account-dialog,
@@ -142,11 +162,6 @@
       background: #FFFAF4 !important;
       background-color: #FFFAF4 !important;
       color: #2C1810 !important;
-    }
-
-    shopify-account::part(dialog),
-    shopify-account::part(popover),
-    .shopify-account-dialog {
       border: 1.5px solid rgba(200, 146, 42, 0.4) !important;
       border-radius: 20px !important;
       box-shadow: 0 16px 48px rgba(44, 24, 16, 0.25) !important;
