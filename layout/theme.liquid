@@ -36,10 +36,17 @@
       })();
     </script>
 
+    <!-- CRITICAL RESOURCE PRELOADS FOR LCP SPEED OPTIMIZATION -->
     {%- if template.name == 'index' -%}
       <!-- Preload Mobile and Desktop LCP Hero Banner Images Responsively -->
       <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
       <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1600" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
+    {%- elsif collection.handle == 'instant-delivery' or request.path contains 'instant-delivery' -%}
+      <!-- Preload Instant Delivery Hero Bucket Image for Instant LCP -->
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600" as="image" type="image/webp" fetchpriority="high">
+    {%- elsif collection.handle == 'our-menu' or collection.handle == 'family-orders' or request.path contains 'our-menu' or request.path contains 'family-orders' -%}
+      <!-- Preload Menu Page Top Hero Media for Instant LCP -->
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750" as="image" type="image/webp" fetchpriority="high">
     {%- endif -%}
 
     {%- if settings.favicon != blank -%}
@@ -50,18 +57,15 @@
       >
     {%- endif -%}
 
-    {% if settings.transition_to_main_product or settings.page_transition_enabled %}
-      <link
-        rel="expect"
-        href="#MainContent"
-        blocking="render"
-        id="view-transition-render-blocker"
-      >
-    {% endif %}
-
+    <!-- HIGH-SPEED PRECONNECTS -->
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
+    <!-- ASYNC GOOGLE FONTS (ZERO RENDER BLOCKING) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap"></noscript>
     {%- # theme-check-enable RemoteAsset, AssetPreload -%}
