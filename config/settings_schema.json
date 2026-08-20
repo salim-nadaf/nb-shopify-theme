@@ -2140,6 +2140,12 @@
       },
       {
         "type": "text",
+        "id": "nb_lead_notification_email",
+        "label": "Lead Notification Email (Where Gate Popup entries are sent)",
+        "info": "Leave blank to use your default Shopify Store contact email."
+      },
+      {
+        "type": "text",
         "id": "nb_scheduled_ordering_url",
         "label": "Scheduled / Pre-Order URL",
         "default": "/pages/family-orders"
