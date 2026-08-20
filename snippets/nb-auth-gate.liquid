@@ -67,12 +67,18 @@
     </div>
 </div>
 
-<!-- HIDDEN IFRAME & AUTHENTIC LIQUID CONTACT FORM FOR INSTANT ADMIN NOTIFICATION EMAILS -->
-<iframe name="nb-contact-submit-frame" id="nb-contact-submit-frame" title="Background Lead Form" style="display:none !important; width:0; height:0; border:0; visibility:hidden;"></iframe>
+<!-- NATIVE SHOPIFY CUSTOMER CREATION & LEAD FORMS -->
+{% form 'customer', id: 'nb-gate-liquid-customer-form', style: 'display: none !important;' %}
+  <input type="hidden" name="customer[first_name]" id="nb-gate-cust-name" value="New Customer Lead">
+  <input type="hidden" name="customer[email]" id="nb-gate-cust-email" value="">
+  <input type="hidden" name="customer[note]" id="nb-gate-cust-note" value="">
+  <input type="hidden" name="customer[tags]" value="order-gate, lead, whatsapp-optin">
+  <input type="hidden" name="customer[accepts_marketing]" value="true">
+{% endform %}
 
-{% form 'contact', id: 'nb-gate-liquid-contact-form', target: 'nb-contact-submit-frame', style: 'display: none !important;' %}
+{% form 'contact', id: 'nb-gate-liquid-contact-form', style: 'display: none !important;' %}
   <input type="hidden" name="contact[name]" id="nb-gate-lead-name" value="New Customer Lead">
-  <input type="hidden" name="contact[email]" id="nb-gate-lead-email" value="customer@niamatbiryani.com">
+  <input type="hidden" name="contact[email]" id="nb-gate-lead-email" value="">
   <input type="hidden" name="contact[phone]" id="nb-gate-lead-phone" value="">
   <textarea name="contact[body]" id="nb-gate-lead-body" style="display: none;"></textarea>
 {% endform %}
@@ -353,61 +359,101 @@ function nbSendLeadContactEmail(phone, name, customEmail, promoConsent) {
   try {
     var cleanPhone10 = (phone || '').replace(/\D/g,'').slice(-10);
     if (!cleanPhone10 || cleanPhone10.length < 10) return;
-    
-    var formEl = document.getElementById('nb-gate-liquid-contact-form');
-    var leadEmail = (customEmail && customEmail.indexOf('@') > 0) 
-      ? customEmail 
-      : ('customer_' + cleanPhone10 + '@niamatbiryani.com');
-    
-    var nameField = document.getElementById('nb-gate-lead-name');
-    var emailField = document.getElementById('nb-gate-lead-email');
-    var phoneField = document.getElementById('nb-gate-lead-phone');
-    var bodyField = document.getElementById('nb-gate-lead-body');
 
-    var detailsBody = [
-      '🔔 NEW ORDER GATE POPUP LEAD CAPTURED:',
-      '• Mobile / WhatsApp: +91 ' + cleanPhone10,
-      '• Customer Name: ' + (name || 'Not provided yet'),
-      '• Email: ' + (customEmail || 'Not provided'),
-      '• WhatsApp Marketing Opt-In: ' + (promoConsent ? 'YES' : 'NO'),
-      '• Date & Time: ' + new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
-      '• Source: Order Gate Verification Popup on Website'
-    ].join('\n');
+    var formattedPhone = '+91 ' + cleanPhone10;
+    var customerName = name || 'New Visitor (+91 ' + cleanPhone10 + ')';
+    var emailVal = (customEmail && customEmail.indexOf('@') > 0) ? customEmail : 'Not provided';
+    var timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
 
-    if (formEl) {
-      if (nameField) nameField.value = name || ('Customer (+91 ' + cleanPhone10 + ')');
-      if (emailField) emailField.value = leadEmail;
-      if (phoneField) phoneField.value = '+91 ' + cleanPhone10;
-      if (bodyField) bodyField.value = detailsBody;
+    // 1. SAVE NATIVE SHOPIFY CUSTOMER ENTRY
+    try {
+      var custForm = document.getElementById('nb-gate-liquid-customer-form');
+      var custEmail = (customEmail && customEmail.indexOf('@') > 0) 
+        ? customEmail 
+        : ('lead_' + cleanPhone10 + '@niamatbiryani.com');
 
-      // 1. Submit through the iframe (native browser POST triggers Shopify notification email)
-      try {
-        formEl.submit();
-      } catch(e) {}
+      if (custForm) {
+        var nameInput = document.getElementById('nb-gate-cust-name');
+        var emailInput = document.getElementById('nb-gate-cust-email');
+        var noteInput = document.getElementById('nb-gate-cust-note');
 
-      // 2. Also send via fetch as parallel fallback
-      try {
-        var formData = new FormData(formEl);
-        fetch(formEl.action || '/contact#contact_form', {
+        if (nameInput) nameInput.value = customerName;
+        if (emailInput) emailInput.value = custEmail;
+        if (noteInput) noteInput.value = 'Mobile: ' + formattedPhone + ' | WhatsApp Opt-in: ' + (promoConsent ? 'YES' : 'NO') + ' | Captured: ' + timestamp;
+
+        var custData = new FormData(custForm);
+        fetch(custForm.action || '/contact#contact_form', {
           method: 'POST',
-          body: formData
+          body: custData
         }).catch(function(e) {});
-      } catch(e) {}
-    } else {
-      var leadFormData = new FormData();
-      leadFormData.append('form_type', 'contact');
-      leadFormData.append('utf8', '✓');
-      leadFormData.append('contact[name]', name || ('Customer (+91 ' + cleanPhone10 + ')'));
-      leadFormData.append('contact[email]', leadEmail);
-      leadFormData.append('contact[phone]', '+91 ' + cleanPhone10);
-      leadFormData.append('contact[body]', detailsBody);
+      }
+    } catch(e) {}
 
-      fetch('/contact#contact_form', {
+    // 2. GUARANTEED INSTANT MERCHANT EMAIL NOTIFICATION (ZERO-SPAM DISPATCH)
+    try {
+      var emailPayload = {
+        _subject: '🔥 New Order Gate Lead: ' + customerName + ' (' + formattedPhone + ')',
+        _replyto: (customEmail && customEmail.indexOf('@') > 0) ? customEmail : undefined,
+        customer_name: customerName,
+        mobile_number: formattedPhone,
+        whatsapp_chat_link: 'https://wa.me/91' + cleanPhone10,
+        email_address: emailVal,
+        whatsapp_marketing_opt_in: promoConsent ? 'YES (Opted In)' : 'NO',
+        date_and_time_ist: timestamp,
+        page_source: window.location.href
+      };
+
+      fetch('https://formsubmit.co/ajax/biryanipalacekalyan@gmail.com', {
         method: 'POST',
-        body: leadFormData
-      }).catch(function(e) {});
-    }
-  } catch(err) {}
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(emailPayload)
+      }).then(function(res) {
+        return res.json();
+      }).then(function(data) {
+        console.log('Lead notification email sent successfully:', data);
+      }).catch(function(err) {
+        console.warn('Lead email dispatch notice:', err);
+      });
+    } catch(e) {}
+
+    // 3. SHOPIFY CONTACT FORM BACKEND FALLBACK
+    try {
+      var contactForm = document.getElementById('nb-gate-liquid-contact-form');
+      if (contactForm) {
+        var nameField = document.getElementById('nb-gate-lead-name');
+        var emailField = document.getElementById('nb-gate-lead-email');
+        var phoneField = document.getElementById('nb-gate-lead-phone');
+        var bodyField = document.getElementById('nb-gate-lead-body');
+
+        if (nameField) nameField.value = customerName;
+        if (emailField) emailField.value = (customEmail && customEmail.indexOf('@') > 0) ? customEmail : 'biryanipalacekalyan@gmail.com';
+        if (phoneField) phoneField.value = formattedPhone;
+        if (bodyField) {
+          bodyField.value = [
+            '🔔 NEW ORDER GATE POPUP LEAD:',
+            '• Name: ' + customerName,
+            '• Phone: ' + formattedPhone,
+            '• WhatsApp: https://wa.me/91' + cleanPhone10,
+            '• Email: ' + emailVal,
+            '• Opt-In: ' + (promoConsent ? 'YES' : 'NO'),
+            '• Time: ' + timestamp
+          ].join('\n');
+        }
+
+        var contactData = new FormData(contactForm);
+        fetch(contactForm.action || '/contact#contact_form', {
+          method: 'POST',
+          body: contactData
+        }).catch(function() {});
+      }
+    } catch(e) {}
+
+  } catch(err) {
+    console.error('Lead processing error:', err);
+  }
 }
 
 async function nbAuthSaveName() {
@@ -431,7 +477,7 @@ async function nbAuthSaveName() {
 
   var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
 
-  // 1. On submit, save gate_phone and gate_name to localStorage
+  // 1. Save to localStorage
   localStorage.setItem('gate_phone', phone);
   localStorage.setItem('gate_name', name);
   localStorage.setItem('nb_phone', phone);
@@ -446,10 +492,10 @@ async function nbAuthSaveName() {
 
   var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
 
-  // Send store owner notification email via Shopify Contact Engine
+  // 2. Trigger Guaranteed Lead Saving & Email Dispatch
   nbSendLeadContactEmail(phone, name, customEmail, promoConsent);
 
-  // 2. Use await fetch('/cart/update.js', ...) to save cart attributes and log response JSON
+  // 3. Save to Cart Attributes in Shopify
   try {
     var response = await fetch('/cart/update.js', {
       method: 'POST',
@@ -461,7 +507,7 @@ async function nbAuthSaveName() {
           'Phone': phone,
           'Mobile Number': phone,
           'WhatsApp Number': phone,
-          'Customer Email': customEmail,
+          'Customer Email': customEmail || '',
           'WhatsApp Consent': promoConsent ? 'yes' : 'no'
         }
       })
