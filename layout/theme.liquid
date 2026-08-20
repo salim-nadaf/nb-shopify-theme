@@ -81,6 +81,22 @@
 
     {{ content_for_header }}
 
+    <script>
+      (function() {
+        var p = window.location.pathname.toLowerCase();
+        if (p.includes('bulk') || p.includes('catering') || p.includes('calculator') || p.includes('family') || p.includes('feast')) {
+          document.documentElement.classList.add('nb-custom-route-active');
+        }
+      })();
+    </script>
+    <style>
+      html.nb-custom-route-active #nb-default-layout-content { display: none !important; }
+      html.nb-custom-route-active [data-template="404"] [class*="product_list"],
+      html.nb-custom-route-active .template-404 [class*="product_list"],
+      html.nb-custom-route-active [data-template="404"] .product-list,
+      html.nb-custom-route-active .template-404 .product-list { display: none !important; }
+    </style>
+
     <style>
     /* ===== NIAMAT BIRYANI PALACE — ULTRA-PREMIUM STOREWIDE MASTER STYLES ===== */
 
@@ -915,19 +931,49 @@
         data-product-transition="{{ settings.transition_to_main_product }}"
         data-template="{{ template }}"
       >
-        {%- liquid
-          assign req_path_lower = request.path | downcase
-          if req_path_lower contains 'bulk-orders' or req_path_lower contains '/pages/bulk' or req_path_lower contains '/pages/catering'
-            render 'nb-bulk-orders-snippet'
-          elsif req_path_lower contains 'biryani-calculator' or req_path_lower contains '/pages/calculator'
-            render 'nb-biryani-calculator-snippet'
-          elsif req_path_lower contains 'family-orders' or req_path_lower contains '/pages/family'
-            render 'nb-family-orders-snippet'
-          else
-            echo content_for_layout
-          endif
-        -%}
+        <div id="nb-custom-mount-bulk" style="display:none;">
+          {% render 'nb-bulk-orders-snippet' %}
+        </div>
+        <div id="nb-custom-mount-calculator" style="display:none;">
+          {% render 'nb-biryani-calculator-snippet' %}
+        </div>
+        <div id="nb-custom-mount-family" style="display:none;">
+          {% render 'nb-family-orders-snippet' %}
+        </div>
+
+        <div id="nb-default-layout-content">
+          {{ content_for_layout }}
+        </div>
       </main>
+
+      <script>
+        (function nbInstantCustomRouter() {
+          var path = window.location.pathname.toLowerCase();
+          var defaultContent = document.getElementById('nb-default-layout-content');
+          if (path.includes('bulk') || path.includes('catering')) {
+            var mount = document.getElementById('nb-custom-mount-bulk');
+            if (mount) {
+              mount.style.display = 'block';
+              if (defaultContent) defaultContent.style.display = 'none';
+              document.title = "Bulk Catering Packages — Biryani Palace by Niamat";
+            }
+          } else if (path.includes('calculator')) {
+            var mount = document.getElementById('nb-custom-mount-calculator');
+            if (mount) {
+              mount.style.display = 'block';
+              if (defaultContent) defaultContent.style.display = 'none';
+              document.title = "Biryani Quantity Calculator — Biryani Palace by Niamat";
+            }
+          } else if (path.includes('family') || path.includes('feast') || path.includes('pre-order') || path.includes('family-order')) {
+            var mount = document.getElementById('nb-custom-mount-family');
+            if (mount) {
+              mount.style.display = 'block';
+              if (defaultContent) defaultContent.style.display = 'none';
+              document.title = "Family Orders — Biryani Palace by Niamat";
+            }
+          }
+        })();
+      </script>
 
       <!-- GLOBAL PRODUCT LINK INTERCEPTOR -->
       <script>
