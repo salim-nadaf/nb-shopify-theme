@@ -2136,7 +2136,7 @@
         "type": "textarea",
         "id": "nb_instant_delivery_off_msg",
         "label": "Unavailable Message (When Instant Delivery is OFF)",
-        "default": "Instant Delivery is temporarily unavailable due to high order volume. We are currently handling a high volume of orders. Instant Delivery will resume shortly."
+        "default": "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!"
       },
       {
         "type": "text",
