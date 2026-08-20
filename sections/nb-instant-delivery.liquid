@@ -13,24 +13,6 @@
 
   assign trial_prod = all_products[section.settings.trial_product]
   if trial_prod == blank
-    for p in collections.all.products
-      assign p_title = p.title | downcase
-      if p_title contains 'trial' or p_title contains '99'
-        assign trial_prod = p
-        break
-      endif
-    endfor
-  endif
-  if trial_prod == blank
-    for p in collections['instant-delivery'].products
-      assign p_title = p.title | downcase
-      if p_title contains 'trial' or p_title contains '99'
-        assign trial_prod = p
-        break
-      endif
-    endfor
-  endif
-  if trial_prod == blank
     assign trial_prod = all_products['99-new-customer-trial-biryani']
   endif
   if trial_prod == blank
@@ -43,9 +25,6 @@
   assign trial_variant = trial_prod.selected_or_first_available_variant | default: trial_prod.variants.first
 
   assign trial_img_url = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600'
-  if trial_prod != blank and trial_prod.featured_media != blank
-    assign trial_img_url = trial_prod.featured_media | image_url: width: 600
-  endif
 %}
 
 <div class="nb-instant-section">
@@ -187,9 +166,9 @@
             <div class="nb-food-card__header-row">
               <div class="nb-food-card__image">
                 {% if product.featured_media %}
-                  <img src="{{ product.featured_media | image_url: width: 360 }}"
-                       alt="{{ product.featured_media.alt | escape }}"
-                       width="180" height="180" loading="lazy" decoding="async" />
+                  <img src="{{ product.featured_media | image_url: width: 240, format: 'webp' }}"
+                       alt="{{ product.featured_media.alt | default: product.title | escape }}"
+                       width="120" height="120" loading="lazy" decoding="async" style="aspect-ratio: 1 / 1;" />
                 {% else %}
                   <div class="nb-food-card__image-placeholder">🍛</div>
                 {% endif %}
@@ -341,9 +320,9 @@
           <div class="nb-food-card {% unless is_available %}nb-food-card--soldout{% endunless %}">
             <div class="nb-food-card__image">
               {% if product.featured_media %}
-                <img src="{{ product.featured_media | image_url: width: 260 }}"
-                     alt="{{ product.featured_media.alt | escape }}"
-                     width="130" height="130" loading="lazy" decoding="async" />
+                <img src="{{ product.featured_media | image_url: width: 220, format: 'webp' }}"
+                     alt="{{ product.featured_media.alt | default: product.title | escape }}"
+                     width="110" height="110" loading="lazy" decoding="async" style="aspect-ratio: 1 / 1;" />
               {% else %}
                 <div class="nb-food-card__image-placeholder">🍛</div>
               {% endif %}
