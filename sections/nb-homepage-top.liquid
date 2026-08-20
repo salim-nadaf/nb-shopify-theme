@@ -280,7 +280,6 @@
                   {% assign icon = '🍢' %}
                 {% endif %}
                 <a href="{{ today_cta_url }}#product-{{ product.id }}" class="nb-badge-pill" style="text-decoration: none; color: inherit;">
-                  <span>{{ icon }}</span>
                   <strong>{{ product.title }} Ready</strong>
                 </a>
               {% endif %}
@@ -289,7 +288,6 @@
 
           {% if available_count == 0 %}
             <div class="nb-badge-pill" style="opacity: 0.9;">
-              <span>⚡</span>
               <strong>Fresh Batches In Preparation</strong>
             </div>
           {% endif %}
