@@ -453,16 +453,26 @@
             <span class="nb-tag-badge">Bulk & Catering</span>
             <h2>{{ family_heading }}</h2>
             <p>{{ family_subheading }}</p>
-            <a href="{{ family_cta_url }}" class="nb-btn-gold">{{ family_cta_text }}</a>
+            <div class="nb-family-btns" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;">
+              <a href="{{ family_cta_url }}" class="nb-btn-gold">{{ family_cta_text }}</a>
+              <a href="/pages/biryani-calculator" class="nb-btn-gold" style="background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%) !important; color: #F3C669 !important; border: 1px solid rgba(200,146,42,0.4) !important;">Biryani Calculator</a>
+            </div>
           </div>
           <div class="nb-family-media">
             {% if section.settings.family_image != blank %}
               <img src="{{ section.settings.family_image | image_url: width: 500, format: 'webp' }}" alt="Family Feast" width="500" height="350" loading="lazy" decoding="async" />
             {% else %}
-              <div class="nb-family-box">
-                <span class="nb-crown">👑</span>
-                <h3>Handi Family Feast</h3>
-                <p>1 Kg to 10 Kg Packs</p>
+              <div class="nb-catering-card">
+                <div class="nb-catering-card-badge">Handi Catering</div>
+                <div class="nb-catering-card-title">Bulk &amp; Event Orders</div>
+                <ul class="nb-catering-perks">
+                  <li><span>✓</span> 5 Kg to 50+ Kg Dum Handis</li>
+                  <li><span>✓</span> Weddings, Parties &amp; Corporate Feasts</li>
+                  <li><span>✓</span> Tailored Portions &amp; Timely Delivery</li>
+                </ul>
+                <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20inquire%20about%20Bulk%20%26%20Event%20Catering" target="_blank" class="nb-catering-wa-btn">
+                  Inquire on WhatsApp →
+                </a>
               </div>
             {% endif %}
           </div>
@@ -622,16 +632,21 @@
 .nb-dish-price { font-size: 1.05rem; font-weight: 800; color: var(--nb-gold) !important; }
 .nb-dish-content p { font-size: 0.82rem; color: var(--nb-text-muted) !important; margin: 0; line-height: 1.45; }
 
-.nb-family-banner { background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(253,246,236,0.95) 100%) !important; border: 1px solid rgba(200,146,42,0.3) !important; border-left: 4px solid var(--nb-gold) !important; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; gap: 24px; align-items: center; box-shadow: 0 12px 35px -10px rgba(44,24,16,0.1) !important; }
+.nb-family-banner { background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important; border: 1px solid rgba(200,146,42,0.3) !important; border-left: 5px solid var(--nb-gold) !important; border-radius: 20px; padding: 32px 24px; display: flex; flex-direction: column; gap: 28px; align-items: stretch; box-shadow: 0 14px 40px -10px rgba(44,24,16,0.1), inset 0 1px 1px rgba(255,255,255,1) !important; transition: all 0.3s ease; }
+.nb-family-banner:hover { box-shadow: 0 18px 45px -8px rgba(200,146,42,0.22) !important; transform: translateY(-3px); }
 .nb-family-text { flex: 1; }
-.nb-family-text h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.55rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 6px 0 10px; }
-.nb-family-text p { font-size: 0.88rem; color: var(--nb-text-muted) !important; margin: 0 0 20px; line-height: 1.5; }
-.nb-family-media { width: 100%; text-align: center; }
-.nb-family-media img { width: 100%; border-radius: 14px; object-fit: cover; box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
-.nb-family-box { background: linear-gradient(135deg, #FDF6EC 0%, #F5ECD7 100%); border: 1px solid rgba(200,146,42,0.35); border-radius: 16px; padding: 35px 24px; }
-.nb-crown { font-size: 2.8rem; display: block; margin-bottom: 8px; }
-.nb-family-box h3 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.2rem; font-weight: 800; color: #2C1810; margin: 0 0 4px; }
-.nb-family-box p { font-size: 0.84rem; color: #C8922A; font-weight: 700; margin: 0; }
+.nb-family-text h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.65rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 8px 0 12px; }
+.nb-family-text p { font-size: 0.92rem; color: var(--nb-text-muted) !important; margin: 0 0 16px; line-height: 1.55; }
+.nb-family-media { width: 100%; max-width: 380px; }
+.nb-family-media img { width: 100%; height: auto; border-radius: 14px; }
+.nb-catering-card { background: linear-gradient(135deg, #2C1810 0%, #1A0D07 100%); border: 1.5px solid rgba(200,146,42,0.45); border-radius: 18px; padding: 24px 22px; box-shadow: 0 12px 30px rgba(44,24,16,0.2); color: #FFFDF7; text-align: left; }
+.nb-catering-card-badge { display: inline-block; background: rgba(200,146,42,0.22); border: 1px solid rgba(200,146,42,0.4); color: #F3C669; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+.nb-catering-card-title { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.25rem; font-weight: 800; color: #FFFDF7; margin-bottom: 12px; }
+.nb-catering-perks { list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.nb-catering-perks li { font-size: 0.85rem; color: #E6D2B5; display: flex; align-items: center; gap: 8px; line-height: 1.35; }
+.nb-catering-perks li span { color: #C8922A; font-weight: 800; font-size: 0.95rem; }
+.nb-catering-wa-btn { display: block; text-align: center; background: linear-gradient(135deg, #D49E35 0%, #C8922A 100%); color: #FFFFFF !important; font-weight: 700; font-size: 0.86rem; padding: 9px 16px; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 14px rgba(200,146,42,0.35); transition: all 0.2s ease; }
+.nb-catering-wa-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(200,146,42,0.5); }
 
 .nb-zone-card { background-color: var(--nb-card-bg) !important; border: 1px solid rgba(200,146,42,0.25) !important; border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 8px 25px -8px rgba(44,24,16,0.06) !important; }
 .nb-zone-icon { font-size: 2rem; margin-bottom: 8px; }
