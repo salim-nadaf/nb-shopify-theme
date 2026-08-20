@@ -248,14 +248,40 @@
         </div>
 
         <div class="nb-badges-row">
-          {% for block in section.blocks %}
-            {% if block.type == 'today_badge' %}
-              <div class="nb-badge-pill" {{ block.shopify_attributes }}>
-                <span>{{ block.settings.icon }}</span>
-                <strong>{{ block.settings.label }}</strong>
-              </div>
-            {% endif %}
-          {% endfor %}
+          {% liquid
+            assign instant_col = collections['instant-delivery']
+            if instant_col == blank or instant_col.products.size == 0
+              assign instant_col = collections['all']
+            endif
+            assign available_count = 0
+          %}
+          {% if instant_col != blank and instant_col.products.size > 0 %}
+            {% for product in instant_col.products %}
+              {% if product.available %}
+                {% assign available_count = available_count | plus: 1 %}
+                {% assign prod_title_lower = product.title | downcase %}
+                {% assign icon = '🍗' %}
+                {% if prod_title_lower contains 'paneer' or prod_title_lower contains 'veg' or prod_title_lower contains 'sabz' %}
+                  {% assign icon = '🌿' %}
+                {% elsif prod_title_lower contains 'mutton' or prod_title_lower contains 'gosht' %}
+                  {% assign icon = '🥩' %}
+                {% elsif prod_title_lower contains 'tikka' or prod_title_lower contains 'kebab' or prod_title_lower contains 'starter' %}
+                  {% assign icon = '🍢' %}
+                {% endif %}
+                <a href="{{ today_cta_url }}#product-{{ product.id }}" class="nb-badge-pill" style="text-decoration: none; color: inherit;">
+                  <span>{{ icon }}</span>
+                  <strong>{{ product.title }} Ready</strong>
+                </a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          {% if available_count == 0 %}
+            <div class="nb-badge-pill" style="opacity: 0.9;">
+              <span>⚡</span>
+              <strong>Fresh Batches In Preparation</strong>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
