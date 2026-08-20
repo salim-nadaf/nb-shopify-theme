@@ -90,6 +90,7 @@
     "nb_instant_delivery_enabled": false,
     "nb_instant_delivery_status_msg": "Instant Delivery is available",
     "nb_instant_delivery_off_msg": "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!",
+    "nb_lead_notification_email": "milas.fadan@gmail.com",
     "nb_scheduled_ordering_url": "/pages/family-orders",
     "nb_google_maps_api_key": "AIzaSyCzP1FLzi8wFjDsC9tZrkCo3nKj1F9U_b8",
     "nb_store_lat": "19.246662490615908",

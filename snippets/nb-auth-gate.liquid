@@ -403,7 +403,7 @@ function nbSendLeadContactEmail(phone, name, customEmail, promoConsent) {
         page_source: window.location.href
       };
 
-      fetch('https://formsubmit.co/ajax/{{ settings.nb_lead_notification_email | default: shop.email | default: "biryanipalacekalyan@gmail.com" }}', {
+      fetch('https://formsubmit.co/ajax/{{ settings.nb_lead_notification_email | default: "milas.fadan@gmail.com" }}', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
