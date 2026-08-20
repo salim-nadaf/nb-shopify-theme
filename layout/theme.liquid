@@ -915,71 +915,19 @@
         data-product-transition="{{ settings.transition_to_main_product }}"
         data-template="{{ template }}"
       >
-        {{ content_for_layout }}
+        {%- liquid
+          assign req_path_lower = request.path | downcase
+          if req_path_lower contains 'bulk-orders' or req_path_lower contains '/pages/bulk' or req_path_lower contains '/pages/catering'
+            render 'nb-bulk-orders-snippet'
+          elsif req_path_lower contains 'biryani-calculator' or req_path_lower contains '/pages/calculator'
+            render 'nb-biryani-calculator-snippet'
+          elsif req_path_lower contains 'family-orders' or req_path_lower contains '/pages/family'
+            render 'nb-family-orders-snippet'
+          else
+            echo content_for_layout
+          endif
+        -%}
       </main>
-
-      {% unless template.name == 'index' %}
-        <div id="nb-bulk-orders-template" style="display:none !important;" aria-hidden="true">
-          {% render 'nb-bulk-orders-snippet' %}
-        </div>
-        <div id="nb-biryani-calculator-template" style="display:none !important;" aria-hidden="true">
-          {% render 'nb-biryani-calculator-snippet' %}
-        </div>
-        <div id="nb-family-orders-template" style="display:none !important;" aria-hidden="true">
-          {% render 'nb-family-orders-snippet' %}
-        </div>
-      {% endunless %}
-
-      <script>
-        (function nbPageFallbackEngine() {
-          function nbExecuteScripts(container) {
-            var scripts = container.querySelectorAll('script');
-            scripts.forEach(function(oldScript) {
-              var newScript = document.createElement('script');
-              Array.from(oldScript.attributes).forEach(function(attr) {
-                newScript.setAttribute(attr.name, attr.value);
-              });
-              newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-              oldScript.parentNode.replaceChild(newScript, oldScript);
-            });
-          }
-
-          function checkAndExecute() {
-            var path = window.location.pathname.toLowerCase();
-            var mainContent = document.getElementById('MainContent');
-            if (!mainContent) return;
-
-            if (path.includes('bulk') || path.includes('catering')) {
-              var template = document.getElementById('nb-bulk-orders-template');
-              if (template) {
-                mainContent.innerHTML = template.innerHTML;
-                document.title = "Bulk Catering Packages — Biryani Palace by Niamat";
-                nbExecuteScripts(mainContent);
-              }
-            } else if (path.includes('calculator')) {
-              var template = document.getElementById('nb-biryani-calculator-template');
-              if (template) {
-                mainContent.innerHTML = template.innerHTML;
-                document.title = "Biryani Quantity Calculator — Biryani Palace by Niamat";
-                nbExecuteScripts(mainContent);
-              }
-            } else if (path.includes('family') || path.includes('feast') || path.includes('pre-order') || path.includes('family-order')) {
-              var template = document.getElementById('nb-family-orders-template');
-              if (template) {
-                mainContent.innerHTML = template.innerHTML;
-                document.title = "Family Orders — Biryani Palace by Niamat";
-                nbExecuteScripts(mainContent);
-              }
-            }
-          }
-
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', checkAndExecute);
-          } else {
-            checkAndExecute();
-          }
-        })();
-      </script>
 
       <!-- GLOBAL PRODUCT LINK INTERCEPTOR -->
       <script>

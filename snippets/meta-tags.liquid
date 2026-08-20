@@ -107,11 +107,22 @@
   content="{{ og_description | escape }}"
 >
 
+{%- liquid
+  assign custom_page_title = page_title
+  assign req_path_lower = request.path | downcase
+  if req_path_lower contains 'bulk-orders' or req_path_lower contains '/pages/bulk'
+    assign custom_page_title = 'Bulk Catering Packages — Biryani Palace by Niamat'
+  elsif req_path_lower contains 'biryani-calculator' or req_path_lower contains '/pages/calculator'
+    assign custom_page_title = 'Biryani Quantity Calculator — Biryani Palace by Niamat'
+  elsif req_path_lower contains 'family-orders' or req_path_lower contains '/pages/family'
+    assign custom_page_title = 'Family Orders — Biryani Palace by Niamat'
+  endif
+-%}
 <title>
-  {{ page_title }}
+  {{ custom_page_title }}
   {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
   {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-  {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  {%- unless custom_page_title contains shop.name or custom_page_title contains 'Biryani Palace by Niamat' %} &ndash; {{ shop.name }}{% endunless -%}
 </title>
 
 <link
