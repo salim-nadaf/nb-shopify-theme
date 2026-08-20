@@ -758,6 +758,28 @@
   .nb-instant-section { padding: 32px 24px 80px; }
   .nb-section-header h3 { font-size: 1.8rem; }
 }
+
+/* Ensure full product description and title display on mobile & all screens */
+.nb-food-card__desc {
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
+  overflow: visible !important;
+  word-break: break-word !important;
+  line-height: 1.4 !important;
+  font-size: 0.78rem !important;
+  color: #66554B !important;
+  margin: 3px 0 6px 0 !important;
+}
+
+.nb-food-card__title {
+  display: block !important;
+  overflow: visible !important;
+  white-space: normal !important;
+  text-overflow: unset !important;
+  word-break: break-word !important;
+  line-height: 1.25 !important;
+}
 </style>
 
 <script>

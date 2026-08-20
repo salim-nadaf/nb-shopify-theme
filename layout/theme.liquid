@@ -162,26 +162,30 @@
     display: none !important;
   }
 }
-  /* Fix text overflow in food cards on mobile */
+  /* Full, responsive text display in food cards on mobile */
 .nb-food-card__body {
   min-width: 0 !important;
-  overflow: hidden !important;
+  overflow: visible !important;
 }
 .nb-food-card__desc {
-  overflow: hidden !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2 !important;
-  -webkit-box-orient: vertical !important;
+  overflow: visible !important;
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  -webkit-box-orient: unset !important;
   word-break: break-word !important;
+  line-height: 1.4 !important;
+  font-size: 0.78rem !important;
+  color: #66554B !important;
 }
 .nb-food-card__title {
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  white-space: normal !important;
   max-width: 100% !important;
+  line-height: 1.25 !important;
 }
 .nb-food-card__meta {
-  overflow: hidden !important;
+  overflow: visible !important;
   flex-wrap: wrap !important;
 }
 .nb-meta-tag {

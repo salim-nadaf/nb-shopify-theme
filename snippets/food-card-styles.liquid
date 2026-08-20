@@ -142,7 +142,7 @@ span.nb-badge,
   min-width: 0 !important;
   width: 100% !important;
   box-sizing: border-box !important;
-  overflow: hidden !important;
+  overflow: visible !important;
 }
 .nb-food-card__title {
   font-size: 0.95rem;
@@ -257,22 +257,20 @@ span.nb-badge,
     flex-shrink: 0 !important;
   }
   .nb-food-card__title {
-    font-size: 0.88rem !important;
+    font-size: 0.92rem !important;
     line-height: 1.25 !important;
     margin-bottom: 2px !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
+    display: block !important;
+    overflow: visible !important;
+    white-space: normal !important;
   }
   .nb-food-card__desc {
-    font-size: 0.72rem !important;
-    line-height: 1.25 !important;
-    margin-bottom: 3px !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
+    font-size: 0.76rem !important;
+    line-height: 1.35 !important;
+    margin-bottom: 4px !important;
+    display: block !important;
+    overflow: visible !important;
+    word-break: break-word !important;
   }
   .nb-food-card__meta {
     gap: 4px !important;
