@@ -394,6 +394,8 @@ function nbSendLeadContactEmail(phone, name, customEmail, promoConsent) {
       var emailPayload = {
         _subject: '🔥 New Order Gate Lead: ' + customerName + ' (' + formattedPhone + ')',
         _replyto: (customEmail && customEmail.indexOf('@') > 0) ? customEmail : undefined,
+        _captcha: 'false',
+        _template: 'table',
         customer_name: customerName,
         mobile_number: formattedPhone,
         whatsapp_chat_link: 'https://wa.me/91' + cleanPhone10,
