@@ -42,10 +42,8 @@
     assign accent_font_italic_face_id = '[accent_font_italic_family]-[accent_font_italic_weight]-[accent_font_italic_style]|' | replace: '[accent_font_italic_family]', accent_font_italic.family | replace: '[accent_font_italic_weight]', accent_font_italic.weight | replace: '[accent_font_italic_style]', accent_font_italic.style
     assign accent_font_bold_italic_face_id = '[accent_font_bold_italic_family]-[accent_font_bold_italic_weight]-[accent_font_bold_italic_style]|' | replace: '[accent_font_bold_italic_family]', accent_font_bold_italic.family | replace: '[accent_font_bold_italic_weight]', accent_font_bold_italic.weight | replace: '[accent_font_bold_italic_style]', accent_font_bold_italic.style
 
-    {%- comment -%}
-      Unused Shopify font-face declarations disabled for high PageSpeed performance.
-      Site uses optimized Google Fonts (Playfair Display & Inter) loaded asynchronously.
-    {%- endcomment -%}
+    # Unused Shopify font-face declarations disabled for high PageSpeed performance.
+    # Site uses optimized Google Fonts (Playfair Display & Inter) loaded asynchronously.
   %}
 
   :root {
