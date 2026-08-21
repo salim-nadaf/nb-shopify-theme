@@ -92,6 +92,9 @@
 %}
 
 <div class="nb-food-card {% if is_preorder %}nb-food-card--preorder{% endif %}">
+  <div class="nb-diet-corner-badge" aria-hidden="true">
+    {% render 'nb-diet-icon', product: product %}
+  </div>
   <div class="nb-food-card__image">
     {%- if product.featured_media -%}
       <img
