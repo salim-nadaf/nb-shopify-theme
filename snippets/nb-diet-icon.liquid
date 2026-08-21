@@ -19,10 +19,16 @@
     assign item_type = product.type | default: '' | downcase
     assign check_str = item_title | append: ' ' | append: item_desc | append: ' ' | append: item_tags | append: ' ' | append: item_type
 
-    if item_tags contains 'veg' and item_tags contains 'non-veg' == false and item_tags contains 'nonveg' == false
+    assign has_veg_tag = false
+    if item_tags contains 'veg'
+      unless item_tags contains 'non-veg' or item_tags contains 'nonveg'
+        assign has_veg_tag = true
+      endunless
+    endif
+
+    if has_veg_tag
       assign item_diet = 'veg'
     elsif check_str contains 'paneer' or check_str contains 'veg pulao' or check_str contains 'vegetable' or check_str contains 'nawabi veg' or check_str contains 'sabz tikka' or check_str contains 'sabziyon' or check_str contains 'raita' or check_str contains 'gulab jamun' or check_str contains 'jamun' or check_str contains 'coke' or check_str contains 'coca-cola' or check_str contains 'sprite' or check_str contains 'thums up' or check_str contains 'fanta' or check_str contains 'beverage' or check_str contains 'drink' or check_str contains 'cold drink' or check_str contains 'sweet' or check_str contains 'dessert' or check_str contains 'phirni' or check_str contains 'halwa' or check_str contains 'salad' or check_str contains 'papad' or check_str contains 'mirchi ka salan' or check_str contains 'extra salan'
-      # Verify it does not contain non-veg ingredients
       if check_str contains 'chicken' or check_str contains 'murgh' or check_str contains 'mutton' or check_str contains 'gosht' or check_str contains 'egg' or check_str contains 'anda' or check_str contains 'fish' or check_str contains 'prawn' or check_str contains 'kebab' or check_str contains 'seekh' or check_str contains 'alishaan'
         assign item_diet = 'nonveg'
       else
