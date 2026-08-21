@@ -81,12 +81,14 @@
         assign raita_prod = all_products['niamat-extra-raita']
       endif
 
+      # Single piece Shami Kebab for cart drawer
       assign kebab_prod = all_products['chicken-shami-kebab']
       if kebab_prod == blank
-        assign kebab_prod = all_products['shami-kebab']
+        assign kebab_prod = all_products['shami-kebab-1']
       endif
 
-      assign jamun_prod = all_products['gulab-jamun']
+      # Single piece Gulab Jamun for cart drawer (handle: gulab-jamun-1)
+      assign jamun_prod = all_products['gulab-jamun-1']
 
       assign coke_prod = all_products['chilled-coke']
       if coke_prod == blank
@@ -134,13 +136,13 @@
               {% endif %}
             </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" data-variant-id="{{ raita_prod.selected_or_first_available_variant.id }}" onclick="nbAddUpsell(this, '{{ raita_prod.handle | default: 'extra-raita' }}', 'Extra Raita')">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" data-variant-id="{{ raita_prod.selected_or_first_available_variant.id | default: '44043042422858' }}" onclick="nbAddUpsell(this, '{{ raita_prod.handle | default: 'extra-raita' }}', 'Extra Raita')">+ Add</button>
         </div>
 
-        <!-- 2. Chicken Shami Kebab -->
+        <!-- 2. Chicken Shami Kebab (Single Piece) -->
         <div class="nb-upsell-pill-card" data-addon-key="kebab">
           <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">{{ kebab_prod.title | default: 'Chicken Shami Kebab' }}</span>
+            <span class="nb-upsell-pill-name">Chicken Shami Kebab</span>
             <span class="nb-upsell-pill-price" id="nb-upsell-kebab-price">
               {% if kebab_prod != blank and kebab_prod.price > 0 %}
                 {{ kebab_prod.price | money_without_trailing_zeros }}
@@ -152,10 +154,10 @@
           <button class="nb-upsell-pill-add" id="nb-add-kebab-btn" data-variant-id="{{ kebab_prod.selected_or_first_available_variant.id }}" onclick="nbAddUpsell(this, '{{ kebab_prod.handle | default: 'chicken-shami-kebab' }}', 'Chicken Shami Kebab')">+ Add</button>
         </div>
 
-        <!-- 3. Gulab Jamun -->
+        <!-- 3. Gulab Jamun (Single Piece) -->
         <div class="nb-upsell-pill-card" data-addon-key="jamun">
           <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">{{ jamun_prod.title | default: 'Gulab Jamun' }}</span>
+            <span class="nb-upsell-pill-name">Gulab Jamun</span>
             <span class="nb-upsell-pill-price" id="nb-upsell-jamun-price">
               {% if jamun_prod != blank and jamun_prod.price > 0 %}
                 {{ jamun_prod.price | money_without_trailing_zeros }}
@@ -164,7 +166,7 @@
               {% endif %}
             </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-jamun-btn" data-variant-id="{{ jamun_prod.selected_or_first_available_variant.id }}" onclick="nbAddUpsell(this, '{{ jamun_prod.handle | default: 'gulab-jamun' }}', 'Gulab Jamun')">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-jamun-btn" data-variant-id="{{ jamun_prod.selected_or_first_available_variant.id | default: '44087168532554' }}" onclick="nbAddUpsell(this, 'gulab-jamun-1', 'Gulab Jamun')">+ Add</button>
         </div>
 
         <!-- 4. Chilled Coke (250ml) -->
@@ -177,11 +179,11 @@
               {% elsif coke_prod != blank and coke_prod.price > 0 %}
                 {{ coke_prod.price | money_without_trailing_zeros }}
               {% else %}
-                ₹20
+                ₹30
               {% endif %}
             </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-coke-250-btn" data-variant-id="{{ coke_250_v.id }}" onclick="nbAddCokeUpsell(this, '250')">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-coke-250-btn" data-variant-id="{{ coke_250_v.id | default: '44087358554186' }}" onclick="nbAddCokeUpsell(this, '250')">+ Add</button>
         </div>
 
         <!-- 5. Chilled Coke (750ml) -->
@@ -192,11 +194,11 @@
               {% if coke_750_v != null and coke_750_v.price > 0 %}
                 {{ coke_750_v.price | money_without_trailing_zeros }}
               {% else %}
-                ₹40
+                ₹60
               {% endif %}
             </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-coke-750-btn" data-variant-id="{{ coke_750_v.id }}" onclick="nbAddCokeUpsell(this, '750')">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-coke-750-btn" data-variant-id="{{ coke_750_v.id | default: '44087358586954' }}" onclick="nbAddCokeUpsell(this, '750')">+ Add</button>
         </div>
       </div>
     </div>
@@ -1063,83 +1065,65 @@ function nbUpdateQty(key, qty) {
   });
 }
 
-// REAL-TIME AUTO-SYNC FOR ADD-ON & COKE PRICES FROM SHOPIFY ADMIN
+// REAL-TIME AUTO-SYNC FOR SINGLE-PORTION ADD-ONS (RAITA, SHAMI KEBAB, GULAB JAMUN, COKE)
 function nbSyncAddonPrices() {
-  fetch('/products.json?limit=50')
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      if (!data || !data.products) return;
-      var prods = data.products;
+  // 1. Extra Raita
+  fetch('/products/extra-raita.js')
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(p) {
+      if (p && p.variants && p.variants[0]) {
+        var priceEl = document.getElementById('nb-upsell-raita-price');
+        var btn = document.getElementById('nb-add-raita-btn');
+        if (priceEl) priceEl.textContent = '₹' + (p.variants[0].price / 100).toFixed(0);
+        if (btn) btn.dataset.variantId = p.variants[0].id;
+      }
+    }).catch(function() {});
 
-      prods.forEach(function(p) {
-        var title = (p.title || '').toLowerCase();
-        var handle = (p.handle || '').toLowerCase();
-        var variants = p.variants || [];
+  // 2. Single Gulab Jamun (gulab-jamun-1)
+  fetch('/products/gulab-jamun-1.js')
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(p) {
+      if (p && p.variants && p.variants[0]) {
+        var priceEl = document.getElementById('nb-upsell-jamun-price');
+        var btn = document.getElementById('nb-add-jamun-btn');
+        if (priceEl) priceEl.textContent = '₹' + (p.variants[0].price / 100).toFixed(0);
+        if (btn) btn.dataset.variantId = p.variants[0].id;
+      }
+    }).catch(function() {});
 
-        // Raita
-        if (title.includes('raita') || handle.includes('raita')) {
-          var priceEl = document.getElementById('nb-upsell-raita-price');
-          var btn = document.getElementById('nb-add-raita-btn');
-          if (priceEl && variants[0]) {
-            priceEl.textContent = '₹' + parseFloat(variants[0].price).toFixed(0);
-          }
-          if (btn && variants[0]) {
-            btn.dataset.variantId = variants[0].id;
-          }
-        }
+  // 3. Single Chicken Shami Kebab
+  fetch('/products/chicken-shami-kebab.js')
+    .then(function(r) { return r.ok ? r.json() : fetch('/products/shami-kebab-1.js').then(function(r2){ return r2.ok ? r2.json() : null; }); })
+    .then(function(p) {
+      if (p && p.variants && p.variants[0]) {
+        var priceEl = document.getElementById('nb-upsell-kebab-price');
+        var btn = document.getElementById('nb-add-kebab-btn');
+        if (priceEl) priceEl.textContent = '₹' + (p.variants[0].price / 100).toFixed(0);
+        if (btn) btn.dataset.variantId = p.variants[0].id;
+      }
+    }).catch(function() {});
 
-        // Shami Kebab
-        if (title.includes('shami') || handle.includes('shami')) {
-          var priceEl = document.getElementById('nb-upsell-kebab-price');
-          var btn = document.getElementById('nb-add-kebab-btn');
-          if (priceEl && variants[0]) {
-            priceEl.textContent = '₹' + parseFloat(variants[0].price).toFixed(0);
-          }
-          if (btn && variants[0]) {
-            btn.dataset.variantId = variants[0].id;
-          }
-        }
+  // 4. Chilled Coke (250ml / 750ml)
+  fetch('/products/coke.js')
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(p) {
+      if (!p || !p.variants || p.variants.length === 0) return;
+      var v250 = p.variants.find(function(v) { return (v.title || '').includes('250'); }) || p.variants[0];
+      var v750 = p.variants.find(function(v) { return (v.title || '').includes('750'); }) || (p.variants.length > 1 ? p.variants[1] : null);
 
-        // Gulab Jamun
-        if (title.includes('gulab') || title.includes('jamun') || handle.includes('jamun')) {
-          var priceEl = document.getElementById('nb-upsell-jamun-price');
-          var btn = document.getElementById('nb-add-jamun-btn');
-          if (priceEl && variants[0]) {
-            priceEl.textContent = '₹' + parseFloat(variants[0].price).toFixed(0);
-          }
-          if (btn && variants[0]) {
-            btn.dataset.variantId = variants[0].id;
-          }
-        }
-
-        // Coke (250ml / 750ml)
-        if (title.includes('coke') || title.includes('coca') || handle.includes('coke')) {
-          var v250 = variants.find(function(v) { return (v.title || '').includes('250'); }) || variants[0];
-          var v750 = variants.find(function(v) { return (v.title || '').includes('750'); }) || (variants.length > 1 ? variants[1] : null);
-
-          var price250El = document.getElementById('nb-upsell-coke-250-price');
-          var btn250 = document.getElementById('nb-add-coke-250-btn');
-          if (price250El && v250) {
-            price250El.textContent = '₹' + parseFloat(v250.price).toFixed(0);
-          }
-          if (btn250 && v250) {
-            btn250.dataset.variantId = v250.id;
-          }
-
-          var price750El = document.getElementById('nb-upsell-coke-750-price');
-          var btn750 = document.getElementById('nb-add-coke-750-btn');
-          if (price750El && v750) {
-            price750El.textContent = '₹' + parseFloat(v750.price).toFixed(0);
-          }
-          if (btn750 && v750) {
-            btn750.dataset.variantId = v750.id;
-          }
-        }
-      });
-    })
-    .catch(function(e) {
-      console.warn('Could not sync live addon prices:', e);
-    });
+      if (v250) {
+        var price250El = document.getElementById('nb-upsell-coke-250-price');
+        var btn250 = document.getElementById('nb-add-coke-250-btn');
+        if (price250El) price250El.textContent = '₹' + (v250.price / 100).toFixed(0);
+        if (btn250) btn250.dataset.variantId = v250.id;
+      }
+      if (v750) {
+        var price750El = document.getElementById('nb-upsell-coke-750-price');
+        var btn750 = document.getElementById('nb-add-coke-750-btn');
+        if (price750El) price750El.textContent = '₹' + (v750.price / 100).toFixed(0);
+        if (btn750) btn750.dataset.variantId = v750.id;
+      }
+    }).catch(function() {});
 }
 
 // MULTI-TIER ADD-ON LOOKUP (PREVENTS SILENT FAILS & REPEATED SEARCHES)
