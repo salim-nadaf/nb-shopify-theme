@@ -122,8 +122,20 @@
   <div class="nb-food-card__body">
     <div class="nb-food-card__top">
       <h3 class="nb-food-card__title">{{ product.title }}</h3>
-      {%- if product.description != blank -%}
-        <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
+      {%- liquid
+        assign item_desc = product.description | strip_html
+        if item_desc == blank
+          assign item_desc = product.content | strip_html
+        endif
+        if item_desc == blank and product.handle == 'chicken-tikka-biryani'
+          assign item_desc = 'Chicken tikka tossed in smoky, aromatic rice with rich undertones of flavor.'
+        endif
+        if item_desc == blank and product.handle == 'chicken-tikka-boneless-biryani'
+          assign item_desc = 'Boneless chicken tikka tossed in smoky, aromatic rice with rich undertones of flavor.'
+        endif
+      -%}
+      {%- if item_desc != blank -%}
+        <p class="nb-food-card__desc">{{ item_desc }}</p>
       {%- endif -%}
       <div class="nb-food-card__meta">
         {%- if is_preorder -%}
