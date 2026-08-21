@@ -349,16 +349,22 @@
                   {% assign icon = '🍢' %}
                 {% endif %}
                 <a href="{{ today_cta_url }}#product-{{ product.id }}" class="nb-badge-pill" style="text-decoration: none; color: inherit;">
-                  {% render 'nb-diet-icon', product: product %}
-                  <strong>{{ product.title }} Ready</strong>
+                  <div class="nb-badge-pill__left">
+                    {% render 'nb-diet-icon', product: product %}
+                    <span class="nb-badge-pill__title">{{ product.title }}</span>
+                  </div>
+                  <span class="nb-badge-pill__status">
+                    <span class="nb-badge-pill__pulse"></span>
+                    Ready
+                  </span>
                 </a>
               {% endif %}
             {% endfor %}
           {% endif %}
 
           {% if available_count == 0 %}
-            <div class="nb-badge-pill" style="opacity: 0.9;">
-              <strong>Fresh Batches In Preparation</strong>
+            <div class="nb-badge-pill" style="opacity: 0.9; justify-content: center;">
+              <span class="nb-badge-pill__title">Fresh Batches In Preparation</span>
             </div>
           {% endif %}
         </div>
@@ -704,8 +710,93 @@
 .nb-card-exp p { font-size: 0.86rem; color: var(--nb-text-muted) !important; margin: 0 0 18px; flex: 1; line-height: 1.5; }
 .nb-chip { font-size: 0.74rem; font-weight: 700; background: rgba(200,146,42,0.15); color: var(--nb-gold) !important; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(200,146,42,0.3); }
 
-.nb-badges-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 20px; }
-.nb-badge-pill { background-color: var(--nb-card-bg) !important; border: 1px solid rgba(200,146,42,0.3); border-radius: 25px; padding: 9px 18px; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--nb-text-dark) !important; box-shadow: 0 4px 15px rgba(0,0,0,0.04) !important; }
+.nb-badges-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.nb-badge-pill {
+  background-color: var(--nb-card-bg, #FFFFFF) !important;
+  border: 1px solid rgba(200, 146, 42, 0.3) !important;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  font-size: 0.85rem !important;
+  color: var(--nb-text-dark, #2C1810) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+.nb-badge-pill:hover {
+  transform: translateY(-2px);
+  border-color: #C8922A;
+  box-shadow: 0 6px 20px rgba(200, 146, 42, 0.2) !important;
+}
+.nb-badge-pill__left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+.nb-badge-pill__title {
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+  color: #2C1810 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.nb-badge-pill__status {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  color: #2E7D32 !important;
+  background: rgba(46, 125, 50, 0.08) !important;
+  border: 1px solid rgba(46, 125, 50, 0.22) !important;
+  padding: 3px 8px !important;
+  border-radius: 16px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+.nb-badge-pill__pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #2E7D32;
+  display: inline-block;
+  animation: nbPulse 1.8s infinite;
+}
+@keyframes nbPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.6); }
+  70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(46, 125, 50, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+}
+
+@media (max-width: 767px) {
+  .nb-badges-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin-top: 16px !important;
+  }
+  .nb-badge-pill {
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+  }
+  .nb-badge-pill__title {
+    font-size: 0.84rem !important;
+  }
+}
 
 .nb-why-box { background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(253,246,236,0.95) 100%) !important; border: 1px solid rgba(200,146,42,0.22) !important; border-radius: 16px; padding: 20px 16px; text-align: center; box-shadow: 0 8px 25px -8px rgba(44,24,16,0.06) !important; transition: all 0.25s ease; }
 .nb-why-box:hover { transform: translateY(-3px); border-color: var(--nb-gold) !important; }
