@@ -35,10 +35,19 @@
         </div>
         <div class="nb-g-rating-score-block">
           <div class="nb-g-score-row">
-            <span class="nb-g-score-num">{{ section.settings.google_rating | default: '4.9' }}</span>
-            <div class="nb-g-stars">★★★★★</div>
+            <span class="nb-g-score-num" id="nbGoogleRatingNum">{{ section.settings.google_rating | default: '4.4' }}</span>
+            <div class="nb-g-stars" id="nbGoogleStars">
+              {% assign g_score = section.settings.google_rating | default: '4.4' | plus: 0 %}
+              {% if g_score >= 4.7 %}
+                ★★★★★
+              {% elsif g_score >= 4.2 %}
+                ★★★★☆
+              {% else %}
+                ★★★☆☆
+              {% endif %}
+            </div>
           </div>
-          <span class="nb-g-score-sub">{{ section.settings.total_reviews_text | default: 'Based on 150+ Verified Google Reviews' }}</span>
+          <span class="nb-g-score-sub" id="nbGoogleReviewsCount">{{ section.settings.total_reviews_text | default: 'Based on 58 Verified Google Reviews' }}</span>
         </div>
       </div>
       <div class="nb-g-summary-right">
@@ -399,6 +408,44 @@
   }
 }
 </style>
+{% if section.settings.google_place_id != blank and section.settings.google_api_key != blank %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var placeId = {{ section.settings.google_place_id | json }};
+  var apiKey = {{ section.settings.google_api_key | json }};
+  if (!placeId || !apiKey) return;
+  
+  var script = document.createElement('script');
+  script.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(apiKey) + '&libraries=places&callback=nbInitGoogleReviews';
+  script.async = true;
+  document.head.appendChild(script);
+
+  window.nbInitGoogleReviews = function() {
+    var dummyDiv = document.createElement('div');
+    var service = new google.maps.places.PlacesService(dummyDiv);
+    service.getDetails({
+      placeId: placeId,
+      fields: ['rating', 'user_ratings_total']
+    }, function(place, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+        if (place.rating) {
+          var numEl = document.getElementById('nbGoogleRatingNum');
+          if (numEl) numEl.textContent = place.rating.toFixed(1);
+          var starsEl = document.getElementById('nbGoogleStars');
+          if (starsEl) {
+            starsEl.textContent = place.rating >= 4.7 ? '★★★★★' : (place.rating >= 4.2 ? '★★★★☆' : '★★★☆☆');
+          }
+        }
+        if (place.user_ratings_total) {
+          var countEl = document.getElementById('nbGoogleReviewsCount');
+          if (countEl) countEl.textContent = 'Based on ' + place.user_ratings_total + ' Verified Google Reviews';
+        }
+      }
+    });
+  };
+});
+</script>
+{% endif %}
 
 {% schema %}
 {
@@ -427,20 +474,37 @@
     {
       "type": "text",
       "id": "google_rating",
-      "label": "Google Rating Score",
-      "default": "4.8"
+      "label": "Google Rating Score (Fallback/Display)",
+      "default": "4.4"
     },
     {
       "type": "text",
       "id": "total_reviews_text",
-      "label": "Total Reviews Text",
-      "default": "Verified Real Reviews on Google Maps"
+      "label": "Total Reviews Text (Fallback/Display)",
+      "default": "Based on 58 Verified Google Reviews"
     },
     {
       "type": "text",
       "id": "google_review_url",
       "label": "Google Maps Review URL",
       "default": "https://maps.app.goo.gl/eXz6owNMojDUfi2h9"
+    },
+    {
+      "type": "header",
+      "content": "Google Places API (Live Auto-Sync)"
+    },
+    {
+      "type": "text",
+      "id": "google_place_id",
+      "label": "Google Place ID (Optional)",
+      "info": "Place ID of your Google Business Profile (e.g. ChIJn0_VxWuX5zsR3ImAttp0XfU)",
+      "default": "ChIJn0_VxWuX5zsR3ImAttp0XfU"
+    },
+    {
+      "type": "text",
+      "id": "google_api_key",
+      "label": "Google Places API Key (Optional)",
+      "info": "Paste your Google Cloud Places API key to auto-sync rating & total count in real-time."
     }
   ],
   "blocks": [
