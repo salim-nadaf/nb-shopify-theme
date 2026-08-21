@@ -4,7 +4,7 @@
   - 4.4 Google Rating Summary Banner with official Google icon
   - Direct "Review Us on Google" CTA linking to Google Maps profile
   - 5-Star & 4-Star Verified Google Customer Reviews with Dish Tags
-  - Responsive desktop grid & mobile-friendly auto-sliding swipe carousel (configurable interval e.g. 5s)
+  - Responsive 3-Card Desktop Carousel & Mobile Auto-Sliding Carousel (configurable interval e.g. 5s)
   - Google Places API (New) auto-sync with client-side real-time fetch & newest-first sorting
 {% endcomment %}
 
@@ -58,9 +58,9 @@
       </div>
     </div>
 
-    <!-- REVIEWS GRID / CAROUSEL TRACK -->
+    <!-- REVIEWS CAROUSEL CONTAINER -->
     <div class="nb-reviews-carousel-container" id="nbReviewsCarouselWrap">
-      <!-- NAVIGATION ARROWS (MOBILE & DESKTOP) -->
+      <!-- NAVIGATION ARROWS (DESKTOP & TABLET) -->
       <button type="button" class="nb-carousel-arrow nb-carousel-prev" id="nbReviewsPrev" aria-label="Previous Review">‹</button>
       <button type="button" class="nb-carousel-arrow nb-carousel-next" id="nbReviewsNext" aria-label="Next Review">›</button>
 
@@ -71,38 +71,40 @@
             {% if rating_num >= 4 %}
               <div class="nb-review-card" {{ block.shopify_attributes }}>
                 <!-- HEADER: AUTHOR & GOOGLE LOGO -->
-                <div class="nb-review-card__header">
-                  <div class="nb-review-avatar">
-                    {% assign initial = block.settings.author_name | slice: 0, 1 | default: 'N' %}
-                    <span>{{ initial }}</span>
-                  </div>
-                  <div class="nb-review-author-meta">
-                    <strong class="nb-review-author-name">{{ block.settings.author_name }}</strong>
-                    <div class="nb-review-verified-badge">
-                      <svg width="12" height="12" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                      </svg>
-                      <span>Verified Google Review</span>
+                <div>
+                  <div class="nb-review-card__header">
+                    <div class="nb-review-avatar">
+                      {% assign initial = block.settings.author_name | slice: 0, 1 | default: 'N' %}
+                      <span>{{ initial }}</span>
                     </div>
+                    <div class="nb-review-author-meta">
+                      <strong class="nb-review-author-name">{{ block.settings.author_name }}</strong>
+                      <div class="nb-review-verified-badge">
+                        <svg width="12" height="12" viewBox="0 0 24 24">
+                          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Verified Google Review</span>
+                      </div>
+                    </div>
+                    <span class="nb-review-date">{{ block.settings.review_date }}</span>
                   </div>
-                  <span class="nb-review-date">{{ block.settings.review_date }}</span>
-                </div>
 
-                <!-- STARS & DISH TAG -->
-                <div class="nb-review-card__rating-row">
-                  <div class="nb-review-stars">
-                    {% if rating_num == 5 %}
-                      ★★★★★
-                    {% elsif rating_num == 4 %}
-                      ★★★★☆
+                  <!-- STARS & DISH TAG -->
+                  <div class="nb-review-card__rating-row">
+                    <div class="nb-review-stars">
+                      {% if rating_num == 5 %}
+                        ★★★★★
+                      {% elsif rating_num == 4 %}
+                        ★★★★☆
+                      {% endif %}
+                    </div>
+                    {% if block.settings.dish_tag != blank %}
+                      <span class="nb-review-dish-tag">{{ block.settings.dish_tag }}</span>
                     {% endif %}
                   </div>
-                  {% if block.settings.dish_tag != blank %}
-                    <span class="nb-review-dish-tag">{{ block.settings.dish_tag }}</span>
-                  {% endif %}
                 </div>
 
                 <!-- REVIEW BODY -->
@@ -146,9 +148,9 @@
   width: 100%;
 }
 .nb-container {
-  max-width: 1100px;
+  max-width: 1140px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 20px;
 }
 .nb-section-header {
   margin-bottom: 28px !important;
@@ -249,44 +251,59 @@
 }
 .nb-carousel-arrow {
   position: absolute;
-  top: calc(50% - 20px);
+  top: 50%;
   transform: translateY(-50%);
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: #FFFFFF;
   border: 1.5px solid rgba(200, 146, 42, 0.4);
   color: #C8922A;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.1);
-  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(44, 24, 16, 0.12);
+  transition: all 0.25s ease;
 }
 .nb-carousel-arrow:hover {
   background: #C8922A;
   color: #FFFFFF;
-  box-shadow: 0 6px 16px rgba(200, 146, 42, 0.3);
+  border-color: #C8922A;
+  box-shadow: 0 6px 18px rgba(200, 146, 42, 0.35);
+  transform: translateY(-50%) scale(1.05);
 }
 .nb-carousel-prev {
-  left: -16px;
+  left: -22px;
 }
 .nb-carousel-next {
-  right: -16px;
+  right: -22px;
 }
 
-/* REVIEWS GRID / TRACK */
+/* REVIEWS TRACK & CARDS */
 .nb-reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 18px;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 20px;
+  padding: 8px 4px 16px;
+  scrollbar-width: none;
   scroll-behavior: smooth;
 }
+.nb-reviews-grid::-webkit-scrollbar {
+  display: none;
+}
+
 .nb-review-card {
+  flex: 0 0 calc((100% - 40px) / 3);
+  min-width: calc((100% - 40px) / 3);
+  max-width: calc((100% - 40px) / 3);
+  min-height: 230px;
+  scroll-snap-align: start;
   background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%);
   border: 1px solid rgba(200, 146, 42, 0.25);
   border-top: 4px solid #C8922A;
@@ -294,6 +311,7 @@
   padding: 22px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   box-shadow: 0 8px 24px rgba(44, 24, 16, 0.05);
   transition: all 0.3s ease;
   box-sizing: border-box;
@@ -383,6 +401,10 @@
   color: #4A3428;
   margin: 0;
   font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* CAROUSEL DOTS */
@@ -391,7 +413,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 .nb-carousel-dot {
   width: 8px;
@@ -431,6 +453,21 @@
   text-decoration: underline;
 }
 
+/* TABLET RESPONSIVENESS */
+@media (max-width: 991px) and (min-width: 768px) {
+  .nb-review-card {
+    flex: 0 0 calc((100% - 20px) / 2);
+    min-width: calc((100% - 20px) / 2);
+    max-width: calc((100% - 20px) / 2);
+  }
+  .nb-carousel-prev {
+    left: -14px;
+  }
+  .nb-carousel-next {
+    right: -14px;
+  }
+}
+
 /* MOBILE RESPONSIVENESS */
 @media (max-width: 767px) {
   .nb-google-reviews-section {
@@ -458,24 +495,17 @@
     font-size: 0.82rem;
   }
   .nb-carousel-arrow {
-    display: none; /* Swipe & Dots on mobile */
+    display: none; /* Clean swipe on mobile */
   }
   .nb-reviews-grid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
     gap: 14px;
     padding: 4px 8px 12px;
-    scrollbar-width: none;
-  }
-  .nb-reviews-grid::-webkit-scrollbar {
-    display: none;
   }
   .nb-review-card {
-    min-width: 84vw;
-    max-width: 84vw;
-    flex-shrink: 0;
+    flex: 0 0 85vw;
+    min-width: 85vw;
+    max-width: 85vw;
+    min-height: auto;
     scroll-snap-align: center;
     padding: 18px;
   }
@@ -503,23 +533,31 @@ document.addEventListener('DOMContentLoaded', function() {
     return grid ? grid.querySelectorAll('.nb-review-card') : [];
   }
 
+  function getVisibleStep() {
+    return window.innerWidth >= 992 ? 3 : (window.innerWidth >= 768 ? 2 : 1);
+  }
+
   function initDots() {
     if (!dotsContainer || !grid) return;
     dotsContainer.innerHTML = '';
     var cards = getCards();
-    if (cards.length <= 1) {
+    var step = getVisibleStep();
+    var numPages = Math.ceil(cards.length / (window.innerWidth < 768 ? 1 : step));
+    
+    if (numPages <= 1) {
       dotsContainer.style.display = 'none';
       return;
     }
     dotsContainer.style.display = 'flex';
-    for (var i = 0; i < cards.length; i++) {
+    for (var i = 0; i < (window.innerWidth < 768 ? cards.length : numPages); i++) {
       (function(idx) {
         var dot = document.createElement('button');
         dot.type = 'button';
         dot.className = 'nb-carousel-dot' + (idx === 0 ? ' is-active' : '');
         dot.setAttribute('aria-label', 'Go to review ' + (idx + 1));
         dot.addEventListener('click', function() {
-          scrollToCard(idx);
+          var targetIdx = window.innerWidth < 768 ? idx : idx * step;
+          scrollToCard(targetIdx);
           resetAutoPlay();
         });
         dotsContainer.appendChild(dot);
@@ -530,8 +568,10 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateActiveDot(index) {
     if (!dotsContainer) return;
     var dots = dotsContainer.querySelectorAll('.nb-carousel-dot');
+    var step = getVisibleStep();
+    var activeDotIdx = window.innerWidth < 768 ? index : Math.floor(index / step);
     dots.forEach(function(d, idx) {
-      if (idx === index) {
+      if (idx === activeDotIdx) {
         d.classList.add('is-active');
       } else {
         d.classList.remove('is-active');
@@ -548,9 +588,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     var targetCard = cards[index];
     if (targetCard && grid) {
-      var leftPos = targetCard.offsetLeft - (grid.clientWidth - targetCard.clientWidth) / 2;
-      if (window.innerWidth >= 768) {
-        leftPos = targetCard.offsetLeft - grid.offsetLeft;
+      var leftPos = targetCard.offsetLeft - grid.offsetLeft;
+      if (window.innerWidth < 768) {
+        leftPos = targetCard.offsetLeft - (grid.clientWidth - targetCard.clientWidth) / 2;
       }
       grid.scrollTo({
         left: leftPos,
@@ -563,14 +603,20 @@ document.addEventListener('DOMContentLoaded', function() {
   function nextSlide() {
     var cards = getCards();
     if (cards.length > 0) {
-      scrollToCard((currentIndex + 1) % cards.length);
+      var step = getVisibleStep();
+      var nextIdx = currentIndex + (window.innerWidth < 768 ? 1 : step);
+      if (nextIdx >= cards.length) nextIdx = 0;
+      scrollToCard(nextIdx);
     }
   }
 
   function prevSlide() {
     var cards = getCards();
     if (cards.length > 0) {
-      scrollToCard((currentIndex - 1 + cards.length) % cards.length);
+      var step = getVisibleStep();
+      var prevIdx = currentIndex - (window.innerWidth < 768 ? 1 : step);
+      if (prevIdx < 0) prevIdx = Math.max(0, cards.length - step);
+      scrollToCard(prevIdx);
     }
   }
 
@@ -610,12 +656,11 @@ document.addEventListener('DOMContentLoaded', function() {
     grid.addEventListener('scroll', function() {
       var cards = getCards();
       if (!cards || cards.length === 0) return;
-      var scrollCenter = grid.scrollLeft + grid.clientWidth / 2;
+      var scrollLeft = grid.scrollLeft;
       var closestIdx = 0;
       var minDiff = 999999;
       cards.forEach(function(card, idx) {
-        var cardCenter = card.offsetLeft + card.clientWidth / 2;
-        var diff = Math.abs(scrollCenter - cardCenter);
+        var diff = Math.abs(card.offsetLeft - grid.offsetLeft - scrollLeft);
         if (diff < minDiff) {
           minDiff = diff;
           closestIdx = idx;
@@ -625,6 +670,10 @@ document.addEventListener('DOMContentLoaded', function() {
       updateActiveDot(closestIdx);
     }, { passive: true });
   }
+
+  window.addEventListener('resize', function() {
+    initDots();
+  });
 
   initDots();
   startAutoPlay();
@@ -702,20 +751,22 @@ document.addEventListener('DOMContentLoaded', function() {
             : '<span>' + initial + '</span>';
             
           html += '<div class="nb-review-card">' +
-            '<div class="nb-review-card__header">' +
-              '<div class="nb-review-avatar">' + avatarHtml + '</div>' +
-              '<div class="nb-review-author-meta">' +
-                '<strong class="nb-review-author-name">' + author + '</strong>' +
-                '<div class="nb-review-verified-badge">' +
-                  '<svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>' +
-                  '<span>Verified Google Review</span>' +
+            '<div>' +
+              '<div class="nb-review-card__header">' +
+                '<div class="nb-review-avatar">' + avatarHtml + '</div>' +
+                '<div class="nb-review-author-meta">' +
+                  '<strong class="nb-review-author-name">' + author + '</strong>' +
+                  '<div class="nb-review-verified-badge">' +
+                    '<svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>' +
+                    '<span>Verified Google Review</span>' +
+                  '</div>' +
                 '</div>' +
+                '<span class="nb-review-date">' + timeAgo + '</span>' +
               '</div>' +
-              '<span class="nb-review-date">' + timeAgo + '</span>' +
-            '</div>' +
-            '<div class="nb-review-card__rating-row">' +
-              '<div class="nb-review-stars">' + stars + '</div>' +
-              '<span class="nb-review-dish-tag">Verified Customer</span>' +
+              '<div class="nb-review-card__rating-row">' +
+                '<div class="nb-review-stars">' + stars + '</div>' +
+                '<span class="nb-review-dish-tag">Verified Customer</span>' +
+              '</div>' +
             '</div>' +
             '<p class="nb-review-card__text">"' + reviewText + '"</p>' +
           '</div>';
