@@ -1,157 +1,95 @@
 {% comment %}
-  NIAMAT BIRYANI — Native Floating WhatsApp Help Button
-  - Always visible on every page
-  - Direct WhatsApp chat to +919167682582 with automated greeting
-  - Positioned above mobile dock (bottom: 80px on mobile, bottom: 28px on desktop)
-  - Zero third-party app bloat, 100% lightweight & fast
+  NIAMAT BIRYANI — Direct Native WhatsApp Help Floating Widget
+  - Injected directly into document.body with max z-index
+  - Always visible on every page (Mobile & Desktop)
+  - Opens WhatsApp to +919167682582 with automated greeting
 {% endcomment %}
 
-{% liquid
-  assign wa_number = '919167682582'
-  assign greeting_msg = 'Hi Niamat Biryani! I need quick help with placing an order.' | url_encode
-  assign wa_url = 'https://wa.me/' | append: wa_number | append: '?text=' | append: greeting_msg
-%}
+<div id="nb-wa-root"></div>
 
-<div class="nb-whatsapp-float-wrap" id="nbFloatingWhatsAppContainer">
-  <a href="{{ wa_url }}" target="_blank" rel="noopener noreferrer" class="nb-whatsapp-float-btn" id="nbFloatingWhatsApp" aria-label="Chat on WhatsApp">
+<script>
+(function() {
+  function initWhatsAppFloat() {
+    if (document.getElementById('nbWhatsAppFloatingBtn')) return;
+
+    var waNumber = '919167682582';
+    var greeting = encodeURIComponent('Hi Niamat Biryani! I need quick help with placing an order.');
+    var waUrl = 'https://wa.me/' + waNumber + '?text=' + greeting;
+
+    var isMobile = window.innerWidth < 768;
+
+    var container = document.createElement('div');
+    container.id = 'nbWhatsAppFloatingBtn';
+    container.setAttribute('aria-label', 'WhatsApp Support');
     
-    <!-- Pulse Ripple Effect -->
-    <span class="nb-wa-pulse" aria-hidden="true"></span>
-    
-    <!-- WhatsApp Official SVG -->
-    <div class="nb-wa-icon-box">
-      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 2C8.268 2 2 8.268 2 16c0 2.748.795 5.308 2.164 7.465L2.5 29.5l6.236-1.636A13.93 13.93 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2z" fill="#25D366"/>
-        <path d="M24.08 19.825c-.347-.174-2.054-1.014-2.373-1.13-.32-.116-.552-.174-.784.174-.232.348-.899 1.13-1.102 1.362-.203.232-.406.261-.754.087-.348-.174-1.468-.541-2.796-1.725-1.033-.922-1.73-2.06-1.933-2.408-.203-.348-.022-.536.152-.71.156-.156.348-.406.522-.61.174-.203.232-.348.348-.58.116-.232.058-.435-.029-.609-.087-.174-.784-1.888-1.074-2.585-.282-.678-.569-.586-.784-.597-.203-.01-.435-.013-.667-.013-.232 0-.61.087-.928.435-.319.348-1.218 1.189-1.218 2.9 0 1.71 1.246 3.363 1.42 3.595.174.232 2.453 3.744 5.942 5.25.83.358 1.478.572 1.983.733.834.265 1.593.228 2.193.138.669-.1 2.054-.84 2.344-1.652.29-.812.29-1.508.203-1.652-.087-.145-.319-.232-.667-.406z" fill="#FFFFFF"/>
-      </svg>
-    </div>
+    // Explicit fixed viewport styling
+    container.style.cssText = [
+      'position: fixed !important',
+      (isMobile ? 'bottom: 78px !important' : 'bottom: 28px !important'),
+      (isMobile ? 'right: 18px !important' : 'right: 28px !important'),
+      'z-index: 2147483647 !important',
+      'display: flex !important',
+      'align-items: center !important',
+      'pointer-events: auto !important',
+      'visibility: visible !important',
+      'opacity: 1 !important',
+      'margin: 0 !important',
+      'padding: 0 !important',
+      'transform: translate3d(0, 0, 0) !important',
+      '-webkit-transform: translate3d(0, 0, 0) !important'
+    ].join(';');
 
-    <!-- Desktop Tooltip Pill -->
-    <div class="nb-wa-tooltip">
-      <span class="nb-wa-tooltip-title">Need Help?</span>
-      <span class="nb-wa-tooltip-sub">Chat on WhatsApp</span>
-    </div>
-  </a>
-</div>
+    var btn = document.createElement('a');
+    btn.href = waUrl;
+    btn.target = '_blank';
+    btn.rel = 'noopener noreferrer';
+    btn.setAttribute('aria-label', 'Chat on WhatsApp');
+    btn.style.cssText = [
+      'display: flex !important',
+      'align-items: center !important',
+      'gap: 10px !important',
+      'background: #25D366 !important',
+      'color: #FFFFFF !important',
+      'text-decoration: none !important',
+      'border-radius: 50px !important',
+      (isMobile ? 'padding: 0 !important; width: 56px !important; height: 56px !important; justify-content: center !important;' : 'padding: 6px 16px 6px 6px !important;'),
+      'box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5), 0 3px 10px rgba(0, 0, 0, 0.2) !important',
+      'transition: transform 0.25s ease, box-shadow 0.25s ease !important',
+      'cursor: pointer !important',
+      'border: 2px solid #FFFFFF !important'
+    ].join(';');
 
-<style>
-.nb-whatsapp-float-wrap {
-  position: fixed !important;
-  bottom: 28px !important;
-  right: 28px !important;
-  z-index: 2147483647 !important;
-  display: flex !important;
-  align-items: center !important;
-  pointer-events: auto !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
+    btn.onmouseenter = function() {
+      btn.style.transform = 'translateY(-3px) scale(1.04)';
+      btn.style.boxShadow = '0 10px 30px rgba(37, 211, 102, 0.7), 0 5px 15px rgba(0, 0, 0, 0.25)';
+    };
+    btn.onmouseleave = function() {
+      btn.style.transform = 'translateY(0) scale(1)';
+      btn.style.boxShadow = '0 6px 24px rgba(37, 211, 102, 0.5), 0 3px 10px rgba(0, 0, 0, 0.2)';
+    };
 
-.nb-whatsapp-float-btn {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  background: #25D366 !important;
-  color: #FFFFFF !important;
-  text-decoration: none !important;
-  border-radius: 50px !important;
-  padding: 4px 16px 4px 4px !important;
-  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0, 0, 0, 0.18) !important;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-  cursor: pointer !important;
-}
+    var iconBox = document.createElement('div');
+    iconBox.style.cssText = 'width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;';
+    iconBox.innerHTML = '<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.748.795 5.308 2.164 7.465L2.5 29.5l6.236-1.636A13.93 13.93 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2z" fill="#25D366"/><path d="M24.08 19.825c-.347-.174-2.054-1.014-2.373-1.13-.32-.116-.552-.174-.784.174-.232.348-.899 1.13-1.102 1.362-.203.232-.406.261-.754.087-.348-.174-1.468-.541-2.796-1.725-1.033-.922-1.73-2.06-1.933-2.408-.203-.348-.022-.536.152-.71.156-.156.348-.406.522-.61.174-.203.232-.348.348-.58.116-.232.058-.435-.029-.609-.087-.174-.784-1.888-1.074-2.585-.282-.678-.569-.586-.784-.597-.203-.01-.435-.013-.667-.013-.232 0-.61.087-.928.435-.319.348-1.218 1.189-1.218 2.9 0 1.71 1.246 3.363 1.42 3.595.174.232 2.453 3.744 5.942 5.25.83.358 1.478.572 1.983.733.834.265 1.593.228 2.193.138.669-.1 2.054-.84 2.344-1.652.29-.812.29-1.508.203-1.652-.087-.145-.319-.232-.667-.406z" fill="#FFFFFF"/></svg>';
 
-.nb-wa-icon-box {
-  width: 52px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
+    btn.appendChild(iconBox);
 
-.nb-wa-tooltip {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-  text-align: left;
-}
+    if (!isMobile) {
+      var textCol = document.createElement('div');
+      textCol.style.cssText = 'display: flex; flex-direction: column; line-height: 1.2; text-align: left; padding-right: 4px;';
+      textCol.innerHTML = '<span style="font-size: 0.88rem; font-weight: 800; color: #FFFFFF; font-family: Inter, sans-serif !important;">Need Help?</span><span style="font-size: 0.72rem; font-weight: 600; color: rgba(255, 255, 255, 0.95); font-family: Inter, sans-serif !important;">Chat on WhatsApp</span>';
+      btn.appendChild(textCol);
+    }
 
-.nb-wa-tooltip-title {
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  letter-spacing: 0.2px;
-}
-
-.nb-wa-tooltip-sub {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.nb-whatsapp-float-btn:hover {
-  transform: translateY(-4px) scale(1.04) !important;
-  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6), 0 4px 14px rgba(0, 0, 0, 0.2) !important;
-  color: #FFFFFF !important;
-}
-
-/* Pulsing Wave Effect */
-.nb-wa-pulse {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(37, 211, 102, 0.45);
-  animation: nbWaPulse 2.2s infinite cubic-bezier(0.24, 0, 0.38, 1);
-  z-index: -1;
-  pointer-events: none;
-}
-
-@keyframes nbWaPulse {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.9;
+    container.appendChild(btn);
+    document.body.appendChild(container);
   }
-  60% {
-    transform: scale(1.45);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.6);
-    opacity: 0;
-  }
-}
 
-/* Mobile Responsiveness — Float ABOVE the mobile bottom dock */
-@media (max-width: 767px) {
-  .nb-whatsapp-float-wrap {
-    bottom: 78px !important; /* Clears the 60px mobile bottom dock cleanly */
-    right: 18px !important;
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWhatsAppFloat);
+  } else {
+    initWhatsAppFloat();
   }
-  .nb-whatsapp-float-btn {
-    border-radius: 50% !important;
-    padding: 0 !important;
-    width: 56px !important;
-    height: 56px !important;
-    justify-content: center !important;
-  }
-  .nb-wa-tooltip {
-    display: none !important;
-  }
-  .nb-wa-icon-box {
-    width: 56px !important;
-    height: 56px !important;
-  }
-  .nb-wa-icon-box svg {
-    width: 36px !important;
-    height: 36px !important;
-  }
-  .nb-wa-pulse {
-    width: 56px;
-    height: 56px;
-  }
-}
-</style>
+  window.addEventListener('load', initWhatsAppFloat);
+})();
+</script>
