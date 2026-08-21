@@ -1,11 +1,11 @@
 {% comment %}
   NIAMAT BIRYANI — Native Google Business Reviews Section
   Features:
-  - 4.9/5.0 Google Rating Summary Banner with official Google icon
+  - 4.4 Google Rating Summary Banner with official Google icon
   - Direct "Review Us on Google" CTA linking to Google Maps profile
   - 5-Star & 4-Star Verified Google Customer Reviews with Dish Tags
-  - Responsive desktop grid & mobile-friendly horizontal swipe carousel
-  - 100% Theme Customizer configurable (Zero third-party app scripts)
+  - Responsive desktop grid & mobile-friendly auto-sliding swipe carousel (configurable interval e.g. 5s)
+  - Google Places API (New) auto-sync with client-side real-time fetch & newest-first sorting
 {% endcomment %}
 
 <div class="nb-google-reviews-section">
@@ -59,7 +59,11 @@
     </div>
 
     <!-- REVIEWS GRID / CAROUSEL TRACK -->
-    <div class="nb-reviews-track-wrap">
+    <div class="nb-reviews-carousel-container" id="nbReviewsCarouselWrap">
+      <!-- NAVIGATION ARROWS (MOBILE & DESKTOP) -->
+      <button type="button" class="nb-carousel-arrow nb-carousel-prev" id="nbReviewsPrev" aria-label="Previous Review">‹</button>
+      <button type="button" class="nb-carousel-arrow nb-carousel-next" id="nbReviewsNext" aria-label="Next Review">›</button>
+
       <div class="nb-reviews-grid" id="nbReviewsGrid">
         {% for block in section.blocks %}
           {% if block.type == 'google_review' %}
@@ -110,6 +114,9 @@
           {% endif %}
         {% endfor %}
       </div>
+
+      <!-- CAROUSEL DOTS -->
+      <div class="nb-carousel-dots" id="nbReviewsDots"></div>
     </div>
 
     <!-- BOTTOM CTA: WRITE REVIEW -->
@@ -235,11 +242,49 @@
   color: #FFFFFF !important;
 }
 
-/* REVIEWS GRID */
+/* CAROUSEL WRAPPER & ARROWS */
+.nb-reviews-carousel-container {
+  position: relative;
+  width: 100%;
+}
+.nb-carousel-arrow {
+  position: absolute;
+  top: calc(50% - 20px);
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(200, 146, 42, 0.4);
+  color: #C8922A;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.1);
+  transition: all 0.2s ease;
+}
+.nb-carousel-arrow:hover {
+  background: #C8922A;
+  color: #FFFFFF;
+  box-shadow: 0 6px 16px rgba(200, 146, 42, 0.3);
+}
+.nb-carousel-prev {
+  left: -16px;
+}
+.nb-carousel-next {
+  right: -16px;
+}
+
+/* REVIEWS GRID / TRACK */
 .nb-reviews-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 18px;
+  scroll-behavior: smooth;
 }
 .nb-review-card {
   background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%);
@@ -278,6 +323,7 @@
   font-size: 0.95rem;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(200, 146, 42, 0.3);
+  overflow: hidden;
 }
 .nb-review-author-meta {
   flex: 1;
@@ -339,10 +385,34 @@
   font-style: italic;
 }
 
+/* CAROUSEL DOTS */
+.nb-carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+.nb-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(200, 146, 42, 0.3);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.nb-carousel-dot.is-active {
+  width: 24px;
+  border-radius: 10px;
+  background: #C8922A;
+}
+
 /* BOTTOM ACTION */
 .nb-reviews-bottom-action {
   text-align: center;
-  margin-top: 32px;
+  margin-top: 28px;
 }
 .nb-reviews-bottom-action p {
   font-size: 0.86rem;
@@ -387,30 +457,179 @@
     padding: 10px 16px;
     font-size: 0.82rem;
   }
+  .nb-carousel-arrow {
+    display: none; /* Swipe & Dots on mobile */
+  }
   .nb-reviews-grid {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    gap: 12px;
-    padding-bottom: 12px;
+    gap: 14px;
+    padding: 4px 8px 12px;
     scrollbar-width: none;
   }
   .nb-reviews-grid::-webkit-scrollbar {
     display: none;
   }
   .nb-review-card {
-    min-width: 280px;
-    max-width: 290px;
+    min-width: 84vw;
+    max-width: 84vw;
     flex-shrink: 0;
-    scroll-snap-align: start;
-    padding: 16px;
+    scroll-snap-align: center;
+    padding: 18px;
   }
 }
 </style>
-{% if section.settings.google_place_id != blank and section.settings.google_api_key != blank %}
+
+<!-- CAROUSEL & GOOGLE PLACES API AUTO-SYNC SCRIPT -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  var grid = document.getElementById('nbReviewsGrid');
+  var dotsContainer = document.getElementById('nbReviewsDots');
+  var prevBtn = document.getElementById('nbReviewsPrev');
+  var nextBtn = document.getElementById('nbReviewsNext');
+  var wrap = document.getElementById('nbReviewsCarouselWrap');
+  
+  var enableAutoplay = {{ section.settings.enable_autoplay | default: true | json }};
+  var autoplaySeconds = {{ section.settings.autoplay_interval | default: 5 | plus: 0 }};
+  if (autoplaySeconds < 3) autoplaySeconds = 5;
+  var autoplayMs = autoplaySeconds * 1000;
+  
+  var autoTimer = null;
+  var currentIndex = 0;
+
+  function getCards() {
+    return grid ? grid.querySelectorAll('.nb-review-card') : [];
+  }
+
+  function initDots() {
+    if (!dotsContainer || !grid) return;
+    dotsContainer.innerHTML = '';
+    var cards = getCards();
+    if (cards.length <= 1) {
+      dotsContainer.style.display = 'none';
+      return;
+    }
+    dotsContainer.style.display = 'flex';
+    for (var i = 0; i < cards.length; i++) {
+      (function(idx) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'nb-carousel-dot' + (idx === 0 ? ' is-active' : '');
+        dot.setAttribute('aria-label', 'Go to review ' + (idx + 1));
+        dot.addEventListener('click', function() {
+          scrollToCard(idx);
+          resetAutoPlay();
+        });
+        dotsContainer.appendChild(dot);
+      })(i);
+    }
+  }
+
+  function updateActiveDot(index) {
+    if (!dotsContainer) return;
+    var dots = dotsContainer.querySelectorAll('.nb-carousel-dot');
+    dots.forEach(function(d, idx) {
+      if (idx === index) {
+        d.classList.add('is-active');
+      } else {
+        d.classList.remove('is-active');
+      }
+    });
+  }
+
+  function scrollToCard(index) {
+    var cards = getCards();
+    if (!cards || cards.length === 0) return;
+    if (index < 0) index = cards.length - 1;
+    if (index >= cards.length) index = 0;
+    currentIndex = index;
+    
+    var targetCard = cards[index];
+    if (targetCard && grid) {
+      var leftPos = targetCard.offsetLeft - (grid.clientWidth - targetCard.clientWidth) / 2;
+      if (window.innerWidth >= 768) {
+        leftPos = targetCard.offsetLeft - grid.offsetLeft;
+      }
+      grid.scrollTo({
+        left: leftPos,
+        behavior: 'smooth'
+      });
+      updateActiveDot(index);
+    }
+  }
+
+  function nextSlide() {
+    var cards = getCards();
+    if (cards.length > 0) {
+      scrollToCard((currentIndex + 1) % cards.length);
+    }
+  }
+
+  function prevSlide() {
+    var cards = getCards();
+    if (cards.length > 0) {
+      scrollToCard((currentIndex - 1 + cards.length) % cards.length);
+    }
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', function() { prevSlide(); resetAutoPlay(); });
+  if (nextBtn) nextBtn.addEventListener('click', function() { nextSlide(); resetAutoPlay(); });
+
+  function startAutoPlay() {
+    if (!enableAutoplay) return;
+    stopAutoPlay();
+    autoTimer = setInterval(function() {
+      nextSlide();
+    }, autoplayMs);
+  }
+
+  function stopAutoPlay() {
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+    }
+  }
+
+  function resetAutoPlay() {
+    stopAutoPlay();
+    startAutoPlay();
+  }
+
+  if (wrap) {
+    wrap.addEventListener('mouseenter', stopAutoPlay);
+    wrap.addEventListener('mouseleave', startAutoPlay);
+    wrap.addEventListener('touchstart', stopAutoPlay, { passive: true });
+    wrap.addEventListener('touchend', function() {
+      setTimeout(startAutoPlay, 2000);
+    }, { passive: true });
+  }
+
+  if (grid) {
+    grid.addEventListener('scroll', function() {
+      var cards = getCards();
+      if (!cards || cards.length === 0) return;
+      var scrollCenter = grid.scrollLeft + grid.clientWidth / 2;
+      var closestIdx = 0;
+      var minDiff = 999999;
+      cards.forEach(function(card, idx) {
+        var cardCenter = card.offsetLeft + card.clientWidth / 2;
+        var diff = Math.abs(scrollCenter - cardCenter);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIdx = idx;
+        }
+      });
+      currentIndex = closestIdx;
+      updateActiveDot(closestIdx);
+    }, { passive: true });
+  }
+
+  initDots();
+  startAutoPlay();
+
+  // ═══════ GOOGLE PLACES API (NEW) LIVE AUTO-SYNC & NEWEST-FIRST SORTING ═══════
   var placeId = {{ section.settings.google_place_id | json }};
   var apiKey = {{ section.settings.google_api_key | json }};
   if (!placeId || !apiKey) return;
@@ -455,49 +674,56 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
     
-    // Dynamically update review cards if reviews array exists
+    // Sort and dynamically inject newest reviews
     if (Array.isArray(data.reviews) && data.reviews.length > 0) {
       var validReviews = data.reviews.filter(function(r) {
         return r.rating >= 4 && r.text && r.text.text;
       });
       
-      if (validReviews.length > 0) {
-        var grid = document.getElementById('nbReviewsGrid');
-        if (grid) {
-          var html = '';
-          validReviews.forEach(function(r) {
-            var author = (r.authorAttribution && r.authorAttribution.displayName) ? r.authorAttribution.displayName : 'Google Customer';
-            var initial = author.charAt(0).toUpperCase();
-            var photo = (r.authorAttribution && r.authorAttribution.photoUri) ? r.authorAttribution.photoUri : '';
-            var timeAgo = r.relativePublishTimeDescription || 'Recently';
-            var stars = r.rating === 5 ? '★★★★★' : '★★★★☆';
-            var reviewText = r.text.text;
+      // Sort by newest publication time first
+      validReviews.sort(function(a, b) {
+        var timeA = a.publishTime ? new Date(a.publishTime).getTime() : 0;
+        var timeB = b.publishTime ? new Date(b.publishTime).getTime() : 0;
+        return timeB - timeA;
+      });
+      
+      if (validReviews.length > 0 && grid) {
+        var html = '';
+        validReviews.forEach(function(r) {
+          var author = (r.authorAttribution && r.authorAttribution.displayName) ? r.authorAttribution.displayName : 'Google Customer';
+          var initial = author.charAt(0).toUpperCase();
+          var photo = (r.authorAttribution && r.authorAttribution.photoUri) ? r.authorAttribution.photoUri : '';
+          var timeAgo = r.relativePublishTimeDescription || 'Recently';
+          var stars = r.rating === 5 ? '★★★★★' : '★★★★☆';
+          var reviewText = r.text.text;
+          
+          var avatarHtml = photo 
+            ? '<img src="' + photo + '" alt="' + author + '" class="nb-review-avatar-img" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">'
+            : '<span>' + initial + '</span>';
             
-            var avatarHtml = photo 
-              ? '<img src="' + photo + '" alt="' + author + '" class="nb-review-avatar-img" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">'
-              : '<span>' + initial + '</span>';
-              
-            html += '<div class="nb-review-card">' +
-              '<div class="nb-review-card__header">' +
-                '<div class="nb-review-avatar">' + avatarHtml + '</div>' +
-                '<div class="nb-review-author-meta">' +
-                  '<strong class="nb-review-author-name">' + author + '</strong>' +
-                  '<div class="nb-review-verified-badge">' +
-                    '<svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>' +
-                    '<span>Verified Google Review</span>' +
-                  '</div>' +
+          html += '<div class="nb-review-card">' +
+            '<div class="nb-review-card__header">' +
+              '<div class="nb-review-avatar">' + avatarHtml + '</div>' +
+              '<div class="nb-review-author-meta">' +
+                '<strong class="nb-review-author-name">' + author + '</strong>' +
+                '<div class="nb-review-verified-badge">' +
+                  '<svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>' +
+                  '<span>Verified Google Review</span>' +
                 '</div>' +
-                '<span class="nb-review-date">' + timeAgo + '</span>' +
               '</div>' +
-              '<div class="nb-review-card__rating-row">' +
-                '<div class="nb-review-stars">' + stars + '</div>' +
-                '<span class="nb-review-dish-tag">Verified Customer</span>' +
-              '</div>' +
-              '<p class="nb-review-card__text">"' + reviewText + '"</p>' +
-            '</div>';
-          });
-          grid.innerHTML = html;
-        }
+              '<span class="nb-review-date">' + timeAgo + '</span>' +
+            '</div>' +
+            '<div class="nb-review-card__rating-row">' +
+              '<div class="nb-review-stars">' + stars + '</div>' +
+              '<span class="nb-review-dish-tag">Verified Customer</span>' +
+            '</div>' +
+            '<p class="nb-review-card__text">"' + reviewText + '"</p>' +
+          '</div>';
+        });
+        grid.innerHTML = html;
+        initDots();
+        scrollToCard(0);
+        resetAutoPlay();
       }
     }
   })
@@ -506,7 +732,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
-{% endif %}
 
 {% schema %}
 {
@@ -552,20 +777,39 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     {
       "type": "header",
+      "content": "Carousel & Auto-Slide Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Auto-Slide Carousel",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_interval",
+      "min": 3,
+      "max": 15,
+      "step": 1,
+      "unit": "s",
+      "label": "Auto-Slide Interval (seconds)",
+      "default": 5
+    },
+    {
+      "type": "header",
       "content": "Google Places API (Live Auto-Sync)"
     },
     {
       "type": "text",
       "id": "google_place_id",
-      "label": "Google Place ID (Optional)",
-      "info": "Place ID of your Google Business Profile (e.g. ChIJn0_VxWuX5zsR3ImAttp0XfU)",
+      "label": "Google Place ID",
       "default": "ChIJn0_VxWuX5zsR3ImAttp0XfU"
     },
     {
       "type": "text",
       "id": "google_api_key",
-      "label": "Google Places API Key (Optional)",
-      "info": "Paste your Google Cloud Places API key to auto-sync rating & total count in real-time."
+      "label": "Google Places API Key",
+      "default": "AIzaSyCzP1FLzi8wFjDsC9tZrkCo3nKj1F9U_b8"
     }
   ],
   "blocks": [
@@ -637,21 +881,21 @@ document.addEventListener('DOMContentLoaded', function() {
         {
           "type": "google_review",
           "settings": {
-            "author_name": "Asmita Patil",
-            "rating": "5",
-            "review_date": "7 months ago",
-            "dish_tag": "🍲 Full of Flavour & Durable Packaging",
-            "review_text": "The biryani was very delicious and full of flavour. The packaging is durable. Mr Salim is a considerate person. He took my order last minute on a busy day and delivered on time."
-          }
-        },
-        {
-          "type": "google_review",
-          "settings": {
             "author_name": "Praful Kanojia",
             "rating": "5",
             "review_date": "7 months ago",
             "dish_tag": "🔥 Flavorful & Well-Cooked",
             "review_text": "Had a great experience. The biryani was flavorful, well-cooked, and served hot. The spices were perfectly balanced and the portion size was satisfying. Highly recommended for biryani lovers."
+          }
+        },
+        {
+          "type": "google_review",
+          "settings": {
+            "author_name": "Asmita Patil",
+            "rating": "5",
+            "review_date": "7 months ago",
+            "dish_tag": "🍲 Full of Flavour & Durable Packaging",
+            "review_text": "The biryani was very delicious and full of flavour. The packaging is durable. Mr Salim is a considerate person. He took my order last minute on a busy day and delivered on time."
           }
         },
         {
