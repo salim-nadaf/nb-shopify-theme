@@ -39,14 +39,12 @@
     <!-- CRITICAL RESOURCE PRELOADS FOR LCP SPEED OPTIMIZATION -->
     {%- if template.name == 'index' -%}
       <!-- Preload Mobile and Desktop LCP Hero Banner Images Responsively -->
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1600" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=390" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1100" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
     {%- elsif collection.handle == 'instant-delivery' or request.path contains 'instant-delivery' -%}
       <!-- Preload Instant Delivery Hero Bucket Image for Instant LCP -->
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600" as="image" type="image/webp" fetchpriority="high">
-    {%- elsif collection.handle == 'our-menu' or collection.handle == 'family-orders' or request.path contains 'our-menu' or request.path contains 'family-orders' -%}
-      <!-- Preload Menu Page Top Hero Media for Instant LCP -->
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750" as="image" type="image/webp" fetchpriority="high">
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
     {%- endif -%}
 
     {%- if settings.favicon != blank -%}
@@ -1062,54 +1060,25 @@
       <main
         id="MainContent"
         class="content-for-layout"
-        role="main"
-        data-page-transition-enabled="{{ settings.page_transition_enabled }}"
-        data-product-transition="{{ settings.transition_to_main_product }}"
-        data-template="{{ template }}"
-      >
-        <div id="nb-custom-mount-bulk" style="display:none;">
-          {% render 'nb-bulk-orders-snippet' %}
-        </div>
-        <div id="nb-custom-mount-calculator" style="display:none;">
-          {% render 'nb-biryani-calculator-snippet' %}
-        </div>
-        <div id="nb-custom-mount-family" style="display:none;">
-          {% render 'nb-family-orders-snippet' %}
-        </div>
-
-        <div id="nb-default-layout-content">
-          {{ content_for_layout }}
-        </div>
+        {%- assign p_lower = request.path | downcase -%}
+        {%- if p_lower contains 'bulk' or p_lower contains 'catering' -%}
+          <div id="nb-custom-mount-bulk">
+            {% render 'nb-bulk-orders-snippet' %}
+          </div>
+        {%- elsif p_lower contains 'calculator' -%}
+          <div id="nb-custom-mount-calculator">
+            {% render 'nb-biryani-calculator-snippet' %}
+          </div>
+        {%- elsif p_lower contains 'family' or p_lower contains 'feast' or p_lower contains 'pre-order' -%}
+          <div id="nb-custom-mount-family">
+            {% render 'nb-family-orders-snippet' %}
+          </div>
+        {%- else -%}
+          <div id="nb-default-layout-content">
+            {{ content_for_layout }}
+          </div>
+        {%- endif -%}
       </main>
-
-      <script>
-        (function nbInstantCustomRouter() {
-          var path = window.location.pathname.toLowerCase();
-          var defaultContent = document.getElementById('nb-default-layout-content');
-          if (path.includes('bulk') || path.includes('catering')) {
-            var mount = document.getElementById('nb-custom-mount-bulk');
-            if (mount) {
-              mount.style.display = 'block';
-              if (defaultContent) defaultContent.style.display = 'none';
-              document.title = "Bulk Catering Packages — Biryani Palace by Niamat";
-            }
-          } else if (path.includes('calculator')) {
-            var mount = document.getElementById('nb-custom-mount-calculator');
-            if (mount) {
-              mount.style.display = 'block';
-              if (defaultContent) defaultContent.style.display = 'none';
-              document.title = "Biryani Quantity Calculator — Biryani Palace by Niamat";
-            }
-          } else if (path.includes('family') || path.includes('feast') || path.includes('pre-order') || path.includes('family-order')) {
-            var mount = document.getElementById('nb-custom-mount-family');
-            if (mount) {
-              mount.style.display = 'block';
-              if (defaultContent) defaultContent.style.display = 'none';
-              document.title = "Family Orders — Biryani Palace by Niamat";
-            }
-          }
-        })();
-      </script>
 
       <!-- GLOBAL PRODUCT LINK INTERCEPTOR -->
       <script>
