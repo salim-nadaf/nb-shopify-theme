@@ -233,7 +233,9 @@
         "subtitle": "Real feedback from our valued customers across Kalyan West, East & nearby areas.",
         "google_rating": "4.4",
         "total_reviews_text": "Based on 58 Verified Google Reviews",
-        "google_review_url": "https://maps.app.goo.gl/eXz6owNMojDUfi2h9"
+        "google_review_url": "https://maps.app.goo.gl/eXz6owNMojDUfi2h9",
+        "google_place_id": "ChIJn0_VxWuX5zsR3ImAttp0XfU",
+        "google_api_key": "AIzaSyCzP1FLzi8wFjDsC9tZrkCo3nKj1F9U_b8"
       }
     },
     "nb_homepage_bottom": {
