@@ -73,7 +73,49 @@
     <!-- CART ITEMS CONTAINER -->
     <div id="nb-cart-items" class="nb-drawer__items"></div>
 
-    <!-- COMPLETE YOUR ORDER (EXTRA RAITA, CHICKEN SHAMI KEBAB, GULAB JAMUN) -->
+    <!-- COMPLETE YOUR ORDER (EXTRA RAITA, CHICKEN SHAMI KEBAB, GULAB JAMUN, COKE) -->
+    {% liquid
+      # Dynamic lookup of Add-ons directly from Shopify store
+      assign raita_prod = all_products['extra-raita']
+      if raita_prod == blank
+        assign raita_prod = all_products['niamat-extra-raita']
+      endif
+
+      assign kebab_prod = all_products['chicken-shami-kebab']
+      if kebab_prod == blank
+        assign kebab_prod = all_products['shami-kebab']
+      endif
+
+      assign jamun_prod = all_products['gulab-jamun']
+
+      assign coke_prod = all_products['chilled-coke']
+      if coke_prod == blank
+        assign coke_prod = all_products['coke']
+      endif
+      if coke_prod == blank
+        assign coke_prod = all_products['coca-cola']
+      endif
+
+      # Find Coke variants for 250ml and 750ml
+      assign coke_250_v = null
+      assign coke_750_v = null
+      if coke_prod != blank
+        for v in coke_prod.variants
+          assign v_title = v.title | downcase
+          if v_title contains '250'
+            assign coke_250_v = v
+          elsif v_title contains '750'
+            assign coke_750_v = v
+          endif
+        endfor
+        if coke_250_v == null and coke_prod.variants.size > 0
+          assign coke_250_v = coke_prod.variants.first
+        endif
+        if coke_750_v == null and coke_prod.variants.size > 1
+          assign coke_750_v = coke_prod.variants[1]
+        endif
+      endif
+    %}
     <div class="nb-drawer__upsell-section">
       <div class="nb-upsell-header">
         <span>🍽️</span>
@@ -81,48 +123,80 @@
       </div>
       <div class="nb-upsell-grid">
         <!-- 1. Extra Raita -->
-        <div class="nb-upsell-pill-card">
+        <div class="nb-upsell-pill-card" data-addon-key="raita">
           <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">Niamat Extra Raita</span>
-            <span class="nb-upsell-pill-price">₹49</span>
+            <span class="nb-upsell-pill-name">{{ raita_prod.title | default: 'Niamat Extra Raita' }}</span>
+            <span class="nb-upsell-pill-price" id="nb-upsell-raita-price">
+              {% if raita_prod != blank and raita_prod.price > 0 %}
+                {{ raita_prod.price | money_without_trailing_zeros }}
+              {% else %}
+                ₹49
+              {% endif %}
+            </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" onclick="nbAddUpsell(this, 'extra-raita', 'Extra Raita', 4900)">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-raita-btn" data-variant-id="{{ raita_prod.selected_or_first_available_variant.id }}" onclick="nbAddUpsell(this, '{{ raita_prod.handle | default: 'extra-raita' }}', 'Extra Raita')">+ Add</button>
         </div>
 
         <!-- 2. Chicken Shami Kebab -->
-        <div class="nb-upsell-pill-card">
+        <div class="nb-upsell-pill-card" data-addon-key="kebab">
           <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">Chicken Shami Kebab</span>
-            <span class="nb-upsell-pill-price">₹29</span>
+            <span class="nb-upsell-pill-name">{{ kebab_prod.title | default: 'Chicken Shami Kebab' }}</span>
+            <span class="nb-upsell-pill-price" id="nb-upsell-kebab-price">
+              {% if kebab_prod != blank and kebab_prod.price > 0 %}
+                {{ kebab_prod.price | money_without_trailing_zeros }}
+              {% else %}
+                ₹29
+              {% endif %}
+            </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-kebab-btn" onclick="nbAddUpsell(this, 'chicken-shami-kebab', 'Chicken Shami Kebab', 2900)">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-kebab-btn" data-variant-id="{{ kebab_prod.selected_or_first_available_variant.id }}" onclick="nbAddUpsell(this, '{{ kebab_prod.handle | default: 'chicken-shami-kebab' }}', 'Chicken Shami Kebab')">+ Add</button>
         </div>
 
         <!-- 3. Gulab Jamun -->
-        <div class="nb-upsell-pill-card">
+        <div class="nb-upsell-pill-card" data-addon-key="jamun">
           <div class="nb-upsell-pill-info">
-            <span class="nb-upsell-pill-name">Gulab Jamun</span>
-            <span class="nb-upsell-pill-price">₹39</span>
+            <span class="nb-upsell-pill-name">{{ jamun_prod.title | default: 'Gulab Jamun' }}</span>
+            <span class="nb-upsell-pill-price" id="nb-upsell-jamun-price">
+              {% if jamun_prod != blank and jamun_prod.price > 0 %}
+                {{ jamun_prod.price | money_without_trailing_zeros }}
+              {% else %}
+                ₹39
+              {% endif %}
+            </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-jamun-btn" onclick="nbAddUpsell(this, 'gulab-jamun', 'Gulab Jamun', 3900)">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-jamun-btn" data-variant-id="{{ jamun_prod.selected_or_first_available_variant.id }}" onclick="nbAddUpsell(this, '{{ jamun_prod.handle | default: 'gulab-jamun' }}', 'Gulab Jamun')">+ Add</button>
         </div>
 
         <!-- 4. Chilled Coke (250ml) -->
-        <div class="nb-upsell-pill-card">
+        <div class="nb-upsell-pill-card" data-addon-key="coke250">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">🥤 Chilled Coke (250ml)</span>
-            <span class="nb-upsell-pill-price">₹20</span>
+            <span class="nb-upsell-pill-price" id="nb-upsell-coke-250-price">
+              {% if coke_250_v != null and coke_250_v.price > 0 %}
+                {{ coke_250_v.price | money_without_trailing_zeros }}
+              {% elsif coke_prod != blank and coke_prod.price > 0 %}
+                {{ coke_prod.price | money_without_trailing_zeros }}
+              {% else %}
+                ₹20
+              {% endif %}
+            </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-coke-250-btn" onclick="nbAddCokeUpsell(this, '250')">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-coke-250-btn" data-variant-id="{{ coke_250_v.id }}" onclick="nbAddCokeUpsell(this, '250')">+ Add</button>
         </div>
 
         <!-- 5. Chilled Coke (750ml) -->
-        <div class="nb-upsell-pill-card">
+        <div class="nb-upsell-pill-card" data-addon-key="coke750">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">🥤 Chilled Coke (750ml)</span>
-            <span class="nb-upsell-pill-price">₹40</span>
+            <span class="nb-upsell-pill-price" id="nb-upsell-coke-750-price">
+              {% if coke_750_v != null and coke_750_v.price > 0 %}
+                {{ coke_750_v.price | money_without_trailing_zeros }}
+              {% else %}
+                ₹40
+              {% endif %}
+            </span>
           </div>
-          <button class="nb-upsell-pill-add" id="nb-add-coke-750-btn" onclick="nbAddCokeUpsell(this, '750')">+ Add</button>
+          <button class="nb-upsell-pill-add" id="nb-add-coke-750-btn" data-variant-id="{{ coke_750_v.id }}" onclick="nbAddCokeUpsell(this, '750')">+ Add</button>
         </div>
       </div>
     </div>
@@ -621,6 +695,7 @@ function nbOpenDrawer() {
   document.getElementById('nb-drawer-overlay').classList.add('active');
   document.body.style.overflow = 'hidden';
   nbRefreshCart();
+  nbSyncAddonPrices();
 }
 
 function nbCloseDrawer() {
@@ -988,6 +1063,85 @@ function nbUpdateQty(key, qty) {
   });
 }
 
+// REAL-TIME AUTO-SYNC FOR ADD-ON & COKE PRICES FROM SHOPIFY ADMIN
+function nbSyncAddonPrices() {
+  fetch('/products.json?limit=50')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data || !data.products) return;
+      var prods = data.products;
+
+      prods.forEach(function(p) {
+        var title = (p.title || '').toLowerCase();
+        var handle = (p.handle || '').toLowerCase();
+        var variants = p.variants || [];
+
+        // Raita
+        if (title.includes('raita') || handle.includes('raita')) {
+          var priceEl = document.getElementById('nb-upsell-raita-price');
+          var btn = document.getElementById('nb-add-raita-btn');
+          if (priceEl && variants[0]) {
+            priceEl.textContent = '₹' + parseFloat(variants[0].price).toFixed(0);
+          }
+          if (btn && variants[0]) {
+            btn.dataset.variantId = variants[0].id;
+          }
+        }
+
+        // Shami Kebab
+        if (title.includes('shami') || handle.includes('shami')) {
+          var priceEl = document.getElementById('nb-upsell-kebab-price');
+          var btn = document.getElementById('nb-add-kebab-btn');
+          if (priceEl && variants[0]) {
+            priceEl.textContent = '₹' + parseFloat(variants[0].price).toFixed(0);
+          }
+          if (btn && variants[0]) {
+            btn.dataset.variantId = variants[0].id;
+          }
+        }
+
+        // Gulab Jamun
+        if (title.includes('gulab') || title.includes('jamun') || handle.includes('jamun')) {
+          var priceEl = document.getElementById('nb-upsell-jamun-price');
+          var btn = document.getElementById('nb-add-jamun-btn');
+          if (priceEl && variants[0]) {
+            priceEl.textContent = '₹' + parseFloat(variants[0].price).toFixed(0);
+          }
+          if (btn && variants[0]) {
+            btn.dataset.variantId = variants[0].id;
+          }
+        }
+
+        // Coke (250ml / 750ml)
+        if (title.includes('coke') || title.includes('coca') || handle.includes('coke')) {
+          var v250 = variants.find(function(v) { return (v.title || '').includes('250'); }) || variants[0];
+          var v750 = variants.find(function(v) { return (v.title || '').includes('750'); }) || (variants.length > 1 ? variants[1] : null);
+
+          var price250El = document.getElementById('nb-upsell-coke-250-price');
+          var btn250 = document.getElementById('nb-add-coke-250-btn');
+          if (price250El && v250) {
+            price250El.textContent = '₹' + parseFloat(v250.price).toFixed(0);
+          }
+          if (btn250 && v250) {
+            btn250.dataset.variantId = v250.id;
+          }
+
+          var price750El = document.getElementById('nb-upsell-coke-750-price');
+          var btn750 = document.getElementById('nb-add-coke-750-btn');
+          if (price750El && v750) {
+            price750El.textContent = '₹' + parseFloat(v750.price).toFixed(0);
+          }
+          if (btn750 && v750) {
+            btn750.dataset.variantId = v750.id;
+          }
+        }
+      });
+    })
+    .catch(function(e) {
+      console.warn('Could not sync live addon prices:', e);
+    });
+}
+
 // MULTI-TIER ADD-ON LOOKUP (PREVENTS SILENT FAILS & REPEATED SEARCHES)
 function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
   var originalText = btn.textContent;
@@ -997,7 +1151,7 @@ function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
     return fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: variantId, quantity: 1 })
+      body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
     })
     .then(function(r) { return r.json(); })
     .then(function(item) {
@@ -1007,41 +1161,55 @@ function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
     });
   }
 
-  fetch('/products/' + handle + '.js')
-    .then(function(r) { return r.json(); })
-    .then(function(product) {
-      if (product && product.variants && product.variants.length > 0) {
-        return tryAddToCart(product.variants[0].id);
-      }
-      throw new Error('Handle not found');
-    })
-    .catch(function() {
-      fetch('/search/suggest.json?q=' + encodeURIComponent(titleQuery || handle) + '&resources[type]=product')
-        .then(function(r) { return r.json(); })
-        .then(function(res) {
-          var products = (res.resources && res.resources.results && res.resources.results.products) ? res.resources.results.products : [];
-          if (products.length > 0) {
-            return tryAddToCart(products[0].variants[0].id);
-          }
-          throw new Error('Suggest not found');
-        })
-        .catch(function() {
-          fetch('/collections/all/products.json')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-              var prods = data.products || [];
-              var matched = prods.find(function(p) { return p.title.toLowerCase().includes((titleQuery || handle).toLowerCase()); });
-              if (matched && matched.variants && matched.variants.length > 0) {
-                return tryAddToCart(matched.variants[0].id);
-              }
-              throw new Error('Product not found in catalog');
-            })
-            .catch(function() {
-              btn.textContent = '+ Add';
-              nbShowToast('Add-on product "' + titleQuery + '" not found. Please verify product handle in Shopify Admin.');
-            });
-        });
+  if (btn && btn.dataset.variantId) {
+    tryAddToCart(btn.dataset.variantId).catch(function() {
+      doFallbackSearch();
     });
+    return;
+  }
+
+  doFallbackSearch();
+
+  function doFallbackSearch() {
+    fetch('/products/' + handle + '.js')
+      .then(function(r) { return r.json(); })
+      .then(function(product) {
+        if (product && product.variants && product.variants.length > 0) {
+          btn.dataset.variantId = product.variants[0].id;
+          return tryAddToCart(product.variants[0].id);
+        }
+        throw new Error('Handle not found');
+      })
+      .catch(function() {
+        fetch('/search/suggest.json?q=' + encodeURIComponent(titleQuery || handle) + '&resources[type]=product')
+          .then(function(r) { return r.json(); })
+          .then(function(res) {
+            var products = (res.resources && res.resources.results && res.resources.results.products) ? res.resources.results.products : [];
+            if (products.length > 0) {
+              btn.dataset.variantId = products[0].variants[0].id;
+              return tryAddToCart(products[0].variants[0].id);
+            }
+            throw new Error('Suggest not found');
+          })
+          .catch(function() {
+            fetch('/collections/all/products.json')
+              .then(function(r) { return r.json(); })
+              .then(function(data) {
+                var prods = data.products || [];
+                var matched = prods.find(function(p) { return p.title.toLowerCase().includes((titleQuery || handle).toLowerCase()); });
+                if (matched && matched.variants && matched.variants.length > 0) {
+                  btn.dataset.variantId = matched.variants[0].id;
+                  return tryAddToCart(matched.variants[0].id);
+                }
+                throw new Error('Product not found in catalog');
+              })
+              .catch(function() {
+                btn.textContent = '+ Add';
+                nbShowToast('Add-on product "' + titleQuery + '" not found. Please verify product handle in Shopify Admin.');
+              });
+          });
+      });
+  }
 }
 
 // COKE 2-VARIANT ADD-ON LOOKUP (250ml / 750ml)
@@ -1063,6 +1231,15 @@ function nbAddCokeUpsell(btn, size) {
     });
   }
 
+  if (btn && btn.dataset.variantId) {
+    tryAddToCart(btn.dataset.variantId).catch(function() {
+      doCokeFallback();
+    });
+    return;
+  }
+
+  doCokeFallback();
+
   function pickVariant(variants) {
     if (!variants || variants.length === 0) return null;
     var targetSize = (size || '250').toString();
@@ -1080,35 +1257,43 @@ function nbAddCokeUpsell(btn, size) {
     return matched ? matched.id : variants[0].id;
   }
 
-  fetch('/products/coke.js')
-    .then(function(r) { return r.json(); })
-    .then(function(product) {
-      if (product && product.variants && product.variants.length > 0) {
-        var vId = pickVariant(product.variants);
-        if (vId) return tryAddToCart(vId);
-      }
-      throw new Error('Handle not found');
-    })
-    .catch(function() {
-      fetch('/products.json')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          var prods = (data && data.products) ? data.products : [];
-          var cokeProd = prods.find(function(p) {
-            var t = (p.title || '').toLowerCase();
-            return t.includes('coke') || t.includes('coca');
-          });
-          if (cokeProd && cokeProd.variants && cokeProd.variants.length > 0) {
-            var vId = pickVariant(cokeProd.variants);
-            if (vId) return tryAddToCart(vId);
+  function doCokeFallback() {
+    fetch('/products/coke.js')
+      .then(function(r) { return r.json(); })
+      .then(function(product) {
+        if (product && product.variants && product.variants.length > 0) {
+          var vId = pickVariant(product.variants);
+          if (vId) {
+            btn.dataset.variantId = vId;
+            return tryAddToCart(vId);
           }
-          throw new Error('Coke not found in products.json');
-        })
-        .catch(function() {
-          btn.textContent = originalText;
-          nbShowToast('Coke product not found. Please verify product in Shopify Admin.');
-        });
-    });
+        }
+        throw new Error('Handle not found');
+      })
+      .catch(function() {
+        fetch('/products.json')
+          .then(function(r) { return r.json(); })
+          .then(function(data) {
+            var prods = (data && data.products) ? data.products : [];
+            var cokeProd = prods.find(function(p) {
+              var t = (p.title || '').toLowerCase();
+              return t.includes('coke') || t.includes('coca');
+            });
+            if (cokeProd && cokeProd.variants && cokeProd.variants.length > 0) {
+              var vId = pickVariant(cokeProd.variants);
+              if (vId) {
+                btn.dataset.variantId = vId;
+                return tryAddToCart(vId);
+              }
+            }
+            throw new Error('Coke not found in products.json');
+          })
+          .catch(function() {
+            btn.textContent = originalText;
+            nbShowToast('Coke product not found. Please verify product in Shopify Admin.');
+          });
+      });
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
