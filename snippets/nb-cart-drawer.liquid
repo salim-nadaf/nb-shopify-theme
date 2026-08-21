@@ -152,16 +152,6 @@
         <div id="nb-cart-contact-email-row" style="display:none;"><strong>Email:</strong> <span id="nb-cart-contact-email"></span></div>
       </div>
     </div>
-
-    <!-- ORDER & DELIVERY INSTRUCTIONS -->
-    <div class="nb-drawer__instructions-box">
-      <label for="nb-cooking-instructions">📝 Order & Delivery Instructions</label>
-      <textarea id="nb-cooking-instructions"
-                placeholder="Example: Less spicy, no green chilli, call on arrival..."
-                rows="2"
-                onchange="nbSaveInstructions()"></textarea>
-      <p class="nb-instructions-hint">💡 Saved to your order for our kitchen & delivery team</p>
-    </div>
   </div>
 
   <!-- DRAWER FOOTER WITH LIVE SUMMARY & CHECKOUT -->
@@ -501,30 +491,6 @@
   transition: width 0.3s ease;
 }
 
-/* COOKING INSTRUCTIONS BOX */
-.nb-drawer__instructions-box {
-  background: #fff;
-  border: 1px solid rgba(200,146,42,0.2);
-  border-radius: 12px;
-  padding: 10px;
-}
-.nb-drawer__instructions-box label {
-  display: block; font-size: 0.8rem;
-  font-weight: 700; color: #2C1810; margin-bottom: 4px;
-}
-.nb-drawer__instructions-box textarea {
-  width: 100%; border: 1px solid rgba(200,146,42,0.3);
-  border-radius: 8px; padding: 8px 10px;
-  font-size: 0.8rem; color: #2C1810;
-  background: #FFFDF7; resize: none;
-  font-family: inherit; box-sizing: border-box;
-}
-.nb-drawer__instructions-box textarea:focus {
-  outline: none; border-color: #C8922A;
-}
-.nb-instructions-hint {
-  margin: 3px 0 0; font-size: 0.7rem; color: #7A5C4A; font-style: italic;
-}
 
 /* FOOTER */
 .nb-drawer__footer {
@@ -667,20 +633,6 @@ function nbFormatMoney(cents) {
   return '₹' + (cents / 100).toFixed(0);
 }
 
-function nbSaveInstructions() {
-  var textarea = document.getElementById('nb-cooking-instructions');
-  var instructions = textarea ? textarea.value.trim() : '';
-  fetch('/cart/update.js', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      attributes: { 'Order & Delivery Instructions': instructions },
-      note: instructions ? ('ORDER & DELIVERY INSTRUCTIONS: ' + instructions) : ''
-    })
-  }).catch(function(e) {
-    nbShowToast('Could not save instructions. Please check network.');
-  });
-}
 
 function nbBuildCheckoutUrl(phone, name, email) {
   // Shopify Basic plan does not support checkout URL params pre-filling
@@ -695,9 +647,6 @@ async function nbGoToCheckout() {
     return;
   }
 
-  var textarea = document.getElementById('nb-cooking-instructions');
-  var instructions = textarea ? textarea.value.trim() : '';
-
   var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
   var name  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name')  || '';
   var email = localStorage.getItem('gate_email') || localStorage.getItem('nb_email') || '';
@@ -707,7 +656,6 @@ async function nbGoToCheckout() {
   var noteText = 'WhatsApp/Delivery Phone: ' + (cleanPhone ? ('+91' + cleanPhone) : 'Not provided');
   if (name) noteText += ' | Name: ' + name;
   if (email) noteText += ' | Email: ' + email;
-  if (instructions) noteText += ' | Instructions: ' + instructions;
 
   try {
     var response = await fetch('/cart/update.js', {
@@ -722,8 +670,7 @@ async function nbGoToCheckout() {
           'Customer Name': name,
           'Customer Email': email,
           'Email': email,
-          'Instant Delivery Status': NB_CONFIG.instantDeliveryEnabled ? 'Available' : 'Paused',
-          'Order & Delivery Instructions': instructions
+          'Instant Delivery Status': NB_CONFIG.instantDeliveryEnabled ? 'Available' : 'Paused'
         },
         note: noteText
       })
