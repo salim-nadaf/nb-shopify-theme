@@ -154,9 +154,65 @@
       box-shadow: none !important;
       color: #FDF6EC !important;
     }
-    shopify-account svg path {
-      stroke: currentColor !important;
+    /* ===== FSSAI STANDARD VEG / NON-VEG DIET ICONS ===== */
+    .nb-diet-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      vertical-align: middle;
+      line-height: 1;
     }
+    .nb-diet-icon .nb-diet-box {
+      width: 14px;
+      height: 14px;
+      min-width: 14px;
+      min-height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      background: #FFFFFF !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      box-sizing: border-box;
+    }
+    .nb-diet-icon.nb-diet-veg .nb-diet-box {
+      border: 1.5px solid #16A34A !important;
+    }
+    .nb-diet-icon.nb-diet-veg .nb-diet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #16A34A !important;
+      display: block;
+    }
+    .nb-diet-icon.nb-diet-nonveg .nb-diet-box {
+      border: 1.5px solid #DC2626 !important;
+    }
+    .nb-diet-icon.nb-diet-nonveg .nb-diet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #DC2626 !important;
+      display: block;
+    }
+    .nb-diet-corner-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 6;
+      background: rgba(255, 255, 255, 0.95) !important;
+      padding: 3px 4px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16) !important;
+      backdrop-filter: blur(4px);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      pointer-events: none;
+    }
+
 
     /* ===== NIAMAT LUXURY CUSTOMER ACCOUNT & PROFILE MODAL THEME (POPUP ONLY) ===== */
     shopify-account {

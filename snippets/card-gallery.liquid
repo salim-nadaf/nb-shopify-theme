@@ -197,6 +197,10 @@
       endcapture
       render 'slideshow', ref: 'slideshow', slides: placeholder_slide, slide_count: 1, attributes: 'disabled="true"'
     %}
+  {%- if product != blank -%}
+    <div class="nb-diet-corner-badge" aria-hidden="true">
+      {% render 'nb-diet-icon', product: product %}
+    </div>
   {%- endif -%}
   {{ children }}
 </div>

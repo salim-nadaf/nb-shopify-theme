@@ -264,6 +264,9 @@
 
           <div class="nb-home-trial-visual">
             <div class="nb-home-trial-img-wrap">
+              <div class="nb-diet-corner-badge" aria-hidden="true">
+                {% render 'nb-diet-icon', product: trial_prod, diet: 'nonveg' %}
+              </div>
               <img
                 src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600"
                 alt="Biryani Palace by Niamat 200g Trial Portion"
@@ -343,6 +346,7 @@
                   {% assign icon = '🍢' %}
                 {% endif %}
                 <a href="{{ today_cta_url }}#product-{{ product.id }}" class="nb-badge-pill" style="text-decoration: none; color: inherit;">
+                  {% render 'nb-diet-icon', product: product %}
                   <strong>{{ product.title }} Ready</strong>
                 </a>
               {% endif %}
@@ -394,6 +398,9 @@
         <!-- CARD 1: Half Kg Dum Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
+            <div class="nb-diet-corner-badge" aria-hidden="true">
+              {% render 'nb-diet-icon', title: 'Ustaadi Murgh Dum Biryani', diet: 'nonveg' %}
+            </div>
             <img
               src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=200"
               srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=200 200w"
@@ -425,6 +432,9 @@
         <!-- CARD 2: Half Kg Tandoori Bucket -->
         <div class="nb-food-card nb-food-card--preorder">
           <div class="nb-food-card__image">
+            <div class="nb-diet-corner-badge" aria-hidden="true">
+              {% render 'nb-diet-icon', title: 'Alishaan Tandoori Biryani', diet: 'nonveg' %}
+            </div>
             <img
               src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=200"
               srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=200 200w"
