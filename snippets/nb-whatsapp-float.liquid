@@ -11,85 +11,44 @@
   assign wa_url = 'https://wa.me/' | append: wa_number | append: '?text=' | append: greeting_msg
 %}
 
-<aside class="nb-whatsapp-float-wrap" aria-label="WhatsApp Support">
-  <a href="{{ wa_url }}" target="_blank" rel="noopener noreferrer" class="nb-whatsapp-float-btn" id="nbFloatingWhatsApp" aria-label="Chat on WhatsApp">
+<div class="nb-whatsapp-float-wrap" id="nbFloatingWhatsAppContainer" style="position: fixed !important; bottom: 24px !important; right: 24px !important; z-index: 2147483647 !important; display: flex !important; align-items: center !important; pointer-events: auto !important; visibility: visible !important;">
+  <a href="{{ wa_url }}" target="_blank" rel="noopener noreferrer" class="nb-whatsapp-float-btn" id="nbFloatingWhatsApp" aria-label="Chat on WhatsApp" style="display: flex !important; align-items: center !important; background: #25D366 !important; text-decoration: none !important; border-radius: 50px !important; box-shadow: 0 6px 24px rgba(37, 211, 102, 0.45), 0 2px 8px rgba(0, 0, 0, 0.18) !important; color: #FFFFFF !important;">
+    
     <!-- Pulse Ripple Effect -->
-    <span class="nb-wa-pulse"></span>
+    <span class="nb-wa-pulse" aria-hidden="true"></span>
     
     <!-- WhatsApp Official SVG -->
-    <div class="nb-wa-icon-box">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div class="nb-wa-icon-box" style="width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+      <svg width="34" height="34" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
         <path d="M16 2C8.268 2 2 8.268 2 16c0 2.748.795 5.308 2.164 7.465L2.5 29.5l6.236-1.636A13.93 13.93 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2z" fill="#25D366"/>
         <path d="M24.08 19.825c-.347-.174-2.054-1.014-2.373-1.13-.32-.116-.552-.174-.784.174-.232.348-.899 1.13-1.102 1.362-.203.232-.406.261-.754.087-.348-.174-1.468-.541-2.796-1.725-1.033-.922-1.73-2.06-1.933-2.408-.203-.348-.022-.536.152-.71.156-.156.348-.406.522-.61.174-.203.232-.348.348-.58.116-.232.058-.435-.029-.609-.087-.174-.784-1.888-1.074-2.585-.282-.678-.569-.586-.784-.597-.203-.01-.435-.013-.667-.013-.232 0-.61.087-.928.435-.319.348-1.218 1.189-1.218 2.9 0 1.71 1.246 3.363 1.42 3.595.174.232 2.453 3.744 5.942 5.25.83.358 1.478.572 1.983.733.834.265 1.593.228 2.193.138.669-.1 2.054-.84 2.344-1.652.29-.812.29-1.508.203-1.652-.087-.145-.319-.232-.667-.406z" fill="#FFFFFF"/>
       </svg>
     </div>
 
-    <!-- Hover / Desktop Tooltip Pill -->
-    <span class="nb-wa-tooltip">
-      <span class="nb-wa-tooltip-title">Need help?</span>
-      <span class="nb-wa-tooltip-sub">Chat on WhatsApp</span>
-    </span>
+    <!-- Desktop Tooltip Pill -->
+    <div class="nb-wa-tooltip" style="display: flex; flex-direction: column; padding-right: 16px; padding-left: 2px; line-height: 1.25; text-align: left;">
+      <span class="nb-wa-tooltip-title" style="font-size: 0.88rem; font-weight: 800; color: #FFFFFF; letter-spacing: 0.2px;">Need Help?</span>
+      <span class="nb-wa-tooltip-sub" style="font-size: 0.72rem; font-weight: 600; color: rgba(255, 255, 255, 0.92);">Chat on WhatsApp</span>
+    </div>
   </a>
-</aside>
+</div>
 
 <style>
-.nb-whatsapp-float-wrap {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-}
-
 .nb-whatsapp-float-btn {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: #25D366;
-  color: #FFFFFF !important;
-  text-decoration: none !important;
-  border-radius: 50px;
-  padding: 6px;
-  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4), 0 2px 8px rgba(0, 0, 0, 0.12);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  cursor: pointer !important;
 }
 
-.nb-wa-icon-box {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+.nb-whatsapp-float-btn:hover {
+  transform: translateY(-4px) scale(1.04) !important;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6), 0 4px 14px rgba(0, 0, 0, 0.2) !important;
 }
 
-.nb-wa-tooltip {
-  display: flex;
-  flex-direction: column;
-  padding-right: 14px;
-  line-height: 1.2;
-  text-align: left;
-}
-
-.nb-wa-tooltip-title {
-  font-size: 0.86rem;
-  font-weight: 800;
-  color: #FFFFFF;
-}
-
-.nb-wa-tooltip-sub {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-/* Pulsing Ripple Effect */
+/* Pulsing Wave Effect */
 .nb-wa-pulse {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -4px;
+  left: -4px;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -114,32 +73,29 @@
   }
 }
 
-.nb-whatsapp-float-btn:hover {
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.55), 0 4px 12px rgba(0, 0, 0, 0.16);
-  color: #FFFFFF !important;
-}
-
-/* Mobile: Compact circular floating button */
+/* Mobile Responsiveness */
 @media (max-width: 767px) {
-  .nb-whatsapp-float-wrap {
-    bottom: 20px;
-    right: 16px;
+  #nbFloatingWhatsAppContainer {
+    bottom: 22px !important;
+    right: 18px !important;
   }
-  .nb-whatsapp-float-btn {
-    padding: 4px;
-    border-radius: 50%;
+  #nbFloatingWhatsApp {
+    border-radius: 50% !important;
+    padding: 0 !important;
+    width: 54px !important;
+    height: 54px !important;
+    justify-content: center !important;
   }
   .nb-wa-tooltip {
-    display: none; /* Icon-only on mobile for zero screen clutter */
+    display: none !important; /* Circular icon on mobile for zero screen interference */
   }
   .nb-wa-icon-box {
-    width: 48px;
-    height: 48px;
+    width: 54px !important;
+    height: 54px !important;
   }
   .nb-wa-icon-box svg {
-    width: 32px;
-    height: 32px;
+    width: 32px !important;
+    height: 32px !important;
   }
 }
 </style>
