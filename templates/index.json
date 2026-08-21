@@ -161,61 +161,61 @@
         "review_1": {
           "type": "google_review",
           "settings": {
-            "author_name": "Faizan Shaikh",
+            "author_name": "Vijay Agasar",
             "rating": "5",
-            "review_date": "2 days ago",
-            "dish_tag": "🍲 Ustaadi Murgh Dum",
-            "review_text": "The aroma and taste of Ustaadi Murgh Dum Biryani was phenomenal. Perfectly slow-cooked chicken with fragrant long-grain Basmati rice. The raita is a must-have accompaniment!"
+            "review_date": "1 month ago",
+            "dish_tag": "🍲 Super Tasty & Value",
+            "review_text": "Your biryani was super tasty and excellent. It was the first time I ordered it, but honestly it was totally value-for-money. 😋"
           }
         },
         "review_2": {
           "type": "google_review",
           "settings": {
-            "author_name": "Pooja Sharma",
+            "author_name": "Pooja Dawani",
             "rating": "5",
-            "review_date": "5 days ago",
-            "dish_tag": "🍗 Alishaan Tandoori",
-            "review_text": "Ordered the Alishaan Tandoori Biryani for our family Sunday lunch in Kalyan West. Absolutely mouth-watering, tender pieces, and piping hot delivery within 40 minutes!"
+            "review_date": "3 months ago",
+            "dish_tag": "🍗 Alishaan Tandoori & Seekh",
+            "review_text": "I ordered alishan tandoor biryani, lababdaar seekh biryani, chicken leg piece for small gathering and the quantity of chicken & rice and taste is totally worth. I will surely place an order again"
           }
         },
         "review_3": {
           "type": "google_review",
           "settings": {
-            "author_name": "Rahul Verma",
+            "author_name": "Asmita Patil",
             "rating": "5",
-            "review_date": "1 week ago",
-            "dish_tag": "🍢 Chicken Shami Kebab",
-            "review_text": "Authentic Mughlai flavors right here in Kalyan. The Chicken Shami Kebabs melted in the mouth. Extremely generous portions and high quality food-grade packaging."
+            "review_date": "7 months ago",
+            "dish_tag": "🍲 Full of Flavour & Durable Packaging",
+            "review_text": "The biryani was very delicious and full of flavour. The packaging is durable. Mr Salim is a considerate person. He took my order last minute on a busy day and delivered on time."
           }
         },
         "review_4": {
           "type": "google_review",
           "settings": {
-            "author_name": "Ayesha Khan",
+            "author_name": "Praful Kanojia",
             "rating": "5",
-            "review_date": "2 weeks ago",
-            "dish_tag": "🌿 Sabz Tikka Biryani",
-            "review_text": "Being vegetarian, finding rich flavorful biryani is rare. Sabz Tikka Biryani exceeded all expectations. Fresh paneer, rich masala, and aromatic spices. Highly recommended!"
+            "review_date": "7 months ago",
+            "dish_tag": "🔥 Flavorful & Well-Cooked",
+            "review_text": "Had a great experience. The biryani was flavorful, well-cooked, and served hot. The spices were perfectly balanced and the portion size was satisfying. Highly recommended for biryani lovers."
           }
         },
         "review_5": {
           "type": "google_review",
           "settings": {
-            "author_name": "Mohd Ansari",
+            "author_name": "Shakier Shaikh",
             "rating": "5",
-            "review_date": "3 weeks ago",
-            "dish_tag": "👑 2 Kg Family Handi",
-            "review_text": "We booked a 2 KG Family Handi for an anniversary gathering. All 7 guests loved it. Zero artificial colors, 100% authentic dum taste. Our go-to biryani spot in Kalyan!"
+            "review_date": "8 months ago",
+            "dish_tag": "👑 Authentic Flavors & Generous Portions",
+            "review_text": "Biryani Palace truly lives up to its name! Delicious, authentic flavors, generous portions, and great quality. The spices were perfectly balanced and the taste was outstanding. Will surely order again & again"
           }
         },
         "review_6": {
           "type": "google_review",
           "settings": {
-            "author_name": "Neha Joshi",
-            "rating": "4",
-            "review_date": "1 month ago",
-            "dish_tag": "🍨 Gulab Jamun & Raita",
-            "review_text": "Super fast dispatch and great packaging. The biryani is full of flavor and the Gulab Jamuns were the perfect sweet ending. Will definitely reorder soon!"
+            "author_name": "Vivek Abhale",
+            "rating": "5",
+            "review_date": "9 months ago",
+            "dish_tag": "🥣 Fragrant Rice & Raita",
+            "review_text": "Great authentic taste, fragrant long-grain Basmati rice and perfectly cooked tender chicken. Loved the signature raita as well!"
           }
         }
       },
@@ -231,8 +231,8 @@
         "tag_badge": "GOOGLE REVIEWS",
         "title": "Loved by Biryani Enthusiasts Across Kalyan",
         "subtitle": "Real feedback from our valued customers across Kalyan West, East & nearby areas.",
-        "google_rating": "4.9",
-        "total_reviews_text": "Based on 150+ Verified Google Reviews",
+        "google_rating": "4.8",
+        "total_reviews_text": "Verified Real Reviews on Google Maps",
         "google_review_url": "https://maps.app.goo.gl/eXz6owNMojDUfi2h9"
       }
     },
