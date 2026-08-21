@@ -169,9 +169,6 @@
             assign badge_icon = '👑'
           %}
           <div class="nb-food-card nb-food-card--meal {% unless is_available %}nb-food-card--soldout{% endunless %}">
-            <div class="nb-diet-corner-badge" aria-hidden="true">
-              {% render 'nb-diet-icon', product: product %}
-            </div>
             <div class="nb-food-card__header-row">
               <div class="nb-food-card__image">
                 {% if product.featured_media %}
@@ -209,7 +206,10 @@
                           data-variant-id="{{ variant.id }}"
                           data-price="{{ variant.price | money }}"
                           data-available="{{ variant.available }}">
-                      {{ variant.title }}
+                      <span class="nb-pill-diet-tag" style="margin-right: 8px; display: inline-flex; flex-shrink: 0; align-items: center;">
+                        {% render 'nb-diet-icon', title: variant.title %}
+                      </span>
+                      <span class="nb-pill-text">{{ variant.title }}</span>
                     </span>
                   {% endfor %}
                 </div>
