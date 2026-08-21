@@ -32,8 +32,9 @@
   <!-- ===== 1. ₹99 BIRYANI SPECIAL TRIAL OFFER HERO SECTION ===== -->
   <section class="nb-trial-hero" aria-labelledby="nb-trial-heading">
     <div class="nb-trial-card">
-      <div class="nb-diet-corner-badge" aria-hidden="true">
-        {% render 'nb-diet-icon', product: trial_prod, diet: 'nonveg' %}
+      <div class="nb-diet-corner-badge" aria-hidden="true" style="display: inline-flex; gap: 4px;">
+        {% render 'nb-diet-icon', diet: 'veg' %}
+        {% render 'nb-diet-icon', diet: 'nonveg' %}
       </div>
       <div class="nb-trial-card__inner">
         
@@ -54,20 +55,24 @@
             {{ section.settings.trial_subheading | default: 'Your first taste of Biryani Palace by Niamat — at a special introductory price.' }}
           </p>
 
-          <!-- Price & Portion Display (Portion as subtle small line) -->
+          <!-- Price & Preference Display -->
           <div class="nb-trial-price-container">
             <div class="nb-trial-price-display">
               <span class="nb-trial-price-main">{{ section.settings.trial_price | default: '₹99' }}</span>
-              <span class="nb-trial-price-badge-intro">Introductory Price</span>
+              <span class="nb-trial-price-badge-intro">Special Trial Offer</span>
             </div>
-            <div class="nb-trial-portion-subtext">
-              <span>🥣</span> <span>{{ section.settings.trial_portion | default: '200 g Trial Portion' }}</span>
+            <div class="nb-trial-portion-subtext" style="display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+              <span style="display: inline-flex; gap: 3px; align-items: center;">
+                {% render 'nb-diet-icon', diet: 'veg' %}
+                {% render 'nb-diet-icon', diet: 'nonveg' %}
+              </span>
+              <span><strong>Veg or Non-Veg:</strong> Please mention your choice on WhatsApp</span>
             </div>
           </div>
 
           <!-- Supporting Copy -->
           <p class="nb-trial-copy">
-            {{ section.settings.trial_copy | default: 'A special introductory offer to experience Niamat Biryani.' }}
+            Available in both Vegetarian and Chicken Non-Veg options. After placing your order, simply message us your preference on WhatsApp.
           </p>
 
           <!-- CTA Area: Submits to Cart Directly via AJAX Quick-Form -->
@@ -87,7 +92,7 @@
           <div class="nb-trial-img-wrap">
             <img
               src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600"
-              alt="Biryani Palace by Niamat Kalyan — Dum Cooked Tasty Biryani Trial Portion"
+              alt="Biryani Palace by Niamat Kalyan — ₹99 Special Trial Biryani (Veg & Non-Veg Available)"
               width="360"
               height="260"
               loading="eager"
