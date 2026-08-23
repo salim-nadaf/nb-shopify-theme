@@ -247,7 +247,6 @@
       <div class="nb-container">
         <div class="nb-home-trial-card">
           <div class="nb-diet-corner-badge" aria-hidden="true" style="display: inline-flex; gap: 4px;">
-            {% render 'nb-diet-icon', diet: 'veg' %}
             {% render 'nb-diet-icon', diet: 'nonveg' %}
           </div>
           <div class="nb-home-trial-content">
@@ -260,14 +259,15 @@
             </h2>
 
             <p class="nb-home-trial-sub">
-              Experience the royal taste of authentic Biryani by Niamat — available in Veg & Non-Veg.
+              Experience the royal taste of authentic Chicken Dum Biryani by Niamat at a special introductory price.
             </p>
 
             <div class="nb-home-trial-details">
               <div class="nb-home-trial-price-box">
                 <span class="nb-home-trial-amount">₹99</span>
                 <span class="nb-home-trial-portion" style="display: inline-flex; align-items: center; gap: 4px;">
-                  <span>Veg or Non-Veg · Mention on WhatsApp</span>
+                  {% render 'nb-diet-icon', diet: 'nonveg' %}
+                  <span>Chicken Dum Biryani · Trial Portion</span>
                 </span>
               </div>
             </div>
