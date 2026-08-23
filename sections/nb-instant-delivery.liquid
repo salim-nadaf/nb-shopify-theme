@@ -32,8 +32,7 @@
   <!-- ===== 1. ₹99 BIRYANI SPECIAL TRIAL OFFER HERO SECTION ===== -->
   <section class="nb-trial-hero" aria-labelledby="nb-trial-heading">
     <div class="nb-trial-card">
-      <div class="nb-diet-corner-badge" aria-hidden="true" style="display: inline-flex; gap: 4px;">
-        {% render 'nb-diet-icon', diet: 'veg' %}
+      <div class="nb-diet-corner-badge" aria-hidden="true">
         {% render 'nb-diet-icon', diet: 'nonveg' %}
       </div>
       <div class="nb-trial-card__inner">
@@ -47,7 +46,7 @@
 
           <!-- Main Headline -->
           <h1 id="nb-trial-heading" class="nb-trial-title">
-            {{ section.settings.trial_heading_prefix | default: 'TRY CHICKEN BIRYANI FOR' }} <span class="nb-trial-price-highlight">{{ section.settings.trial_price | default: '₹99' }}</span>
+            TRY CHICKEN BIRYANI FOR <span class="nb-trial-price-highlight">{{ section.settings.trial_price | default: '₹99' }}</span>
           </h1>
 
           <!-- Supporting Headline -->
