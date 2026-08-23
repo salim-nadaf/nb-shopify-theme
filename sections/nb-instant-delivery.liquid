@@ -47,12 +47,12 @@
 
           <!-- Main Headline -->
           <h1 id="nb-trial-heading" class="nb-trial-title">
-            {{ section.settings.trial_heading_prefix | default: 'TRY NIAMAT BIRYANI FOR' }} <span class="nb-trial-price-highlight">{{ section.settings.trial_price | default: '₹99' }}</span>
+            {{ section.settings.trial_heading_prefix | default: 'TRY CHICKEN BIRYANI FOR' }} <span class="nb-trial-price-highlight">{{ section.settings.trial_price | default: '₹99' }}</span>
           </h1>
 
           <!-- Supporting Headline -->
           <p class="nb-trial-subtitle">
-            {{ section.settings.trial_subheading | default: 'Your first taste of Biryani Palace by Niamat — at a special introductory price.' }}
+            {{ section.settings.trial_subheading | default: 'Your first taste of delicious Chicken Biryani by Niamat — at a special introductory price.' }}
           </p>
 
           <!-- Price & Preference Display -->
@@ -65,13 +65,13 @@
               <span style="display: inline-flex; gap: 3px; align-items: center;">
                 {% render 'nb-diet-icon', diet: 'nonveg' %}
               </span>
-              <span><strong>Chicken Dum Biryani:</strong> Single Trial Portion</span>
+              <span><strong>Chicken Biryani:</strong> Single Trial Portion</span>
             </div>
           </div>
 
           <!-- Supporting Copy -->
           <p class="nb-trial-copy">
-            Freshly prepared authentic Chicken Dum Biryani with tender meat and fragrant Basmati rice — at a special introductory price.
+            Freshly prepared Chicken Biryani with tender chicken and fragrant Basmati rice — at a special introductory price.
           </p>
 
           <!-- CTA Area: Submits to Cart Directly via AJAX Quick-Form -->
@@ -80,7 +80,7 @@
               <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
               <input type="hidden" name="quantity" value="1" />
               <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
-                {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 BIRYANI' }}
+                {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
               </button>
             </form>
           </div>
@@ -93,7 +93,7 @@
               src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360"
               srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360 360w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600 600w"
               sizes="(max-width: 767px) 320px, 450px"
-              alt="Biryani Palace by Niamat Kalyan — ₹99 Special Trial Chicken Dum Biryani"
+              alt="Biryani Palace by Niamat Kalyan — ₹99 Special Trial Chicken Biryani"
               width="360"
               height="260"
               loading="eager"
