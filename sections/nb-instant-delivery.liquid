@@ -192,11 +192,24 @@
           {% liquid
             assign first_variant = product.selected_or_first_available_variant
             assign is_available = first_variant.available
+            assign first_var_title_lower = first_variant.title | downcase
 
             for block in section.blocks
               if block.type == 'product_status' and block.settings.product != blank
                 if block.settings.product.id == product.id or block.settings.product.handle == product.handle
                   if block.settings.is_sold_out
+                    assign is_available = false
+                  endif
+                  assign opt1 = block.settings.sold_out_option_1 | downcase | strip
+                  if opt1 != '' and first_var_title_lower contains opt1
+                    assign is_available = false
+                  endif
+                  assign opt2 = block.settings.sold_out_option_2 | downcase | strip
+                  if opt2 != '' and first_var_title_lower contains opt2
+                    assign is_available = false
+                  endif
+                  assign opt3 = block.settings.sold_out_option_3 | downcase | strip
+                  if opt3 != '' and first_var_title_lower contains opt3
                     assign is_available = false
                   endif
                 endif
@@ -245,14 +258,47 @@
               {% if product.variants.size > 1 %}
                 <div class="nb-variant-selector" data-product-id="{{ product.id }}">
                   {% for variant in product.variants %}
-                    <span class="nb-variant-pill {% if forloop.first %}active{% endif %}"
+                    {% liquid
+                      assign var_available = variant.available
+                      assign var_title_lower = variant.title | downcase
+
+                      for block in section.blocks
+                        if block.type == 'product_status' and block.settings.product != blank
+                          if block.settings.product.id == product.id or block.settings.product.handle == product.handle
+                            if block.settings.is_sold_out
+                              assign var_available = false
+                            endif
+                            assign opt1 = block.settings.sold_out_option_1 | downcase | strip
+                            if opt1 != '' and var_title_lower contains opt1
+                              assign var_available = false
+                            endif
+                            assign opt2 = block.settings.sold_out_option_2 | downcase | strip
+                            if opt2 != '' and var_title_lower contains opt2
+                              assign var_available = false
+                            endif
+                            assign opt3 = block.settings.sold_out_option_3 | downcase | strip
+                            if opt3 != '' and var_title_lower contains opt3
+                              assign var_available = false
+                            endif
+                          endif
+                        endif
+                      endfor
+
+                      if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
+                        assign var_available = false
+                      endif
+                    %}
+                    <span class="nb-variant-pill {% if forloop.first %}active{% endif %} {% unless var_available %}nb-pill-soldout{% endunless %}"
                           data-variant-id="{{ variant.id }}"
                           data-price="{{ variant.price | money }}"
-                          data-available="{{ variant.available }}">
+                          data-available="{{ var_available }}">
                       <span class="nb-pill-diet-tag" style="margin-right: 8px; display: inline-flex; flex-shrink: 0; align-items: center;">
                         {% render 'nb-diet-icon', title: variant.title %}
                       </span>
                       <span class="nb-pill-text">{{ variant.title }}</span>
+                      {% unless var_available %}
+                        <span class="nb-pill-soldout-label">Sold Out</span>
+                      {% endunless %}
                     </span>
                   {% endfor %}
                 </div>
@@ -288,11 +334,24 @@
           {% liquid
             assign first_variant = product.selected_or_first_available_variant
             assign is_available = first_variant.available
+            assign first_var_title_lower = first_variant.title | downcase
 
             for block in section.blocks
               if block.type == 'product_status' and block.settings.product != blank
                 if block.settings.product.id == product.id or block.settings.product.handle == product.handle
                   if block.settings.is_sold_out
+                    assign is_available = false
+                  endif
+                  assign opt1 = block.settings.sold_out_option_1 | downcase | strip
+                  if opt1 != '' and first_var_title_lower contains opt1
+                    assign is_available = false
+                  endif
+                  assign opt2 = block.settings.sold_out_option_2 | downcase | strip
+                  if opt2 != '' and first_var_title_lower contains opt2
+                    assign is_available = false
+                  endif
+                  assign opt3 = block.settings.sold_out_option_3 | downcase | strip
+                  if opt3 != '' and first_var_title_lower contains opt3
                     assign is_available = false
                   endif
                 endif
@@ -426,11 +485,44 @@
               {% if product.variants.size > 1 %}
                 <div class="nb-variant-selector" data-product-id="{{ product.id }}">
                   {% for variant in product.variants %}
-                    <span class="nb-variant-pill {% if forloop.first %}active{% endif %}"
+                    {% liquid
+                      assign var_available = variant.available
+                      assign var_title_lower = variant.title | downcase
+
+                      for block in section.blocks
+                        if block.type == 'product_status' and block.settings.product != blank
+                          if block.settings.product.id == product.id or block.settings.product.handle == product.handle
+                            if block.settings.is_sold_out
+                              assign var_available = false
+                            endif
+                            assign opt1 = block.settings.sold_out_option_1 | downcase | strip
+                            if opt1 != '' and var_title_lower contains opt1
+                              assign var_available = false
+                            endif
+                            assign opt2 = block.settings.sold_out_option_2 | downcase | strip
+                            if opt2 != '' and var_title_lower contains opt2
+                              assign var_available = false
+                            endif
+                            assign opt3 = block.settings.sold_out_option_3 | downcase | strip
+                            if opt3 != '' and var_title_lower contains opt3
+                              assign var_available = false
+                            endif
+                          endif
+                        endif
+                      endfor
+
+                      if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
+                        assign var_available = false
+                      endif
+                    %}
+                    <span class="nb-variant-pill {% if forloop.first %}active{% endif %} {% unless var_available %}nb-pill-soldout{% endunless %}"
                           data-variant-id="{{ variant.id }}"
                           data-price="{{ variant.price | money }}"
-                          data-available="{{ variant.available }}">
-                      {{ variant.title }}
+                          data-available="{{ var_available }}">
+                      <span class="nb-pill-text">{{ variant.title }}</span>
+                      {% unless var_available %}
+                        <span class="nb-pill-soldout-label">Sold Out</span>
+                      {% endunless %}
                     </span>
                   {% endfor %}
                 </div>
@@ -933,6 +1025,30 @@
     padding: 8px 12px;
   }
 }
+
+/* Sold Out Variant Pills Styling */
+.nb-variant-pill.nb-pill-soldout {
+  opacity: 0.82;
+  background: #FFF5F5 !important;
+  border-color: #FEB2B2 !important;
+}
+.nb-variant-pill.nb-pill-soldout.active {
+  border-color: #E53E3E !important;
+  background: #FED7D7 !important;
+}
+.nb-pill-soldout-label {
+  font-size: 0.62rem;
+  color: #C53030;
+  font-weight: 800;
+  margin-left: 5px;
+  background: rgba(197, 48, 48, 0.12);
+  padding: 1px 5px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: inline-block;
+  vertical-align: middle;
+}
 </style>
 
 <script>
@@ -1076,19 +1192,41 @@
   "blocks": [
     {
       "type": "product_status",
-      "name": "Item Availability Toggle",
+      "name": "Item / Portion Sold Out",
       "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "Select Product / Dish"
+          "label": "1. Select Dish / Product"
         },
         {
           "type": "checkbox",
           "id": "is_sold_out",
-          "label": "Mark as Sold Out",
+          "label": "Mark Entire Dish as Sold Out",
           "default": false,
-          "info": "Turn this toggle ON to show Sold Out on this dish."
+          "info": "Turn this ON to mark all portions/options of this dish as Sold Out."
+        },
+        {
+          "type": "header",
+          "content": "OR Mark Specific Portions / Diet Sold Out"
+        },
+        {
+          "type": "text",
+          "id": "sold_out_option_1",
+          "label": "Sold Out Portion / Diet 1",
+          "info": "e.g. 'Single', 'Half Kg', '1 Kg', 'Veg', 'Non-Veg', 'Combo'"
+        },
+        {
+          "type": "text",
+          "id": "sold_out_option_2",
+          "label": "Sold Out Portion / Diet 2",
+          "info": "Optional second option (e.g. 'Half Kg')"
+        },
+        {
+          "type": "text",
+          "id": "sold_out_option_3",
+          "label": "Sold Out Portion / Diet 3",
+          "info": "Optional third option"
         }
       ]
     }
