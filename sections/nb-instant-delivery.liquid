@@ -192,6 +192,21 @@
           {% liquid
             assign first_variant = product.selected_or_first_available_variant
             assign is_available = first_variant.available
+
+            for block in section.blocks
+              if block.type == 'product_status' and block.settings.product != blank
+                if block.settings.product.id == product.id or block.settings.product.handle == product.handle
+                  if block.settings.is_sold_out
+                    assign is_available = false
+                  endif
+                endif
+              endif
+            endfor
+
+            if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
+              assign is_available = false
+            endif
+
             assign item_badge = 'Featured Meal'
             assign badge_class = 'nb-tag--bestseller'
             assign badge_icon = '👑'
@@ -273,6 +288,20 @@
           {% liquid
             assign first_variant = product.selected_or_first_available_variant
             assign is_available = first_variant.available
+
+            for block in section.blocks
+              if block.type == 'product_status' and block.settings.product != blank
+                if block.settings.product.id == product.id or block.settings.product.handle == product.handle
+                  if block.settings.is_sold_out
+                    assign is_available = false
+                  endif
+                endif
+              endif
+            endfor
+
+            if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
+              assign is_available = false
+            endif
           %}
           {% liquid
             assign item_badge = ''
@@ -1042,6 +1071,26 @@
       "id": "trial_cta_text",
       "label": "CTA Button Text",
       "default": "GET YOUR ₹99 BIRYANI"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_status",
+      "name": "Item Availability Toggle",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Select Product / Dish"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_sold_out",
+          "label": "Mark as Sold Out",
+          "default": false,
+          "info": "Turn this toggle ON to show Sold Out on this dish."
+        }
+      ]
     }
   ],
   "presets": [
