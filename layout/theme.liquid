@@ -8,14 +8,10 @@
 >
   <head>
     {%- # theme-check-disable RemoteAsset, AssetPreload -%}
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GT-T9KR5T2Q"></script>
+    <!-- Global Google dataLayer & gtag Event Queue -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'GT-T9KR5T2Q');
     </script>
 
     <!-- CRITICAL RESOURCE PRELOADS FOR LCP SPEED OPTIMIZATION -->
