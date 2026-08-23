@@ -300,7 +300,22 @@ function nbShowAuthGate(action, form) {
   }, 300);
 }
 
+var nbPendingLeadTimeout = null;
+
 function nbAuthClose() {
+  if (nbPendingLeadTimeout) {
+    clearTimeout(nbPendingLeadTimeout);
+    nbPendingLeadTimeout = null;
+  }
+  // If user closes modal after entering phone but didn't click save name
+  var phone = localStorage.getItem('gate_phone');
+  if (phone && !window.nbLeadEmailSent) {
+    var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
+    var savedName = localStorage.getItem('gate_name') || '';
+    var savedEmail = localStorage.getItem('gate_email') || '';
+    nbSendLeadContactEmail(phone, savedName, savedEmail, promoConsent);
+  }
+
   var overlay = document.getElementById('nb-auth-overlay');
   var modal   = document.getElementById('nb-auth-modal');
   if (overlay) overlay.classList.remove('active');
@@ -330,8 +345,8 @@ function nbAuthSubmitPhone() {
   localStorage.setItem('nb_promo_consent', promoConsent ? 'yes' : 'no');
   localStorage.setItem('nb_consent_date', new Date().toISOString());
 
-  // Trigger instant notification email
-  nbSendLeadContactEmail(formattedPhone, '', '', promoConsent);
+  // Reset sent flag for new phone entry
+  window.nbLeadEmailSent = false;
 
   // Pre-fill name if returning customer
   var savedName = localStorage.getItem('gate_name') || localStorage.getItem('nb_name');
@@ -353,9 +368,27 @@ function nbAuthSubmitPhone() {
   setTimeout(function() {
     if (nameInput) nameInput.focus();
   }, 200);
+
+  // If user stays on step 2 without submitting or closing for 45s, send partial lead once
+  if (nbPendingLeadTimeout) clearTimeout(nbPendingLeadTimeout);
+  nbPendingLeadTimeout = setTimeout(function() {
+    if (!window.nbLeadEmailSent) {
+      var currentPhone = localStorage.getItem('gate_phone') || formattedPhone;
+      var currentName = localStorage.getItem('gate_name') || '';
+      var currentEmail = localStorage.getItem('gate_email') || '';
+      var currentPromo = localStorage.getItem('nb_promo_consent') === 'yes';
+      nbSendLeadContactEmail(currentPhone, currentName, currentEmail, currentPromo);
+    }
+  }, 45000);
 }
 
 function nbSendLeadContactEmail(phone, name, customEmail, promoConsent) {
+  if (window.nbLeadEmailSent) return;
+  window.nbLeadEmailSent = true;
+  if (nbPendingLeadTimeout) {
+    clearTimeout(nbPendingLeadTimeout);
+    nbPendingLeadTimeout = null;
+  }
   try {
     var cleanPhone10 = (phone || '').replace(/\D/g,'').slice(-10);
     if (!cleanPhone10 || cleanPhone10.length < 10) return;
