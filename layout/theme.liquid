@@ -7,15 +7,15 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
-    <!-- Google tag (gtag.js) - Niamat Biryani Website -->
+    <!-- Google tag (gtag.js) - Niamat Biryani Website (Custom Events Only - Zero Duplicate Pageviews) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-3BFH8J5E3G');
-      gtag('config', 'GT-T9KR5T2Q');
+      // send_page_view: false ensures Shopify Google & YouTube App remains the single source for page_view
+      gtag('config', 'G-3BFH8J5E3G', { send_page_view: false });
     </script>
 
     <!-- CRITICAL RESOURCE PRELOADS FOR LCP SPEED OPTIMIZATION -->
