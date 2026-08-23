@@ -701,6 +701,7 @@
 
     /* ===== MOBILE ===== */
     @media (max-width: 768px) {
+      body { padding-bottom: 70px !important; }
       #nb-mobile-dock { display: flex !important; }
       .content-for-layout, .page-wrapper { overflow-x: hidden !important; }
       .nb-instant-section {
@@ -1146,6 +1147,21 @@
     <span>Cart</span>
   </a>
 </div>
+<script>
+  (function() {
+    function mountMobileDock() {
+      var dock = document.getElementById('nb-mobile-dock');
+      if (dock && dock.parentElement !== document.body) {
+        document.body.appendChild(dock);
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', mountMobileDock);
+    } else {
+      mountMobileDock();
+    }
+  })();
+</script>
 
   <!-- SHOPIFY FORMS CUSTOM ELEMENT & APP EMBED SUPPORT -->
   <script>
