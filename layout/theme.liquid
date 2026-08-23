@@ -517,7 +517,7 @@
       border-radius: 8px !important;
     }
 
-    /* ===== MOBILE BOTTOM DOCK (CROSS-BROWSER SOLID ANCHOR) ===== */
+    /* ===== MOBILE BOTTOM DOCK (CLEAN COMPACT BAR) ===== */
     #nb-mobile-dock {
       display: none;
       position: fixed !important;
@@ -526,23 +526,14 @@
       right: 0 !important;
       width: 100% !important;
       max-width: 100vw !important;
+      height: 56px !important;
+      box-sizing: border-box !important;
       z-index: 99999 !important;
       background: #2C1810 !important;
       border-top: 2px solid #C8922A !important;
-      padding: 6px 0 calc(env(safe-area-inset-bottom, 0px) + 6px) !important;
+      padding: 0 !important;
       margin: 0 !important;
-      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4) !important;
-    }
-    /* Safe-area extension shield prevents page content bleed during Firefox/Safari mobile address-bar collapse */
-    #nb-mobile-dock::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 100%;
-      height: 120px;
-      background: #2C1810 !important;
-      pointer-events: none;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35) !important;
     }
     #nb-mobile-dock a {
       flex: 1;
