@@ -232,16 +232,6 @@
               endif
             endif
 
-            for block in section.blocks
-              if block.type == 'product_status' and block.settings.product != blank
-                if block.settings.product.id == product.id or block.settings.product.handle == product.handle
-                  if block.settings.is_sold_out
-                    assign is_available = false
-                  endif
-                endif
-              endif
-            endfor
-
             if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
               assign is_available = false
             endif
@@ -319,16 +309,6 @@
                           assign var_available = false
                         endif
                       endif
-
-                      for block in section.blocks
-                        if block.type == 'product_status' and block.settings.product != blank
-                          if block.settings.product.id == product.id or block.settings.product.handle == product.handle
-                            if block.settings.is_sold_out
-                              assign var_available = false
-                            endif
-                          endif
-                        endif
-                      endfor
 
                       if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
                         assign var_available = false
@@ -425,16 +405,6 @@
             if title_lower contains 'raita' and section.settings.so_raita
               assign is_available = false
             endif
-
-            for block in section.blocks
-              if block.type == 'product_status' and block.settings.product != blank
-                if block.settings.product.id == product.id or block.settings.product.handle == product.handle
-                  if block.settings.is_sold_out
-                    assign is_available = false
-                  endif
-                endif
-              endif
-            endfor
 
             if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
               assign is_available = false
@@ -610,16 +580,6 @@
                       if title_lower contains 'raita' and section.settings.so_raita
                         assign var_available = false
                       endif
-
-                      for block in section.blocks
-                        if block.type == 'product_status' and block.settings.product != blank
-                          if block.settings.product.id == product.id or block.settings.product.handle == product.handle
-                            if block.settings.is_sold_out
-                              assign var_available = false
-                            endif
-                          endif
-                        endif
-                      endfor
 
                       if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
                         assign var_available = false
@@ -1427,25 +1387,6 @@
       "id": "so_raita",
       "label": "Extra Raita: Mark Sold Out",
       "default": false
-    }
-  ],
-  "blocks": [
-    {
-      "type": "product_status",
-      "name": "Custom Dish Sold Out",
-      "settings": [
-        {
-          "type": "product",
-          "id": "product",
-          "label": "Select Any Additional Product"
-        },
-        {
-          "type": "checkbox",
-          "id": "is_sold_out",
-          "label": "Mark as Sold Out",
-          "default": false
-        }
-      ]
     }
   ],
   "presets": [
