@@ -11,6 +11,24 @@
   "sections": {
     "nb_instant": {
       "type": "nb-instant-delivery",
+      "blocks": {
+        "product_status_Tp4GMU": {
+          "type": "product_status",
+          "settings": {
+            "product": "ustaadi-murgh-dum-biryani-copy",
+            "is_sold_out": false,
+            "sold_out_veg": false,
+            "sold_out_nonveg": false,
+            "sold_out_single": false,
+            "sold_out_double": false,
+            "sold_out_half_kg": false,
+            "sold_out_1kg": false
+          }
+        }
+      },
+      "block_order": [
+        "product_status_Tp4GMU"
+      ],
       "settings": {
         "trial_product": "",
         "trial_cta_url": "",
