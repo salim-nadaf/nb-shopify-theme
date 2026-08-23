@@ -200,17 +200,40 @@
                   if block.settings.is_sold_out
                     assign is_available = false
                   endif
-                  assign opt1 = block.settings.sold_out_option_1 | downcase | strip
-                  if opt1 != '' and first_var_title_lower contains opt1
-                    assign is_available = false
+                  if block.settings.sold_out_veg
+                    if first_var_title_lower contains 'veg'
+                      unless first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'mutton'
+                        assign is_available = false
+                      endunless
+                    endif
+                    if first_var_title_lower contains 'paneer' or first_var_title_lower contains 'sabz'
+                      assign is_available = false
+                    endif
                   endif
-                  assign opt2 = block.settings.sold_out_option_2 | downcase | strip
-                  if opt2 != '' and first_var_title_lower contains opt2
-                    assign is_available = false
+                  if block.settings.sold_out_nonveg
+                    if first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'murgh' or first_var_title_lower contains 'mutton' or first_var_title_lower contains 'gosht'
+                      assign is_available = false
+                    endif
                   endif
-                  assign opt3 = block.settings.sold_out_option_3 | downcase | strip
-                  if opt3 != '' and first_var_title_lower contains opt3
-                    assign is_available = false
+                  if block.settings.sold_out_single
+                    if first_var_title_lower contains 'single' or first_var_title_lower contains 'regular' or first_var_title_lower contains 'mini'
+                      assign is_available = false
+                    endif
+                  endif
+                  if block.settings.sold_out_double
+                    if first_var_title_lower contains 'double'
+                      assign is_available = false
+                    endif
+                  endif
+                  if block.settings.sold_out_half_kg
+                    if first_var_title_lower contains 'half' or first_var_title_lower contains '0.5' or first_var_title_lower contains '500g' or first_var_title_lower contains '1/2'
+                      assign is_available = false
+                    endif
+                  endif
+                  if block.settings.sold_out_1kg
+                    if first_var_title_lower contains '1 kg' or first_var_title_lower contains '1kg' or first_var_title_lower contains 'full kg' or first_var_title_lower contains '1000g'
+                      assign is_available = false
+                    endif
                   endif
                 endif
               endif
@@ -268,17 +291,40 @@
                             if block.settings.is_sold_out
                               assign var_available = false
                             endif
-                            assign opt1 = block.settings.sold_out_option_1 | downcase | strip
-                            if opt1 != '' and var_title_lower contains opt1
-                              assign var_available = false
+                            if block.settings.sold_out_veg
+                              if var_title_lower contains 'veg'
+                                unless var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'mutton'
+                                  assign var_available = false
+                                endunless
+                              endif
+                              if var_title_lower contains 'paneer' or var_title_lower contains 'sabz'
+                                assign var_available = false
+                              endif
                             endif
-                            assign opt2 = block.settings.sold_out_option_2 | downcase | strip
-                            if opt2 != '' and var_title_lower contains opt2
-                              assign var_available = false
+                            if block.settings.sold_out_nonveg
+                              if var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'murgh' or var_title_lower contains 'mutton' or var_title_lower contains 'gosht'
+                                assign var_available = false
+                              endif
                             endif
-                            assign opt3 = block.settings.sold_out_option_3 | downcase | strip
-                            if opt3 != '' and var_title_lower contains opt3
-                              assign var_available = false
+                            if block.settings.sold_out_single
+                              if var_title_lower contains 'single' or var_title_lower contains 'regular' or var_title_lower contains 'mini'
+                                assign var_available = false
+                              endif
+                            endif
+                            if block.settings.sold_out_double
+                              if var_title_lower contains 'double'
+                                assign var_available = false
+                              endif
+                            endif
+                            if block.settings.sold_out_half_kg
+                              if var_title_lower contains 'half' or var_title_lower contains '0.5' or var_title_lower contains '500g' or var_title_lower contains '1/2'
+                                assign var_available = false
+                              endif
+                            endif
+                            if block.settings.sold_out_1kg
+                              if var_title_lower contains '1 kg' or var_title_lower contains '1kg' or var_title_lower contains 'full kg' or var_title_lower contains '1000g'
+                                assign var_available = false
+                              endif
                             endif
                           endif
                         endif
@@ -342,17 +388,40 @@
                   if block.settings.is_sold_out
                     assign is_available = false
                   endif
-                  assign opt1 = block.settings.sold_out_option_1 | downcase | strip
-                  if opt1 != '' and first_var_title_lower contains opt1
-                    assign is_available = false
+                  if block.settings.sold_out_veg
+                    if first_var_title_lower contains 'veg'
+                      unless first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'mutton'
+                        assign is_available = false
+                      endunless
+                    endif
+                    if first_var_title_lower contains 'paneer' or first_var_title_lower contains 'sabz'
+                      assign is_available = false
+                    endif
                   endif
-                  assign opt2 = block.settings.sold_out_option_2 | downcase | strip
-                  if opt2 != '' and first_var_title_lower contains opt2
-                    assign is_available = false
+                  if block.settings.sold_out_nonveg
+                    if first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'murgh' or first_var_title_lower contains 'mutton' or first_var_title_lower contains 'gosht'
+                      assign is_available = false
+                    endif
                   endif
-                  assign opt3 = block.settings.sold_out_option_3 | downcase | strip
-                  if opt3 != '' and first_var_title_lower contains opt3
-                    assign is_available = false
+                  if block.settings.sold_out_single
+                    if first_var_title_lower contains 'single' or first_var_title_lower contains 'regular' or first_var_title_lower contains 'mini'
+                      assign is_available = false
+                    endif
+                  endif
+                  if block.settings.sold_out_double
+                    if first_var_title_lower contains 'double'
+                      assign is_available = false
+                    endif
+                  endif
+                  if block.settings.sold_out_half_kg
+                    if first_var_title_lower contains 'half' or first_var_title_lower contains '0.5' or first_var_title_lower contains '500g' or first_var_title_lower contains '1/2'
+                      assign is_available = false
+                    endif
+                  endif
+                  if block.settings.sold_out_1kg
+                    if first_var_title_lower contains '1 kg' or first_var_title_lower contains '1kg' or first_var_title_lower contains 'full kg' or first_var_title_lower contains '1000g'
+                      assign is_available = false
+                    endif
                   endif
                 endif
               endif
@@ -495,17 +564,40 @@
                             if block.settings.is_sold_out
                               assign var_available = false
                             endif
-                            assign opt1 = block.settings.sold_out_option_1 | downcase | strip
-                            if opt1 != '' and var_title_lower contains opt1
-                              assign var_available = false
+                            if block.settings.sold_out_veg
+                              if var_title_lower contains 'veg'
+                                unless var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'mutton'
+                                  assign var_available = false
+                                endunless
+                              endif
+                              if var_title_lower contains 'paneer' or var_title_lower contains 'sabz'
+                                assign var_available = false
+                              endif
                             endif
-                            assign opt2 = block.settings.sold_out_option_2 | downcase | strip
-                            if opt2 != '' and var_title_lower contains opt2
-                              assign var_available = false
+                            if block.settings.sold_out_nonveg
+                              if var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'murgh' or var_title_lower contains 'mutton' or var_title_lower contains 'gosht'
+                                assign var_available = false
+                              endif
                             endif
-                            assign opt3 = block.settings.sold_out_option_3 | downcase | strip
-                            if opt3 != '' and var_title_lower contains opt3
-                              assign var_available = false
+                            if block.settings.sold_out_single
+                              if var_title_lower contains 'single' or var_title_lower contains 'regular' or var_title_lower contains 'mini'
+                                assign var_available = false
+                              endif
+                            endif
+                            if block.settings.sold_out_double
+                              if var_title_lower contains 'double'
+                                assign var_available = false
+                              endif
+                            endif
+                            if block.settings.sold_out_half_kg
+                              if var_title_lower contains 'half' or var_title_lower contains '0.5' or var_title_lower contains '500g' or var_title_lower contains '1/2'
+                                assign var_available = false
+                              endif
+                            endif
+                            if block.settings.sold_out_1kg
+                              if var_title_lower contains '1 kg' or var_title_lower contains '1kg' or var_title_lower contains 'full kg' or var_title_lower contains '1000g'
+                                assign var_available = false
+                              endif
                             endif
                           endif
                         endif
@@ -1192,7 +1284,7 @@
   "blocks": [
     {
       "type": "product_status",
-      "name": "Item / Portion Sold Out",
+      "name": "Dish & Portion Sold Out",
       "settings": [
         {
           "type": "product",
@@ -1202,31 +1294,53 @@
         {
           "type": "checkbox",
           "id": "is_sold_out",
-          "label": "Mark Entire Dish as Sold Out",
+          "label": "Mark ENTIRE Dish as Sold Out",
           "default": false,
           "info": "Turn this ON to mark all portions/options of this dish as Sold Out."
         },
         {
           "type": "header",
-          "content": "OR Mark Specific Portions / Diet Sold Out"
+          "content": "Diet Option Toggles (Veg / Non-Veg)"
         },
         {
-          "type": "text",
-          "id": "sold_out_option_1",
-          "label": "Sold Out Portion / Diet 1",
-          "info": "e.g. 'Single', 'Half Kg', '1 Kg', 'Veg', 'Non-Veg', 'Combo'"
+          "type": "checkbox",
+          "id": "sold_out_veg",
+          "label": "Mark 'Veg' Options as Sold Out",
+          "default": false
         },
         {
-          "type": "text",
-          "id": "sold_out_option_2",
-          "label": "Sold Out Portion / Diet 2",
-          "info": "Optional second option (e.g. 'Half Kg')"
+          "type": "checkbox",
+          "id": "sold_out_nonveg",
+          "label": "Mark 'Non-Veg' Options as Sold Out",
+          "default": false
         },
         {
-          "type": "text",
-          "id": "sold_out_option_3",
-          "label": "Sold Out Portion / Diet 3",
-          "info": "Optional third option"
+          "type": "header",
+          "content": "Portion / Size Toggles"
+        },
+        {
+          "type": "checkbox",
+          "id": "sold_out_single",
+          "label": "Mark 'Single' Portion as Sold Out",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "sold_out_double",
+          "label": "Mark 'Double' Portion as Sold Out",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "sold_out_half_kg",
+          "label": "Mark 'Half Kg (500g)' as Sold Out",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "sold_out_1kg",
+          "label": "Mark '1 Kg (Full Kg)' as Sold Out",
+          "default": false
         }
       ]
     }
