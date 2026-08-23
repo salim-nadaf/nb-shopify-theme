@@ -75,13 +75,19 @@
 
           <!-- CTA Area: Submits to Cart Directly via AJAX Quick-Form -->
           <div class="nb-trial-cta-block">
-            <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id }}">
-              <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
-              <input type="hidden" name="quantity" value="1" />
-              <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
-                {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
+            {% if section.settings.so_trial_all %}
+              <button type="button" class="nb-trial-btn nb-btn--disabled" disabled style="background: #A0AEC0 !important; cursor: not-allowed !important; box-shadow: none !important;">
+                SOLD OUT FOR TODAY
               </button>
-            </form>
+            {% else %}
+              <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id }}">
+                <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
+                <input type="hidden" name="quantity" value="1" />
+                <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
+                  {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
+                </button>
+              </form>
+            {% endif %}
           </div>
         </div>
 
@@ -194,46 +200,43 @@
             assign is_available = first_variant.available
             assign first_var_title_lower = first_variant.title | downcase
 
+            # 1. Section Direct Toggles for Meals
+            if section.settings.so_meals_all
+              assign is_available = false
+            endif
+            if section.settings.so_meals_veg
+              if first_var_title_lower contains 'veg' or first_var_title_lower contains 'sabz'
+                unless first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'shami' or first_var_title_lower contains 'tandoori'
+                  assign is_available = false
+                endunless
+              endif
+            endif
+            if section.settings.so_meals_nonveg
+              if first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'alishaan' or first_var_title_lower contains 'tandoori' or first_var_title_lower contains 'shami'
+                assign is_available = false
+              endif
+            endif
+            if section.settings.so_meals_serves1
+              if first_var_title_lower contains 'serves 1' or first_var_title_lower contains '1 shami' or first_var_title_lower contains '1 gulab'
+                assign is_available = false
+              endif
+            endif
+            if section.settings.so_meals_serves2
+              if first_var_title_lower contains 'serves 2' or first_var_title_lower contains '4 shami' or first_var_title_lower contains '2 shami'
+                assign is_available = false
+              endif
+            endif
+            if section.settings.so_meals_serves34
+              if first_var_title_lower contains 'serves 3-4' or first_var_title_lower contains 'half kg' or first_var_title_lower contains '6 shami' or first_var_title_lower contains '6 gulab'
+                assign is_available = false
+              endif
+            endif
+
             for block in section.blocks
               if block.type == 'product_status' and block.settings.product != blank
                 if block.settings.product.id == product.id or block.settings.product.handle == product.handle
                   if block.settings.is_sold_out
                     assign is_available = false
-                  endif
-                  if block.settings.sold_out_veg
-                    if first_var_title_lower contains 'veg'
-                      unless first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'mutton'
-                        assign is_available = false
-                      endunless
-                    endif
-                    if first_var_title_lower contains 'paneer' or first_var_title_lower contains 'sabz'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_nonveg
-                    if first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'murgh' or first_var_title_lower contains 'mutton' or first_var_title_lower contains 'gosht'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_single
-                    if first_var_title_lower contains 'single' or first_var_title_lower contains 'regular' or first_var_title_lower contains 'mini'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_double
-                    if first_var_title_lower contains 'double'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_half_kg
-                    if first_var_title_lower contains 'half' or first_var_title_lower contains '0.5' or first_var_title_lower contains '500g' or first_var_title_lower contains '1/2'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_1kg
-                    if first_var_title_lower contains '1 kg' or first_var_title_lower contains '1kg' or first_var_title_lower contains 'full kg' or first_var_title_lower contains '1000g'
-                      assign is_available = false
-                    endif
                   endif
                 endif
               endif
@@ -285,46 +288,43 @@
                       assign var_available = variant.available
                       assign var_title_lower = variant.title | downcase
 
+                      # 1. Section Direct Toggles for Meals
+                      if section.settings.so_meals_all
+                        assign var_available = false
+                      endif
+                      if section.settings.so_meals_veg
+                        if var_title_lower contains 'veg' or var_title_lower contains 'sabz'
+                          unless var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'shami' or var_title_lower contains 'tandoori'
+                            assign var_available = false
+                          endunless
+                        endif
+                      endif
+                      if section.settings.so_meals_nonveg
+                        if var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'alishaan' or var_title_lower contains 'tandoori' or var_title_lower contains 'shami'
+                          assign var_available = false
+                        endif
+                      endif
+                      if section.settings.so_meals_serves1
+                        if var_title_lower contains 'serves 1' or var_title_lower contains '1 shami' or var_title_lower contains '1 gulab'
+                          assign var_available = false
+                        endif
+                      endif
+                      if section.settings.so_meals_serves2
+                        if var_title_lower contains 'serves 2' or var_title_lower contains '4 shami' or var_title_lower contains '2 shami'
+                          assign var_available = false
+                        endif
+                      endif
+                      if section.settings.so_meals_serves34
+                        if var_title_lower contains 'serves 3-4' or var_title_lower contains 'half kg' or var_title_lower contains '6 shami' or var_title_lower contains '6 gulab'
+                          assign var_available = false
+                        endif
+                      endif
+
                       for block in section.blocks
                         if block.type == 'product_status' and block.settings.product != blank
                           if block.settings.product.id == product.id or block.settings.product.handle == product.handle
                             if block.settings.is_sold_out
                               assign var_available = false
-                            endif
-                            if block.settings.sold_out_veg
-                              if var_title_lower contains 'veg'
-                                unless var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'mutton'
-                                  assign var_available = false
-                                endunless
-                              endif
-                              if var_title_lower contains 'paneer' or var_title_lower contains 'sabz'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_nonveg
-                              if var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'murgh' or var_title_lower contains 'mutton' or var_title_lower contains 'gosht'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_single
-                              if var_title_lower contains 'single' or var_title_lower contains 'regular' or var_title_lower contains 'mini'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_double
-                              if var_title_lower contains 'double'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_half_kg
-                              if var_title_lower contains 'half' or var_title_lower contains '0.5' or var_title_lower contains '500g' or var_title_lower contains '1/2'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_1kg
-                              if var_title_lower contains '1 kg' or var_title_lower contains '1kg' or var_title_lower contains 'full kg' or var_title_lower contains '1000g'
-                                assign var_available = false
-                              endif
                             endif
                           endif
                         endif
@@ -382,46 +382,55 @@
             assign is_available = first_variant.available
             assign first_var_title_lower = first_variant.title | downcase
 
+            # 2. Section Direct Toggles for Main Dishes & Sides
+            if title_lower contains 'alishaan'
+              if section.settings.so_alishaan_all
+                assign is_available = false
+              endif
+              if section.settings.so_alishaan_single and first_var_title_lower contains 'single' or first_var_title_lower contains 'serves 1'
+                assign is_available = false
+              endif
+              if section.settings.so_alishaan_double and first_var_title_lower contains 'double' or first_var_title_lower contains 'serves 2'
+                assign is_available = false
+              endif
+              if section.settings.so_alishaan_halfkg and first_var_title_lower contains 'half' or first_var_title_lower contains 'serves 3-4'
+                assign is_available = false
+              endif
+            endif
+
+            if title_lower contains 'sabz'
+              if section.settings.so_sabz_all
+                assign is_available = false
+              endif
+              if section.settings.so_sabz_single and first_var_title_lower contains 'single' or first_var_title_lower contains 'serves 1'
+                assign is_available = false
+              endif
+              if section.settings.so_sabz_double and first_var_title_lower contains 'double' or first_var_title_lower contains 'serves 2'
+                assign is_available = false
+              endif
+              if section.settings.so_sabz_halfkg and first_var_title_lower contains 'half' or first_var_title_lower contains 'serves 3-4'
+                assign is_available = false
+              endif
+            endif
+
+            if title_lower contains 'shami' and section.settings.so_shami_kebab
+              assign is_available = false
+            endif
+            if title_lower contains 'gulab' and section.settings.so_gulab_jamun
+              assign is_available = false
+            endif
+            if title_lower contains 'coke' and section.settings.so_coke
+              assign is_available = false
+            endif
+            if title_lower contains 'raita' and section.settings.so_raita
+              assign is_available = false
+            endif
+
             for block in section.blocks
               if block.type == 'product_status' and block.settings.product != blank
                 if block.settings.product.id == product.id or block.settings.product.handle == product.handle
                   if block.settings.is_sold_out
                     assign is_available = false
-                  endif
-                  if block.settings.sold_out_veg
-                    if first_var_title_lower contains 'veg'
-                      unless first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'mutton'
-                        assign is_available = false
-                      endunless
-                    endif
-                    if first_var_title_lower contains 'paneer' or first_var_title_lower contains 'sabz'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_nonveg
-                    if first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'murgh' or first_var_title_lower contains 'mutton' or first_var_title_lower contains 'gosht'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_single
-                    if first_var_title_lower contains 'single' or first_var_title_lower contains 'regular' or first_var_title_lower contains 'mini'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_double
-                    if first_var_title_lower contains 'double'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_half_kg
-                    if first_var_title_lower contains 'half' or first_var_title_lower contains '0.5' or first_var_title_lower contains '500g' or first_var_title_lower contains '1/2'
-                      assign is_available = false
-                    endif
-                  endif
-                  if block.settings.sold_out_1kg
-                    if first_var_title_lower contains '1 kg' or first_var_title_lower contains '1kg' or first_var_title_lower contains 'full kg' or first_var_title_lower contains '1000g'
-                      assign is_available = false
-                    endif
                   endif
                 endif
               endif
@@ -558,46 +567,55 @@
                       assign var_available = variant.available
                       assign var_title_lower = variant.title | downcase
 
+                      # 2. Section Direct Toggles for Main Dishes & Sides
+                      if title_lower contains 'alishaan'
+                        if section.settings.so_alishaan_all
+                          assign var_available = false
+                        endif
+                        if section.settings.so_alishaan_single and var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                          assign var_available = false
+                        endif
+                        if section.settings.so_alishaan_double and var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                          assign var_available = false
+                        endif
+                        if section.settings.so_alishaan_halfkg and var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                          assign var_available = false
+                        endif
+                      endif
+
+                      if title_lower contains 'sabz'
+                        if section.settings.so_sabz_all
+                          assign var_available = false
+                        endif
+                        if section.settings.so_sabz_single and var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                          assign var_available = false
+                        endif
+                        if section.settings.so_sabz_double and var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                          assign var_available = false
+                        endif
+                        if section.settings.so_sabz_halfkg and var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                          assign var_available = false
+                        endif
+                      endif
+
+                      if title_lower contains 'shami' and section.settings.so_shami_kebab
+                        assign var_available = false
+                      endif
+                      if title_lower contains 'gulab' and section.settings.so_gulab_jamun
+                        assign var_available = false
+                      endif
+                      if title_lower contains 'coke' and section.settings.so_coke
+                        assign var_available = false
+                      endif
+                      if title_lower contains 'raita' and section.settings.so_raita
+                        assign var_available = false
+                      endif
+
                       for block in section.blocks
                         if block.type == 'product_status' and block.settings.product != blank
                           if block.settings.product.id == product.id or block.settings.product.handle == product.handle
                             if block.settings.is_sold_out
                               assign var_available = false
-                            endif
-                            if block.settings.sold_out_veg
-                              if var_title_lower contains 'veg'
-                                unless var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'mutton'
-                                  assign var_available = false
-                                endunless
-                              endif
-                              if var_title_lower contains 'paneer' or var_title_lower contains 'sabz'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_nonveg
-                              if var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'murgh' or var_title_lower contains 'mutton' or var_title_lower contains 'gosht'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_single
-                              if var_title_lower contains 'single' or var_title_lower contains 'regular' or var_title_lower contains 'mini'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_double
-                              if var_title_lower contains 'double'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_half_kg
-                              if var_title_lower contains 'half' or var_title_lower contains '0.5' or var_title_lower contains '500g' or var_title_lower contains '1/2'
-                                assign var_available = false
-                              endif
-                            endif
-                            if block.settings.sold_out_1kg
-                              if var_title_lower contains '1 kg' or var_title_lower contains '1kg' or var_title_lower contains 'full kg' or var_title_lower contains '1000g'
-                                assign var_available = false
-                              endif
                             endif
                           endif
                         endif
@@ -1279,67 +1297,152 @@
       "id": "trial_cta_text",
       "label": "CTA Button Text",
       "default": "GET YOUR ₹99 BIRYANI"
+    },
+    {
+      "type": "header",
+      "content": "🍱 1. NIAMAT MEALS & COMBOS AVAILABILITY"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_meals_all",
+      "label": "Mark ALL Meals & Combos as Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_meals_veg",
+      "label": "Meals: Mark ALL Veg Combos as Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_meals_nonveg",
+      "label": "Meals: Mark ALL Non-Veg Combos as Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_meals_serves1",
+      "label": "Meals: Serves 1 Combos Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_meals_serves2",
+      "label": "Meals: Serves 2 Combos Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_meals_serves34",
+      "label": "Meals: Serves 3-4 (Half Kg) Combos Sold Out",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "🍗 2. ALISHAAN TANDOORI BIRYANI AVAILABILITY"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_alishaan_all",
+      "label": "Alishaan Tandoori: Mark ENTIRE Dish Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_alishaan_single",
+      "label": "Alishaan: Single Plate (Serves 1) Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_alishaan_double",
+      "label": "Alishaan: Double Plate (Serves 2) Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_alishaan_halfkg",
+      "label": "Alishaan: Half Kg (Serves 3-4) Sold Out",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "🌿 3. SABZ TIKKA BIRYANI (VEG) AVAILABILITY"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_sabz_all",
+      "label": "Sabz Tikka: Mark ENTIRE Dish Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_sabz_single",
+      "label": "Sabz Tikka: Single Plate (Serves 1) Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_sabz_double",
+      "label": "Sabz Tikka: Double Plate (Serves 2) Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_sabz_halfkg",
+      "label": "Sabz Tikka: Half Kg (Serves 3-4) Sold Out",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "🍢 4. STARTERS, SIDES & TRIAL AVAILABILITY"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_trial_all",
+      "label": "₹99 Trial Chicken Biryani: Mark Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_shami_kebab",
+      "label": "Chicken Shami Kebab (2 pcs): Mark Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_gulab_jamun",
+      "label": "Gulab Jamun (3 pcs): Mark Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_coke",
+      "label": "Coke / Beverages: Mark Sold Out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_raita",
+      "label": "Extra Raita: Mark Sold Out",
+      "default": false
     }
   ],
   "blocks": [
     {
       "type": "product_status",
-      "name": "Dish & Portion Sold Out",
+      "name": "Custom Dish Sold Out",
       "settings": [
         {
           "type": "product",
           "id": "product",
-          "label": "1. Select Dish / Product"
+          "label": "Select Any Additional Product"
         },
         {
           "type": "checkbox",
           "id": "is_sold_out",
-          "label": "Mark ENTIRE Dish as Sold Out",
-          "default": false,
-          "info": "Turn this ON to mark all portions/options of this dish as Sold Out."
-        },
-        {
-          "type": "header",
-          "content": "Diet Option Toggles (Veg / Non-Veg)"
-        },
-        {
-          "type": "checkbox",
-          "id": "sold_out_veg",
-          "label": "Mark 'Veg' Options as Sold Out",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "sold_out_nonveg",
-          "label": "Mark 'Non-Veg' Options as Sold Out",
-          "default": false
-        },
-        {
-          "type": "header",
-          "content": "Portion / Size Toggles"
-        },
-        {
-          "type": "checkbox",
-          "id": "sold_out_single",
-          "label": "Mark 'Single' Portion as Sold Out",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "sold_out_double",
-          "label": "Mark 'Double' Portion as Sold Out",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "sold_out_half_kg",
-          "label": "Mark 'Half Kg (500g)' as Sold Out",
-          "default": false
-        },
-        {
-          "type": "checkbox",
-          "id": "sold_out_1kg",
-          "label": "Mark '1 Kg (Full Kg)' as Sold Out",
+          "label": "Mark as Sold Out",
           "default": false
         }
       ]
