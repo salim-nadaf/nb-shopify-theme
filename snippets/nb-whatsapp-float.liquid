@@ -9,7 +9,7 @@
 
 {% liquid
   assign wa_number = '919167682582'
-  assign greeting_msg = 'Hi Niamat Biryani! I need quick help with placing an order.' | url_encode
+  assign greeting_msg = 'Hi Biryani Palace by Niamat! I need quick help with placing an order.' | url_encode
   assign wa_url = 'https://wa.me/' | append: wa_number | append: '?text=' | append: greeting_msg
 %}
 
@@ -21,7 +21,7 @@
     if (document.getElementById('nbWhatsAppGlossyBtn')) return;
 
     var waNumber = '919167682582';
-    var greeting = encodeURIComponent('Hi Niamat Biryani! I need quick help with placing an order.');
+    var greeting = encodeURIComponent('Hi Biryani Palace by Niamat! I need quick help with placing an order.');
     var waUrl = 'https://wa.me/' + waNumber + '?text=' + greeting;
 
     var isMobile = window.innerWidth < 768;
