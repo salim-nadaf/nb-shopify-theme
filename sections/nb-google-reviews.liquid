@@ -678,109 +678,132 @@ document.addEventListener('DOMContentLoaded', function() {
   initDots();
   startAutoPlay();
 
-  // ═══════ GOOGLE PLACES API (NEW) LIVE AUTO-SYNC & NEWEST-FIRST SORTING ═══════
+  // ═══════ GOOGLE PLACES API (NEW) LIVE AUTO-SYNC (DEFERRED VIA INTERSECTION OBSERVER) ═══════
   var placeId = {{ section.settings.google_place_id | json }};
   var apiKey = {{ section.settings.google_api_key | json }};
-  if (!placeId || !apiKey) return;
   
-  var apiUrl = 'https://places.googleapis.com/v1/places/' + encodeURIComponent(placeId) + '?key=' + encodeURIComponent(apiKey);
-  
-  fetch(apiUrl, {
-    method: 'GET',
-    headers: {
-      'X-Goog-FieldMask': 'id,displayName,rating,userRatingCount,reviews'
-    }
-  })
-  .then(function(res) {
-    if (!res.ok) throw new Error('Places API error: ' + res.status);
-    return res.json();
-  })
-  .then(function(data) {
-    if (!data) return;
+  var placesFetched = false;
+  function fetchGoogleReviewsLive() {
+    if (placesFetched || !placeId || !apiKey) return;
+    placesFetched = true;
     
-    // Update live Rating Score
-    if (typeof data.rating === 'number') {
-      var numEl = document.getElementById('nbGoogleRatingNum');
-      if (numEl) numEl.textContent = data.rating.toFixed(1);
+    var apiUrl = 'https://places.googleapis.com/v1/places/' + encodeURIComponent(placeId) + '?key=' + encodeURIComponent(apiKey);
+    
+    fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'X-Goog-FieldMask': 'id,displayName,rating,userRatingCount,reviews'
+      }
+    })
+    .then(function(res) {
+      if (!res.ok) throw new Error('Places API error: ' + res.status);
+      return res.json();
+    })
+    .then(function(data) {
+      if (!data) return;
       
-      var starsEl = document.getElementById('nbGoogleStars');
-      if (starsEl) {
-        if (data.rating >= 4.7) {
-          starsEl.textContent = '★★★★★';
-        } else if (data.rating >= 4.2) {
-          starsEl.textContent = '★★★★☆';
-        } else {
-          starsEl.textContent = '★★★☆☆';
+      // Update live Rating Score
+      if (typeof data.rating === 'number') {
+        var numEl = document.getElementById('nbGoogleRatingNum');
+        if (numEl) numEl.textContent = data.rating.toFixed(1);
+        
+        var starsEl = document.getElementById('nbGoogleStars');
+        if (starsEl) {
+          if (data.rating >= 4.7) {
+            starsEl.textContent = '★★★★★';
+          } else if (data.rating >= 4.2) {
+            starsEl.textContent = '★★★★☆';
+          } else {
+            starsEl.textContent = '★★★☆☆';
+          }
         }
       }
-    }
-    
-    // Update live Reviews Total Count
-    if (typeof data.userRatingCount === 'number') {
-      var countEl = document.getElementById('nbGoogleReviewsCount');
-      if (countEl) {
-        countEl.textContent = 'Based on ' + data.userRatingCount + ' Verified Google Reviews';
+      
+      // Update live Reviews Total Count
+      if (typeof data.userRatingCount === 'number') {
+        var countEl = document.getElementById('nbGoogleReviewsCount');
+        if (countEl) {
+          countEl.textContent = 'Based on ' + data.userRatingCount + ' Verified Google Reviews';
+        }
       }
-    }
-    
-    // Sort and dynamically inject newest reviews
-    if (Array.isArray(data.reviews) && data.reviews.length > 0) {
-      var validReviews = data.reviews.filter(function(r) {
-        return r.rating >= 4 && r.text && r.text.text;
-      });
       
-      // Sort by newest publication time first
-      validReviews.sort(function(a, b) {
-        var timeA = a.publishTime ? new Date(a.publishTime).getTime() : 0;
-        var timeB = b.publishTime ? new Date(b.publishTime).getTime() : 0;
-        return timeB - timeA;
-      });
-      
-      if (validReviews.length > 0 && grid) {
-        var html = '';
-        validReviews.forEach(function(r) {
-          var author = (r.authorAttribution && r.authorAttribution.displayName) ? r.authorAttribution.displayName : 'Google Customer';
-          var initial = author.charAt(0).toUpperCase();
-          var photo = (r.authorAttribution && r.authorAttribution.photoUri) ? r.authorAttribution.photoUri : '';
-          var timeAgo = r.relativePublishTimeDescription || 'Recently';
-          var stars = r.rating === 5 ? '★★★★★' : '★★★★☆';
-          var reviewText = r.text.text;
-          
-          var avatarHtml = photo 
-            ? '<img src="' + photo + '" alt="' + author + '" class="nb-review-avatar-img" width="44" height="44" loading="lazy" decoding="async" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">'
-            : '<span>' + initial + '</span>';
-            
-          html += '<div class="nb-review-card">' +
-            '<div>' +
-              '<div class="nb-review-card__header">' +
-                '<div class="nb-review-avatar">' + avatarHtml + '</div>' +
-                '<div class="nb-review-author-meta">' +
-                  '<strong class="nb-review-author-name">' + author + '</strong>' +
-                  '<div class="nb-review-verified-badge">' +
-                    '<svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>' +
-                    '<span>Verified Google Review</span>' +
-                  '</div>' +
-                '</div>' +
-                '<span class="nb-review-date">' + timeAgo + '</span>' +
-              '</div>' +
-              '<div class="nb-review-card__rating-row">' +
-                '<div class="nb-review-stars">' + stars + '</div>' +
-                '<span class="nb-review-dish-tag">Verified Customer</span>' +
-              '</div>' +
-            '</div>' +
-            '<p class="nb-review-card__text">"' + reviewText + '"</p>' +
-          '</div>';
+      // Sort and dynamically inject newest reviews
+      if (Array.isArray(data.reviews) && data.reviews.length > 0) {
+        var validReviews = data.reviews.filter(function(r) {
+          return r.rating >= 4 && r.text && r.text.text;
         });
-        grid.innerHTML = html;
-        initDots();
-        scrollToCard(0);
-        resetAutoPlay();
+        
+        // Sort by newest publication time first
+        validReviews.sort(function(a, b) {
+          var timeA = a.publishTime ? new Date(a.publishTime).getTime() : 0;
+          var timeB = b.publishTime ? new Date(b.publishTime).getTime() : 0;
+          return timeB - timeA;
+        });
+        
+        if (validReviews.length > 0 && grid) {
+          var html = '';
+          validReviews.forEach(function(r) {
+            var author = (r.authorAttribution && r.authorAttribution.displayName) ? r.authorAttribution.displayName : 'Google Customer';
+            var initial = author.charAt(0).toUpperCase();
+            var photo = (r.authorAttribution && r.authorAttribution.photoUri) ? r.authorAttribution.photoUri : '';
+            if (photo && photo.indexOf('googleusercontent.com') !== -1) {
+              photo = photo.replace(/=s\d+[^"]*/, '') + '=s64-c';
+            }
+            var timeAgo = r.relativePublishTimeDescription || 'Recently';
+            var stars = r.rating === 5 ? '★★★★★' : '★★★★☆';
+            var reviewText = r.text.text;
+            
+            var avatarHtml = photo 
+              ? '<img src="' + photo + '" alt="' + author + '" class="nb-review-avatar-img" width="44" height="44" loading="lazy" decoding="async" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">'
+              : '<span>' + initial + '</span>';
+              
+            html += '<div class="nb-review-card">' +
+              '<div>' +
+                '<div class="nb-review-card__header">' +
+                  '<div class="nb-review-avatar">' + avatarHtml + '</div>' +
+                  '<div class="nb-review-author-meta">' +
+                    '<strong class="nb-review-author-name">' + author + '</strong>' +
+                    '<div class="nb-review-verified-badge">' +
+                      '<svg width="12" height="12" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>' +
+                      '<span>Verified Google Review</span>' +
+                    '</div>' +
+                  '</div>' +
+                  '<span class="nb-review-date">' + timeAgo + '</span>' +
+                '</div>' +
+                '<div class="nb-review-card__rating-row">' +
+                  '<div class="nb-review-stars">' + stars + '</div>' +
+                  '<span class="nb-review-dish-tag">Verified Customer</span>' +
+                '</div>' +
+              '</div>' +
+              '<p class="nb-review-card__text">"' + reviewText + '"</p>' +
+            '</div>';
+          });
+          grid.innerHTML = html;
+          initDots();
+          scrollToCard(0);
+          resetAutoPlay();
+        }
       }
-    }
-  })
-  .catch(function(err) {
-    console.warn('Google Places API Auto-sync note:', err.message);
-  });
+    })
+    .catch(function(err) {
+      console.warn('Google Places API Auto-sync note:', err.message);
+    });
+  }
+
+  var reviewSection = document.querySelector('.nb-google-reviews-section') || grid;
+  if ('IntersectionObserver' in window && reviewSection) {
+    var reviewObserver = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) {
+        fetchGoogleReviewsLive();
+        reviewObserver.disconnect();
+      }
+    }, { rootMargin: '300px' });
+    reviewObserver.observe(reviewSection);
+  } else {
+    ['scroll', 'touchstart'].forEach(function(evt) {
+      window.addEventListener(evt, fetchGoogleReviewsLive, { passive: true, once: true });
+    });
+  }
 });
 </script>
 

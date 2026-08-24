@@ -41,13 +41,13 @@
 -%}
 
 {%- if item_diet == 'veg' -%}
-  <span class="nb-diet-icon nb-diet-veg {{ class }}" title="Vegetarian" aria-label="Vegetarian">
+  <span class="nb-diet-icon nb-diet-veg {{ class }}" role="img" title="Vegetarian" aria-label="Vegetarian">
     <span class="nb-diet-box" aria-hidden="true">
       <span class="nb-diet-dot"></span>
     </span>
   </span>
 {%- else -%}
-  <span class="nb-diet-icon nb-diet-nonveg {{ class }}" title="Non-Vegetarian" aria-label="Non-Vegetarian">
+  <span class="nb-diet-icon nb-diet-nonveg {{ class }}" role="img" title="Non-Vegetarian" aria-label="Non-Vegetarian">
     <span class="nb-diet-box" aria-hidden="true">
       <span class="nb-diet-dot"></span>
     </span>

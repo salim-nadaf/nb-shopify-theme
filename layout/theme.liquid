@@ -42,20 +42,6 @@
       });
     </script>
 
-    <!-- CRITICAL RESOURCE PRELOADS FOR LCP SPEED OPTIMIZATION -->
-    {%- if template.name == 'index' -%}
-      <!-- Preload Mobile and Desktop LCP Hero Banner Images Responsively -->
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=390" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1100" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
-    {%- elsif collection.handle == 'instant-delivery' or request.path contains 'instant-delivery' -%}
-      <!-- Preload Instant Delivery Hero Bucket Image for Instant LCP -->
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
-    {%- elsif collection.handle == 'our-menu' or request.path contains 'our-menu' -%}
-      <!-- Preload Our Menu First Card Image for Instant LCP -->
-      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=220" as="image" type="image/webp" fetchpriority="high">
-    {%- endif -%}
-
     {%- if settings.favicon != blank -%}
       <link
         rel="icon"
