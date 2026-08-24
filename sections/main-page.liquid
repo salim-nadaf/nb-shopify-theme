@@ -40,6 +40,8 @@
       {% render 'nb-biryani-calculator-snippet' %}
     {% elsif ph contains 'account' or pt contains 'account' or ph contains 'profile' or pt contains 'profile' or ph contains 'order' or pt contains 'order' %}
       {% render 'nb-account-snippet' %}
+    {% elsif ph contains 'shipping' or pt contains 'shipping' or ph contains 'delivery' or pt contains 'delivery' or rp contains 'shipping' or rp contains 'delivery' %}
+      {% render 'nb-shipping-snippet' %}
     {% else %}
       {% if page.content != blank %}
         <div class="rte">
