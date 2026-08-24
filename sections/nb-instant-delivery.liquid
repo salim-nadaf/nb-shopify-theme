@@ -499,7 +499,7 @@
             endif
           %}
 
-          <div class="nb-food-card {% unless is_available %}nb-food-card--soldout{% endunless %}">
+          <div class="nb-food-card {% unless is_available %}nb-food-card--soldout{% endunless %}" data-product-id="{{ product.id }}" id="product-{{ product.id }}">
             <div class="nb-diet-corner-badge" aria-hidden="true">
               {% render 'nb-diet-icon', product: product %}
             </div>
