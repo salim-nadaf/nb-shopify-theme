@@ -170,6 +170,16 @@
           if hero_img_obj == blank
             assign hero_img_obj = section.settings.hero_image
           endif
+          assign hero_video = section.settings.hero_desktop_video_url
+          if hero_video == blank
+            assign hero_video = section.settings.hero_mobile_video_url
+          endif
+          if hero_video == blank
+            assign hero_video = section.settings.hero_video_url
+          endif
+          if hero_video == blank
+            assign hero_video = 'https://cdn.shopify.com/videos/c/o/v/208b409b5d6947ada02bba4a799c014f.webm'
+          endif
         %}
         {% if hero_img_obj != blank %}
           <img
@@ -197,6 +207,20 @@
             fetchpriority="high"
             decoding="async"
           />
+        {% endif %}
+
+        {% if hero_video != blank %}
+          <video
+            class="nb-hero-bg-video"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="none"
+            aria-hidden="true"
+          >
+            <source src="{{ hero_video }}" type="video/webm">
+          </video>
         {% endif %}
       </div>
 
@@ -686,6 +710,7 @@
 .nb-hero-banner { position: relative; background: linear-gradient(135deg, #160B07 0%, var(--nb-dark-bg) 100%) !important; color: #fff; padding: 48px 16px !important; width: 100% !important; margin: 0 auto !important; min-height: 480px !important; height: 75vh !important; max-height: 600px !important; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; box-sizing: border-box; }
 .nb-hero-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
 .nb-hero-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.nb-hero-bg-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; pointer-events: none; }
 .nb-hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, var(--nb-overlay-opac)) !important; z-index: 2; pointer-events: none; }
 .nb-hero-glow { position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(230,179,61,0.38) 0%, transparent 70%); pointer-events: none; z-index: 1; }
 .nb-hero-content { position: relative; z-index: 3; max-width: 780px; margin: 0 auto; text-align: center; }
