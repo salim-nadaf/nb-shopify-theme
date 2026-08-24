@@ -1026,10 +1026,10 @@
       .catch(function() {});
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runSync);
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(function() { setTimeout(runSync, 2500); }, { timeout: 5000 });
   } else {
-    runSync();
+    setTimeout(runSync, 3000);
   }
 })();
 </script>
