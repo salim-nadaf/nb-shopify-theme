@@ -12,7 +12,7 @@
 
   assign instant_card_desc = section.settings.instant_card_desc
   if instant_card_desc == blank
-    assign instant_card_desc = 'Freshly prepared portions available today. Ready in approximately 30–60 minutes.'
+    assign instant_card_desc = 'Freshly prepared portions available today. Ready in approximately 45–60 minutes.'
   endif
 
   assign instant_card_cta = section.settings.instant_card_cta
@@ -63,7 +63,7 @@
         <h3 class="nb-b-exp-card__title">{{ instant_card_title }}</h3>
         <p class="nb-b-exp-card__desc">{{ instant_card_desc }}</p>
         <div class="nb-b-exp-card__meta">
-          <span>🚀 30–60 Min Delivery</span>
+          <span>🚀 45–60 Min Delivery</span>
           <span>📍 Kalyan & Nearby</span>
         </div>
         <a href="{{ instant_card_link }}" class="nb-b-btn-gold nb-b-btn-full">
@@ -143,7 +143,7 @@
       "type": "textarea",
       "id": "instant_card_desc",
       "label": "Instant Card Description",
-      "default": "Freshly prepared portions available today. Ready in approximately 30–60 minutes."
+      "default": "Freshly prepared portions available today. Ready in approximately 45–60 minutes."
     },
     {
       "type": "text",
