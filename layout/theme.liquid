@@ -1090,6 +1090,10 @@
           <div id="nb-custom-mount-family">
             {% render 'nb-family-orders-snippet' %}
           </div>
+        {%- elsif p_lower contains 'shipping' or p_lower contains 'delivery-policy' -%}
+          <div id="nb-custom-mount-shipping">
+            {% render 'nb-shipping-snippet' %}
+          </div>
         {%- else -%}
           <div id="nb-default-layout-content">
             {{ content_for_layout }}
