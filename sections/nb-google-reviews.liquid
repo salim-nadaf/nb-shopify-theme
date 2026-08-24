@@ -408,14 +408,15 @@
 }
 
 /* CAROUSEL DOTS */
-.nb-carousel-dots {
+.nb-reviews-dots {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 12px;
   margin-top: 20px;
 }
 .nb-carousel-dot {
+  position: relative;
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -424,6 +425,15 @@
   padding: 0;
   cursor: pointer;
   transition: all 0.25s ease;
+}
+.nb-carousel-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  min-height: 44px;
 }
 .nb-carousel-dot.is-active {
   width: 24px;
