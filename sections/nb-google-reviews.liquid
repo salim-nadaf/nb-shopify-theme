@@ -747,7 +747,7 @@ document.addEventListener('DOMContentLoaded', function() {
           var reviewText = r.text.text;
           
           var avatarHtml = photo 
-            ? '<img src="' + photo + '" alt="' + author + '" class="nb-review-avatar-img" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">'
+            ? '<img src="' + photo + '" alt="' + author + '" class="nb-review-avatar-img" width="44" height="44" loading="lazy" decoding="async" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">'
             : '<span>' + initial + '</span>';
             
           html += '<div class="nb-review-card">' +

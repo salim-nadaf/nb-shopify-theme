@@ -245,7 +245,7 @@
                 {% if product.featured_media %}
                   <img src="{{ product.featured_media | image_url: width: 240, format: 'webp' }}"
                        alt="{{ product.featured_media.alt | default: product.title | escape }}"
-                       width="120" height="120" loading="lazy" decoding="async" style="aspect-ratio: 1 / 1;" />
+                       width="120" height="120" loading="eager" fetchpriority="high" decoding="async" style="aspect-ratio: 1 / 1;" />
                 {% else %}
                   <div class="nb-food-card__image-placeholder">🍛</div>
                 {% endif %}

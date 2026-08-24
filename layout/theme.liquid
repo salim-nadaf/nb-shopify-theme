@@ -7,25 +7,39 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
-    <!-- Google tag (gtag.js) - Niamat Biryani Website (Custom Events Only - Zero Duplicate Pageviews) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G"></script>
+    <!-- GOOGLE TAG (GTAG.JS) & MICROSOFT CLARITY (DEFERRED NON-BLOCKING FOR ZERO TBT) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      // send_page_view: false ensures Shopify Google & YouTube App remains the single source for page_view
       gtag('config', 'G-3BFH8J5E3G', { send_page_view: false });
-    </script>
 
-    <!-- Microsoft Clarity - Niamat Biryani Website (Heatmaps & Analytics Only, AI Agent Disabled) -->
-    <script type="text/javascript">
-      window['__ADSAI_INJECTED__'] = true; // Blocks Microsoft Clarity "Shop with AI" popup button from injecting
-      (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "y7bp7sq0cu");
+      window['__ADSAI_INJECTED__'] = true;
+
+      function nbInitAnalytics() {
+        if (window._nbAnalyticsInitialized) return;
+        window._nbAnalyticsInitialized = true;
+
+        var gtmScript = document.createElement('script');
+        gtmScript.async = true;
+        gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G';
+        document.head.appendChild(gtmScript);
+
+        (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "y7bp7sq0cu");
+      }
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(function() { setTimeout(nbInitAnalytics, 1500); }, { timeout: 3500 });
+      } else {
+        setTimeout(nbInitAnalytics, 2000);
+      }
+      ['scroll', 'touchstart', 'click', 'mousemove', 'keydown'].forEach(function(ev) {
+        window.addEventListener(ev, nbInitAnalytics, { passive: true, once: true });
+      });
     </script>
 
     <!-- CRITICAL RESOURCE PRELOADS FOR LCP SPEED OPTIMIZATION -->
@@ -37,6 +51,9 @@
       <!-- Preload Instant Delivery Hero Bucket Image for Instant LCP -->
       <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360" as="image" type="image/webp" media="(max-width: 767px)" fetchpriority="high">
       <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600" as="image" type="image/webp" media="(min-width: 768px)" fetchpriority="high">
+    {%- elsif collection.handle == 'our-menu' or request.path contains 'our-menu' -%}
+      <!-- Preload Our Menu First Card Image for Instant LCP -->
+      <link rel="preload" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=220" as="image" type="image/webp" fetchpriority="high">
     {%- endif -%}
 
     {%- if settings.favicon != blank -%}
