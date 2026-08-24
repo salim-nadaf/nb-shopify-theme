@@ -82,26 +82,23 @@
         assign account_actions_style = '--header-actions-font-family: ' | append: font_family_safe | append: '; --header-actions-font-weight: ' | append: font_obj.weight | append: ';'
       endif
     %}
-    <shopify-account
+    <a
+      href="{{ routes.account_url }}"
       class="account-button header-actions__action{% if display_style == 'text' %} account-button--text{% endif %}"
+      aria-label="{% if customer %}{{ 'content.account_title' | t }}{% else %}{{ 'content.sign_in' | t }}{% endif %}"
       {% if account_actions_style != blank %}
         style="{{ account_actions_style }}"
-      {% endif %}
-      {% if customer_account_menu != blank %}
-        menu-handle="{{ customer_account_menu }}"
       {% endif %}
     >
       <span
         class="{% if display_style != 'icon' %}desktop:hidden{% endif %}"
         aria-hidden="true"
-        slot="account-button-icon"
       >
         {{ account_icon }}
       </span>
 
       <span
         class="account-button__text header-actions__text-style {% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}"
-        slot="account-button-text"
       >
         {% if customer %}
           {{ 'content.account_title' | t }}
@@ -109,7 +106,7 @@
           {{ 'content.sign_in' | t }}
         {% endif %}
       </span>
-    </shopify-account>
+    </a>
   {% endif %}
   
   {% comment %} NIAMAT BIRYANI — Cart icon hijacked to open NB drawer {% endcomment %}
