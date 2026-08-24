@@ -7,14 +7,12 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
-    <!-- GOOGLE TAG (GTAG.JS) & MICROSOFT CLARITY (DEFERRED NON-BLOCKING FOR ZERO TBT) -->
+    <!-- GOOGLE TAG (GTAG.JS) (DEFERRED NON-BLOCKING FOR ZERO TBT) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-3BFH8J5E3G', { send_page_view: false });
-
-      window['__ADSAI_INJECTED__'] = true;
 
       function nbInitAnalytics() {
         if (window._nbAnalyticsInitialized) return;
@@ -24,12 +22,6 @@
         gtmScript.async = true;
         gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G';
         document.head.appendChild(gtmScript);
-
-        (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "y7bp7sq0cu");
       }
 
       if ('requestIdleCallback' in window) {
@@ -92,23 +84,6 @@
 
     <style>
     /* ===== NIAMAT BIRYANI PALACE — ULTRA-PREMIUM STOREWIDE MASTER STYLES ===== */
-
-    /* ===== PERMANENTLY HIDE MICROSOFT CLARITY 'SHOP WITH AI' AGENT ===== */
-    #brand-agent-root,
-    #brand-agents-root,
-    [id*="brandAgent"],
-    [id*="brand-agent"],
-    [class*="brandAgent"],
-    [class*="brand-agent"],
-    [id*="adsai"],
-    [class*="adsai"],
-    iframe[src*="azurefd.net"],
-    iframe[src*="brandagent"] {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
 
     h1, h2, h3, h4, h5, h6,
     .heading, .title, .card__title,
