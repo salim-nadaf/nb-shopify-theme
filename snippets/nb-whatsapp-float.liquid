@@ -118,11 +118,11 @@
     document.body.appendChild(container);
   }
 
-  // Add keyframe animation for gentle pulse
+  // Add keyframe animation for gentle pulse and hide when auth modal is open
   if (!document.getElementById('nbGlossyWaStyle')) {
     var style = document.createElement('style');
     style.id = 'nbGlossyWaStyle';
-    style.textContent = '@keyframes nbGlossyPulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 0; } 100% { transform: scale(1.4); opacity: 0; } } .nb-glossy-wa-pulse { animation: nbGlossyPulse 2.4s infinite cubic-bezier(0.24, 0, 0.38, 1) !important; }';
+    style.textContent = '@keyframes nbGlossyPulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 0; } 100% { transform: scale(1.4); opacity: 0; } } .nb-glossy-wa-pulse { animation: nbGlossyPulse 2.4s infinite cubic-bezier(0.24, 0, 0.38, 1) !important; } body.nb-auth-open #nbWhatsAppGlossyBtn, body:has(#nb-auth-modal.active) #nbWhatsAppGlossyBtn { display: none !important; opacity: 0 !important; pointer-events: none !important; visibility: hidden !important; }';
     document.head.appendChild(style);
   }
 
