@@ -403,8 +403,10 @@
             if title_lower contains 'gulab' and section.settings.so_gulab_jamun
               assign is_available = false
             endif
-            if (title_lower contains 'trial' or title_lower contains '99') and section.settings.so_trial_all
-              assign is_available = false
+            if section.settings.so_trial_all
+              if title_lower contains 'trial' or title_lower contains '99'
+                assign is_available = false
+              endif
             endif
             if title_lower contains 'coke' and section.settings.so_coke
               assign is_available = false
@@ -587,8 +589,10 @@
                       if title_lower contains 'gulab' and section.settings.so_gulab_jamun
                         assign var_available = false
                       endif
-                      if (title_lower contains 'trial' or title_lower contains '99') and section.settings.so_trial_all
-                        assign var_available = false
+                      if section.settings.so_trial_all
+                        if title_lower contains 'trial' or title_lower contains '99'
+                          assign var_available = false
+                        endif
                       endif
                       if title_lower contains 'coke' and section.settings.so_coke
                         assign var_available = false
