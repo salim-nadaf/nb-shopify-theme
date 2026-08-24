@@ -7,31 +7,13 @@
   lang="{{ request.locale.iso_code }}"
 >
   <head>
-    <!-- GOOGLE TAG (GTAG.JS) (DEFERRED NON-BLOCKING FOR ZERO TBT) -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-3BFH8J5E3G', { send_page_view: false });
-
-      function nbInitAnalytics() {
-        if (window._nbAnalyticsInitialized) return;
-        window._nbAnalyticsInitialized = true;
-
-        var gtmScript = document.createElement('script');
-        gtmScript.async = true;
-        gtmScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G';
-        document.head.appendChild(gtmScript);
-      }
-
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(function() { setTimeout(nbInitAnalytics, 1500); }, { timeout: 3500 });
-      } else {
-        setTimeout(nbInitAnalytics, 2000);
-      }
-      ['scroll', 'touchstart', 'click', 'mousemove', 'keydown'].forEach(function(ev) {
-        window.addEventListener(ev, nbInitAnalytics, { passive: true, once: true });
-      });
+      gtag('config', 'G-3BFH8J5E3G');
     </script>
 
     {%- if settings.favicon != blank -%}
