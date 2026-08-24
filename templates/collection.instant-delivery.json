@@ -20,7 +20,24 @@
         "trial_portion": "200 g Trial Portion",
         "trial_subheading": "Your first taste of Biryani Palace by Niamat — at a special introductory price.",
         "trial_copy": "A special introductory offer to experience Niamat Biryani.",
-        "trial_cta_text": "GET YOUR ₹99 BIRYANI"
+        "trial_cta_text": "GET YOUR ₹99 BIRYANI",
+        "so_combo_tandoori_s1": false,
+        "so_combo_tandoori_s2": false,
+        "so_combo_tandoori_halfkg": false,
+        "so_combo_sabz_s1": true,
+        "so_combo_sabz_s2": true,
+        "so_combo_sabz_halfkg": true,
+        "so_alishaan_single": false,
+        "so_alishaan_double": false,
+        "so_alishaan_halfkg": false,
+        "so_sabz_single": true,
+        "so_sabz_double": true,
+        "so_sabz_halfkg": true,
+        "so_shami_kebab": false,
+        "so_gulab_jamun": false,
+        "so_trial_all": false,
+        "so_coke": false,
+        "so_raita": false
       }
     }
   },
