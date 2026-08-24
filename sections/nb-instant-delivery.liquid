@@ -200,35 +200,34 @@
             assign is_available = first_variant.available
             assign first_var_title_lower = first_variant.title | downcase
 
-            # 1. Section Direct Toggles for Meals
-            if section.settings.so_meals_all
-              assign is_available = false
-            endif
-            if section.settings.so_meals_veg
-              if first_var_title_lower contains 'veg' or first_var_title_lower contains 'sabz'
-                unless first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'shami' or first_var_title_lower contains 'tandoori'
+            # 1. Exact 6 Individual Combo Toggles
+            if first_var_title_lower contains 'alishaan' or first_var_title_lower contains 'tandoori'
+              if first_var_title_lower contains 'serves 1' or first_var_title_lower contains '2 shami' or first_var_title_lower contains '1 gulab'
+                if section.settings.so_combo_tandoori_s1
                   assign is_available = false
-                endunless
+                endif
+              elsif first_var_title_lower contains 'serves 2' or first_var_title_lower contains '4 shami' or first_var_title_lower contains '2 gulab'
+                if section.settings.so_combo_tandoori_s2
+                  assign is_available = false
+                endif
+              elsif first_var_title_lower contains 'serves 3-4' or first_var_title_lower contains 'half kg' or first_var_title_lower contains '6 shami'
+                if section.settings.so_combo_tandoori_halfkg
+                  assign is_available = false
+                endif
               endif
-            endif
-            if section.settings.so_meals_nonveg
-              if first_var_title_lower contains 'non-veg' or first_var_title_lower contains 'non veg' or first_var_title_lower contains 'chicken' or first_var_title_lower contains 'alishaan' or first_var_title_lower contains 'tandoori' or first_var_title_lower contains 'shami'
-                assign is_available = false
-              endif
-            endif
-            if section.settings.so_meals_serves1
-              if first_var_title_lower contains 'serves 1' or first_var_title_lower contains '1 shami' or first_var_title_lower contains '1 gulab'
-                assign is_available = false
-              endif
-            endif
-            if section.settings.so_meals_serves2
-              if first_var_title_lower contains 'serves 2' or first_var_title_lower contains '4 shami' or first_var_title_lower contains '2 shami'
-                assign is_available = false
-              endif
-            endif
-            if section.settings.so_meals_serves34
-              if first_var_title_lower contains 'serves 3-4' or first_var_title_lower contains 'half kg' or first_var_title_lower contains '6 shami' or first_var_title_lower contains '6 gulab'
-                assign is_available = false
+            elsif first_var_title_lower contains 'sabz' or first_var_title_lower contains 'tikka'
+              if first_var_title_lower contains 'serves 1' or first_var_title_lower contains '2 gulab'
+                if section.settings.so_combo_sabz_s1
+                  assign is_available = false
+                endif
+              elsif first_var_title_lower contains 'serves 2' or first_var_title_lower contains '4 gulab'
+                if section.settings.so_combo_sabz_s2
+                  assign is_available = false
+                endif
+              elsif first_var_title_lower contains 'serves 3-4' or first_var_title_lower contains '6 gulab'
+                if section.settings.so_combo_sabz_halfkg
+                  assign is_available = false
+                endif
               endif
             endif
 
@@ -278,35 +277,34 @@
                       assign var_available = variant.available
                       assign var_title_lower = variant.title | downcase
 
-                      # 1. Section Direct Toggles for Meals
-                      if section.settings.so_meals_all
-                        assign var_available = false
-                      endif
-                      if section.settings.so_meals_veg
-                        if var_title_lower contains 'veg' or var_title_lower contains 'sabz'
-                          unless var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'shami' or var_title_lower contains 'tandoori'
+                      # 1. Exact 6 Individual Combo Toggles
+                      if var_title_lower contains 'alishaan' or var_title_lower contains 'tandoori'
+                        if var_title_lower contains 'serves 1' or var_title_lower contains '2 shami' or var_title_lower contains '1 gulab'
+                          if section.settings.so_combo_tandoori_s1
                             assign var_available = false
-                          endunless
+                          endif
+                        elsif var_title_lower contains 'serves 2' or var_title_lower contains '4 shami' or var_title_lower contains '2 gulab'
+                          if section.settings.so_combo_tandoori_s2
+                            assign var_available = false
+                          endif
+                        elsif var_title_lower contains 'serves 3-4' or var_title_lower contains 'half kg' or var_title_lower contains '6 shami'
+                          if section.settings.so_combo_tandoori_halfkg
+                            assign var_available = false
+                          endif
                         endif
-                      endif
-                      if section.settings.so_meals_nonveg
-                        if var_title_lower contains 'non-veg' or var_title_lower contains 'non veg' or var_title_lower contains 'chicken' or var_title_lower contains 'alishaan' or var_title_lower contains 'tandoori' or var_title_lower contains 'shami'
-                          assign var_available = false
-                        endif
-                      endif
-                      if section.settings.so_meals_serves1
-                        if var_title_lower contains 'serves 1' or var_title_lower contains '1 shami' or var_title_lower contains '1 gulab'
-                          assign var_available = false
-                        endif
-                      endif
-                      if section.settings.so_meals_serves2
-                        if var_title_lower contains 'serves 2' or var_title_lower contains '4 shami' or var_title_lower contains '2 shami'
-                          assign var_available = false
-                        endif
-                      endif
-                      if section.settings.so_meals_serves34
-                        if var_title_lower contains 'serves 3-4' or var_title_lower contains 'half kg' or var_title_lower contains '6 shami' or var_title_lower contains '6 gulab'
-                          assign var_available = false
+                      elsif var_title_lower contains 'sabz' or var_title_lower contains 'tikka'
+                        if var_title_lower contains 'serves 1' or var_title_lower contains '2 gulab'
+                          if section.settings.so_combo_sabz_s1
+                            assign var_available = false
+                          endif
+                        elsif var_title_lower contains 'serves 2' or var_title_lower contains '4 gulab'
+                          if section.settings.so_combo_sabz_s2
+                            assign var_available = false
+                          endif
+                        elsif var_title_lower contains 'serves 3-4' or var_title_lower contains '6 gulab'
+                          if section.settings.so_combo_sabz_halfkg
+                            assign var_available = false
+                          endif
                         endif
                       endif
 
@@ -363,33 +361,39 @@
             assign first_var_title_lower = first_variant.title | downcase
 
             # 2. Section Direct Toggles for Main Dishes & Sides
-            if title_lower contains 'alishaan'
-              if section.settings.so_alishaan_all
-                assign is_available = false
+            if title_lower contains 'alishaan' or title_lower contains 'tandoori'
+              if section.settings.so_alishaan_single
+                if first_var_title_lower contains 'single' or first_var_title_lower contains 'serves 1'
+                  assign is_available = false
+                endif
               endif
-              if section.settings.so_alishaan_single and first_var_title_lower contains 'single' or first_var_title_lower contains 'serves 1'
-                assign is_available = false
+              if section.settings.so_alishaan_double
+                if first_var_title_lower contains 'double' or first_var_title_lower contains 'serves 2'
+                  assign is_available = false
+                endif
               endif
-              if section.settings.so_alishaan_double and first_var_title_lower contains 'double' or first_var_title_lower contains 'serves 2'
-                assign is_available = false
-              endif
-              if section.settings.so_alishaan_halfkg and first_var_title_lower contains 'half' or first_var_title_lower contains 'serves 3-4'
-                assign is_available = false
+              if section.settings.so_alishaan_halfkg
+                if first_var_title_lower contains 'half' or first_var_title_lower contains 'serves 3-4'
+                  assign is_available = false
+                endif
               endif
             endif
 
             if title_lower contains 'sabz'
-              if section.settings.so_sabz_all
-                assign is_available = false
+              if section.settings.so_sabz_single
+                if first_var_title_lower contains 'single' or first_var_title_lower contains 'serves 1'
+                  assign is_available = false
+                endif
               endif
-              if section.settings.so_sabz_single and first_var_title_lower contains 'single' or first_var_title_lower contains 'serves 1'
-                assign is_available = false
+              if section.settings.so_sabz_double
+                if first_var_title_lower contains 'double' or first_var_title_lower contains 'serves 2'
+                  assign is_available = false
+                endif
               endif
-              if section.settings.so_sabz_double and first_var_title_lower contains 'double' or first_var_title_lower contains 'serves 2'
-                assign is_available = false
-              endif
-              if section.settings.so_sabz_halfkg and first_var_title_lower contains 'half' or first_var_title_lower contains 'serves 3-4'
-                assign is_available = false
+              if section.settings.so_sabz_halfkg
+                if first_var_title_lower contains 'half' or first_var_title_lower contains 'serves 3-4'
+                  assign is_available = false
+                endif
               endif
             endif
 
@@ -397,6 +401,9 @@
               assign is_available = false
             endif
             if title_lower contains 'gulab' and section.settings.so_gulab_jamun
+              assign is_available = false
+            endif
+            if (title_lower contains 'trial' or title_lower contains '99') and section.settings.so_trial_all
               assign is_available = false
             endif
             if title_lower contains 'coke' and section.settings.so_coke
@@ -538,33 +545,39 @@
                       assign var_title_lower = variant.title | downcase
 
                       # 2. Section Direct Toggles for Main Dishes & Sides
-                      if title_lower contains 'alishaan'
-                        if section.settings.so_alishaan_all
-                          assign var_available = false
+                      if title_lower contains 'alishaan' or title_lower contains 'tandoori'
+                        if section.settings.so_alishaan_single
+                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                            assign var_available = false
+                          endif
                         endif
-                        if section.settings.so_alishaan_single and var_title_lower contains 'single' or var_title_lower contains 'serves 1'
-                          assign var_available = false
+                        if section.settings.so_alishaan_double
+                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                            assign var_available = false
+                          endif
                         endif
-                        if section.settings.so_alishaan_double and var_title_lower contains 'double' or var_title_lower contains 'serves 2'
-                          assign var_available = false
-                        endif
-                        if section.settings.so_alishaan_halfkg and var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
-                          assign var_available = false
+                        if section.settings.so_alishaan_halfkg
+                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                            assign var_available = false
+                          endif
                         endif
                       endif
 
                       if title_lower contains 'sabz'
-                        if section.settings.so_sabz_all
-                          assign var_available = false
+                        if section.settings.so_sabz_single
+                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                            assign var_available = false
+                          endif
                         endif
-                        if section.settings.so_sabz_single and var_title_lower contains 'single' or var_title_lower contains 'serves 1'
-                          assign var_available = false
+                        if section.settings.so_sabz_double
+                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                            assign var_available = false
+                          endif
                         endif
-                        if section.settings.so_sabz_double and var_title_lower contains 'double' or var_title_lower contains 'serves 2'
-                          assign var_available = false
-                        endif
-                        if section.settings.so_sabz_halfkg and var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
-                          assign var_available = false
+                        if section.settings.so_sabz_halfkg
+                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                            assign var_available = false
+                          endif
                         endif
                       endif
 
@@ -572,6 +585,9 @@
                         assign var_available = false
                       endif
                       if title_lower contains 'gulab' and section.settings.so_gulab_jamun
+                        assign var_available = false
+                      endif
+                      if (title_lower contains 'trial' or title_lower contains '99') and section.settings.so_trial_all
                         assign var_available = false
                       endif
                       if title_lower contains 'coke' and section.settings.so_coke
@@ -1260,132 +1276,120 @@
     },
     {
       "type": "header",
-      "content": "🍱 1. NIAMAT MEALS & COMBOS AVAILABILITY"
+      "content": "🍱 1. NIAMAT MEALS & COMBOS (6 INDIVIDUAL COMBOS)"
     },
     {
       "type": "checkbox",
-      "id": "so_meals_all",
-      "label": "Mark ALL Meals & Combos as Sold Out",
+      "id": "so_combo_tandoori_s1",
+      "label": "Alishaan Tandoori Biryani with 2 Shami Kebabs and 1 Gulab Jamun (Serves 1)",
       "default": false
     },
     {
       "type": "checkbox",
-      "id": "so_meals_veg",
-      "label": "Meals: Mark ALL Veg Combos as Sold Out",
+      "id": "so_combo_tandoori_s2",
+      "label": "Alishaan Tandoori Biryani with 4 Shami Kebabs and 2 Gulab Jamuns (Serves 2)",
       "default": false
     },
     {
       "type": "checkbox",
-      "id": "so_meals_nonveg",
-      "label": "Meals: Mark ALL Non-Veg Combos as Sold Out",
+      "id": "so_combo_tandoori_halfkg",
+      "label": "Half Kg Tandoori Biryani with 6 Shami Kebabs (Serves 3-4)",
       "default": false
     },
     {
       "type": "checkbox",
-      "id": "so_meals_serves1",
-      "label": "Meals: Serves 1 Combos Sold Out",
+      "id": "so_combo_sabz_s1",
+      "label": "Sabz Tikka Biryani with 2 Gulab Jamuns (Serves 1)",
       "default": false
     },
     {
       "type": "checkbox",
-      "id": "so_meals_serves2",
-      "label": "Meals: Serves 2 Combos Sold Out",
+      "id": "so_combo_sabz_s2",
+      "label": "Sabz Tikka Biryani 4 Gulab Jamuns (Serves 2)",
       "default": false
     },
     {
       "type": "checkbox",
-      "id": "so_meals_serves34",
-      "label": "Meals: Serves 3-4 (Half Kg) Combos Sold Out",
+      "id": "so_combo_sabz_halfkg",
+      "label": "Sabz Tikka Biryani with 6 Gulab Jamuns (Serves 3-4)",
       "default": false
     },
     {
       "type": "header",
-      "content": "🍗 2. ALISHAAN TANDOORI BIRYANI AVAILABILITY"
-    },
-    {
-      "type": "checkbox",
-      "id": "so_alishaan_all",
-      "label": "Alishaan Tandoori: Mark ENTIRE Dish Sold Out",
-      "default": false
+      "content": "🍗 2. ALISHAAN TANDOORI BIRYANI (3 PORTIONS)"
     },
     {
       "type": "checkbox",
       "id": "so_alishaan_single",
-      "label": "Alishaan: Single Plate (Serves 1) Sold Out",
+      "label": "Single Plate (Serves 1) — Alishaan Tandoori",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_alishaan_double",
-      "label": "Alishaan: Double Plate (Serves 2) Sold Out",
+      "label": "Double Plate (Serves 2) — Alishaan Tandoori",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_alishaan_halfkg",
-      "label": "Alishaan: Half Kg (Serves 3-4) Sold Out",
+      "label": "Half Kg (Serves 3-4) — Alishaan Tandoori",
       "default": false
     },
     {
       "type": "header",
-      "content": "🌿 3. SABZ TIKKA BIRYANI (VEG) AVAILABILITY"
-    },
-    {
-      "type": "checkbox",
-      "id": "so_sabz_all",
-      "label": "Sabz Tikka: Mark ENTIRE Dish Sold Out",
-      "default": false
+      "content": "🌿 3. SABZ TIKKA BIRYANI (3 PORTIONS)"
     },
     {
       "type": "checkbox",
       "id": "so_sabz_single",
-      "label": "Sabz Tikka: Single Plate (Serves 1) Sold Out",
+      "label": "Single Plate (Serves 1) — Sabz Tikka Biryani",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_sabz_double",
-      "label": "Sabz Tikka: Double Plate (Serves 2) Sold Out",
+      "label": "Double Plate (Serves 2) — Sabz Tikka Biryani",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_sabz_halfkg",
-      "label": "Sabz Tikka: Half Kg (Serves 3-4) Sold Out",
+      "label": "Half Kg (Serves 3-4) — Sabz Tikka Biryani",
       "default": false
     },
     {
       "type": "header",
-      "content": "🍢 4. STARTERS, SIDES & TRIAL AVAILABILITY"
-    },
-    {
-      "type": "checkbox",
-      "id": "so_trial_all",
-      "label": "₹99 Trial Chicken Biryani: Mark Sold Out",
-      "default": false
+      "content": "🍢 4. SIDES, DESSERTS & SPECIAL TRIAL"
     },
     {
       "type": "checkbox",
       "id": "so_shami_kebab",
-      "label": "Chicken Shami Kebab (2 pcs): Mark Sold Out",
+      "label": "Chicken Shami Kebab (2 pcs)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_gulab_jamun",
-      "label": "Gulab Jamun (3 pcs): Mark Sold Out",
+      "label": "Gulab Jamun (3 pcs)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_trial_all",
+      "label": "₹99 Trial Chicken Biryani",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_coke",
-      "label": "Coke / Beverages: Mark Sold Out",
+      "label": "Coke / Beverages",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_raita",
-      "label": "Extra Raita: Mark Sold Out",
+      "label": "Extra Raita",
       "default": false
     }
   ],
