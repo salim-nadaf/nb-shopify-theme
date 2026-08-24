@@ -253,10 +253,18 @@
               </div>
 
               <!-- Mobile Top Row Title & Description -->
+              {% liquid
+                assign meal_desc = product.description | strip_html
+                if title_lower contains 'sabz' or title_lower contains 'paneer' or title_lower contains 'veg'
+                  if meal_desc contains 'chicken' or meal_desc contains 'Chicken' or meal_desc contains 'meat' or meal_desc contains 'Meat'
+                    assign meal_desc = 'Fresh garden vegetables and marinated paneer tikka slow-cooked with aromatic basmati rice and signature spices in traditional dum style.'
+                  endif
+                endif
+              %}
               <div class="nb-food-card__intro nb-mobile-only-intro">
                 <h3 class="nb-food-card__title">{{ product.title }}</h3>
-                {% if product.description != blank %}
-                  <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
+                {% if meal_desc != blank %}
+                  <p class="nb-food-card__desc">{{ meal_desc }}</p>
                 {% endif %}
               </div>
             </div>
@@ -265,8 +273,8 @@
               <!-- Desktop Right Column Title & Description -->
               <div class="nb-food-card__intro nb-desktop-only-intro">
                 <h3 class="nb-food-card__title">{{ product.title }}</h3>
-                {% if product.description != blank %}
-                  <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
+                {% if meal_desc != blank %}
+                  <p class="nb-food-card__desc">{{ meal_desc }}</p>
                 {% endif %}
               </div>
 
@@ -531,8 +539,16 @@
             <div class="nb-food-card__body">
               <div>
                 <h3 class="nb-food-card__title">{{ product.title }}</h3>
-                {% if product.description != blank %}
-                  <p class="nb-food-card__desc">{{ product.description | strip_html }}</p>
+                {% liquid
+                  assign item_desc = product.description | strip_html
+                  if title_lower contains 'sabz' or title_lower contains 'paneer' or title_lower contains 'veg'
+                    if item_desc contains 'chicken' or item_desc contains 'Chicken' or item_desc contains 'meat' or item_desc contains 'Meat'
+                      assign item_desc = 'Fresh garden vegetables and marinated paneer tikka slow-cooked with fragrant basmati rice and signature spices in traditional dum style.'
+                    endif
+                  endif
+                %}
+                {% if item_desc != blank %}
+                  <p class="nb-food-card__desc">{{ item_desc }}</p>
                 {% endif %}
 
                 {% if title_lower contains 'alishaan' or title_lower contains 'ustaadi murgh dum' or title_lower contains 'ustaadi' %}
