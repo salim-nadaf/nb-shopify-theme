@@ -877,11 +877,36 @@
   .nb-badge-pill__title {
     font-size: 0.84rem !important;
   }
+  .nb-grid-4 {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  .nb-why-box {
+    padding: 16px 8px !important;
+  }
+  .nb-why-icon {
+    font-size: 1.8rem !important;
+    margin-bottom: 8px !important;
+  }
+  .nb-why-box h3,
+  .nb-why-box h4 {
+    font-size: 0.92rem !important;
+    letter-spacing: -0.01em !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    margin-bottom: 4px !important;
+  }
+  .nb-why-box p {
+    font-size: 0.74rem !important;
+    line-height: 1.35 !important;
+  }
 }
 
 .nb-why-box { padding: 24px 18px; text-align: center; }
 .nb-why-icon { font-size: 2.4rem; margin-bottom: 12px; position: relative; z-index: 2; filter: drop-shadow(0 4px 10px rgba(200, 146, 42, 0.22)); transition: transform 0.3s ease; }
 .nb-why-box:hover .nb-why-icon { transform: scale(1.1); }
+.nb-why-box h3,
 .nb-why-box h4 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.05rem; font-weight: 700; color: var(--nb-text-dark) !important; margin: 0 0 6px; position: relative; z-index: 2; }
 .nb-why-box p { font-size: 0.82rem; color: var(--nb-text-muted) !important; margin: 0; line-height: 1.48; position: relative; z-index: 2; }
 
@@ -916,72 +941,25 @@
 .nb-zone-icon { font-size: 2rem; margin-bottom: 8px; position: relative; z-index: 2; filter: drop-shadow(0 3px 8px rgba(200,146,42,0.2)); }
 .nb-zone-card h3,
 .nb-zone-card h4 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.05rem !important; font-weight: 700 !important; color: var(--nb-text-dark) !important; margin: 0 0 6px !important; position: relative; z-index: 2; line-height: 1.35 !important; }
-.nb-zone-card p { font-size: 0.82rem; color: var(--nb-text-muted) !important; margin: 0 0 8px; position: relative; z-index: 2; }
-  transform: translateY(-5px);
-  border-color: rgba(200,146,42,0.5) !important;
-  box-shadow: 0 18px 40px -10px rgba(200,146,42,0.25), 0 0 20px rgba(200,146,42,0.1) !important;
-}
+.nb-zone-fee { display: inline-block; font-size: 0.76rem; font-weight: 700; color: var(--nb-gold) !important; background: rgba(200,146,42,0.12); padding: 3px 10px; border-radius: 12px; position: relative; z-index: 2; }
 
-.nb-badge-pill { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 100%) !important; border: 1px solid rgba(200,146,42,0.3) !important; padding: 14px 18px; border-radius: 14px; font-weight: 700; font-size: 0.92rem; box-shadow: 0 4px 15px rgba(44,24,16,0.05); transition: all 0.25s ease; cursor: pointer; text-decoration: none; color: inherit; }
-.nb-badge-pill:hover { transform: translateY(-2px); border-color: var(--nb-gold) !important; box-shadow: 0 8px 25px rgba(200,146,42,0.18); }
-.nb-badge-pill__status { display: inline-flex; align-items: center; gap: 6px; font-size: 0.76rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-.nb-badge-pill__pulse { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 6px #22c55e; }
-
-.nb-badge-pill--soldout { border-color: rgba(239, 68, 68, 0.3) !important; background: #FFFBFB !important; opacity: 0.85; }
-.nb-badge-pill__status--soldout { color: #dc2626 !important; background: #fee2e2 !important; }
-.nb-badge-pill__soldout-dot { width: 6px; height: 6px; background: #ef4444; border-radius: 50%; }
-
-.nb-dish-card .nb-dish-img-wrap { width: 100%; height: 160px; border-radius: 14px; overflow: hidden; margin-bottom: 14px; background: #f5ede4; position: relative; }
-.nb-dish-card .nb-dish-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
-.nb-dish-card:hover .nb-dish-img { transform: scale(1.05); }
-
-.nb-food-card { display: flex; flex-direction: column; background: #fff; border: 1px solid rgba(200,146,42,0.2); border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(44,24,16,0.06); transition: all 0.3s ease; position: relative; }
-.nb-food-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(200,146,42,0.15); border-color: rgba(200,146,42,0.4); }
-.nb-food-card__image { position: relative; width: 100%; height: 180px; background: #f7efe6; overflow: hidden; }
-.nb-food-card__image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
-.nb-food-card:hover .nb-food-card__image img { transform: scale(1.04); }
-.nb-badge { position: absolute; top: 12px; left: 12px; padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; z-index: 2; }
-.nb-tag--bestseller { background: linear-gradient(135deg, #FFE58F 0%, #D49E35 100%); color: #1E100A; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-.nb-tag--musttry { background: #fee2e2; color: #991b1b; }
-.nb-tag--popular { background: #ffedd5; color: #9a3412; }
-.nb-tag--chef { background: #fef3c7; color: #92400e; }
-
-.nb-food-card__body { padding: 16px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
-.nb-food-card__title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.15rem; font-weight: 800; color: var(--nb-text-dark); margin: 0 0 6px; }
-.nb-food-card__desc { font-size: 0.82rem; color: var(--nb-text-muted); line-height: 1.45; margin: 0 0 12px; }
-.nb-food-card__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-.nb-meta-tag { font-size: 0.72rem; font-weight: 600; background: #faf5ee; color: #785238; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(200,146,42,0.15); }
-.nb-food-card__bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 10px; border-top: 1px solid #f3ece3; }
-.nb-food-card__price { font-size: 1.15rem; font-weight: 800; color: #1E100A; }
-
-.nb-btn { padding: 8px 16px; border-radius: 10px; font-size: 0.82rem; font-weight: 700; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
-.nb-btn--outline { background: #FFFDF7; border: 1.5px solid #C8922A; color: #8C590E !important; }
-.nb-btn--outline:hover { background: #C8922A; color: #fff !important; }
-
-.nb-diet-corner-badge { position: absolute; top: 12px; right: 12px; z-index: 3; background: #ffffff; padding: 3px 4px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; }
-
-.nb-family-banner { background: linear-gradient(135deg, #24140D 0%, #160B07 100%) !important; border: 1px solid rgba(200,146,42,0.35); border-radius: 24px; padding: 28px 20px; color: #fff; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 15px 40px rgba(22,11,7,0.25); }
-.nb-family-badge { display: inline-block; background: rgba(200,146,42,0.2); border: 1px solid rgba(200,146,42,0.4); color: #F8D675; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; margin-bottom: 8px; }
-.nb-family-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.45rem; font-weight: 800; color: #FFFDF7; margin: 0 0 8px; }
-.nb-family-desc { font-size: 0.88rem; color: #DDD2C4; line-height: 1.5; margin: 0; }
-
-.nb-home-trial-section { padding: 40px 0 !important; }
-.nb-home-trial-card { background: linear-gradient(135deg, #1F100A 0%, #120703 100%); border: 1.5px solid rgba(200, 146, 42, 0.4); border-radius: 24px; padding: 28px 20px; display: flex; flex-direction: column; gap: 24px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); }
-.nb-home-trial-info { flex: 1; }
-.nb-home-trial-badge { display: inline-block; background: rgba(200, 146, 42, 0.15); border: 1px solid rgba(200, 146, 42, 0.4); color: #F3C669; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; }
-.nb-home-trial-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.7rem; font-weight: 800; color: #FFFFFF; margin: 0 0 10px; line-height: 1.2; }
-.nb-home-trial-gold { color: #F3C669; }
-.nb-home-trial-desc { font-size: 0.9rem; color: #D6C7B7; line-height: 1.5; margin: 0 0 18px; }
-.nb-home-trial-price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 16px; }
-.nb-home-trial-price { font-size: 2.2rem; font-weight: 800; color: #F3C669; }
-.nb-home-trial-orig { font-size: 1.1rem; color: #8F7D70; text-decoration: line-through; }
-.nb-home-trial-save { font-size: 0.78rem; font-weight: 700; background: #22C55E; color: #FFFFFF; padding: 2px 8px; border-radius: 4px; }
-.nb-home-trial-specs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
-.nb-home-trial-spec-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #E8DDD2; }
-.nb-home-trial-cta-wrap { margin-top: 10px; }
-.nb-home-trial-btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; max-width: 320px; background: linear-gradient(135deg, #D49E35 0%, #C8922A 50%, #9B6E1A 100%); color: #160B07 !important; font-weight: 800; font-size: 0.92rem; padding: 14px 20px; border-radius: 12px; text-decoration: none; box-shadow: 0 6px 20px rgba(200, 146, 42, 0.35); transition: all 0.25s ease; }
-.nb-home-trial-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(200, 146, 42, 0.5); }
-
+/* ===== 2.5 ₹99 TRIAL BIRYANI HOMEPAGE SHOWCASE ===== */
+.nb-home-trial-section { padding: 36px 0 16px !important; margin: 0 !important; }
+.nb-home-trial-card { background: linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 50%, #FDF5E6 100%) !important; border: 1.5px solid rgba(200, 146, 42, 0.35) !important; border-left: 5px solid #C8922A !important; border-radius: 20px; padding: 28px 24px; display: flex; flex-direction: column-reverse; gap: 24px; align-items: center; box-shadow: 0 14px 40px -10px rgba(44, 24, 16, 0.1), inset 0 1px 1px rgba(255, 255, 255, 1) !important; transition: all 0.3s ease; }
+.nb-home-trial-card:hover { box-shadow: 0 18px 45px -8px rgba(200, 146, 42, 0.22) !important; transform: translateY(-2px); }
+.nb-home-trial-content { flex: 1; width: 100%; }
+.nb-home-trial-badge { display: inline-block; background: rgba(200, 146, 42, 0.15); border: 1px solid rgba(200, 146, 42, 0.35); color: #C8922A; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; }
+.nb-home-trial-title { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.7rem; font-weight: 800; color: #2C1810 !important; margin: 0 0 8px 0; line-height: 1.25; }
+.nb-home-trial-price-highlight { color: #C8922A; }
+.nb-home-trial-sub { font-size: 0.92rem; color: #7A5C4A !important; margin: 0 0 18px 0; line-height: 1.5; }
+.nb-home-trial-details { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+.nb-home-trial-price-box { display: flex; align-items: baseline; gap: 8px; }
+.nb-home-trial-amount { font-size: 1.8rem; font-weight: 800; color: #2C1810; line-height: 1; }
+.nb-home-trial-portion { font-size: 0.86rem; font-weight: 600; color: #7A5C4A; background: rgba(44, 24, 16, 0.06); padding: 3px 10px; border-radius: 8px; }
+.nb-home-trial-code-pill { font-size: 0.84rem; color: #2C1810; background: #FFFDF7; border: 1px dashed rgba(200, 146, 42, 0.5); padding: 4px 12px; border-radius: 8px; }
+.nb-home-trial-code-pill strong { color: #C8922A; letter-spacing: 0.04em; }
+.nb-home-trial-btn { display: inline-block; background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important; color: #FFFFFF !important; font-weight: 700; font-size: 0.92rem; letter-spacing: 0.04em; padding: 12px 28px; border-radius: 12px; text-decoration: none; box-shadow: 0 6px 20px rgba(200, 146, 42, 0.35); transition: all 0.25s ease; text-align: center; }
+.nb-home-trial-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200, 146, 42, 0.5); }
 .nb-home-trial-visual { width: 100%; max-width: 320px; flex-shrink: 0; }
 .nb-home-trial-img-wrap { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 25px rgba(44, 24, 16, 0.12); border: 1px solid rgba(200, 146, 42, 0.3); background: #2C1810; }
 .nb-home-trial-img { width: 100%; height: 210px; object-fit: cover; display: block; }
