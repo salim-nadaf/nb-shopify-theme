@@ -31,15 +31,10 @@
     <!-- HIGH-SPEED PRECONNECTS (< 4 CONNECTIONS) -->
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
     <link rel="dns-prefetch" href="https://cdn.shopify.com">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-
-    <!-- DYNAMIC ROUTE-SPECIFIC LCP PRELOAD -->
-    {% if template == 'index' or template.name == 'index' %}
-      <link rel="preload" as="image" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=390" imagesrcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=390 390w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750 750w" imagesizes="100vw" fetchpriority="high">
-    {% elsif template contains 'collection' or request.path contains 'instant-delivery' %}
-      <link rel="preload" as="image" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360" imagesrcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360 360w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600 600w" imagesizes="(max-width: 767px) 320px, 450px" fetchpriority="high">
-    {% endif %}
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
 
     <!-- ASYNC GOOGLE FONTS (ZERO RENDER BLOCKING) -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
