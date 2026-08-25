@@ -719,21 +719,28 @@ function nbIsAddonItem(item) {
   var variantTitle = (item.variant_title || '').toLowerCase();
   var combined = (title + ' ' + variantTitle + ' ' + handle).toLowerCase();
   
+  // Explicitly ALLOW full menu/instant delivery items (Not Add-ons)
+  if (handle === 'gulab-jamun' || title.includes('3 pcs') || title.includes('3 pc') || title.includes('2 pcs') || title.includes('4 pcs') || title.includes('6 pcs') || handle === 'shami-kebab') {
+    return false;
+  }
+  
+  // The ONLY dedicated add-on items are:
   if (handle === 'extra-raita' || handle === 'niamat-extra-raita' || handle === 'gulab-jamun-1' || handle === 'shami-kebab-1' || handle === 'coke' || handle === 'chilled-coke' || handle === 'coca-cola') {
     return true;
   }
-  if (title === 'extra raita' || title === 'niamat extra raita' || title.includes('extra raita') || title === 'raita') {
+  
+  if (title === 'extra raita' || title === 'niamat extra raita') {
     return true;
   }
+
+  if (title === 'gulab jamun' && handle !== 'gulab-jamun') {
+    return true;
+  }
+
   if (combined.includes('coke') || combined.includes('coca-cola') || combined.includes('chilled coke')) {
     return true;
   }
-  if (title.includes('gulab jamun') && !title.includes('pack') && !title.includes('box') && !title.includes('combo') && !title.includes('kg')) {
-    return true;
-  }
-  if ((handle === 'chicken-shami-kebab' || title.includes('shami kebab') || title.includes('shami')) && (variantTitle.includes('1 pc') || variantTitle.includes('single') || variantTitle === '1 piece' || handle === 'shami-kebab-1')) {
-    return true;
-  }
+
   return false;
 }
 
