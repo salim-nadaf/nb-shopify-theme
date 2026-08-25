@@ -118,7 +118,7 @@
         endif
       endif
     %}
-    <div class="nb-drawer__upsell-section">
+    <div class="nb-drawer__upsell-section" id="nb-drawer-upsell-section" style="display: none;">
       <div class="nb-upsell-header">
         <span>🍽️</span>
         <h4>Complete your order</h4>
@@ -711,6 +711,39 @@ function nbFormatMoney(cents) {
 }
 
 
+// ADD-ON VS MAIN ITEM DETECTION HELPERS
+function nbIsAddonItem(item) {
+  if (!item) return false;
+  var handle = (item.handle || item.product_handle || '').toLowerCase();
+  var title = (item.product_title || item.title || '').toLowerCase();
+  var variantTitle = (item.variant_title || '').toLowerCase();
+  var combined = (title + ' ' + variantTitle + ' ' + handle).toLowerCase();
+  
+  if (handle === 'extra-raita' || handle === 'niamat-extra-raita' || handle === 'gulab-jamun-1' || handle === 'shami-kebab-1' || handle === 'coke' || handle === 'chilled-coke' || handle === 'coca-cola') {
+    return true;
+  }
+  if (title === 'extra raita' || title === 'niamat extra raita' || title.includes('extra raita') || title === 'raita') {
+    return true;
+  }
+  if (combined.includes('coke') || combined.includes('coca-cola') || combined.includes('chilled coke')) {
+    return true;
+  }
+  if (title.includes('gulab jamun') && !title.includes('pack') && !title.includes('box') && !title.includes('combo') && !title.includes('kg')) {
+    return true;
+  }
+  if ((handle === 'chicken-shami-kebab' || title.includes('shami kebab') || title.includes('shami')) && (variantTitle.includes('1 pc') || variantTitle.includes('single') || variantTitle === '1 piece' || handle === 'shami-kebab-1')) {
+    return true;
+  }
+  return false;
+}
+
+function nbHasMainItemInCart(cart) {
+  if (!cart || !cart.items || cart.items.length === 0) return false;
+  return cart.items.some(function(item) {
+    return !nbIsAddonItem(item);
+  });
+}
+
 function nbBuildCheckoutUrl(phone, name, email) {
   // Shopify Basic plan does not support checkout URL params pre-filling
   return '/checkout';
@@ -721,6 +754,12 @@ async function nbGoToCheckout() {
     nbShowToast('🔴 Instant Delivery is temporarily paused.');
     var offNotice = document.getElementById('nb-instant-disabled-cart-notice');
     if (offNotice) offNotice.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+
+  // Validate that cart contains at least one main food item
+  if (window.nbCurrentCart && !nbHasMainItemInCart(window.nbCurrentCart)) {
+    nbShowToast('⚠️ Please add at least one Biryani or Main Item before proceeding to checkout.');
     return;
   }
 
@@ -810,6 +849,7 @@ function nbContinueOrdering() {
 }
 
 function nbRenderCart(cart) {
+  window.nbCurrentCart = cart;
   nbUpdateCartCustomerCard();
   var container = document.getElementById('nb-cart-items');
   var subtotalEl = document.getElementById('nb-subtotal-val');
@@ -818,6 +858,14 @@ function nbRenderCart(cart) {
   var btnTotalEl = document.getElementById('nb-btn-total-val');
   var btnTextEl = document.getElementById('nb-checkout-btn-text');
   var checkoutBtn = document.getElementById('nb-checkout-submit-btn');
+  var upsellSection = document.getElementById('nb-drawer-upsell-section');
+
+  var hasMainItems = nbHasMainItemInCart(cart);
+
+  // CONTROL UPSELL SECTION VISIBILITY: ONLY APPEARS IF ACTUAL MAIN ITEMS ARE IN CART
+  if (upsellSection) {
+    upsellSection.style.display = (hasMainItems && cart && cart.item_count > 0) ? 'block' : 'none';
+  }
 
   if (NB_CONFIG.instantDeliveryEnabled === false) {
     if (btnTextEl) btnTextEl.textContent = '📅 Switch to Scheduled / Pre-Order';
@@ -985,11 +1033,23 @@ function nbRenderCart(cart) {
   }
 
   if (checkoutBtn) {
-    checkoutBtn.disabled = false;
-    checkoutBtn.classList.remove('disabled');
+    if (hasMainItems) {
+      checkoutBtn.disabled = false;
+      checkoutBtn.classList.remove('disabled');
+    } else {
+      // ONLY ADD-ONS IN CART: BLOCK CHECKOUT AND PROMPT FOR MAIN ITEM
+      checkoutBtn.disabled = true;
+      checkoutBtn.classList.add('disabled');
+    }
   }
   if (btnTextEl && NB_CONFIG.instantDeliveryEnabled !== false) {
-    btnTextEl.textContent = 'Proceed to Checkout';
+    btnTextEl.textContent = hasMainItems ? 'Proceed to Checkout' : 'Add Biryani to Checkout';
+  }
+
+  if (!hasMainItems && itemsFdNotice && itemsFdText) {
+    itemsFdNotice.style.display = 'block';
+    itemsFdText.innerHTML = '⚠️ <strong style="color:#C62828;">Add-ons require at least one Biryani or Main Item in your cart.</strong>';
+    if (itemsFdFill) itemsFdFill.style.background = '#C62828';
   }
 
   grandTotalEl.textContent = '₹' + subtotalRupees;
@@ -1128,6 +1188,13 @@ function nbSyncAddonPrices() {
 
 // MULTI-TIER ADD-ON LOOKUP (PREVENTS SILENT FAILS & REPEATED SEARCHES)
 function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
+  // Enforce prerequisite: Must have at least 1 main item in cart
+  if (window.nbCurrentCart && !nbHasMainItemInCart(window.nbCurrentCart)) {
+    nbShowToast('⚠️ Please add a Biryani or main dish first before adding extra add-ons.');
+    btn.textContent = '+ Add';
+    return;
+  }
+
   var originalText = btn.textContent;
   btn.textContent = 'Adding...';
 
@@ -1198,6 +1265,13 @@ function nbAddUpsell(btn, handle, titleQuery, fallbackPriceCents) {
 
 // COKE 2-VARIANT ADD-ON LOOKUP (250ml / 750ml)
 function nbAddCokeUpsell(btn, size) {
+  // Enforce prerequisite: Must have at least 1 main item in cart
+  if (window.nbCurrentCart && !nbHasMainItemInCart(window.nbCurrentCart)) {
+    nbShowToast('⚠️ Please add a Biryani or main dish first before adding extra add-ons.');
+    btn.textContent = '+ Add';
+    return;
+  }
+
   var originalText = btn.textContent;
   btn.textContent = 'Adding...';
 
