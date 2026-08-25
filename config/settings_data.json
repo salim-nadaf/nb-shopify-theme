@@ -88,7 +88,7 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",
-    "nb_instant_delivery_enabled": false,
+    "nb_instant_delivery_enabled": true,
     "nb_instant_delivery_status_msg": "Instant Delivery is available",
     "nb_instant_delivery_off_msg": "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!",
     "nb_lead_notification_email": "milas.fadan@gmail.com",
