@@ -1,49 +1,138 @@
-
-
 {% liquid
   if section.settings.background_color != blank
     render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
   endif
+
+  assign p_path = request.path | default: '' | downcase
+  assign c_url = canonical_url | default: '' | downcase
+  assign is_matched = false
 %}
 
-{% if request.path contains 'bulk-orders' or request.path contains 'bulk' or request.path contains 'catering' %}
-  <style>[data-template="404"] [class*="product_list"], .template-404 [class*="product_list"], [data-template="404"] .product-list, .template-404 .product-list { display: none !important; }</style>
-  {% render 'nb-bulk-orders-snippet' %}
-{% elsif request.path contains 'biryani-calculator' or request.path contains 'calculator' %}
-  <style>[data-template="404"] [class*="product_list"], .template-404 [class*="product_list"], [data-template="404"] .product-list, .template-404 .product-list { display: none !important; }</style>
-  {% render 'nb-biryani-calculator-snippet' %}
-{% elsif request.path contains 'family-orders' or request.path contains 'family-feast' or request.path contains 'family' %}
-  <style>[data-template="404"] [class*="product_list"], .template-404 [class*="product_list"], [data-template="404"] .product-list, .template-404 .product-list { display: none !important; }</style>
-  {% render 'nb-family-orders-snippet' %}
-{% else %}
+<style>
+  .nb-custom-404-active [class*="product_list"],
+  .nb-custom-404-active .product-list,
+  .template-404 [class*="product_list"],
+  .template-404 .product-list,
+  [data-template="404"] [class*="product_list"],
+  [data-template="404"] .product-list {
+    display: none !important;
+  }
+</style>
+
+{% if p_path contains 'bulk' or p_path contains 'catering' or c_url contains 'bulk' or c_url contains 'catering' %}
+  {% assign is_matched = true %}
+  <div class="nb-active-404-rendered">
+    {% render 'nb-bulk-orders-snippet' %}
+  </div>
+{% elsif p_path contains 'calculator' or p_path contains 'calc' or c_url contains 'calculator' or c_url contains 'calc' %}
+  {% assign is_matched = true %}
+  <div class="nb-active-404-rendered">
+    {% render 'nb-biryani-calculator-snippet' %}
+  </div>
+{% elsif p_path contains 'family' or p_path contains 'feast' or p_path contains 'pre-order' or c_url contains 'family' or c_url contains 'feast' or c_url contains 'pre-order' %}
+  {% assign is_matched = true %}
+  <div class="nb-active-404-rendered">
+    {% render 'nb-family-orders-snippet' %}
+  </div>
+{% elsif p_path contains 'about' or p_path contains 'story' or c_url contains 'about' or c_url contains 'story' %}
+  {% assign is_matched = true %}
+  <div class="nb-active-404-rendered">
+    {% render 'nb-our-story-snippet' %}
+  </div>
+{% elsif p_path contains 'contact' or c_url contains 'contact' %}
+  {% assign is_matched = true %}
+  <div class="nb-active-404-rendered">
+    {% render 'nb-contact-snippet' %}
+  </div>
+{% elsif p_path contains 'shipping' or p_path contains 'delivery' or c_url contains 'shipping' or c_url contains 'delivery' %}
+  {% assign is_matched = true %}
+  <div class="nb-active-404-rendered">
+    {% render 'nb-shipping-snippet' %}
+  </div>
+{% endif %}
+
+<div id="nb-404-client-mount" style="display:none;">
+  <div id="nb-mount-bulk" style="display:none;">
+    {% render 'nb-bulk-orders-snippet' %}
+  </div>
+  <div id="nb-mount-calculator" style="display:none;">
+    {% render 'nb-biryani-calculator-snippet' %}
+  </div>
+  <div id="nb-mount-family" style="display:none;">
+    {% render 'nb-family-orders-snippet' %}
+  </div>
+  <div id="nb-mount-about" style="display:none;">
+    {% render 'nb-our-story-snippet' %}
+  </div>
+  <div id="nb-mount-contact" style="display:none;">
+    {% render 'nb-contact-snippet' %}
+  </div>
+  <div id="nb-mount-shipping" style="display:none;">
+    {% render 'nb-shipping-snippet' %}
+  </div>
+</div>
+
+<div id="nb-404-default-box" {% if is_matched %}style="display:none;"{% endif %}>
   <div
     class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
   ></div>
-<div
-  class="
-    section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}
-    {% if section.settings.section_height != "" %} {{ section.settings.section_height | prepend: "section--height-" }}{% endif %}
-  "
->
-  <div>
-    <div
-      class="
-        spacing-style
-        layout-panel-flex
-        layout-panel-flex--column
-        section-content-wrapper
-        mobile-column
-      "
-      style="
-        {% render 'layout-panel-style', settings: section.settings %}
-        {% render 'spacing-style', settings: section.settings %}
-      "
-    >
-      {% content_for 'blocks' %}
+  <div
+    class="
+      section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}
+      {% if section.settings.section_height != "" %} {{ section.settings.section_height | prepend: "section--height-" }}{% endif %}
+    "
+  >
+    <div>
+      <div
+        class="
+          spacing-style
+          layout-panel-flex
+          layout-panel-flex--column
+          section-content-wrapper
+          mobile-column
+        "
+        style="
+          {% render 'layout-panel-style', settings: section.settings %}
+          {% render 'spacing-style', settings: section.settings %}
+        "
+      >
+        {% content_for 'blocks' %}
+      </div>
     </div>
   </div>
 </div>
-{% endif %}
+
+<script>
+  (function() {
+    var p = (window.location.pathname || '').toLowerCase();
+    var defBox = document.getElementById('nb-404-default-box');
+    var clientMount = document.getElementById('nb-404-client-mount');
+    if (!clientMount) return;
+
+    var targetId = null;
+    if (p.indexOf('bulk') !== -1 || p.indexOf('catering') !== -1) {
+      targetId = 'nb-mount-bulk';
+    } else if (p.indexOf('calc') !== -1 || p.indexOf('calculator') !== -1) {
+      targetId = 'nb-mount-calculator';
+    } else if (p.indexOf('family') !== -1 || p.indexOf('feast') !== -1 || p.indexOf('pre-order') !== -1) {
+      targetId = 'nb-mount-family';
+    } else if (p.indexOf('about') !== -1 || p.indexOf('story') !== -1) {
+      targetId = 'nb-mount-about';
+    } else if (p.indexOf('contact') !== -1) {
+      targetId = 'nb-mount-contact';
+    } else if (p.indexOf('shipping') !== -1 || p.indexOf('delivery') !== -1) {
+      targetId = 'nb-mount-shipping';
+    }
+
+    if (targetId) {
+      document.documentElement.classList.add('nb-custom-404-active');
+      if (defBox) defBox.style.display = 'none';
+      clientMount.style.display = 'block';
+      var targetEl = document.getElementById(targetId);
+      if (targetEl) targetEl.style.display = 'block';
+    }
+  })();
+</script>
 
 {% schema %}
 {
@@ -100,8 +189,8 @@
       "label": "t:settings.height",
       "options": [
         {
-          "value": "",
-          "label": "t:options.auto"
+          "value": "adapt",
+          "label": "t:options.adapt"
         },
         {
           "value": "small",
@@ -114,53 +203,14 @@
         {
           "value": "large",
           "label": "t:options.large"
-        },
-        {
-          "value": "full-screen",
-          "label": "t:options.full_screen"
         }
       ],
-      "default": ""
+      "default": "adapt"
     },
     {
-      "type": "select",
-      "id": "horizontal_alignment_flex_direction_column",
-      "label": "t:settings.alignment",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "t:options.left"
-        },
-        {
-          "value": "center",
-          "label": "t:options.center"
-        },
-        {
-          "value": "flex-end",
-          "label": "t:options.right"
-        }
-      ],
-      "default": "center"
-    },
-    {
-      "type": "select",
-      "id": "vertical_alignment_flex_direction_column",
-      "label": "t:settings.position",
-      "options": [
-        {
-          "value": "flex-start",
-          "label": "t:options.top"
-        },
-        {
-          "value": "center",
-          "label": "t:options.center"
-        },
-        {
-          "value": "flex-end",
-          "label": "t:options.bottom"
-        }
-      ],
-      "default": "center"
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color"
     },
     {
       "type": "range",
@@ -173,34 +223,24 @@
       "default": 12
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:settings.background_color",
-      "placeholder": "t:settings.default"
-    },
-    {
-      "type": "header",
-      "content": "t:content.padding"
-    },
-    {
       "type": "range",
       "id": "padding-block-start",
-      "label": "t:settings.top",
+      "label": "t:settings.padding_top",
       "min": 0,
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 0
+      "default": 36
     },
     {
       "type": "range",
       "id": "padding-block-end",
-      "label": "t:settings.bottom",
+      "label": "t:settings.padding_bottom",
       "min": 0,
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 0
+      "default": 36
     }
   ]
 }
