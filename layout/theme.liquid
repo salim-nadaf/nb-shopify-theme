@@ -58,21 +58,6 @@
 
     {{ content_for_header }}
 
-    <script>
-      (function() {
-        var p = window.location.pathname.toLowerCase();
-        if (p.includes('bulk') || p.includes('catering') || p.includes('calculator') || p.includes('family') || p.includes('feast')) {
-          document.documentElement.classList.add('nb-custom-route-active');
-        }
-      })();
-    </script>
-    <style>
-      html.nb-custom-route-active #nb-default-layout-content { display: none !important; }
-      html.nb-custom-route-active [data-template="404"] [class*="product_list"],
-      html.nb-custom-route-active .template-404 [class*="product_list"],
-      html.nb-custom-route-active [data-template="404"] .product-list,
-      html.nb-custom-route-active .template-404 .product-list { display: none !important; }
-    </style>
 
     <style>
     /* ===== NIAMAT BIRYANI PALACE — ULTRA-PREMIUM STOREWIDE MASTER STYLES ===== */
@@ -1047,28 +1032,7 @@
         id="MainContent"
         class="content-for-layout"
       >
-        {%- assign p_lower = request.path | downcase -%}
-        {%- if p_lower contains 'bulk' or p_lower contains 'catering' -%}
-          <div id="nb-custom-mount-bulk">
-            {% render 'nb-bulk-orders-snippet' %}
-          </div>
-        {%- elsif p_lower contains 'calculator' -%}
-          <div id="nb-custom-mount-calculator">
-            {% render 'nb-biryani-calculator-snippet' %}
-          </div>
-        {%- elsif p_lower contains 'family' or p_lower contains 'feast' or p_lower contains 'pre-order' -%}
-          <div id="nb-custom-mount-family">
-            {% render 'nb-family-orders-snippet' %}
-          </div>
-        {%- elsif p_lower contains 'shipping' or p_lower contains 'delivery-policy' -%}
-          <div id="nb-custom-mount-shipping">
-            {% render 'nb-shipping-snippet' %}
-          </div>
-        {%- else -%}
-          <div id="nb-default-layout-content">
-            {{ content_for_layout }}
-          </div>
-        {%- endif -%}
+        {{ content_for_layout }}
       </main>
 
       <!-- GLOBAL PRODUCT LINK INTERCEPTOR -->

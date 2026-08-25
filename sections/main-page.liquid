@@ -24,24 +24,24 @@
     "
   >
     {% liquid
-      assign ph = page.handle | downcase
-      assign pt = page.title | downcase
-      assign rp = request.path | downcase
+      assign ph = page.handle | default: '' | downcase
+      assign pt = page.title | default: '' | downcase
+      assign rp = request.path | default: '' | downcase
     %}
     {% if ph contains 'contact' or pt contains 'contact' or rp contains 'contact' %}
       {% render 'nb-contact-snippet' %}
-    {% elsif ph contains 'about' or pt contains 'about' or pt contains 'story' or rp contains 'about' or rp contains 'story' %}
-      {% render 'nb-our-story-snippet' %}
-    {% elsif ph contains 'family' or pt contains 'family' or ph contains 'feast' or pt contains 'feast' or ph contains 'pre-order' or pt contains 'pre-order' or rp contains 'family' or rp contains 'feast' %}
-      {% render 'nb-family-orders-snippet' %}
     {% elsif ph contains 'bulk' or pt contains 'bulk' or ph contains 'catering' or pt contains 'catering' or rp contains 'bulk' or rp contains 'catering' %}
       {% render 'nb-bulk-orders-snippet' %}
-    {% elsif ph contains 'calculator' or pt contains 'calculator' or rp contains 'calculator' %}
+    {% elsif ph contains 'calculator' or pt contains 'calculator' or rp contains 'calculator' or ph contains 'calc' or pt contains 'calc' %}
       {% render 'nb-biryani-calculator-snippet' %}
-    {% elsif ph contains 'account' or pt contains 'account' or ph contains 'profile' or pt contains 'profile' or ph contains 'order' or pt contains 'order' %}
-      {% render 'nb-account-snippet' %}
-    {% elsif ph contains 'shipping' or pt contains 'shipping' or ph contains 'delivery' or pt contains 'delivery' or rp contains 'shipping' or rp contains 'delivery' %}
+    {% elsif ph contains 'family' or pt contains 'family' or ph contains 'feast' or pt contains 'feast' or ph contains 'pre-order' or pt contains 'pre-order' or rp contains 'family' or rp contains 'feast' %}
+      {% render 'nb-family-orders-snippet' %}
+    {% elsif ph contains 'about' or pt contains 'about' or pt contains 'story' or rp contains 'about' or rp contains 'story' %}
+      {% render 'nb-our-story-snippet' %}
+    {% elsif ph contains 'shipping' or pt contains 'shipping' or ph contains 'delivery-policy' or rp contains 'shipping' or rp contains 'delivery' %}
       {% render 'nb-shipping-snippet' %}
+    {% elsif ph contains 'account' or pt contains 'account' or ph contains 'profile' or pt contains 'profile' or ph contains 'my-orders' or rp contains 'account' %}
+      {% render 'nb-account-snippet' %}
     {% else %}
       {% if page.content != blank %}
         <div class="rte">
