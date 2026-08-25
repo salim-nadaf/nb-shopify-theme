@@ -1,0 +1,1510 @@
+﻿{% comment %}
+  NIAMAT BIRYANI ΓÇö Homepage Top Section (Kitchen Status to Delivery Areas)
+{% endcomment %}
+
+{% liquid
+  assign page_bg = section.settings.color_page_bg
+  if page_bg == blank or page_bg == 'rgba(0,0,0,0)'
+    assign page_bg = '#FFFAF4'
+  endif
+
+  assign dark_bg = section.settings.color_dark_bg
+  if dark_bg == blank or dark_bg == 'rgba(0,0,0,0)'
+    assign dark_bg = '#1E100A'
+  endif
+
+  assign card_bg = section.settings.color_card_bg
+  if card_bg == blank or card_bg == 'rgba(0,0,0,0)'
+    assign card_bg = '#FFFFFF'
+  endif
+
+  assign alt_bg = section.settings.color_alt_bg
+  if alt_bg == blank or alt_bg == 'rgba(0,0,0,0)'
+    assign alt_bg = '#FDF6EC'
+  endif
+
+  assign gold_color = section.settings.color_accent_gold
+  if gold_color == blank or gold_color == 'rgba(0,0,0,0)'
+    assign gold_color = '#C8922A'
+  endif
+
+  assign text_dark = section.settings.color_text_dark
+  if text_dark == blank or text_dark == 'rgba(0,0,0,0)'
+    assign text_dark = '#2C1810'
+  endif
+
+  assign text_muted = section.settings.color_text_muted
+  if text_muted == blank or text_muted == 'rgba(0,0,0,0)'
+    assign text_muted = '#7A5C4A'
+  endif
+
+  assign status_bg = section.settings.color_status_bg
+  if status_bg == blank or status_bg == 'rgba(0,0,0,0)'
+    assign status_bg = '#1E100A'
+  endif
+
+  assign btn1_bg = section.settings.color_btn1_bg
+  if btn1_bg == blank or btn1_bg == 'rgba(0,0,0,0)'
+    assign btn1_bg = '#C8922A'
+  endif
+
+  assign btn1_text = section.settings.color_btn1_text
+  if btn1_text == blank or btn1_text == 'rgba(0,0,0,0)'
+    assign btn1_text = '#FFFFFF'
+  endif
+
+  assign pad_val = section.settings.section_padding | default: 40
+  assign hero_h_val = section.settings.hero_min_height | default: 400
+  assign opac_raw = section.settings.hero_overlay_opacity | default: 75
+  assign opac_val = opac_raw | divided_by: 100.0
+
+  assign status_text = section.settings.status_text
+  if status_text == blank
+    assign status_text = 'Kitchen Open - Lunch 12-3 PM, Dinner 6-9 PM'
+  endif
+
+  assign hero_heading = section.settings.hero_heading
+  if hero_heading == blank
+    assign hero_heading = 'Real Biryani. Made Fresh. Delivered to Your Door.'
+  endif
+
+  assign hero_subheading = section.settings.hero_subheading
+  if hero_subheading == blank
+    assign hero_subheading = 'Slow-cooked dum biryani from our cloud kitchen. Order now for delivery in 45-60 minutes.'
+  endif
+
+  assign hero_btn1_text = section.settings.hero_btn1_text
+  if hero_btn1_text == blank
+    assign hero_btn1_text = 'Order Now'
+  endif
+
+  assign hero_btn1_url = section.settings.hero_btn1_url
+  if hero_btn1_url == blank
+    assign hero_btn1_url = '/pages/start-your-order'
+  endif
+
+  assign hero_btn2_text = section.settings.hero_btn2_text
+  if hero_btn2_text == blank
+    assign hero_btn2_text = 'See Full Menu'
+  endif
+
+  assign hero_btn2_url = section.settings.hero_btn2_url
+  if hero_btn2_url == blank
+    assign hero_btn2_url = '/collections/instant-delivery'
+  endif
+
+  assign today_heading = section.settings.today_heading
+  if today_heading == blank
+    assign today_heading = "What's Ready Today"
+  endif
+
+  assign today_subheading = section.settings.today_subheading
+  if today_subheading == blank
+    assign today_subheading = 'Fresh batches coming hot out of the handi for fast dispatch.'
+  endif
+
+  assign today_cta_text = section.settings.today_cta_text
+  if today_cta_text == blank
+    assign today_cta_text = 'Order Instant Items'
+  endif
+
+  assign today_cta_url = section.settings.today_cta_url
+  if today_cta_url == blank
+    assign today_cta_url = '/collections/instant-delivery'
+  endif
+
+  assign family_heading = section.settings.family_heading
+  if family_heading == blank
+    assign family_heading = 'Feeding a Crowd?'
+  endif
+
+  assign family_subheading = section.settings.family_subheading
+  if family_subheading == blank
+    assign family_subheading = 'From curated 5 Kg to 15 Kg pre-made catering packages to grand wedding feasts and large corporate events, we prepare dum biryani in traditional handis tailored for any occasion.'
+  endif
+
+  assign family_cta_text = section.settings.family_cta_text
+  if family_cta_text == blank
+    assign family_cta_text = 'Plan Bulk Order'
+  endif
+
+  assign family_cta_url = section.settings.family_cta_url
+  if family_cta_url == blank
+    assign family_cta_url = '/pages/bulk-orders'
+  endif
+%}
+
+<div class="nb-homepage-wrapper" style="
+  --nb-page-bg: {{ page_bg }};
+  --nb-dark-bg: {{ dark_bg }};
+  --nb-card-bg: {{ card_bg }};
+  --nb-alt-bg: {{ alt_bg }};
+  --nb-gold: {{ gold_color }};
+  --nb-text-dark: {{ text_dark }};
+  --nb-text-muted: {{ text_muted }};
+  --nb-status-bg: {{ status_bg }};
+  --nb-btn1-bg: {{ btn1_bg }};
+  --nb-btn1-text: {{ btn1_text }};
+  --nb-padding: {{ pad_val }}px;
+  --nb-hero-height: {{ hero_h_val }}px;
+  --nb-overlay-opac: {{ opac_val }};
+">
+
+  <!-- 1. STATUS BAR -->
+  {% unless section.settings.show_status == false %}
+    <div class="nb-status-bar">
+      <div class="nb-status-inner">
+        <span class="nb-pulse-dot"></span>
+        <span>{{ status_text }}</span>
+      </div>
+    </div>
+  {% endunless %}
+
+  <!-- 2. HERO BANNER -->
+  {% unless section.settings.show_hero == false %}
+    <div class="nb-hero-banner">
+      <!-- UNIFIED RESPONSIVE HERO MEDIA -->
+      <div class="nb-hero-media">
+        {% liquid
+          assign hero_img_obj = section.settings.hero_desktop_image
+          if hero_img_obj == blank
+            assign hero_img_obj = section.settings.hero_image
+          endif
+        %}
+        {% if hero_img_obj != blank %}
+          <img
+            src="{{ hero_img_obj | image_url: width: 750, format: 'webp' }}"
+            srcset="{{ hero_img_obj | image_url: width: 390, format: 'webp' }} 390w, {{ hero_img_obj | image_url: width: 750, format: 'webp' }} 750w, {{ hero_img_obj | image_url: width: 1100, format: 'webp' }} 1100w, {{ hero_img_obj | image_url: width: 1600, format: 'webp' }} 1600w"
+            sizes="100vw"
+            alt="Biryani Palace by Niamat"
+            class="nb-hero-bg-img"
+            width="750"
+            height="560"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        {% else %}
+          <img
+            src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750"
+            srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=390 390w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750 750w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1100 1100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=1600 1600w"
+            sizes="100vw"
+            alt="Biryani Palace by Niamat"
+            class="nb-hero-bg-img"
+            width="750"
+            height="560"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        {% endif %}
+      </div>
+
+      <div class="nb-hero-overlay"></div>
+
+      <div class="nb-hero-content">
+        {% assign hero_title_rendered = hero_heading %}
+        {% if hero_heading contains 'Biryani Worth Gathering For.' %}
+          {% assign hero_title_rendered = hero_heading | replace: 'Biryani Worth Gathering For.', '<span class="nb-gold-highlight">Biryani Worth Gathering For.</span>' %}
+        {% endif %}
+        <h1 class="nb-hero-title">{{ hero_title_rendered }}</h1>
+        <p class="nb-hero-sub">{{ hero_subheading }}</p>
+
+        <div class="nb-hero-buttons">
+          <a href="{{ hero_btn1_url }}" class="nb-btn-gold">{{ hero_btn1_text }}</a>
+          <a href="{{ hero_btn2_url }}" class="nb-btn-outline">{{ hero_btn2_text }}</a>
+        </div>
+      </div>
+    </div>
+  {% endunless %}
+
+  <!-- 2.5 Γé╣99 TRIAL BIRYANI SHOWCASE (DYNAMICALLY SYNCED WITH INSTANT DELIVERY) -->
+  {% liquid
+    assign trial_prod = all_products[section.settings.trial_product]
+    if trial_prod == blank
+      assign trial_prod = all_products['99-new-customer-trial-biryani']
+    endif
+    if trial_prod == blank
+      assign trial_prod = all_products['new-customer-trial-biryani']
+    endif
+    if trial_prod == blank
+      assign trial_prod = all_products['trial-biryani']
+    endif
+
+    assign trial_available = false
+    if trial_prod != blank and trial_prod.available
+      assign trial_available = true
+    endif
+
+    assign trial_target_url = '/collections/instant-delivery'
+    if trial_prod != blank and trial_prod.url != blank
+      assign trial_target_url = '/collections/instant-delivery'
+    endif
+  %}
+
+  {% if trial_available %}
+    <section class="nb-home-trial-section" aria-labelledby="nb-home-trial-heading">
+      <div class="nb-container">
+        <div class="nb-home-trial-card">
+          <div class="nb-diet-corner-badge" aria-hidden="true">
+            {% render 'nb-diet-icon', diet: 'nonveg' %}
+          </div>
+          <div class="nb-home-trial-content">
+            <div class="nb-home-trial-badge">
+              <span>TRY NIAMAT</span>
+            </div>
+
+            <h2 id="nb-home-trial-heading" class="nb-home-trial-title">
+              Your First Taste of <span class="nb-home-trial-price-highlight">Chicken Biryani for Γé╣99</span>
+            </h2>
+
+            <p class="nb-home-trial-sub">
+              Experience the royal taste of Chicken Biryani by Niamat at a special introductory price.
+            </p>
+
+            <div class="nb-home-trial-details">
+              <div class="nb-home-trial-price-box">
+                <span class="nb-home-trial-amount">Γé╣99</span>
+                <span class="nb-home-trial-portion" style="display: inline-flex; align-items: center; gap: 4px;">
+                  {% render 'nb-diet-icon', diet: 'nonveg' %}
+                  <span>Chicken Biryani ┬╖ Single Trial Portion</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="nb-home-trial-cta-wrap">
+              <a href="{{ trial_target_url }}" class="nb-home-trial-btn">
+                TRY CHICKEN BIRYANI FOR Γé╣99 ΓåÆ
+              </a>
+            </div>
+          </div>
+
+          <div class="nb-home-trial-visual">
+            <div class="nb-home-trial-img-wrap">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600"
+                alt="Biryani Palace by Niamat Γé╣99 Special Trial Biryani"
+                width="340"
+                height="230"
+                loading="lazy"
+                decoding="async"
+                class="nb-home-trial-img"
+              />
+              <span class="nb-home-trial-tag">Dum Cooked Fresh</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- 3. ORDER YOUR WAY (2 CARDS) -->
+  <div class="nb-section-block" style="padding: 56px 0 !important; margin: 32px 0 !important;">
+    <div class="nb-container">
+      <div class="nb-section-header">
+        <span class="nb-tag-badge">Delivery Options</span>
+        <h2>Order Your Way</h2>
+      </div>
+
+      <div class="nb-grid-2">
+        {% for block in section.blocks %}
+          {% if block.type == 'order_way' %}
+            <div class="nb-card nb-card-exp" {{ block.shopify_attributes }}>
+              <div class="nb-card-top">
+                <span class="nb-chip">{{ block.settings.badge }}</span>
+              </div>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.description }}</p>
+              <a href="{{ block.settings.cta_url | default: '/collections/instant-delivery' }}" class="nb-btn-gold nb-w-full">
+                {{ block.settings.cta_text }}
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. TODAY'S KITCHEN -->
+  {% unless section.settings.show_today == false %}
+    <div class="nb-section-block nb-bg-alt" style="padding: 56px 0 !important; margin: 32px 0 !important;">
+      <div class="nb-container">
+        <div class="nb-section-header flex-between">
+          <div>
+            <span class="nb-tag-badge">Fresh Batches</span>
+            <h2>{{ today_heading }}</h2>
+            <p>{{ today_subheading }}</p>
+          </div>
+          <a href="{{ today_cta_url }}" class="nb-btn-gold">{{ today_cta_text }}</a>
+        </div>
+
+        <div class="nb-badges-row" id="nb-today-badges">
+          {% liquid
+            assign instant_col = collections['instant-delivery']
+            if instant_col == blank or instant_col.products.size == 0
+              assign instant_col = collections['all']
+            endif
+            assign available_count = 0
+          %}
+          {% if instant_col != blank and instant_col.products.size > 0 %}
+            {% for product in instant_col.products %}
+              {% liquid
+                assign is_avail = true
+                assign prod_title_lower = product.title | downcase
+
+                if prod_title_lower contains 'sabz'
+                  if section.settings.so_sabz_single and section.settings.so_sabz_double and section.settings.so_sabz_halfkg
+                    assign is_avail = false
+                  endif
+                elsif prod_title_lower contains 'alishaan' or prod_title_lower contains 'tandoori'
+                  if section.settings.so_alishaan_single and section.settings.so_alishaan_double and section.settings.so_alishaan_halfkg
+                    assign is_avail = false
+                  endif
+                elsif prod_title_lower contains 'meals' or prod_title_lower contains 'combos'
+                  if section.settings.so_combo_tandoori_s1 and section.settings.so_combo_tandoori_s2 and section.settings.so_combo_tandoori_halfkg and section.settings.so_combo_sabz_s1 and section.settings.so_combo_sabz_s2 and section.settings.so_combo_sabz_halfkg
+                    assign is_avail = false
+                  endif
+                elsif prod_title_lower contains 'shami' and section.settings.so_shami_kebab
+                  assign is_avail = false
+                elsif prod_title_lower contains 'gulab' and section.settings.so_gulab_jamun
+                  assign is_avail = false
+                elsif prod_title_lower contains 'coke' and section.settings.so_coke
+                  assign is_avail = false
+                elsif prod_title_lower contains 'raita' and section.settings.so_raita
+                  assign is_avail = false
+                endif
+
+                unless product.available
+                  assign is_avail = false
+                endunless
+
+                if is_avail
+                  assign available_count = available_count | plus: 1
+                endif
+              %}
+              <a href="{{ today_cta_url }}#product-{{ product.id }}" class="nb-badge-pill {% unless is_avail %}nb-badge-pill--soldout{% endunless %}" data-product-id="{{ product.id }}" data-product-title="{{ product.title | escape }}" style="text-decoration: none; color: inherit;">
+                <div class="nb-badge-pill__left">
+                  {% render 'nb-diet-icon', product: product %}
+                  <span class="nb-badge-pill__title">{{ product.title }}</span>
+                </div>
+                {% if is_avail %}
+                  <span class="nb-badge-pill__status">
+                    <span class="nb-badge-pill__pulse"></span>
+                    Ready
+                  </span>
+                {% else %}
+                  <span class="nb-badge-pill__status nb-badge-pill__status--soldout">
+                    <span class="nb-badge-pill__soldout-dot"></span>
+                    Sold Out
+                  </span>
+                {% endif %}
+              </a>
+            {% endfor %}
+          {% endif %}
+
+          {% if available_count == 0 %}
+            <div class="nb-badge-pill" style="opacity: 0.9; justify-content: center;">
+              <span class="nb-badge-pill__title">Fresh Batches In Preparation</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endunless %}
+
+  <!-- 5. WHY CHOOSE US (4 POINTS) -->
+  <div class="nb-section-block" style="padding: 56px 0 !important; margin: 32px 0 !important;">
+    <div class="nb-container">
+      <div class="nb-section-header">
+        <span class="nb-tag-badge">Our Quality</span>
+        <h2>Why Customers Choose Biryani Palace</h2>
+      </div>
+
+      <div class="nb-grid-4">
+        {% for block in section.blocks %}
+          {% if block.type == 'why_point' %}
+            <div class="nb-why-box" {{ block.shopify_attributes }}>
+              <div class="nb-why-icon">{{ block.settings.icon }}</div>
+              <h4>{{ block.settings.title }}</h4>
+              <p>{{ block.settings.body }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- 5.5. SIGNATURE BUCKET BIRYANIS -->
+  <div class="nb-section-block nb-bucket-biryani-section">
+    <div class="nb-container" style="max-width: 1060px; margin: 0 auto; padding: 0 16px;">
+      <div class="nb-section-header" style="text-align: center; margin-bottom: 28px;">
+        <span class="nb-tag-badge">≡ƒ¬ú EASY TO CARRY & REUSABLE</span>
+        <h2>Signature Bucket Biryanis</h2>
+        <p style="font-size: 0.9rem; color: #7A5C4A; margin-top: 4px;">100% Food-Grade, Reusable & Recyclable Bucket Containers ΓÇö Easy to carry & keeps biryani piping hot!</p>
+      </div>
+
+      <div class="nb-food-grid">
+        <!-- CARD 1: Half Kg Dum Bucket -->
+        <div class="nb-food-card nb-food-card--preorder">
+          <div class="nb-diet-corner-badge" aria-hidden="true">
+            {% render 'nb-diet-icon', title: 'Ustaadi Murgh Dum Biryani', diet: 'nonveg' %}
+          </div>
+          <div class="nb-food-card__image">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Ustaadi Murgh Dum Biryani Bucket (Half Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="nb-badge nb-tag--musttry">Γ¡É Must try</span>
+          </div>
+          <div class="nb-food-card__body">
+            <div class="nb-food-card__top">
+              <h3 class="nb-food-card__title">Ustaadi Murgh Dum Bucket</h3>
+              <p class="nb-food-card__desc">┬╜ Kg portion = 500 g tender chicken + 500 g fragrant Basmati rice (serves 3ΓÇô4). Reusable food-grade bucket.</p>
+              <div class="nb-food-card__meta">
+                <span class="nb-meta-tag">┬╜ Kg (500g Meat + 500g Rice)</span>
+                <span class="nb-meta-tag">ΓÖ╗∩╕Å Reusable Bucket</span>
+              </div>
+            </div>
+            <div class="nb-food-card__bottom">
+              <span class="nb-food-card__price">Γé╣619</span>
+              <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20would%20like%20to%20check%20availability%20for%20Ustaadi%20Murgh%20Dum%20Bucket%20(Half%20Kg%20-%20%E2%82%B9619)" target="_blank" class="nb-btn nb-btn--outline">Check Availability</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: Half Kg Tandoori Bucket -->
+        <div class="nb-food-card nb-food-card--preorder">
+          <div class="nb-diet-corner-badge" aria-hidden="true">
+            {% render 'nb-diet-icon', title: 'Alishaan Tandoori Biryani', diet: 'nonveg' %}
+          </div>
+          <div class="nb-food-card__image">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Alishaan Tandoori Biryani Bucket (Half Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="nb-badge nb-tag--bestseller">≡ƒÅå Bestseller</span>
+          </div>
+          <div class="nb-food-card__body">
+            <div class="nb-food-card__top">
+              <h3 class="nb-food-card__title">Alishaan Tandoori Bucket</h3>
+              <p class="nb-food-card__desc">┬╜ Kg portion = 500 g tandoori chicken + 500 g fragrant Basmati rice (serves 3ΓÇô4). Reusable food-grade bucket.</p>
+              <div class="nb-food-card__meta">
+                <span class="nb-meta-tag">┬╜ Kg (500g Meat + 500g Rice)</span>
+                <span class="nb-meta-tag">ΓÖ╗∩╕Å Reusable Bucket</span>
+              </div>
+            </div>
+            <div class="nb-food-card__bottom">
+              <span class="nb-food-card__price">Γé╣659</span>
+              <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20would%20like%20to%20check%20availability%20for%20Alishaan%20Tandoori%20Bucket%20(Half%20Kg%20-%20%E2%82%B9659)" target="_blank" class="nb-btn nb-btn--outline">Check Availability</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: 1 Kg Dum Bucket -->
+        <div class="nb-food-card nb-food-card--preorder">
+          <div class="nb-diet-corner-badge" aria-hidden="true">
+            {% render 'nb-diet-icon', title: 'Ustaadi Murgh Dum Biryani', diet: 'nonveg' %}
+          </div>
+          <div class="nb-food-card__image">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-1kg-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Ustaadi Murgh Dum Biryani Bucket (1 Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="nb-badge nb-tag--popular">≡ƒöÑ Popular</span>
+          </div>
+          <div class="nb-food-card__body">
+            <div class="nb-food-card__top">
+              <h3 class="nb-food-card__title">Ustaadi Murgh Dum Bucket</h3>
+              <p class="nb-food-card__desc">1 Kg portion = 1 Kg tender chicken + 1 Kg fragrant Basmati rice (serves 6ΓÇô7). Reusable food-grade bucket.</p>
+              <div class="nb-food-card__meta">
+                <span class="nb-meta-tag">1 Kg (1Kg Meat + 1Kg Rice)</span>
+                <span class="nb-meta-tag">ΓÖ╗∩╕Å Reusable Bucket</span>
+              </div>
+            </div>
+            <div class="nb-food-card__bottom">
+              <span class="nb-food-card__price">Γé╣1,028</span>
+              <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20would%20like%20to%20check%20availability%20for%20Ustaadi%20Murgh%20Dum%20Bucket%20(1%20Kg%20-%20%E2%82%B91028)" target="_blank" class="nb-btn nb-btn--outline">Check Availability</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: 1 Kg Tandoori Bucket -->
+        <div class="nb-food-card nb-food-card--preorder">
+          <div class="nb-diet-corner-badge" aria-hidden="true">
+            {% render 'nb-diet-icon', title: 'Alishaan Tandoori Biryani', diet: 'nonveg' %}
+          </div>
+          <div class="nb-food-card__image">
+            <img
+              src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=200"
+              srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=100 100w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoor-bucket-1kg-optimized.webp?v=1785619720&width=200 200w"
+              sizes="(max-width: 768px) 85px, 110px"
+              alt="Alishaan Tandoori Biryani Bucket (1 Kg)"
+              width="85"
+              height="85"
+              loading="lazy"
+              decoding="async"
+            />
+            <span class="nb-badge nb-tag--chef">≡ƒææ Classic</span>
+          </div>
+          <div class="nb-food-card__body">
+            <div class="nb-food-card__top">
+              <h3 class="nb-food-card__title">Alishaan Tandoori Bucket</h3>
+              <p class="nb-food-card__desc">1 Kg portion = 1 Kg tandoori chicken + 1 Kg fragrant Basmati rice (serves 6ΓÇô7). Reusable food-grade bucket.</p>
+              <div class="nb-food-card__meta">
+                <span class="nb-meta-tag">1 Kg (1Kg Meat + 1Kg Rice)</span>
+                <span class="nb-meta-tag">ΓÖ╗∩╕Å Reusable Bucket</span>
+              </div>
+            </div>
+            <div class="nb-food-card__bottom">
+              <span class="nb-food-card__price">Γé╣1,099</span>
+              <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20would%20like%20to%20check%20availability%20for%20Alishaan%20Tandoori%20Bucket%20(1%20Kg%20-%20%E2%82%B91099)" target="_blank" class="nb-btn nb-btn--outline">Check Availability</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. FAMILY ORDERS & BULK CATERING -->
+  {% unless section.settings.show_family == false %}
+    <div class="nb-section-block nb-bg-alt" style="padding: 56px 0 !important; margin: 0 !important;">
+      <div class="nb-container">
+        <div class="nb-family-banner">
+          <div class="nb-family-text">
+            <span class="nb-tag-badge">Bulk & Catering</span>
+            <h2>{{ family_heading }}</h2>
+            <p>{{ family_subheading }}</p>
+            <div class="nb-family-btns" style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;">
+              <a href="{{ family_cta_url }}" class="nb-btn-gold">{{ family_cta_text }}</a>
+              <a href="/pages/biryani-calculator" class="nb-btn-gold" style="background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%) !important; color: #F3C669 !important; border: 1px solid rgba(200,146,42,0.4) !important;">Biryani Calculator</a>
+            </div>
+          </div>
+          <div class="nb-family-media">
+            {% if section.settings.family_image != blank %}
+              <img src="{{ section.settings.family_image | image_url: width: 500, format: 'webp' }}" alt="Family Feast" width="500" height="350" loading="lazy" decoding="async" />
+            {% else %}
+              <div class="nb-catering-card">
+                <div class="nb-catering-card-badge">Handi Catering</div>
+                <div class="nb-catering-card-title">Bulk &amp; Event Orders</div>
+                <ul class="nb-catering-perks">
+                  <li><span>Γ£ô</span> 5 Kg to 50+ Kg Dum Handis</li>
+                  <li><span>Γ£ô</span> Weddings, Parties &amp; Corporate Feasts</li>
+                  <li><span>Γ£ô</span> Tailored Portions &amp; Timely Delivery</li>
+                </ul>
+                <a href="https://wa.me/919167682582?text=Hi%20Niamat%20Biryani,%20I%20want%20to%20inquire%20about%20Bulk%20%26%20Event%20Catering" target="_blank" class="nb-catering-wa-btn">
+                  Inquire on WhatsApp ΓåÆ
+                </a>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endunless %}
+
+  <!-- 8. DELIVERY AREAS -->
+  <div class="nb-section-block" style="padding: 52px 0 !important; margin: 0 !important;">
+    <div class="nb-container">
+      <div class="nb-section-header">
+        <span class="nb-tag-badge">Coverage</span>
+        <h2>Where We Deliver</h2>
+        <p>Freshly prepared on order ┬╖ Minimum 3 hours advance notice required for pre-orders</p>
+      </div>
+
+      <div class="nb-grid-3">
+        {% for block in section.blocks %}
+          {% if block.type == 'delivery_zone' %}
+            <div class="nb-zone-card" {{ block.shopify_attributes }}>
+              <div class="nb-zone-icon">≡ƒôì</div>
+              <h3>{{ block.settings.zone_name }}</h3>
+              <p>ΓÅ│ {{ block.settings.eta }}</p>
+              <span class="nb-zone-fee">{{ block.settings.delivery_fee }}</span>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="nb-delivery-policy-note" style="margin-top: 24px; background: #FFFDF7; border: 1px dashed rgba(200,146,42,0.4); border-radius: 14px; padding: 16px 20px; text-align: center; font-size: 0.88rem; color: #5C4033; line-height: 1.5;">
+        <strong>≡ƒÆí Pre-Order & Delivery Policy:</strong> All biryanis are slow-cooked fresh on order (Minimum 3 hours advance notice required). FREE delivery on 1 Kg+ orders or within 5 km radius. Delivery charges for locations beyond 5 kms will be calculated and updated upon order placement.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<style>
+.nb-homepage-wrapper { background-color: var(--nb-page-bg) !important; color: var(--nb-text-dark) !important; font-family: inherit; width: 100%; overflow-x: hidden; }
+.nb-container { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.nb-section-block { padding: 48px 0 !important; margin-bottom: 24px !important; }
+.nb-bg-alt { background-color: var(--nb-alt-bg) !important; }
+
+.nb-section-header { margin-bottom: 28px; text-align: center; position: relative; }
+.nb-section-header.flex-between { display: flex; justify-content: space-between; align-items: flex-end; text-align: left; }
+.nb-tag-badge { display: inline-block; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--nb-gold) !important; margin-bottom: 6px; }
+.nb-section-header h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.7rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 0 0 6px; letter-spacing: -0.01em; }
+.nb-section-header p { font-size: 0.9rem; color: var(--nb-text-muted) !important; margin: 0; }
+
+.nb-status-bar { background-color: var(--nb-status-bg) !important; color: #FDF6EC; padding: 12px 16px; text-align: center; font-size: 0.85rem; font-weight: 600; border-bottom: 1px solid rgba(200,146,42,0.3); }
+.nb-status-inner { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.nb-pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #22c55e; }
+
+.nb-gold-highlight {
+  font-weight: 800 !important;
+  display: inline;
+}
+
+.nb-hero-title .nb-gold-highlight {
+  background: linear-gradient(135deg, #FFF5CC 0%, #F8D675 30%, #E6B33D 65%, #C88E1C 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+  filter: drop-shadow(0 2px 12px rgba(230, 179, 61, 0.45));
+}
+
+.nb-hero-banner { position: relative; background: linear-gradient(135deg, #160B07 0%, var(--nb-dark-bg) 100%) !important; color: #fff; padding: 48px 16px !important; width: 100vw !important; left: 50% !important; right: 50% !important; margin-left: -50vw !important; margin-right: -50vw !important; min-height: 480px !important; height: 75vh !important; max-height: 600px !important; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; box-sizing: border-box; }
+.nb-hero-media { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+.nb-hero-bg-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.nb-hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(22, 11, 7, var(--nb-overlay-opac)) !important; z-index: 2; }
+.nb-hero-glow { position: absolute; top: -50px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(230,179,61,0.38) 0%, transparent 70%); pointer-events: none; z-index: 1; }
+.nb-hero-content { position: relative; z-index: 3; max-width: 780px; margin: 0 auto; text-align: center; }
+.nb-hero-title { font-family: 'Inter', system-ui, -apple-system, sans-serif !important; font-size: 2.1rem; font-weight: 800; color: #FFFFFF !important; margin: 0 0 16px; line-height: 1.18; letter-spacing: -0.025em !important; text-shadow: 0 4px 20px rgba(0,0,0,0.6); text-align: center; }
+.nb-hero-sub { font-size: 0.95rem; color: #E2D5C5 !important; margin: 0 0 26px; line-height: 1.55; text-align: center; }
+.nb-hero-buttons { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; max-width: 440px; margin: 0 auto; text-align: center; }
+.nb-hero-buttons .nb-btn-gold,
+.nb-hero-buttons .nb-btn-outline { width: 100%; max-width: 280px; justify-content: center; text-align: center; box-sizing: border-box; }
+
+.nb-btn-gold { background: linear-gradient(135deg, #D49E35 0%, var(--nb-btn1-bg) 60%, #B07C1C 100%) !important; color: var(--nb-btn1-text) !important; font-weight: 700; font-size: 0.92rem; padding: 14px 24px; border-radius: 12px; text-decoration: none; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 20px rgba(200,146,42,0.35), inset 0 1px 0 rgba(255,255,255,0.3) !important; }
+.nb-btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(200,146,42,0.45) !important; }
+.nb-btn-outline { background: rgba(255,250,244,0.1); border: 1.5px solid rgba(200,146,42,0.5); color: #FDF6EC !important; font-weight: 700; font-size: 0.92rem; padding: 14px 24px; border-radius: 12px; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; backdrop-filter: blur(6px); transition: all 0.25s ease; }
+.nb-btn-outline:hover { background: rgba(255,250,244,0.2); border-color: #C8922A; }
+.nb-w-full { width: 100%; box-sizing: border-box; text-align: center; }
+
+.nb-grid-2 { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.nb-grid-3 { display: grid; grid-template-columns: 1fr; gap: 18px; }
+.nb-grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ULTRA-PREMIUM GLOWING SHIMMER CARDS */
+.nb-card,
+.nb-why-box,
+.nb-dish-card,
+.nb-zone-card {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important;
+  border: 1px solid rgba(200, 146, 42, 0.22) !important;
+  border-radius: 20px !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -12px rgba(44, 24, 16, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.nb-card::before,
+.nb-why-box::before,
+.nb-dish-card::before,
+.nb-zone-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(200, 146, 42, 0.14) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.nb-card:hover::before,
+.nb-why-box:hover::before,
+.nb-dish-card:hover::before,
+.nb-zone-card:hover::before {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.nb-card:hover,
+.nb-why-box:hover,
+.nb-dish-card:hover,
+.nb-zone-card:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(200, 146, 42, 0.45) !important;
+  box-shadow: 0 18px 40px -10px rgba(200, 146, 42, 0.22), inset 0 1px 1px rgba(255, 255, 255, 1) !important;
+}
+
+.nb-card-exp { border-top: 4px solid var(--nb-gold) !important; padding: 26px 22px; display: flex; flex-direction: column; }
+.nb-card-exp h3 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.3rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 10px 0 8px; position: relative; z-index: 2; }
+.nb-card-exp p { font-size: 0.86rem; color: var(--nb-text-muted) !important; margin: 0 0 18px; flex: 1; line-height: 1.5; position: relative; z-index: 2; }
+.nb-chip { font-size: 0.74rem; font-weight: 700; background: rgba(200,146,42,0.15); color: var(--nb-gold) !important; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(200,146,42,0.3); position: relative; z-index: 2; }
+
+.nb-badges-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.nb-badge-pill {
+  background-color: var(--nb-card-bg, #FFFFFF) !important;
+  border: 1px solid rgba(200, 146, 42, 0.3) !important;
+  border-radius: 12px !important;
+  padding: 10px 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  font-size: 0.85rem !important;
+  color: var(--nb-text-dark, #2C1810) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.25s ease !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+.nb-badge-pill:hover {
+  transform: translateY(-2px);
+  border-color: #C8922A;
+  box-shadow: 0 6px 20px rgba(200, 146, 42, 0.2) !important;
+}
+.nb-badge-pill__left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+.nb-badge-pill__title {
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+  color: #2C1810 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.nb-badge-pill__status {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  color: #2E7D32 !important;
+  background: rgba(46, 125, 50, 0.08) !important;
+  border: 1px solid rgba(46, 125, 50, 0.22) !important;
+  padding: 3px 8px !important;
+  border-radius: 16px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+.nb-badge-pill__pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #2E7D32;
+  display: inline-block;
+  animation: nbPulse 1.8s infinite;
+}
+@keyframes nbPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.6); }
+  70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(46, 125, 50, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+}
+.nb-badge-pill--soldout {
+  opacity: 0.75 !important;
+  border-color: rgba(198, 40, 40, 0.25) !important;
+}
+.nb-badge-pill__status--soldout {
+  color: #C62828 !important;
+  background: rgba(198, 40, 40, 0.08) !important;
+  border: 1px solid rgba(198, 40, 40, 0.25) !important;
+}
+.nb-badge-pill__soldout-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #C62828;
+  display: inline-block;
+}
+
+@media (max-width: 767px) {
+  .nb-badges-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin-top: 16px !important;
+  }
+  .nb-badge-pill {
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+  }
+  .nb-badge-pill__title {
+    font-size: 0.84rem !important;
+  }
+}
+
+.nb-why-box { padding: 24px 18px; text-align: center; }
+.nb-why-icon { font-size: 2.4rem; margin-bottom: 12px; position: relative; z-index: 2; filter: drop-shadow(0 4px 10px rgba(200, 146, 42, 0.22)); transition: transform 0.3s ease; }
+.nb-why-box:hover .nb-why-icon { transform: scale(1.1); }
+.nb-why-box h4 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.05rem; font-weight: 700; color: var(--nb-text-dark) !important; margin: 0 0 6px; position: relative; z-index: 2; }
+.nb-why-box p { font-size: 0.82rem; color: var(--nb-text-muted) !important; margin: 0; line-height: 1.48; position: relative; z-index: 2; }
+
+.nb-dish-card { overflow: hidden; display: flex; flex-direction: column; }
+.nb-dish-img-wrap { width: 100%; height: 175px; background: #F5ECD7; overflow: hidden; position: relative; z-index: 2; }
+.nb-dish-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+.nb-dish-card:hover .nb-dish-img-wrap img { transform: scale(1.06); }
+.nb-dish-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.2rem; }
+.nb-dish-content { padding: 18px; flex: 1; display: flex; flex-direction: column; position: relative; z-index: 2; }
+.nb-dish-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.nb-dish-header h4 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.05rem; font-weight: 700; color: var(--nb-text-dark) !important; margin: 0; }
+.nb-dish-price { font-size: 1.05rem; font-weight: 800; color: var(--nb-gold) !important; }
+.nb-dish-content p { font-size: 0.82rem; color: var(--nb-text-muted) !important; margin: 0; line-height: 1.45; }
+
+.nb-family-banner { background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 60%, #FDF5E6 100%) !important; border: 1px solid rgba(200,146,42,0.3) !important; border-left: 5px solid var(--nb-gold) !important; border-radius: 20px; padding: 32px 24px; display: flex; flex-direction: column; gap: 28px; align-items: stretch; box-shadow: 0 14px 40px -10px rgba(44,24,16,0.1), inset 0 1px 1px rgba(255,255,255,1) !important; transition: all 0.3s ease; }
+.nb-family-banner:hover { box-shadow: 0 18px 45px -8px rgba(200,146,42,0.22) !important; transform: translateY(-3px); }
+.nb-family-text { flex: 1; }
+.nb-family-text h2 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.65rem; font-weight: 800; color: var(--nb-text-dark) !important; margin: 8px 0 12px; }
+.nb-family-text p { font-size: 0.92rem; color: var(--nb-text-muted) !important; margin: 0 0 16px; line-height: 1.55; }
+.nb-family-media { width: 100%; max-width: 380px; }
+.nb-family-media img { width: 100%; height: auto; border-radius: 14px; }
+.nb-catering-card { background: linear-gradient(135deg, #2C1810 0%, #1A0D07 100%); border: 1.5px solid rgba(200,146,42,0.45); border-radius: 18px; padding: 24px 22px; box-shadow: 0 12px 30px rgba(44,24,16,0.2); color: #FFFDF7; text-align: left; }
+.nb-catering-card-badge { display: inline-block; background: rgba(200,146,42,0.22); border: 1px solid rgba(200,146,42,0.4); color: #F3C669; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+.nb-catering-card-title { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.25rem; font-weight: 800; color: #FFFDF7; margin-bottom: 12px; }
+.nb-catering-perks { list-style: none; padding: 0; margin: 0 0 16px 0; display: flex; flex-direction: column; gap: 8px; }
+.nb-catering-perks li { font-size: 0.85rem; color: #E6D2B5; display: flex; align-items: center; gap: 8px; line-height: 1.35; }
+.nb-catering-perks li span { color: #C8922A; font-weight: 800; font-size: 0.95rem; }
+.nb-catering-wa-btn { display: block; text-align: center; background: linear-gradient(135deg, #D49E35 0%, #C8922A 100%); color: #FFFFFF !important; font-weight: 700; font-size: 0.86rem; padding: 9px 16px; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 14px rgba(200,146,42,0.35); transition: all 0.2s ease; }
+.nb-catering-wa-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(200,146,42,0.5); }
+
+.nb-zone-card { padding: 22px 18px; text-align: center; }
+.nb-zone-icon { font-size: 2rem; margin-bottom: 8px; position: relative; z-index: 2; filter: drop-shadow(0 3px 8px rgba(200,146,42,0.2)); }
+.nb-zone-card h3,
+.nb-zone-card h4 { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.05rem !important; font-weight: 700 !important; color: var(--nb-text-dark) !important; margin: 0 0 6px !important; position: relative; z-index: 2; line-height: 1.35 !important; }
+.nb-zone-card p { font-size: 0.82rem; color: var(--nb-text-muted) !important; margin: 0 0 8px; position: relative; z-index: 2; }
+.nb-zone-fee { display: inline-block; font-size: 0.76rem; font-weight: 700; color: var(--nb-gold) !important; background: rgba(200,146,42,0.12); padding: 3px 10px; border-radius: 12px; position: relative; z-index: 2; }
+
+/* ===== 2.5 Γé╣99 TRIAL BIRYANI HOMEPAGE SHOWCASE ===== */
+.nb-home-trial-section { padding: 36px 0 16px !important; margin: 0 !important; }
+.nb-home-trial-card { background: linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 50%, #FDF5E6 100%) !important; border: 1.5px solid rgba(200, 146, 42, 0.35) !important; border-left: 5px solid #C8922A !important; border-radius: 20px; padding: 28px 24px; display: flex; flex-direction: column-reverse; gap: 24px; align-items: center; box-shadow: 0 14px 40px -10px rgba(44, 24, 16, 0.1), inset 0 1px 1px rgba(255, 255, 255, 1) !important; transition: all 0.3s ease; }
+.nb-home-trial-card:hover { box-shadow: 0 18px 45px -8px rgba(200, 146, 42, 0.22) !important; transform: translateY(-2px); }
+.nb-home-trial-content { flex: 1; width: 100%; }
+.nb-home-trial-badge { display: inline-block; background: rgba(200, 146, 42, 0.15); border: 1px solid rgba(200, 146, 42, 0.35); color: #C8922A; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 10px; }
+.nb-home-trial-title { font-family: 'Playfair Display', Georgia, serif !important; font-size: 1.7rem; font-weight: 800; color: #2C1810 !important; margin: 0 0 8px 0; line-height: 1.25; }
+.nb-home-trial-price-highlight { color: #C8922A; }
+.nb-home-trial-sub { font-size: 0.92rem; color: #7A5C4A !important; margin: 0 0 18px 0; line-height: 1.5; }
+.nb-home-trial-details { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+.nb-home-trial-price-box { display: flex; align-items: baseline; gap: 8px; }
+.nb-home-trial-amount { font-size: 1.8rem; font-weight: 800; color: #2C1810; line-height: 1; }
+.nb-home-trial-portion { font-size: 0.86rem; font-weight: 600; color: #7A5C4A; background: rgba(44, 24, 16, 0.06); padding: 3px 10px; border-radius: 8px; }
+.nb-home-trial-code-pill { font-size: 0.84rem; color: #2C1810; background: #FFFDF7; border: 1px dashed rgba(200, 146, 42, 0.5); padding: 4px 12px; border-radius: 8px; }
+.nb-home-trial-code-pill strong { color: #C8922A; letter-spacing: 0.04em; }
+.nb-home-trial-btn { display: inline-block; background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%) !important; color: #FFFFFF !important; font-weight: 700; font-size: 0.92rem; letter-spacing: 0.04em; padding: 12px 28px; border-radius: 12px; text-decoration: none; box-shadow: 0 6px 20px rgba(200, 146, 42, 0.35); transition: all 0.25s ease; text-align: center; }
+.nb-home-trial-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200, 146, 42, 0.5); }
+.nb-home-trial-visual { width: 100%; max-width: 320px; flex-shrink: 0; }
+.nb-home-trial-img-wrap { position: relative; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 25px rgba(44, 24, 16, 0.12); border: 1px solid rgba(200, 146, 42, 0.3); background: #2C1810; }
+.nb-home-trial-img { width: 100%; height: 210px; object-fit: cover; display: block; }
+.nb-home-trial-tag { position: absolute; bottom: 10px; left: 10px; background: rgba(44, 24, 16, 0.85); backdrop-filter: blur(4px); color: #F3C669; font-size: 0.74rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(200, 146, 42, 0.4); }
+
+@media (min-width: 768px) {
+  .nb-home-trial-card { flex-direction: row; padding: 36px 40px; gap: 40px; align-items: center; }
+  .nb-home-trial-title { font-size: 2.2rem; }
+  .nb-home-trial-visual { max-width: 340px; }
+  .nb-home-trial-img { height: 230px; }
+  .nb-family-banner { flex-direction: row; align-items: center; justify-content: space-between; padding: 40px 44px; gap: 40px; }
+  .nb-hero-banner { min-height: 480px !important; height: 65vh !important; max-height: 580px !important; padding: 56px 24px !important; width: 100vw !important; margin-left: -50vw !important; margin-right: -50vw !important; }
+  .nb-grid-2 { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .nb-grid-3 { grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .nb-grid-4 { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; }
+  .nb-hero-buttons { flex-direction: row; justify-content: center; align-items: center; max-width: 520px; margin: 0 auto; }
+  .nb-hero-buttons .nb-btn-gold,
+  .nb-hero-buttons .nb-btn-outline { width: auto; min-width: 200px; }
+  .nb-section-header h2 { font-size: 2.2rem; }
+  .nb-hero-title { font-size: 3rem; }
+}
+</style>
+
+<script>
+(function syncHomepageWithInstantDelivery() {
+  function runSync() {
+    var pills = document.querySelectorAll('.nb-badge-pill[data-product-id]');
+    if (!pills.length) return;
+
+    fetch('/collections/instant-delivery')
+      .then(function(r) { return r.text(); })
+      .then(function(html) {
+        var parser = new DOMParser();
+        var doc = parser.parseFromString(html, 'text/html');
+        pills.forEach(function(pill) {
+          var pid = pill.dataset.productId;
+          var ptitle = (pill.dataset.productTitle || '').toLowerCase().trim();
+          var card = doc.querySelector('.nb-food-card[data-product-id="' + pid + '"]') ||
+                     Array.from(doc.querySelectorAll('.nb-food-card')).find(function(c) {
+                       var tEl = c.querySelector('.nb-food-card__title');
+                       return tEl && tEl.textContent.trim().toLowerCase() === ptitle;
+                     });
+
+          if (card) {
+            var isSoldOut = card.classList.contains('nb-food-card--soldout');
+            var btn = card.querySelector('.nb-quick-form button');
+            if (btn && (btn.disabled || btn.textContent.trim().toLowerCase().includes('sold out'))) {
+              isSoldOut = true;
+            }
+            var varPills = card.querySelectorAll('.nb-variant-pill');
+            if (varPills.length > 0) {
+              var allSold = Array.from(varPills).every(function(vp) {
+                return vp.dataset.available === 'false' || vp.classList.contains('nb-variant-pill--soldout') || vp.textContent.toLowerCase().includes('sold out');
+              });
+              if (allSold) isSoldOut = true;
+            }
+
+            var statusEl = pill.querySelector('.nb-badge-pill__status');
+            if (statusEl) {
+              if (isSoldOut) {
+                pill.classList.add('nb-badge-pill--soldout');
+                statusEl.className = 'nb-badge-pill__status nb-badge-pill__status--soldout';
+                statusEl.innerHTML = '<span class="nb-badge-pill__soldout-dot"></span> Sold Out';
+              } else {
+                pill.classList.remove('nb-badge-pill--soldout');
+                statusEl.className = 'nb-badge-pill__status';
+                statusEl.innerHTML = '<span class="nb-badge-pill__pulse"></span> Ready';
+              }
+            }
+          }
+        });
+      })
+      .catch(function() {});
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runSync);
+  } else {
+    runSync();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Homepage (Hero-Delivery)",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Theme Colors & Styling"
+    },
+    {
+      "type": "color",
+      "id": "color_page_bg",
+      "label": "Page Background Color",
+      "default": "#FFFAF4"
+    },
+    {
+      "type": "color",
+      "id": "color_dark_bg",
+      "label": "Dark Background Color",
+      "default": "#1E100A"
+    },
+    {
+      "type": "color",
+      "id": "color_card_bg",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_alt_bg",
+      "label": "Alternate Section Background",
+      "default": "#FDF6EC"
+    },
+    {
+      "type": "color",
+      "id": "color_accent_gold",
+      "label": "Accent Gold Color",
+      "default": "#C8922A"
+    },
+    {
+      "type": "color",
+      "id": "color_text_dark",
+      "label": "Primary Text Color",
+      "default": "#2C1810"
+    },
+    {
+      "type": "color",
+      "id": "color_text_muted",
+      "label": "Muted Text Color",
+      "default": "#7A5C4A"
+    },
+    {
+      "type": "color",
+      "id": "color_status_bg",
+      "label": "Status Bar Background",
+      "default": "#1E100A"
+    },
+    {
+      "type": "color",
+      "id": "color_btn1_bg",
+      "label": "Primary CTA Button BG",
+      "default": "#C8922A"
+    },
+    {
+      "type": "color",
+      "id": "color_btn1_text",
+      "label": "Primary CTA Button Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Layout, Height & Padding"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Vertical Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "hero_min_height",
+      "min": 200,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Hero Banner Minimum Height",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "hero_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Hero Video Overlay Opacity",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Status Bar Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_status",
+      "label": "Show Kitchen Status Bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "status_text",
+      "label": "Status Bar Text",
+      "default": "Kitchen Open - Lunch 12-3 PM, Dinner 6-9 PM"
+    },
+    {
+      "type": "header",
+      "content": "Hero Banner Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero",
+      "label": "Show Hero Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hero_heading",
+      "label": "Hero Heading",
+      "default": "More Than a Meal. A Biryani Worth Gathering For."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subheading",
+      "label": "Hero Subheading",
+      "default": "From quick cravings to family feasts, enjoy freshly prepared biryani delivered across Kalyan."
+    },
+    {
+      "type": "text",
+      "id": "hero_btn1_text",
+      "label": "Button 1 Text",
+      "default": "Order Now"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn1_url",
+      "label": "Button 1 Link"
+    },
+    {
+      "type": "text",
+      "id": "hero_btn2_text",
+      "label": "Button 2 Text",
+      "default": "See Full Menu"
+    },
+    {
+      "type": "url",
+      "id": "hero_btn2_url",
+      "label": "Button 2 Link"
+    },
+    {
+      "type": "header",
+      "content": "Desktop & Mobile Hero Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_desktop_image",
+      "label": "Desktop Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_desktop_video_url",
+      "label": "Desktop Hero Video MP4 URL (Optional)"
+    },
+    {
+      "type": "text",
+      "id": "hero_mobile_video_url",
+      "label": "Mobile Hero Video MP4 URL",
+      "default": "https://cdn.shopify.com/videos/c/o/v/d9d77b9d67f2417b8243214b4f77fd47.mp4"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_mobile_image",
+      "label": "Mobile Hero Fallback Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Legacy Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_video_url",
+      "label": "Legacy Hero Video MP4 URL"
+    },
+    {
+      "type": "header",
+      "content": "Γé╣99 Trial Biryani Settings"
+    },
+    {
+      "type": "product",
+      "id": "trial_product",
+      "label": "Trial Product (Syncs availability)",
+      "info": "Section automatically appears only when this product is published and in stock."
+    },
+    {
+      "type": "header",
+      "content": "Today's Kitchen Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_today",
+      "label": "Show Today's Kitchen",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "today_heading",
+      "label": "Section Heading",
+      "default": "What's Ready Today"
+    },
+    {
+      "type": "textarea",
+      "id": "today_subheading",
+      "label": "Section Subheading",
+      "default": "Freshly prepared items currently available for instant delivery."
+    },
+    {
+      "type": "text",
+      "id": "today_cta_text",
+      "label": "CTA Button Text",
+      "default": "Order Instant Items"
+    },
+    {
+      "type": "url",
+      "id": "today_cta_url",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "header",
+      "content": "≡ƒì▒ 1. NIAMAT MEALS & COMBOS (6 INDIVIDUAL COMBOS)"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_tandoori_s1",
+      "label": "Alishaan Tandoori with 2 Shami & 1 Gulab Jamun (Serves 1)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_tandoori_s2",
+      "label": "Alishaan Tandoori with 4 Shami & 2 Gulab Jamuns (Serves 2)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_tandoori_halfkg",
+      "label": "Half Kg Tandoori Biryani with 6 Shami Kebabs (Serves 3-4)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_sabz_s1",
+      "label": "Sabz Tikka Biryani with 2 Gulab Jamuns (Serves 1)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_sabz_s2",
+      "label": "Sabz Tikka Biryani 4 Gulab Jamuns (Serves 2)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_sabz_halfkg",
+      "label": "Sabz Tikka Biryani with 6 Gulab Jamuns (Serves 3-4)",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "≡ƒìù 2. ALISHAAN TANDOORI BIRYANI (3 PORTIONS)"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_alishaan_single",
+      "label": "Single Plate (Serves 1) ΓÇö Alishaan Tandoori",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_alishaan_double",
+      "label": "Double Plate (Serves 2) ΓÇö Alishaan Tandoori",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_alishaan_halfkg",
+      "label": "Half Kg (Serves 3-4) ΓÇö Alishaan Tandoori",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "≡ƒî┐ 3. SABZ TIKKA BIRYANI (3 PORTIONS)"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_sabz_single",
+      "label": "Single Plate (Serves 1) ΓÇö Sabz Tikka Biryani",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "so_sabz_double",
+      "label": "Double Plate (Serves 2) ΓÇö Sabz Tikka Biryani",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "so_sabz_halfkg",
+      "label": "Half Kg (Serves 3-4) ΓÇö Sabz Tikka Biryani",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "≡ƒìó 4. SIDES, DESSERTS & SPECIAL TRIAL"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_shami_kebab",
+      "label": "Chicken Shami Kebab (2 pcs)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_gulab_jamun",
+      "label": "Gulab Jamun (3 pcs)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_trial_all",
+      "label": "Γé╣99 Trial Chicken Biryani",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_coke",
+      "label": "Coke / Beverages",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_raita",
+      "label": "Extra Raita",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Family Orders Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_family",
+      "label": "Show Family Orders",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "family_heading",
+      "label": "Family Heading",
+      "default": "Feeding a Crowd?"
+    },
+    {
+      "type": "textarea",
+      "id": "family_subheading",
+      "label": "Family Subheading",
+      "default": "Planning a party, family gathering or office lunch?"
+    },
+    {
+      "type": "text",
+      "id": "family_cta_text",
+      "label": "Family CTA Text",
+      "default": "Plan Family Order"
+    },
+    {
+      "type": "url",
+      "id": "family_cta_url",
+      "label": "Family CTA Link"
+    },
+    {
+      "type": "image_picker",
+      "id": "family_image",
+      "label": "Family Banner Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "order_way",
+      "name": "Order Way Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge Text",
+          "default": "Instant Delivery"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Title",
+          "default": "Instant Orders (45-60 Mins)"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Fresh biryani ready for fast delivery."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button Text",
+          "default": "Order Instant Delivery"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Button Link"
+        }
+      ]
+    },
+    {
+      "type": "today_badge",
+      "name": "Today Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "≡ƒìù"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Chicken Dum Biryani"
+        }
+      ]
+    },
+    {
+      "type": "why_point",
+      "name": "Why Choose Point",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon",
+          "default": "≡ƒöÑ"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Fresh Dum Batches"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body",
+          "default": "Cooked fresh in small batches."
+        }
+      ]
+    },
+    {
+      "type": "delivery_zone",
+      "name": "Delivery Zone",
+      "settings": [
+        {
+          "type": "text",
+          "id": "zone_name",
+          "label": "Zone Name",
+          "default": "Kalyan West"
+        },
+        {
+          "type": "text",
+          "id": "eta",
+          "label": "ETA Time",
+          "default": "45-60 mins"
+        },
+        {
+          "type": "text",
+          "id": "delivery_fee",
+          "label": "Delivery Fee",
+          "default": "Free above Γé╣799"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage (Hero-Delivery)"
+    }
+  ]
+}
+{% endschema %}

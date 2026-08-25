@@ -81,9 +81,9 @@
         "delivery_zone_1": {
           "type": "delivery_zone",
           "settings": {
-            "zone_name": "Kalyan West",
-            "eta": "Pre-Orders Only (Min 3 Hours Notice)",
-            "delivery_fee": "FREE on 1 Kg+ or within 5 km"
+            "zone_name": "Kalyan West (Within 5 km)",
+            "eta": "Pre-Orders (Min 3 Hours) & Instant (45–60 min)",
+            "delivery_fee": "FREE > ₹799 (₹49 below ₹799)"
           }
         },
         "delivery_zone_2": {
@@ -325,7 +325,7 @@
           "type": "faq_item",
           "settings": {
             "question": "Do you charge for delivery?",
-            "answer": "Delivery is FREE within Kalyan for orders above ₹799 or any 1 KG Biryani. Otherwise, delivery charges apply based on your exact location."
+            "answer": "Free delivery on orders above ₹799. Orders below ₹799 are charged ₹49 delivery fee. Hot biryani delivered within 5 km of our kitchen."
           }
         },
         "faq_item_11": {

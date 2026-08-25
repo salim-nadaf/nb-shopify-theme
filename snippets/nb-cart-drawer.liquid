@@ -209,7 +209,7 @@
         <span>📜</span> <strong>Store Delivery Policy</strong>
       </div>
       <ul class="nb-policy-list">
-        <li>🚚 <strong>0–5 km (Kalyan / Nearby)</strong>: ₹39 Delivery · <strong>FREE</strong> > ₹799</li>
+        <li>🚚 <strong>0–5 km (Kalyan / Nearby)</strong>: ₹49 Delivery · <strong>FREE</strong> > ₹799</li>
         <li>🚀 <strong>5–8 km (Extended Zone)</strong>: ₹89 Delivery · <strong>FREE</strong> > ₹1,299</li>
         <li>⛔ <strong>> 8 km</strong>: Outside direct delivery radius</li>
       </ul>
@@ -963,7 +963,7 @@ function nbRenderCart(cart) {
     } else {
       var neededAmount = targetThreshold - subtotalRupees;
       var fillPct = Math.min(100, Math.round((subtotalRupees / targetThreshold) * 100));
-      itemsFdText.innerHTML = 'Add <strong>₹' + neededAmount + '</strong> more to get <strong style="color:#C8922A;">FREE Delivery</strong> (Free above ₹' + targetThreshold + ')';
+      itemsFdText.innerHTML = 'Add <strong>₹' + neededAmount + '</strong> more for <strong style="color:#C8922A;">FREE Delivery</strong> (Free above ₹' + targetThreshold + ' · ₹49 below ₹' + targetThreshold + ')';
       itemsFdFill.style.width = fillPct + '%';
       itemsFdFill.style.background = 'linear-gradient(90deg, #D49E35 0%, #C8922A 100%)';
     }
@@ -978,10 +978,10 @@ function nbRenderCart(cart) {
   } else {
     var needed = targetThreshold - subtotalRupees;
     var pct = Math.min(100, Math.round((subtotalRupees / targetThreshold) * 100));
-    deliveryEl.textContent = 'Calculated at checkout';
+    deliveryEl.textContent = '₹49 (Within 5 km)';
     deliveryEl.style.color = '#C8922A';
     progressFillEl.style.width = pct + '%';
-    progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed + '</strong> more for <strong>FREE DELIVERY</strong> (above ₹' + targetThreshold + ')';
+    progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed + '</strong> more for <strong>FREE DELIVERY</strong> (Orders below ₹' + targetThreshold + ' are ₹49)';
   }
 
   if (checkoutBtn) {

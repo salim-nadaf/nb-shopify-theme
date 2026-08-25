@@ -1,0 +1,10 @@
+extends: theme-check:recommended
+
+RemoteAsset:
+  enabled: false
+
+AssetPreload:
+  enabled: false
+
+HardcodedRoutes:
+  enabled: false

@@ -2178,7 +2178,7 @@
         "type": "number",
         "id": "nb_zone1_fee",
         "label": "Zone 1 Delivery Fee (₹)",
-        "default": 39
+        "default": 49
       },
       {
         "type": "number",
