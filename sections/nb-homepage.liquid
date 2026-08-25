@@ -771,16 +771,18 @@
   display: flex !important;
   align-items: center !important;
   gap: 8px !important;
-  flex: 1 !important;
+  flex: 1 1 auto !important;
   min-width: 0 !important;
+  overflow: hidden !important;
 }
 .nb-badge-pill__title {
   font-size: 0.86rem !important;
   font-weight: 700 !important;
   color: #2C1810 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  line-height: 1.25 !important;
+  display: block !important;
 }
 .nb-badge-pill__status {
   display: inline-flex !important;
@@ -791,10 +793,11 @@
   color: #2E7D32 !important;
   background: rgba(46, 125, 50, 0.08) !important;
   border: 1px solid rgba(46, 125, 50, 0.22) !important;
-  padding: 3px 8px !important;
+  padding: 4px 9px !important;
   border-radius: 16px !important;
   white-space: nowrap !important;
   flex-shrink: 0 !important;
+  margin-left: auto !important;
 }
 .nb-badge-pill__pulse {
   width: 6px;
@@ -827,17 +830,43 @@
 }
 
 @media (max-width: 767px) {
+  .nb-section-header.flex-between {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  .nb-section-header.flex-between .nb-btn-gold {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
   .nb-badges-row {
     grid-template-columns: 1fr !important;
     gap: 8px !important;
-    margin-top: 16px !important;
+    margin-top: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
   .nb-badge-pill {
-    padding: 10px 14px !important;
+    padding: 10px 12px !important;
     border-radius: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    gap: 8px !important;
+  }
+  .nb-badge-pill__left {
+    gap: 8px !important;
   }
   .nb-badge-pill__title {
-    font-size: 0.84rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+  .nb-badge-pill__status {
+    font-size: 0.68rem !important;
+    padding: 3px 7px !important;
   }
 }
 
