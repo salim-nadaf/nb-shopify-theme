@@ -3,6 +3,8 @@
 <div id="nb-auth-overlay"></div>
 
 <div id="nb-auth-modal" role="dialog" aria-modal="true">
+  <button type="button" class="nb-auth-close-x" onclick="nbAuthClose('close_x_button')" aria-label="Close">✕</button>
+
   <!-- Step 1: Phone Entry -->
   <div id="nb-auth-step-1" class="nb-auth-step active">
     <div class="nb-auth-header">
@@ -279,6 +281,32 @@ body.nb-auth-open .nb-whatsapp-float {
   background: rgba(200, 146, 42, 0.1) !important;
 }
 
+.nb-auth-close-x {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  font-size: 1.15rem;
+  color: #7A5C4A;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  line-height: 1;
+  z-index: 10;
+  padding: 0;
+}
+.nb-auth-close-x:hover,
+.nb-auth-close-x:active {
+  background: rgba(44,24,16,0.08);
+  color: #2C1810;
+}
+
 @media (min-width: 768px) {
   #nb-auth-modal {
     bottom: auto; top: 50%; left: 50%; right: auto;
@@ -292,19 +320,161 @@ body.nb-auth-open .nb-whatsapp-float {
 </style>
 
 <script>
-// ===== NB AUTH GATE MASTER SCRIPT =====
+// ===== NB ORDER GATE FREQUENCY & STATE MANAGER =====
+var NB_ORDER_GATE_STORAGE_KEY = 'nb_order_gate_state';
+var NB_ORDER_GATE_SESSION_KEY = 'nb_order_gate_dismissed';
+
+// Cooldown Durations (in milliseconds)
+var NB_GATE_COOLDOWN = {
+  DISMISSAL_HOURS: 24 * 60 * 60 * 1000,     // 24 Hours (86,400,000 ms)
+  SUBMISSION_DAYS: 7 * 24 * 60 * 60 * 1000,   // 7 Days (604,800,000 ms)
+  ORDER_DAYS: 30 * 24 * 60 * 60 * 1000       // 30 Days (2,592,000,000 ms)
+};
+
+function nbGetOrderGateState() {
+  try {
+    var raw = localStorage.getItem(NB_ORDER_GATE_STORAGE_KEY);
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (parsed && typeof parsed === 'object') return parsed;
+    }
+  } catch (e) {}
+  return {
+    dismissedAt: null,
+    submittedAt: null,
+    orderedAt: null
+  };
+}
+
+function nbSaveOrderGateState(updates) {
+  try {
+    var currentState = nbGetOrderGateState();
+    var newState = {
+      dismissedAt: (updates && updates.dismissedAt !== undefined) ? updates.dismissedAt : currentState.dismissedAt,
+      submittedAt: (updates && updates.submittedAt !== undefined) ? updates.submittedAt : currentState.submittedAt,
+      orderedAt: (updates && updates.orderedAt !== undefined) ? updates.orderedAt : currentState.orderedAt
+    };
+    localStorage.setItem(NB_ORDER_GATE_STORAGE_KEY, JSON.stringify(newState));
+  } catch (e) {}
+}
+
+function nbRecordOrderGateDismissal(source) {
+  try {
+    sessionStorage.setItem(NB_ORDER_GATE_SESSION_KEY, 'true');
+    nbSaveOrderGateState({ dismissedAt: Date.now() });
+
+    if (typeof gtag === 'function') {
+      gtag('event', 'order_gate_dismiss', {
+        dismiss_source: source || 'unknown'
+      });
+    }
+  } catch (e) {}
+}
+
+function nbRecordOrderGateSubmission() {
+  try {
+    sessionStorage.setItem(NB_ORDER_GATE_SESSION_KEY, 'true');
+    nbSaveOrderGateState({ submittedAt: Date.now() });
+
+    if (typeof gtag === 'function') {
+      gtag('event', 'order_gate_submitted');
+    }
+  } catch (e) {}
+}
+
+function nbRecordOrderGateCompletedOrder() {
+  try {
+    sessionStorage.setItem(NB_ORDER_GATE_SESSION_KEY, 'true');
+    nbSaveOrderGateState({ orderedAt: Date.now() });
+  } catch (e) {}
+}
+
+function nbGetOrderGateSuppressionReason() {
+  try {
+    var state = nbGetOrderGateState();
+    var now = Date.now();
+
+    // 1. Form submitted successfully within 7 days
+    if (state.submittedAt && (now - state.submittedAt < NB_GATE_COOLDOWN.SUBMISSION_DAYS)) {
+      return 'submitted_recently';
+    }
+
+    // 2. Completed order within 30 days
+    if (state.orderedAt && (now - state.orderedAt < NB_GATE_COOLDOWN.ORDER_DAYS)) {
+      return 'ordered_recently';
+    }
+
+    // 3. Dismissed during current browsing session
+    if (sessionStorage.getItem(NB_ORDER_GATE_SESSION_KEY) === 'true') {
+      return 'session_dismissed';
+    }
+
+    // 4. Dismissed within last 24 hours (cross-tab / returning visitor)
+    if (state.dismissedAt && (now - state.dismissedAt < NB_GATE_COOLDOWN.DISMISSAL_HOURS)) {
+      return 'cooldown_active';
+    }
+
+    // Legacy fallback: existing phone + name stored
+    var legacyPhone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone');
+    var legacyName  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name');
+    if (legacyPhone && legacyName) {
+      return 'submitted_recently';
+    }
+  } catch (e) {}
+
+  return null; // Not suppressed
+}
+
 var nbAuthPendingAction = null;
 var nbAuthPendingForm   = null;
 
-function nbShowAuthGate(action, form) {
-  var existingPhone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone');
-  var existingName  = localStorage.getItem('gate_name')  || localStorage.getItem('nb_name');
+function nbAuthExecutePendingAction(action, form) {
+  if (action === 'checkout') {
+    window.location.href = '/checkout';
+  } else if (action === 'cart' && form) {
+    if (window.nbCartAdding) return;
+    window.nbCartAdding = true;
 
-  // Do not show popup again if gate_phone is already set in localStorage
-  if (existingPhone && (existingName || action !== 'cart')) {
-    if (action === 'checkout') {
-      window.location.href = '/checkout';
+    var variantInput = form.querySelector('[name="id"]');
+    var variantId = variantInput ? variantInput.value : null;
+    if (!variantId) {
+      window.nbCartAdding = false;
       return;
+    }
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
+    })
+    .then(function() {
+      if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+      else window.location.href = '/cart';
+    })
+    .catch(function(err) {
+      console.error('Cart add error:', err);
+    })
+    .finally(function() {
+      setTimeout(function() { window.nbCartAdding = false; }, 800);
+    });
+  } else if (action === 'preorder') {
+    window.location.href = '/pages/family-orders';
+  } else if (typeof action === 'string' && action.startsWith('/')) {
+    window.location.href = action;
+  } else {
+    if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+  }
+}
+
+function nbShowAuthGate(action, form, force) {
+  var suppressionReason = nbGetOrderGateSuppressionReason();
+
+  if (suppressionReason && !force) {
+    if (typeof gtag === 'function') {
+      gtag('event', 'order_gate_suppressed', {
+        reason: suppressionReason,
+        trigger_action: action || 'direct'
+      });
     }
     nbAuthExecutePendingAction(action, form);
     return;
@@ -332,6 +502,12 @@ function nbShowAuthGate(action, form) {
   }
   document.body.style.overflow = 'hidden';
 
+  if (typeof gtag === 'function') {
+    gtag('event', 'order_gate_opened', {
+      trigger_action: action || 'direct'
+    });
+  }
+
   setTimeout(function() {
     var p = document.getElementById('nb-phone-input');
     if (p) p.focus();
@@ -340,7 +516,7 @@ function nbShowAuthGate(action, form) {
 
 var nbPendingLeadTimeout = null;
 
-function nbAuthClose() {
+function nbAuthClose(dismissSource) {
   if (nbPendingLeadTimeout) {
     clearTimeout(nbPendingLeadTimeout);
     nbPendingLeadTimeout = null;
@@ -360,6 +536,10 @@ function nbAuthClose() {
   if (modal) modal.classList.remove('active');
   document.body.classList.remove('nb-auth-open');
   document.body.style.overflow = '';
+
+  if (dismissSource) {
+    nbRecordOrderGateDismissal(dismissSource);
+  }
 }
 
 function nbAuthSubmitPhone() {
@@ -408,7 +588,6 @@ function nbAuthSubmitPhone() {
     if (nameInput) nameInput.focus();
   }, 200);
 
-  // If user stays on step 2 without submitting or closing for 45s, send partial lead once
   if (nbPendingLeadTimeout) clearTimeout(nbPendingLeadTimeout);
   nbPendingLeadTimeout = setTimeout(function() {
     if (!window.nbLeadEmailSent) {
@@ -461,7 +640,7 @@ function nbSendLeadContactEmail(phone, name, customEmail, promoConsent) {
       }
     } catch(e) {}
 
-    // 2. GUARANTEED INSTANT MERCHANT EMAIL NOTIFICATION (ZERO-SPAM DISPATCH)
+    // 2. GUARANTEED INSTANT MERCHANT EMAIL NOTIFICATION
     try {
       var emailPayload = {
         _subject: '🔥 New Order Gate Lead: ' + customerName + ' (' + formattedPhone + ')',
@@ -566,10 +745,13 @@ async function nbAuthSaveName() {
 
   var promoConsent = localStorage.getItem('nb_promo_consent') === 'yes';
 
-  // 2. Trigger Guaranteed Lead Saving & Email Dispatch
+  // 2. Record successful lead submission state (7-day cooldown)
+  nbRecordOrderGateSubmission();
+
+  // 3. Trigger Guaranteed Lead Saving & Email Dispatch
   nbSendLeadContactEmail(phone, name, customEmail, promoConsent);
 
-  // 3. Save to Cart Attributes in Shopify
+  // 4. Save to Cart Attributes in Shopify
   try {
     var response = await fetch('/cart/update.js', {
       method: 'POST',
@@ -597,97 +779,34 @@ async function nbAuthSaveName() {
     btn.textContent = "Let's Order! 🍛";
     btn.disabled = false;
   }
+  
+  var action = nbAuthPendingAction;
+  var form   = nbAuthPendingForm;
+  nbAuthPendingAction = null;
+  nbAuthPendingForm   = null;
+
   nbAuthClose();
-
-  // 3. After cart attributes are saved, redirect to the target URL (collection or page) without checkout URL params
-  if (nbAuthPendingAction === 'checkout') {
-    nbAuthPendingAction = null;
-    window.nbAuthSaving = false;
-    window.location.href = '/checkout';
-
-  } else if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
-    var pendingForm = nbAuthPendingForm;
-    nbAuthPendingAction = null;
-    nbAuthPendingForm   = null;
-
-    if (window.nbCartAdding) return;
-    window.nbCartAdding = true;
-
-    var variantId = pendingForm.querySelector('[name="id"]').value;
-    try {
-      await fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
-      });
-      if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
-      else window.location.href = '/cart';
-    } catch(cartErr) {
-      console.error('Cart add error:', cartErr);
-    } finally {
-      setTimeout(function() {
-        window.nbCartAdding = false;
-        window.nbAuthSaving = false;
-      }, 800);
-    }
-
-  } else if (nbAuthPendingAction === 'preorder') {
-    nbAuthPendingAction = null;
-    window.nbAuthSaving = false;
-    window.location.href = '/pages/family-orders';
-
-  } else if (typeof nbAuthPendingAction === 'string' && nbAuthPendingAction.startsWith('/')) {
-    var target = nbAuthPendingAction;
-    nbAuthPendingAction = null;
-    window.nbAuthSaving = false;
-    window.location.href = target;
-
-  } else {
-    window.nbAuthSaving = false;
-    if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
-  }
+  window.nbAuthSaving = false;
+  nbAuthExecutePendingAction(action, form);
 }
 
 function nbBuildCheckoutUrl(phone, name, customEmail) {
-  // Shopify Basic plan does not support checkout URL params pre-filling
   return '/checkout';
 }
 
 function nbAuthSkip() {
-  nbAuthClose();
-  if (nbAuthPendingAction === 'cart' && nbAuthPendingForm) {
-    var pendingForm = nbAuthPendingForm;
-    nbAuthPendingAction = null;
-    nbAuthPendingForm   = null;
-
-    if (window.nbCartAdding) return;
-    window.nbCartAdding = true;
-
-    var variantId = pendingForm.querySelector('[name="id"]').value;
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
-    })
-    .then(function() {
-      if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
-    })
-    .finally(function() {
-      setTimeout(function() { window.nbCartAdding = false; }, 800);
-    });
-  } else if (nbAuthPendingAction === 'preorder') {
-    nbAuthPendingAction = null;
-    window.location.href = '/pages/family-orders';
-  } else if (nbAuthPendingAction === 'checkout') {
-    nbAuthPendingAction = null;
-    window.location.href = '/checkout';
-  } else if (typeof nbAuthPendingAction === 'string' && nbAuthPendingAction.startsWith('/')) {
-    var target = nbAuthPendingAction;
-    nbAuthPendingAction = null;
-    window.location.href = target;
-  } else {
-    if (typeof nbOpenDrawer === 'function') nbOpenDrawer();
+  nbRecordOrderGateDismissal('skip_button');
+  if (typeof gtag === 'function') {
+    gtag('event', 'order_gate_skip');
   }
+
+  var action = nbAuthPendingAction;
+  var form   = nbAuthPendingForm;
+  nbAuthPendingAction = null;
+  nbAuthPendingForm   = null;
+
+  nbAuthClose();
+  nbAuthExecutePendingAction(action, form);
 }
 
 // Called by Proceed to Secure Checkout button in nb-cart-drawer
@@ -710,9 +829,6 @@ document.addEventListener('DOMContentLoaded', function() {
     form.dataset.submitting = 'true';
     window.nbCartAdding = true;
 
-    var phone = localStorage.getItem('nb_phone');
-    var name  = localStorage.getItem('nb_name');
-
     var submitBtn = form.querySelector('button[type="submit"]');
     var origText = submitBtn ? submitBtn.textContent : 'Order Now';
 
@@ -721,9 +837,24 @@ document.addEventListener('DOMContentLoaded', function() {
       submitBtn.textContent = 'Adding...';
     }
 
-    if (phone && name) {
-      // Returning customer — add to cart directly with submission locking
-      var variantId = form.querySelector('[name="id"]').value;
+    var suppressionReason = nbGetOrderGateSuppressionReason();
+
+    if (suppressionReason) {
+      // Suppressed! Add to cart directly without modal interruption
+      if (typeof gtag === 'function') {
+        gtag('event', 'order_gate_suppressed', { reason: suppressionReason, trigger_action: 'cart' });
+      }
+      var variantInput = form.querySelector('[name="id"]');
+      var variantId = variantInput ? variantInput.value : null;
+      if (!variantId) {
+        form.dataset.submitting = 'false';
+        window.nbCartAdding = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = origText;
+        }
+        return;
+      }
       fetch('/cart/add.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -746,7 +877,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800);
       });
     } else {
-      // First time — unlock button and show auth gate
+      // First time / not suppressed — unlock button and show auth gate
       setTimeout(function() {
         form.dataset.submitting = 'false';
         window.nbCartAdding = false;
@@ -757,15 +888,14 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 400);
       nbShowAuthGate('cart', form);
     }
-  }, true); // Capture phase stops any other theme scripts from double firing!
+  }, true);
 
   // ── Pre-Order buttons handler ──
   document.addEventListener('click', function(e) {
     var btn = e.target.closest('a[href="/pages/family-orders"], a[href="/pages/family-feast"]');
     if (!btn) return;
-    var phone = localStorage.getItem('nb_phone');
-    var name  = localStorage.getItem('nb_name');
-    if (phone && name) return; // Returning customer — let through
+    var suppressionReason = nbGetOrderGateSuppressionReason();
+    if (suppressionReason) return; // Suppressed — let user navigate through directly!
 
     e.preventDefault();
     nbShowAuthGate('preorder', null);
@@ -797,13 +927,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // ── Overlay click — close ──
+  // ── Overlay click — close & dismiss ──
   var overlay = document.getElementById('nb-auth-overlay');
   if (overlay) {
     overlay.addEventListener('click', function() {
-      nbAuthClose();
+      var act = nbAuthPendingAction;
+      var frm = nbAuthPendingForm;
+      nbAuthPendingAction = null;
+      nbAuthPendingForm   = null;
+      nbAuthClose('outside_click');
+      if (act || frm) {
+        nbAuthExecutePendingAction(act, frm);
+      }
     });
   }
+
+  // ── Escape key — close & dismiss ──
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' || e.key === 'Esc') {
+      var modal = document.getElementById('nb-auth-modal');
+      if (modal && modal.classList.contains('active')) {
+        var act = nbAuthPendingAction;
+        var frm = nbAuthPendingForm;
+        nbAuthPendingAction = null;
+        nbAuthPendingForm   = null;
+        nbAuthClose('escape_key');
+        if (act || frm) {
+          nbAuthExecutePendingAction(act, frm);
+        }
+      }
+    }
+  });
 
 });
 </script>

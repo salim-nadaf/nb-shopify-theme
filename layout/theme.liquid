@@ -1195,6 +1195,19 @@
     (function nbOrderConfirmationEnhancer() {
       function captureOrderSession() {
         try {
+          var isOrderPage = window.location.pathname.indexOf('/thank_you') !== -1 ||
+                            window.location.pathname.indexOf('/orders/') !== -1 ||
+                            (window.Shopify && window.Shopify.checkout && window.Shopify.checkout.order_id);
+          if (isOrderPage) {
+            try {
+              sessionStorage.setItem('nb_order_gate_dismissed', 'true');
+              var raw = localStorage.getItem('nb_order_gate_state');
+              var state = raw ? JSON.parse(raw) : {};
+              state.orderedAt = Date.now();
+              localStorage.setItem('nb_order_gate_state', JSON.stringify(state));
+            } catch(e) {}
+          }
+
           // 1. Read from Shopify checkout JS object if present
           if (window.Shopify && window.Shopify.checkout) {
             var co = window.Shopify.checkout;
