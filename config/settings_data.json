@@ -88,7 +88,7 @@
     "variant_button_border_width": 1,
     "variant_button_radius": 0,
     "variant_button_width": "equal-width-buttons",
-    "nb_instant_delivery_enabled": true,
+    "nb_instant_delivery_enabled": false,
     "nb_instant_delivery_status_msg": "Instant Delivery is available",
     "nb_instant_delivery_off_msg": "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!",
     "nb_lead_notification_email": "milas.fadan@gmail.com",
@@ -106,13 +106,6 @@
     "nb_eta_max": 60,
     "popover_border": "none",
     "content_for_index": [],
-    "blocks": {
-      "2252613488580418660": {
-        "type": "shopify://apps/dingdoong-delivery-date/blocks/app-embed-block./65ab0a55-83b7-43d0-839b-31ed27b3a16d",
-        "disabled": true,
-        "settings": {}
-      }
-    },
     "color_palette": {
       "background": "#fffaf4",
       "foreground": "#2c1810",
