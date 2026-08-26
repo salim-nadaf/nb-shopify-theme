@@ -11,13 +11,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G"></script>
+    <!-- HIGH-SPEED PRECONNECTS (< 4 CONNECTIONS) -->
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.shopify.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+    <!-- CRITICAL LCP PRELOADS FOR SPEED OPTIMIZATION -->
+    {% if template.name == 'index' %}
+      <link rel="preload" as="image" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/hero-biryani-optimized.webp?v=1785619720&width=750" fetchpriority="high" type="image/webp">
+    {% elsif template.suffix == 'instant-delivery' or request.path contains 'instant-delivery' %}
+      <link rel="preload" as="image" href="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360" fetchpriority="high" type="image/webp">
+    {% endif %}
+
+    <!-- ASYNC GOOGLE FONTS (ZERO RENDER BLOCKING) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700&display=swap"></noscript>
+
+    <!-- Google tag (gtag.js) - HIGH PERFORMANCE IDLE LOAD -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-3BFH8J5E3G');
+
+      (function() {
+        function loadAnalytics() {
+          if (window.gtagLoaded) return;
+          window.gtagLoaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-3BFH8J5E3G';
+          document.head.appendChild(s);
+        }
+        if (document.readyState === 'complete') {
+          loadAnalytics();
+        } else {
+          window.addEventListener('load', function() {
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(loadAnalytics, { timeout: 2500 });
+            } else {
+              setTimeout(loadAnalytics, 1500);
+            }
+          }, { once: true, passive: true });
+        }
+      })();
     </script>
 
     {%- liquid
@@ -31,18 +69,6 @@
       <link rel="icon" type="image/png" sizes="32x32" href="{{ fav_fallback }}&width=32">
       <link rel="apple-touch-icon" sizes="180x180" href="{{ fav_fallback }}&width=180">
     {%- endif -%}
-
-    <!-- HIGH-SPEED PRECONNECTS (< 4 CONNECTIONS) -->
-    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-    <link rel="dns-prefetch" href="https://cdn.shopify.com">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-
-    <!-- ASYNC GOOGLE FONTS (ZERO RENDER BLOCKING) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700&display=swap"></noscript>
     {%- # theme-check-enable RemoteAsset, AssetPreload -%}
 
     {%- render 'meta-tags' -%}
