@@ -115,7 +115,18 @@
     header, .header, .header-wrapper, header-component {
       border-bottom: 2px solid #C8922A !important;
       box-shadow: 0 4px 20px rgba(0,0,0,0.25) !important;
-      position: relative !important;
+    }
+    @media screen and (min-width: 769px) {
+      #header-group {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
+      }
+      .header-section, header-component, .header-wrapper, header, .header {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
+      }
     }
     .header a, .header__heading-link, nav a,
     .header__menu-item, header-component a,
