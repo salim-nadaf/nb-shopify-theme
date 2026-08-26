@@ -178,6 +178,36 @@
         "review_1": {
           "type": "google_review",
           "settings": {
+            "author_name": "Sabastine Aarons",
+            "rating": "5",
+            "review_date": "Yesterday",
+            "dish_tag": "⭐ Excellent Taste & Aroma",
+            "review_text": "Tried it for the 1st time & found it very delicious and authentic. The biryani aroma and flavors were on point!"
+          }
+        },
+        "review_2": {
+          "type": "google_review",
+          "settings": {
+            "author_name": "mayur gite",
+            "rating": "5",
+            "review_date": "1 week ago",
+            "dish_tag": "🍗 Very Nice Biryani",
+            "review_text": "Biryani is Very Nice. Quality and taste are excellent, highly recommended!"
+          }
+        },
+        "review_3": {
+          "type": "google_review",
+          "settings": {
+            "author_name": "prajwal kandke",
+            "rating": "5",
+            "review_date": "2 weeks ago",
+            "dish_tag": "👑 Best Biryani in Kalyan",
+            "review_text": "This is one of the best biryanis I have had. Perfectly cooked, flavorful spices and great portions!"
+          }
+        },
+        "review_4": {
+          "type": "google_review",
+          "settings": {
             "author_name": "Vijay Agasar",
             "rating": "5",
             "review_date": "1 month ago",
@@ -185,27 +215,17 @@
             "review_text": "Your biryani was super tasty and excellent. It was the first time I ordered it, but honestly it was totally value-for-money. 😋"
           }
         },
-        "review_2": {
+        "review_5": {
           "type": "google_review",
           "settings": {
             "author_name": "Pooja Dawani",
             "rating": "5",
-            "review_date": "3 months ago",
+            "review_date": "4 months ago",
             "dish_tag": "🍗 Alishaan Tandoori & Seekh",
             "review_text": "I ordered alishan tandoor biryani, lababdaar seekh biryani, chicken leg piece for small gathering and the quantity of chicken & rice and taste is totally worth. I will surely place an order again"
           }
         },
-        "review_3": {
-          "type": "google_review",
-          "settings": {
-            "author_name": "Asmita Patil",
-            "rating": "5",
-            "review_date": "7 months ago",
-            "dish_tag": "🍲 Full of Flavour & Durable Packaging",
-            "review_text": "The biryani was very delicious and full of flavour. The packaging is durable. Mr Salim is a considerate person. He took my order last minute on a busy day and delivered on time."
-          }
-        },
-        "review_4": {
+        "review_6": {
           "type": "google_review",
           "settings": {
             "author_name": "Praful Kanojia",
@@ -215,7 +235,17 @@
             "review_text": "Had a great experience. The biryani was flavorful, well-cooked, and served hot. The spices were perfectly balanced and the portion size was satisfying. Highly recommended for biryani lovers."
           }
         },
-        "review_5": {
+        "review_7": {
+          "type": "google_review",
+          "settings": {
+            "author_name": "Asmita Patil",
+            "rating": "5",
+            "review_date": "7 months ago",
+            "dish_tag": "🍲 Full of Flavour & Durable Packaging",
+            "review_text": "The biryani was very delicious and full of flavour. The packaging is durable. Mr Salim is a considerate person. He took my order last minute on a busy day and delivered on time."
+          }
+        },
+        "review_8": {
           "type": "google_review",
           "settings": {
             "author_name": "Shakier Shaikh",
@@ -223,16 +253,6 @@
             "review_date": "8 months ago",
             "dish_tag": "👑 Authentic Flavors & Generous Portions",
             "review_text": "Biryani Palace truly lives up to its name! Delicious, authentic flavors, generous portions, and great quality. The spices were perfectly balanced and the taste was outstanding. Will surely order again & again"
-          }
-        },
-        "review_6": {
-          "type": "google_review",
-          "settings": {
-            "author_name": "Vivek Abhale",
-            "rating": "5",
-            "review_date": "9 months ago",
-            "dish_tag": "🥣 Fragrant Rice & Raita",
-            "review_text": "Great authentic taste, fragrant long-grain Basmati rice and perfectly cooked tender chicken. Loved the signature raita as well!"
           }
         }
       },
@@ -242,7 +262,9 @@
         "review_3",
         "review_4",
         "review_5",
-        "review_6"
+        "review_6",
+        "review_7",
+        "review_8"
       ],
       "settings": {
         "tag_badge": "GOOGLE REVIEWS",

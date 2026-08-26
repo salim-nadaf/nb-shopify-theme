@@ -739,22 +739,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
       
-      // Sort and dynamically inject newest reviews
+      // Non-destructively merge and update reviews from live Google API
       if (Array.isArray(data.reviews) && data.reviews.length > 0) {
         var validReviews = data.reviews.filter(function(r) {
           return r.rating >= 4 && r.text && r.text.text;
         });
         
-        // Sort by newest publication time first
-        validReviews.sort(function(a, b) {
-          var timeA = a.publishTime ? new Date(a.publishTime).getTime() : 0;
-          var timeB = b.publishTime ? new Date(b.publishTime).getTime() : 0;
-          return timeB - timeA;
+        // Find author names already rendered in the DOM
+        var existingAuthors = [];
+        var authorEls = grid ? grid.querySelectorAll('.nb-review-author-name') : [];
+        authorEls.forEach(function(el) {
+          existingAuthors.push(el.textContent.trim().toLowerCase());
         });
         
-        if (validReviews.length > 0 && grid) {
-          var html = '';
-          validReviews.forEach(function(r) {
+        // Update avatar photos of existing matching authors
+        validReviews.forEach(function(r) {
+          var author = ((r.authorAttribution && r.authorAttribution.displayName) || '').trim();
+          var photo = (r.authorAttribution && r.authorAttribution.photoUri) ? r.authorAttribution.photoUri : '';
+          if (author && photo && grid) {
+            authorEls.forEach(function(el) {
+              if (el.textContent.trim().toLowerCase() === author.toLowerCase()) {
+                var card = el.closest('.nb-review-card');
+                if (card) {
+                  var avatarBox = card.querySelector('.nb-review-avatar');
+                  if (avatarBox && !avatarBox.querySelector('img')) {
+                    if (photo.indexOf('googleusercontent.com') !== -1) {
+                      photo = photo.replace(/=s\d+[^"]*/, '') + '=s64-c';
+                    }
+                    avatarBox.innerHTML = '<img src="' + photo + '" alt="' + author + '" class="nb-review-avatar-img" width="44" height="44" loading="lazy" decoding="async" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">';
+                  }
+                }
+              }
+            });
+          }
+        });
+        
+        // Prepend any brand new review not currently in DOM
+        var newReviewsToAdd = validReviews.filter(function(r) {
+          var author = ((r.authorAttribution && r.authorAttribution.displayName) || '').trim().toLowerCase();
+          return author && !existingAuthors.includes(author);
+        });
+        
+        if (newReviewsToAdd.length > 0 && grid) {
+          var prependHtml = '';
+          newReviewsToAdd.forEach(function(r) {
             var author = (r.authorAttribution && r.authorAttribution.displayName) ? r.authorAttribution.displayName : 'Google Customer';
             var initial = author.charAt(0).toUpperCase();
             var photo = (r.authorAttribution && r.authorAttribution.photoUri) ? r.authorAttribution.photoUri : '';
@@ -769,7 +797,7 @@ document.addEventListener('DOMContentLoaded', function() {
               ? '<img src="' + photo + '" alt="' + author + '" class="nb-review-avatar-img" width="44" height="44" loading="lazy" decoding="async" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" onerror="this.style.display=\'none\'">'
               : '<span>' + initial + '</span>';
               
-            html += '<div class="nb-review-card">' +
+            prependHtml += '<div class="nb-review-card">' +
               '<div>' +
                 '<div class="nb-review-card__header">' +
                   '<div class="nb-review-avatar">' + avatarHtml + '</div>' +
@@ -790,7 +818,7 @@ document.addEventListener('DOMContentLoaded', function() {
               '<p class="nb-review-card__text">"' + reviewText + '"</p>' +
             '</div>';
           });
-          grid.innerHTML = html;
+          grid.insertAdjacentHTML('afterbegin', prependHtml);
           initDots();
           scrollToCard(0);
           resetAutoPlay();
