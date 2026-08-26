@@ -106,6 +106,13 @@
     "nb_eta_max": 60,
     "popover_border": "none",
     "content_for_index": [],
+    "blocks": {
+      "2252613488580418660": {
+        "type": "shopify://apps/dingdoong-delivery-date/blocks/app-embed-block./65ab0a55-83b7-43d0-839b-31ed27b3a16d",
+        "disabled": false,
+        "settings": {}
+      }
+    },
     "color_palette": {
       "background": "#fffaf4",
       "foreground": "#2c1810",
