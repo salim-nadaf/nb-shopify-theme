@@ -151,7 +151,7 @@
       <!-- RECOMMENDED PACKAGE SUGGESTION -->
       <div class="nb-rec-package" id="nb-rec-package-box">
         <span class="nb-rec-badge">RECOMMENDED CATERING PLAN</span>
-        <h4 id="nb-rec-pkg-name">The Mehmaan Plan [5 Kg]</h4>
+        <h4 id="nb-rec-pkg-name">The Mehmaan Plan</h4>
         <p id="nb-rec-pkg-desc">Includes 1 Biryani + 1 Starter + 1 Gravy + Complimentary Dessert @ ₹4,499</p>
       </div>
 
@@ -652,16 +652,16 @@
       var pkgDescEl = document.getElementById('nb-rec-pkg-desc');
 
       if (totalKg <= 5) {
-        pkgNameEl.innerText = "The Mehmaan Plan [5 Kg]";
+        pkgNameEl.innerText = "The Mehmaan Plan";
         pkgDescEl.innerText = "1 Biryani + 1 Starter + 1 Gravy + Complimentary Dessert @ ₹4,499";
       } else if (totalKg <= 10) {
-        pkgNameEl.innerText = "The Shaahi Dawat [10 Kg]";
+        pkgNameEl.innerText = "The Shaahi Dawat";
         pkgDescEl.innerText = "2 Biryani Flavors + 1 Gravy + 1 Starter + Free Gulab Jamun/Drinks @ ₹8,999";
       } else if (totalKg <= 15) {
-        pkgNameEl.innerText = "The Royal Baithak [15 Kg]";
+        pkgNameEl.innerText = "The Royal Baithak";
         pkgDescEl.innerText = "3 Biryanis + 1 Gravy + 2 Starters + Free Dessert & Drinks @ ₹13,999";
       } else {
-        pkgNameEl.innerText = "Custom Grand Event Feast [" + totalKg + " Kg]";
+        pkgNameEl.innerText = "Custom Grand Event Feast";
         pkgDescEl.innerText = "Tailored menu, live counter options & dedicated coordinator for large gatherings";
       }
 
