@@ -380,8 +380,10 @@
             if title_lower contains 'gulab' and section.settings.so_gulab_jamun
               assign is_toggled_off = true
             endif
-            if section.settings.so_trial_all and (title_lower contains 'trial' or title_lower contains '99')
-              assign is_toggled_off = true
+            if section.settings.so_trial_all
+              if title_lower contains 'trial' or title_lower contains '99'
+                assign is_toggled_off = true
+              endif
             endif
             if title_lower contains 'coke' and section.settings.so_coke
               assign is_toggled_off = true
@@ -400,26 +402,38 @@
 
                 # Section Direct Toggles for Main Dishes & Sides
                 if title_lower contains 'alishaan' or title_lower contains 'tandoori'
-                  if section.settings.so_alishaan_single and (var_title_lower contains 'single' or var_title_lower contains 'serves 1')
-                    assign var_avail = false
+                  if section.settings.so_alishaan_single
+                    if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                      assign var_avail = false
+                    endif
                   endif
-                  if section.settings.so_alishaan_double and (var_title_lower contains 'double' or var_title_lower contains 'serves 2')
-                    assign var_avail = false
+                  if section.settings.so_alishaan_double
+                    if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                      assign var_avail = false
+                    endif
                   endif
-                  if section.settings.so_alishaan_halfkg and (var_title_lower contains 'half' or var_title_lower contains 'serves 3-4')
-                    assign var_avail = false
+                  if section.settings.so_alishaan_halfkg
+                    if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                      assign var_avail = false
+                    endif
                   endif
                 endif
 
                 if title_lower contains 'sabz'
-                  if section.settings.so_sabz_single and (var_title_lower contains 'single' or var_title_lower contains 'serves 1')
-                    assign var_avail = false
+                  if section.settings.so_sabz_single
+                    if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                      assign var_avail = false
+                    endif
                   endif
-                  if section.settings.so_sabz_double and (var_title_lower contains 'double' or var_title_lower contains 'serves 2')
-                    assign var_avail = false
+                  if section.settings.so_sabz_double
+                    if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                      assign var_avail = false
+                    endif
                   endif
-                  if section.settings.so_sabz_halfkg and (var_title_lower contains 'half' or var_title_lower contains 'serves 3-4')
-                    assign var_avail = false
+                  if section.settings.so_sabz_halfkg
+                    if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                      assign var_avail = false
+                    endif
                   endif
                 endif
 
@@ -578,26 +592,38 @@
                       assign var_title_lower = variant.title | downcase
 
                       if title_lower contains 'alishaan' or title_lower contains 'tandoori'
-                        if section.settings.so_alishaan_single and (var_title_lower contains 'single' or var_title_lower contains 'serves 1')
-                          assign var_avail = false
+                        if section.settings.so_alishaan_single
+                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                            assign var_avail = false
+                          endif
                         endif
-                        if section.settings.so_alishaan_double and (var_title_lower contains 'double' or var_title_lower contains 'serves 2')
-                          assign var_avail = false
+                        if section.settings.so_alishaan_double
+                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                            assign var_avail = false
+                          endif
                         endif
-                        if section.settings.so_alishaan_halfkg and (var_title_lower contains 'half' or var_title_lower contains 'serves 3-4')
-                          assign var_avail = false
+                        if section.settings.so_alishaan_halfkg
+                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                            assign var_avail = false
+                          endif
                         endif
                       endif
 
                       if title_lower contains 'sabz'
-                        if section.settings.so_sabz_single and (var_title_lower contains 'single' or var_title_lower contains 'serves 1')
-                          assign var_avail = false
+                        if section.settings.so_sabz_single
+                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                            assign var_avail = false
+                          endif
                         endif
-                        if section.settings.so_sabz_double and (var_title_lower contains 'double' or var_title_lower contains 'serves 2')
-                          assign var_avail = false
+                        if section.settings.so_sabz_double
+                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                            assign var_avail = false
+                          endif
                         endif
-                        if section.settings.so_sabz_halfkg and (var_title_lower contains 'half' or var_title_lower contains 'serves 3-4')
-                          assign var_avail = false
+                        if section.settings.so_sabz_halfkg
+                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                            assign var_avail = false
+                          endif
                         endif
                       endif
                     %}
