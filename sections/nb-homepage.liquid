@@ -371,23 +371,18 @@
                   assign available_count = available_count | plus: 1
                 endif
               %}
-              <a href="{{ today_cta_url }}#product-{{ product.id }}" class="nb-badge-pill {% unless is_avail %}nb-badge-pill--soldout{% endunless %}" data-product-id="{{ product.id }}" data-product-title="{{ product.title | escape }}" style="text-decoration: none; color: inherit;">
-                <div class="nb-badge-pill__left">
-                  {% render 'nb-diet-icon', product: product %}
-                  <span class="nb-badge-pill__title">{{ product.title }}</span>
-                </div>
-                {% if is_avail %}
+              {% if is_avail %}
+                <a href="{{ today_cta_url }}#product-{{ product.id }}" class="nb-badge-pill" data-product-id="{{ product.id }}" data-product-title="{{ product.title | escape }}" style="text-decoration: none; color: inherit;">
+                  <div class="nb-badge-pill__left">
+                    {% render 'nb-diet-icon', product: product %}
+                    <span class="nb-badge-pill__title">{{ product.title }}</span>
+                  </div>
                   <span class="nb-badge-pill__status">
                     <span class="nb-badge-pill__pulse"></span>
                     Ready
                   </span>
-                {% else %}
-                  <span class="nb-badge-pill__status nb-badge-pill__status--soldout">
-                    <span class="nb-badge-pill__soldout-dot"></span>
-                    Sold Out
-                  </span>
-                {% endif %}
-              </a>
+                </a>
+              {% endif %}
             {% endfor %}
           {% endif %}
 

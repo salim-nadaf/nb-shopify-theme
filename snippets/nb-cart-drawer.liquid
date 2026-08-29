@@ -125,6 +125,7 @@
       </div>
       <div class="nb-upsell-grid">
         <!-- 1. Extra Raita -->
+        {% if raita_prod == blank or raita_prod.available %}
         <div class="nb-upsell-pill-card" data-addon-key="raita">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">{{ raita_prod.title | default: 'Niamat Extra Raita' }}</span>
@@ -138,8 +139,10 @@
           </div>
           <button class="nb-upsell-pill-add" id="nb-add-raita-btn" data-variant-id="{{ raita_prod.selected_or_first_available_variant.id | default: '44043042422858' }}" onclick="nbAddUpsell(this, '{{ raita_prod.handle | default: 'extra-raita' }}', 'Extra Raita')">+ Add</button>
         </div>
+        {% endif %}
 
         <!-- 2. Chicken Shami Kebab (Single Piece) -->
+        {% if kebab_prod == blank or kebab_prod.available %}
         <div class="nb-upsell-pill-card" data-addon-key="kebab">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">Chicken Shami Kebab</span>
@@ -153,8 +156,10 @@
           </div>
           <button class="nb-upsell-pill-add" id="nb-add-kebab-btn" data-variant-id="{{ kebab_prod.selected_or_first_available_variant.id }}" onclick="nbAddUpsell(this, '{{ kebab_prod.handle | default: 'chicken-shami-kebab' }}', 'Chicken Shami Kebab')">+ Add</button>
         </div>
+        {% endif %}
 
         <!-- 3. Gulab Jamun (Single Piece) -->
+        {% if jamun_prod == blank or jamun_prod.available %}
         <div class="nb-upsell-pill-card" data-addon-key="jamun">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">Gulab Jamun</span>
@@ -168,8 +173,10 @@
           </div>
           <button class="nb-upsell-pill-add" id="nb-add-jamun-btn" data-variant-id="{{ jamun_prod.selected_or_first_available_variant.id | default: '44087168532554' }}" onclick="nbAddUpsell(this, 'gulab-jamun-1', 'Gulab Jamun')">+ Add</button>
         </div>
+        {% endif %}
 
         <!-- 4. Chilled Coke (250ml) -->
+        {% if coke_prod == blank or coke_prod.available %}
         <div class="nb-upsell-pill-card" data-addon-key="coke250">
           <div class="nb-upsell-pill-info">
             <span class="nb-upsell-pill-name">🥤 Chilled Coke (250ml)</span>
@@ -200,6 +207,7 @@
           </div>
           <button class="nb-upsell-pill-add" id="nb-add-coke-750-btn" data-variant-id="{{ coke_750_v.id | default: '44087358586954' }}" onclick="nbAddCokeUpsell(this, '750')">+ Add</button>
         </div>
+        {% endif %}
       </div>
     </div>
 

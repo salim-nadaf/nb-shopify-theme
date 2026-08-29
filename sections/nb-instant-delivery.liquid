@@ -30,6 +30,7 @@
 <div class="nb-instant-section">
 
   <!-- ===== 1. ₹99 BIRYANI SPECIAL TRIAL OFFER HERO SECTION ===== -->
+  {% unless section.settings.so_trial_all or trial_prod.available == false %}
   <section class="nb-trial-hero" aria-labelledby="nb-trial-heading">
     <div class="nb-trial-card">
       <div class="nb-diet-corner-badge" aria-hidden="true">
@@ -75,19 +76,13 @@
 
           <!-- CTA Area: Submits to Cart Directly via AJAX Quick-Form -->
           <div class="nb-trial-cta-block">
-            {% if section.settings.so_trial_all %}
-              <button type="button" class="nb-trial-btn nb-btn--disabled" disabled style="background: #A0AEC0 !important; cursor: not-allowed !important; box-shadow: none !important;">
-                SOLD OUT FOR TODAY
+            <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id }}">
+              <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
+              <input type="hidden" name="quantity" value="1" />
+              <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
+                {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
               </button>
-            {% else %}
-              <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id }}">
-                <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
-                <input type="hidden" name="quantity" value="1" />
-                <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
-                  {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
-                </button>
-              </form>
-            {% endif %}
+            </form>
           </div>
         </div>
 
@@ -127,6 +122,7 @@
       </div>
     </div>
   </section>
+  {% endunless %}
 
   <!-- ===== 2. EXISTING REGULAR MENU HEADER & BANNER ===== -->
   <div class="nb-section-header">
@@ -181,55 +177,78 @@
 
   <div class="nb-food-grid">
     {% if instant_collection != blank and instant_collection.products.size > 0 %}
+      {% assign total_available_products_rendered = 0 %}
+
       <!-- 1. FEATURED MEALS FIRST (FULL-WIDTH AT TOP) -->
       {% for product in instant_collection.products %}
         {% assign title_lower = product.title | downcase %}
         {% if title_lower contains 'meal' or title_lower contains 'meals' or title_lower contains 'combo' %}
           {% liquid
-            assign first_variant = product.selected_or_first_available_variant
-            assign is_available = first_variant.available
-            assign first_var_title_lower = first_variant.title | downcase
-
-            # 1. Exact 6 Individual Combo Toggles
-            if first_var_title_lower contains 'alishaan' or first_var_title_lower contains 'tandoori'
-              if first_var_title_lower contains 'serves 1' or first_var_title_lower contains '2 shami' or first_var_title_lower contains '1 gulab'
-                if section.settings.so_combo_tandoori_s1
-                  assign is_available = false
-                endif
-              elsif first_var_title_lower contains 'serves 2' or first_var_title_lower contains '4 shami' or first_var_title_lower contains '2 gulab'
-                if section.settings.so_combo_tandoori_s2
-                  assign is_available = false
-                endif
-              elsif first_var_title_lower contains 'serves 3-4' or first_var_title_lower contains 'half kg' or first_var_title_lower contains '6 shami'
-                if section.settings.so_combo_tandoori_halfkg
-                  assign is_available = false
-                endif
-              endif
-            elsif first_var_title_lower contains 'sabz' or first_var_title_lower contains 'tikka'
-              if first_var_title_lower contains 'serves 1' or first_var_title_lower contains '2 gulab'
-                if section.settings.so_combo_sabz_s1
-                  assign is_available = false
-                endif
-              elsif first_var_title_lower contains 'serves 2' or first_var_title_lower contains '4 gulab'
-                if section.settings.so_combo_sabz_s2
-                  assign is_available = false
-                endif
-              elsif first_var_title_lower contains 'serves 3-4' or first_var_title_lower contains '6 gulab'
-                if section.settings.so_combo_sabz_halfkg
-                  assign is_available = false
-                endif
-              endif
-            endif
-
+            assign is_prod_tagged_soldout = false
             if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
-              assign is_available = false
+              assign is_prod_tagged_soldout = true
             endif
 
+            assign prod_has_available_variant = false
+            assign first_available_variant = nil
+
+            if product.available and is_prod_tagged_soldout == false
+              for variant in product.variants
+                assign var_available = variant.available
+                assign var_title_lower = variant.title | downcase
+
+                # 1. Exact 6 Individual Combo Toggles
+                if var_title_lower contains 'alishaan' or var_title_lower contains 'tandoori'
+                  if var_title_lower contains 'serves 1' or var_title_lower contains '2 shami' or var_title_lower contains '1 gulab'
+                    if section.settings.so_combo_tandoori_s1
+                      assign var_available = false
+                    endif
+                  elsif var_title_lower contains 'serves 2' or var_title_lower contains '4 shami' or var_title_lower contains '2 gulab'
+                    if section.settings.so_combo_tandoori_s2
+                      assign var_available = false
+                    endif
+                  elsif var_title_lower contains 'serves 3-4' or var_title_lower contains 'half kg' or var_title_lower contains '6 shami'
+                    if section.settings.so_combo_tandoori_halfkg
+                      assign var_available = false
+                    endif
+                  endif
+                elsif var_title_lower contains 'sabz' or var_title_lower contains 'tikka'
+                  if var_title_lower contains 'serves 1' or var_title_lower contains '2 gulab'
+                    if section.settings.so_combo_sabz_s1
+                      assign var_available = false
+                    endif
+                  elsif var_title_lower contains 'serves 2' or var_title_lower contains '4 gulab'
+                    if section.settings.so_combo_sabz_s2
+                      assign var_available = false
+                    endif
+                  elsif var_title_lower contains 'serves 3-4' or var_title_lower contains '6 gulab'
+                    if section.settings.so_combo_sabz_halfkg
+                      assign var_available = false
+                    endif
+                  endif
+                endif
+
+                if var_available
+                  assign prod_has_available_variant = true
+                  if first_available_variant == nil
+                    assign first_available_variant = variant
+                  endif
+                endif
+              endfor
+            endif
+          %}
+
+          {% unless prod_has_available_variant %}
+            {% continue %}
+          {% endunless %}
+
+          {% assign total_available_products_rendered = total_available_products_rendered | plus: 1 %}
+          {% liquid
             assign item_badge = 'Featured Meal'
             assign badge_class = 'nb-tag--bestseller'
             assign badge_icon = '👑'
           %}
-          <div class="nb-food-card nb-food-card--meal {% unless is_available %}nb-food-card--soldout{% endunless %}">
+          <div class="nb-food-card nb-food-card--meal" data-product-id="{{ product.id }}" id="product-{{ product.id }}">
             <div class="nb-food-card__header-row">
               <div class="nb-food-card__image">
                 {% if product.featured_media %}
@@ -270,6 +289,7 @@
 
               {% if product.variants.size > 1 %}
                 <div class="nb-variant-selector" data-product-id="{{ product.id }}">
+                  {% assign rendered_pill_index = 0 %}
                   {% for variant in product.variants %}
                     {% liquid
                       assign var_available = variant.available
@@ -305,22 +325,19 @@
                           endif
                         endif
                       endif
-
-                      if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
-                        assign var_available = false
-                      endif
                     %}
-                    <span class="nb-variant-pill {% if forloop.first %}active{% endif %} {% unless var_available %}nb-pill-soldout{% endunless %}"
+                    {% unless var_available %}
+                      {% continue %}
+                    {% endunless %}
+                    {% assign rendered_pill_index = rendered_pill_index | plus: 1 %}
+                    <span class="nb-variant-pill {% if rendered_pill_index == 1 %}active{% endif %}"
                           data-variant-id="{{ variant.id }}"
                           data-price="{{ variant.price | money }}"
-                          data-available="{{ var_available }}">
+                          data-available="true">
                       <span class="nb-pill-diet-tag" style="margin-right: 8px; display: inline-flex; flex-shrink: 0; align-items: center;">
                         {% render 'nb-diet-icon', title: variant.title %}
                       </span>
                       <span class="nb-pill-text">{{ variant.title }}</span>
-                      {% unless var_available %}
-                        <span class="nb-pill-soldout-label">Sold Out</span>
-                      {% endunless %}
                     </span>
                   {% endfor %}
                 </div>
@@ -328,20 +345,16 @@
 
               <div class="nb-food-card__bottom">
                 <span class="nb-food-card__price" data-price-display="{{ product.id }}">
-                  {{ first_variant.price | money }}
+                  {{ first_available_variant.price | money }}
                 </span>
-                {% if is_available %}
-                  {% if is_instant_enabled %}
-                    <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
-                      <input type="hidden" name="id" value="{{ first_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
-                      <input type="hidden" name="quantity" value="1" />
-                      <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
-                    </form>
-                  {% else %}
-                    <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="font-size: 0.78rem;">📅 Pre-Order</a>
-                  {% endif %}
+                {% if is_instant_enabled %}
+                  <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
+                    <input type="hidden" name="id" value="{{ first_available_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+                  </form>
                 {% else %}
-                  <button type="button" class="nb-btn nb-btn--disabled nb-btn--sm" disabled>Sold Out</button>
+                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="font-size: 0.78rem;">📅 Pre-Order</a>
                 {% endif %}
               </div>
             </div>
@@ -354,69 +367,78 @@
         {% assign title_lower = product.title | downcase %}
         {% unless title_lower contains 'meal' or title_lower contains 'meals' or title_lower contains 'combo' %}
           {% liquid
-            assign first_variant = product.selected_or_first_available_variant
-            assign is_available = first_variant.available
-            assign first_var_title_lower = first_variant.title | downcase
+            assign is_prod_tagged_soldout = false
+            if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
+              assign is_prod_tagged_soldout = true
+            endif
 
             # 2. Section Direct Toggles for Main Dishes & Sides
-            if title_lower contains 'alishaan' or title_lower contains 'tandoori'
-              if section.settings.so_alishaan_single
-                if first_var_title_lower contains 'single' or first_var_title_lower contains 'serves 1'
-                  assign is_available = false
-                endif
-              endif
-              if section.settings.so_alishaan_double
-                if first_var_title_lower contains 'double' or first_var_title_lower contains 'serves 2'
-                  assign is_available = false
-                endif
-              endif
-              if section.settings.so_alishaan_halfkg
-                if first_var_title_lower contains 'half' or first_var_title_lower contains 'serves 3-4'
-                  assign is_available = false
-                endif
-              endif
-            endif
-
-            if title_lower contains 'sabz'
-              if section.settings.so_sabz_single
-                if first_var_title_lower contains 'single' or first_var_title_lower contains 'serves 1'
-                  assign is_available = false
-                endif
-              endif
-              if section.settings.so_sabz_double
-                if first_var_title_lower contains 'double' or first_var_title_lower contains 'serves 2'
-                  assign is_available = false
-                endif
-              endif
-              if section.settings.so_sabz_halfkg
-                if first_var_title_lower contains 'half' or first_var_title_lower contains 'serves 3-4'
-                  assign is_available = false
-                endif
-              endif
-            endif
-
+            assign is_toggled_off = false
             if title_lower contains 'shami' and section.settings.so_shami_kebab
-              assign is_available = false
+              assign is_toggled_off = true
             endif
             if title_lower contains 'gulab' and section.settings.so_gulab_jamun
-              assign is_available = false
+              assign is_toggled_off = true
             endif
-            if section.settings.so_trial_all
-              if title_lower contains 'trial' or title_lower contains '99'
-                assign is_available = false
-              endif
+            if section.settings.so_trial_all and (title_lower contains 'trial' or title_lower contains '99')
+              assign is_toggled_off = true
             endif
             if title_lower contains 'coke' and section.settings.so_coke
-              assign is_available = false
+              assign is_toggled_off = true
             endif
             if title_lower contains 'raita' and section.settings.so_raita
-              assign is_available = false
+              assign is_toggled_off = true
             endif
 
-            if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
-              assign is_available = false
+            assign prod_has_available_variant = false
+            assign first_available_variant = nil
+
+            if product.available and is_prod_tagged_soldout == false and is_toggled_off == false
+              for variant in product.variants
+                assign var_avail = variant.available
+                assign var_title_lower = variant.title | downcase
+
+                # Section Direct Toggles for Main Dishes & Sides
+                if title_lower contains 'alishaan' or title_lower contains 'tandoori'
+                  if section.settings.so_alishaan_single and (var_title_lower contains 'single' or var_title_lower contains 'serves 1')
+                    assign var_avail = false
+                  endif
+                  if section.settings.so_alishaan_double and (var_title_lower contains 'double' or var_title_lower contains 'serves 2')
+                    assign var_avail = false
+                  endif
+                  if section.settings.so_alishaan_halfkg and (var_title_lower contains 'half' or var_title_lower contains 'serves 3-4')
+                    assign var_avail = false
+                  endif
+                endif
+
+                if title_lower contains 'sabz'
+                  if section.settings.so_sabz_single and (var_title_lower contains 'single' or var_title_lower contains 'serves 1')
+                    assign var_avail = false
+                  endif
+                  if section.settings.so_sabz_double and (var_title_lower contains 'double' or var_title_lower contains 'serves 2')
+                    assign var_avail = false
+                  endif
+                  if section.settings.so_sabz_halfkg and (var_title_lower contains 'half' or var_title_lower contains 'serves 3-4')
+                    assign var_avail = false
+                  endif
+                endif
+
+                if var_avail
+                  assign prod_has_available_variant = true
+                  if first_available_variant == nil
+                    assign first_available_variant = variant
+                  endif
+                endif
+              endfor
             endif
           %}
+
+          {% unless prod_has_available_variant %}
+            {% continue %}
+          {% endunless %}
+
+          {% assign total_available_products_rendered = total_available_products_rendered | plus: 1 %}
+
           {% liquid
             assign item_badge = ''
             assign badge_class = ''
@@ -497,7 +519,7 @@
             endif
           %}
 
-          <div class="nb-food-card {% unless is_available %}nb-food-card--soldout{% endunless %}" data-product-id="{{ product.id }}" id="product-{{ product.id }}">
+          <div class="nb-food-card" data-product-id="{{ product.id }}" id="product-{{ product.id }}">
             <div class="nb-diet-corner-badge" aria-hidden="true">
               {% render 'nb-diet-icon', product: product %}
             </div>
@@ -513,12 +535,10 @@
               {% endif %}
               {% if item_badge != blank %}
                 <span class="nb-badge {{ badge_class }}">{{ badge_icon }} {{ item_badge }}</span>
-              {% elsif is_available %}
+              {% else %}
                 {% unless title_lower contains 'gulab' or title_lower contains 'shami' or title_lower contains 'kebab' or title_lower contains 'coke' or title_lower contains 'raita' %}
                   <span class="nb-badge nb-badge--available">⚡ 45-60m</span>
                 {% endunless %}
-              {% else %}
-                <span class="nb-badge nb-badge--soldout">Sold Out</span>
               {% endif %}
 
               {% if title_lower contains 'alishaan' or title_lower contains 'ustaadi murgh dum' or title_lower contains 'ustaadi' %}
@@ -551,78 +571,45 @@
 
               {% if product.variants.size > 1 %}
                 <div class="nb-variant-selector" data-product-id="{{ product.id }}">
+                  {% assign rendered_pill_index = 0 %}
                   {% for variant in product.variants %}
                     {% liquid
-                      assign var_available = variant.available
+                      assign var_avail = variant.available
                       assign var_title_lower = variant.title | downcase
 
-                      # 2. Section Direct Toggles for Main Dishes & Sides
                       if title_lower contains 'alishaan' or title_lower contains 'tandoori'
-                        if section.settings.so_alishaan_single
-                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
-                            assign var_available = false
-                          endif
+                        if section.settings.so_alishaan_single and (var_title_lower contains 'single' or var_title_lower contains 'serves 1')
+                          assign var_avail = false
                         endif
-                        if section.settings.so_alishaan_double
-                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
-                            assign var_available = false
-                          endif
+                        if section.settings.so_alishaan_double and (var_title_lower contains 'double' or var_title_lower contains 'serves 2')
+                          assign var_avail = false
                         endif
-                        if section.settings.so_alishaan_halfkg
-                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
-                            assign var_available = false
-                          endif
+                        if section.settings.so_alishaan_halfkg and (var_title_lower contains 'half' or var_title_lower contains 'serves 3-4')
+                          assign var_avail = false
                         endif
                       endif
 
                       if title_lower contains 'sabz'
-                        if section.settings.so_sabz_single
-                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
-                            assign var_available = false
-                          endif
+                        if section.settings.so_sabz_single and (var_title_lower contains 'single' or var_title_lower contains 'serves 1')
+                          assign var_avail = false
                         endif
-                        if section.settings.so_sabz_double
-                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
-                            assign var_available = false
-                          endif
+                        if section.settings.so_sabz_double and (var_title_lower contains 'double' or var_title_lower contains 'serves 2')
+                          assign var_avail = false
                         endif
-                        if section.settings.so_sabz_halfkg
-                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
-                            assign var_available = false
-                          endif
+                        if section.settings.so_sabz_halfkg and (var_title_lower contains 'half' or var_title_lower contains 'serves 3-4')
+                          assign var_avail = false
                         endif
-                      endif
-
-                      if title_lower contains 'shami' and section.settings.so_shami_kebab
-                        assign var_available = false
-                      endif
-                      if title_lower contains 'gulab' and section.settings.so_gulab_jamun
-                        assign var_available = false
-                      endif
-                      if section.settings.so_trial_all
-                        if title_lower contains 'trial' or title_lower contains '99'
-                          assign var_available = false
-                        endif
-                      endif
-                      if title_lower contains 'coke' and section.settings.so_coke
-                        assign var_available = false
-                      endif
-                      if title_lower contains 'raita' and section.settings.so_raita
-                        assign var_available = false
-                      endif
-
-                      if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
-                        assign var_available = false
                       endif
                     %}
-                    <span class="nb-variant-pill {% if forloop.first %}active{% endif %} {% unless var_available %}nb-pill-soldout{% endunless %}"
+                    {% unless var_avail %}
+                      {% continue %}
+                    {% endunless %}
+                    {% assign rendered_pill_index = rendered_pill_index | plus: 1 %}
+                    <span class="nb-variant-pill {% if rendered_pill_index == 1 %}active{% endif %}"
                           data-variant-id="{{ variant.id }}"
                           data-price="{{ variant.price | money }}"
-                          data-available="{{ var_available }}">
+                          data-available="true">
                       <span class="nb-pill-text">{{ variant.title }}</span>
-                      {% unless var_available %}
-                        <span class="nb-pill-soldout-label">Sold Out</span>
-                      {% endunless %}
                     </span>
                   {% endfor %}
                 </div>
@@ -630,26 +617,31 @@
 
               <div class="nb-food-card__bottom">
                 <span class="nb-food-card__price" data-price-display="{{ product.id }}">
-                  {{ first_variant.price | money }}
+                  {{ first_available_variant.price | money }}
                 </span>
-                {% if is_available %}
-                  {% if is_instant_enabled %}
-                    <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
-                      <input type="hidden" name="id" value="{{ first_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
-                      <input type="hidden" name="quantity" value="1" />
-                      <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
-                    </form>
-                  {% else %}
-                    <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="font-size: 0.78rem;">📅 Pre-Order</a>
-                  {% endif %}
+                {% if is_instant_enabled %}
+                  <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
+                    <input type="hidden" name="id" value="{{ first_available_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+                  </form>
                 {% else %}
-                  <button type="button" class="nb-btn nb-btn--disabled nb-btn--sm" disabled>Sold Out</button>
+                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="font-size: 0.78rem;">📅 Pre-Order</a>
                 {% endif %}
               </div>
             </div>
           </div>
         {% endunless %}
       {% endfor %}
+
+      {% if total_available_products_rendered == 0 %}
+        <div class="nb-all-soldout-message" style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #FFF9F0; border: 1px solid #FFE0B2; border-radius: 16px; margin: 24px auto; max-width: 600px;">
+          <div style="font-size: 2.5rem; margin-bottom: 12px;">🍲</div>
+          <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; color: #2C1810; margin: 0 0 8px;">All Instant Delivery Items Sold Out for Today</h3>
+          <p style="color: #666; font-size: 0.95rem; margin: 0 0 20px; line-height: 1.5;">Our freshly cooked dum biryani batches for instant delivery are fully booked today. You can still schedule a pre-order for tomorrow or family feasts!</p>
+          <a href="/pages/family-orders" class="nb-btn nb-btn--gold" style="display: inline-block;">📅 Explore Pre-Orders</a>
+        </div>
+      {% endif %}
     {% else %}
       <!-- Fallback Demo Food Cards if Collection Empty -->
       <div class="nb-food-card">
