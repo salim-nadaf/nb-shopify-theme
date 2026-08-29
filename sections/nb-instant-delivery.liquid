@@ -204,7 +204,7 @@
                   assign var_available = false
                 endif
 
-                # 1. Exact 6 Individual Combo Toggles
+                # 1. Exact Individual Combo Toggles
                 if var_title_lower contains 'alishaan' or var_title_lower contains 'tandoori'
                   if var_title_lower contains 'serves 1' or var_title_lower contains '2 shami' or var_title_lower contains '1 gulab'
                     if section.settings.so_combo_tandoori_s1
@@ -216,6 +216,20 @@
                     endif
                   elsif var_title_lower contains 'serves 3-4' or var_title_lower contains 'half kg' or var_title_lower contains '6 shami'
                     if section.settings.so_combo_tandoori_halfkg
+                      assign var_available = false
+                    endif
+                  endif
+                elsif var_title_lower contains 'murgh' or var_title_lower contains 'ustaadi'
+                  if var_title_lower contains 'serves 1' or var_title_lower contains '2 shami' or var_title_lower contains '1 gulab'
+                    if section.settings.so_combo_murgh_s1
+                      assign var_available = false
+                    endif
+                  elsif var_title_lower contains 'serves 2' or var_title_lower contains '4 shami' or var_title_lower contains '2 gulab'
+                    if section.settings.so_combo_murgh_s2
+                      assign var_available = false
+                    endif
+                  elsif var_title_lower contains 'serves 3-4' or var_title_lower contains 'half kg' or var_title_lower contains '6 shami'
+                    if section.settings.so_combo_murgh_halfkg
                       assign var_available = false
                     endif
                   endif
@@ -234,6 +248,35 @@
                     endif
                   endif
                 endif
+
+                # Dynamic Keyword Override
+                if section.settings.so_custom_keywords != blank
+                  assign custom_so_keywords = section.settings.so_custom_keywords | downcase | split: ','
+                  for kw in custom_so_keywords
+                    assign clean_kw = kw | strip
+                    if clean_kw != blank
+                      if var_title_lower contains clean_kw or title_lower contains clean_kw
+                        assign var_available = false
+                      endif
+                    endif
+                  endfor
+                endif
+
+                # Dynamic Blocks Override
+                for block in section.blocks
+                  if block.type == 'sold_out_item' and block.settings.target_product != blank
+                    if block.settings.target_product.id == product.id
+                      if block.settings.portion_keyword != blank
+                        assign b_kw = block.settings.portion_keyword | downcase | strip
+                        if var_title_lower contains b_kw
+                          assign var_available = false
+                        endif
+                      else
+                        assign var_available = false
+                      endif
+                    endif
+                  endif
+                endfor
 
                 if var_available
                   assign prod_has_available_variant = true
@@ -306,7 +349,7 @@
                         assign var_available = false
                       endif
 
-                      # 1. Exact 6 Individual Combo Toggles
+                      # 1. Exact Individual Combo Toggles
                       if var_title_lower contains 'alishaan' or var_title_lower contains 'tandoori'
                         if var_title_lower contains 'serves 1' or var_title_lower contains '2 shami' or var_title_lower contains '1 gulab'
                           if section.settings.so_combo_tandoori_s1
@@ -318,6 +361,20 @@
                           endif
                         elsif var_title_lower contains 'serves 3-4' or var_title_lower contains 'half kg' or var_title_lower contains '6 shami'
                           if section.settings.so_combo_tandoori_halfkg
+                            assign var_available = false
+                          endif
+                        endif
+                      elsif var_title_lower contains 'murgh' or var_title_lower contains 'ustaadi'
+                        if var_title_lower contains 'serves 1' or var_title_lower contains '2 shami' or var_title_lower contains '1 gulab'
+                          if section.settings.so_combo_murgh_s1
+                            assign var_available = false
+                          endif
+                        elsif var_title_lower contains 'serves 2' or var_title_lower contains '4 shami' or var_title_lower contains '2 gulab'
+                          if section.settings.so_combo_murgh_s2
+                            assign var_available = false
+                          endif
+                        elsif var_title_lower contains 'serves 3-4' or var_title_lower contains 'half kg' or var_title_lower contains '6 shami'
+                          if section.settings.so_combo_murgh_halfkg
                             assign var_available = false
                           endif
                         endif
@@ -336,6 +393,35 @@
                           endif
                         endif
                       endif
+
+                      # Dynamic Keyword Override
+                      if section.settings.so_custom_keywords != blank
+                        assign custom_so_keywords = section.settings.so_custom_keywords | downcase | split: ','
+                        for kw in custom_so_keywords
+                          assign clean_kw = kw | strip
+                          if clean_kw != blank
+                            if var_title_lower contains clean_kw or title_lower contains clean_kw
+                              assign var_available = false
+                            endif
+                          endif
+                        endfor
+                      endif
+
+                      # Dynamic Blocks Override
+                      for block in section.blocks
+                        if block.type == 'sold_out_item' and block.settings.target_product != blank
+                          if block.settings.target_product.id == product.id
+                            if block.settings.portion_keyword != blank
+                              assign b_kw = block.settings.portion_keyword | downcase | strip
+                              if var_title_lower contains b_kw
+                                assign var_available = false
+                              endif
+                            else
+                              assign var_available = false
+                            endif
+                          endif
+                        endif
+                      endfor
                     %}
                     {% unless var_available %}
                       {% continue %}
@@ -588,6 +674,35 @@
                     endif
                   endif
                 endif
+
+                # Dynamic Keyword Override
+                if section.settings.so_custom_keywords != blank
+                  assign custom_so_keywords = section.settings.so_custom_keywords | downcase | split: ','
+                  for kw in custom_so_keywords
+                    assign clean_kw = kw | strip
+                    if clean_kw != blank
+                      if var_title_lower contains clean_kw or title_lower contains clean_kw
+                        assign var_avail = false
+                      endif
+                    endif
+                  endfor
+                endif
+
+                # Dynamic Blocks Override
+                for block in section.blocks
+                  if block.type == 'sold_out_item' and block.settings.target_product != blank
+                    if block.settings.target_product.id == product.id
+                      if block.settings.portion_keyword != blank
+                        assign b_kw = block.settings.portion_keyword | downcase | strip
+                        if var_title_lower contains b_kw
+                          assign var_avail = false
+                        endif
+                      else
+                        assign var_avail = false
+                      endif
+                    endif
+                  endif
+                endfor
 
                 if var_avail
                   assign prod_has_available_variant = true
@@ -850,6 +965,35 @@
                           endif
                         endif
                       endif
+
+                      # Dynamic Keyword Override
+                      if section.settings.so_custom_keywords != blank
+                        assign custom_so_keywords = section.settings.so_custom_keywords | downcase | split: ','
+                        for kw in custom_so_keywords
+                          assign clean_kw = kw | strip
+                          if clean_kw != blank
+                            if var_title_lower contains clean_kw or title_lower contains clean_kw
+                              assign var_avail = false
+                            endif
+                          endif
+                        endfor
+                      endif
+
+                      # Dynamic Blocks Override
+                      for block in section.blocks
+                        if block.type == 'sold_out_item' and block.settings.target_product != blank
+                          if block.settings.target_product.id == product.id
+                            if block.settings.portion_keyword != blank
+                              assign b_kw = block.settings.portion_keyword | downcase | strip
+                              if var_title_lower contains b_kw
+                                assign var_avail = false
+                              endif
+                            else
+                              assign var_avail = false
+                            endif
+                          endif
+                        endif
+                      endfor
                     %}
                     {% unless var_avail %}
                       {% continue %}
@@ -1480,6 +1624,16 @@
     },
     {
       "type": "header",
+      "content": "⚡ QUICK SOLD-OUT OVERRIDE (ANY PRODUCT OR PORTION)"
+    },
+    {
+      "type": "textarea",
+      "id": "so_custom_keywords",
+      "label": "Quick Sold-Out Keywords",
+      "info": "Whenever you add ANY new product or combo variant, type any part of its name or portion here separated by commas (e.g. 'murgh dum serves 1, ustaadi half kg, makhmali'). It will disappear from the instant menu immediately without touching theme code!"
+    },
+    {
+      "type": "header",
       "content": "🍱 1. NIAMAT MEALS & COMBOS"
     },
     {
@@ -1505,6 +1659,24 @@
       "type": "checkbox",
       "id": "so_combo_tandoori_halfkg",
       "label": "Sold Out: Half Kg Tandoori Combo with 6 Shami (Serves 3-4)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_murgh_s1",
+      "label": "Sold Out: Murgh Dum Combo with 2 Shami & 1 Gulab (Serves 1)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_murgh_s2",
+      "label": "Sold Out: Murgh Dum Combo with 4 Shami & 2 Gulab (Serves 2)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_combo_murgh_halfkg",
+      "label": "Sold Out: Half Kg Murgh Dum Combo with 6 Shami (Serves 3-4)",
       "default": false
     },
     {
@@ -1745,6 +1917,25 @@
       "id": "so_trial_all",
       "label": "Sold Out / Hide: ₹99 Trial Chicken Biryani",
       "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "sold_out_item",
+      "name": "Sold Out Item / Portion",
+      "settings": [
+        {
+          "type": "product",
+          "id": "target_product",
+          "label": "Select Product"
+        },
+        {
+          "type": "text",
+          "id": "portion_keyword",
+          "label": "Portion Name / Keyword (Optional)",
+          "info": "Leave blank to mark the whole product sold out, or enter portion name like 'Single', 'Double', 'Half Kg', 'Serves 1', etc."
+        }
+      ]
     }
   ],
   "presets": [
