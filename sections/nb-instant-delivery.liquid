@@ -188,6 +188,9 @@
             if product.tags contains 'sold-out' or product.tags contains 'soldout' or product.tags contains 'out-of-stock'
               assign is_prod_tagged_soldout = true
             endif
+            if section.settings.so_meals_all
+              assign is_prod_tagged_soldout = true
+            endif
 
             assign prod_has_available_variant = false
             assign first_available_variant = nil
@@ -196,6 +199,10 @@
               for variant in product.variants
                 assign var_available = variant.available
                 assign var_title_lower = variant.title | downcase
+
+                if section.settings.so_meals_all
+                  assign var_available = false
+                endif
 
                 # 1. Exact 6 Individual Combo Toggles
                 if var_title_lower contains 'alishaan' or var_title_lower contains 'tandoori'
@@ -295,6 +302,10 @@
                       assign var_available = variant.available
                       assign var_title_lower = variant.title | downcase
 
+                      if section.settings.so_meals_all
+                        assign var_available = false
+                      endif
+
                       # 1. Exact 6 Individual Combo Toggles
                       if var_title_lower contains 'alishaan' or var_title_lower contains 'tandoori'
                         if var_title_lower contains 'serves 1' or var_title_lower contains '2 shami' or var_title_lower contains '1 gulab'
@@ -374,6 +385,57 @@
 
             # 2. Section Direct Toggles for Main Dishes & Sides
             assign is_toggled_off = false
+
+            if title_lower contains 'alishaan' or title_lower contains 'tandoori'
+              if section.settings.so_alishaan_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'ustaadi'
+              if section.settings.so_ustaadi_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'sabz'
+              if section.settings.so_sabz_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'hyderabadi murgh'
+              if section.settings.so_hyderabadi_murgh_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'hyderabadi mutton'
+              if section.settings.so_hyderabadi_mutton_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'gosht-e-dum' or title_lower contains 'gosht e dum'
+              if section.settings.so_gosht_dum_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'zam-zam' or title_lower contains 'zam zam' or title_lower contains 'zamzam'
+              if section.settings.so_zam_zam_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'makhmali'
+              if section.settings.so_makhmali_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'paneer'
+              if section.settings.so_paneer_tikka_all
+                assign is_toggled_off = true
+              endif
+            endif
+            if title_lower contains 'nawabi veg'
+              if section.settings.so_nawabi_veg_all
+                assign is_toggled_off = true
+              endif
+            endif
             if title_lower contains 'shami' and section.settings.so_shami_kebab
               assign is_toggled_off = true
             endif
@@ -400,8 +462,11 @@
                 assign var_avail = variant.available
                 assign var_title_lower = variant.title | downcase
 
-                # Section Direct Toggles for Main Dishes & Sides
+                # Section Direct Portion Toggles
                 if title_lower contains 'alishaan' or title_lower contains 'tandoori'
+                  if section.settings.so_alishaan_all
+                    assign var_avail = false
+                  endif
                   if section.settings.so_alishaan_single
                     if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
                       assign var_avail = false
@@ -419,7 +484,31 @@
                   endif
                 endif
 
+                if title_lower contains 'ustaadi'
+                  if section.settings.so_ustaadi_all
+                    assign var_avail = false
+                  endif
+                  if section.settings.so_ustaadi_single
+                    if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                      assign var_avail = false
+                    endif
+                  endif
+                  if section.settings.so_ustaadi_double
+                    if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                      assign var_avail = false
+                    endif
+                  endif
+                  if section.settings.so_ustaadi_halfkg
+                    if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                      assign var_avail = false
+                    endif
+                  endif
+                endif
+
                 if title_lower contains 'sabz'
+                  if section.settings.so_sabz_all
+                    assign var_avail = false
+                  endif
                   if section.settings.so_sabz_single
                     if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
                       assign var_avail = false
@@ -431,6 +520,69 @@
                     endif
                   endif
                   if section.settings.so_sabz_halfkg
+                    if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                      assign var_avail = false
+                    endif
+                  endif
+                endif
+
+                if title_lower contains 'hyderabadi murgh'
+                  if section.settings.so_hyderabadi_murgh_all
+                    assign var_avail = false
+                  endif
+                  if section.settings.so_hyderabadi_murgh_single
+                    if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                      assign var_avail = false
+                    endif
+                  endif
+                  if section.settings.so_hyderabadi_murgh_double
+                    if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                      assign var_avail = false
+                    endif
+                  endif
+                  if section.settings.so_hyderabadi_murgh_halfkg
+                    if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                      assign var_avail = false
+                    endif
+                  endif
+                endif
+
+                if title_lower contains 'hyderabadi mutton'
+                  if section.settings.so_hyderabadi_mutton_all
+                    assign var_avail = false
+                  endif
+                  if section.settings.so_hyderabadi_mutton_single
+                    if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                      assign var_avail = false
+                    endif
+                  endif
+                  if section.settings.so_hyderabadi_mutton_double
+                    if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                      assign var_avail = false
+                    endif
+                  endif
+                  if section.settings.so_hyderabadi_mutton_halfkg
+                    if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                      assign var_avail = false
+                    endif
+                  endif
+                endif
+
+                if title_lower contains 'gosht-e-dum' or title_lower contains 'gosht e dum'
+                  if section.settings.so_gosht_dum_all
+                    assign var_avail = false
+                  endif
+                  if section.settings.so_gosht_dum_single
+                    if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                      assign var_avail = false
+                    endif
+                  endif
+                  if section.settings.so_gosht_dum_double
+                    if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                      assign var_avail = false
+                    endif
+                  endif
+                  if section.settings.so_gosht_dum_halfkg
                     if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
                       assign var_avail = false
                     endif
@@ -609,6 +761,24 @@
                         endif
                       endif
 
+                      if title_lower contains 'ustaadi'
+                        if section.settings.so_ustaadi_single
+                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                            assign var_avail = false
+                          endif
+                        endif
+                        if section.settings.so_ustaadi_double
+                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                            assign var_avail = false
+                          endif
+                        endif
+                        if section.settings.so_ustaadi_halfkg
+                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                            assign var_avail = false
+                          endif
+                        endif
+                      endif
+
                       if title_lower contains 'sabz'
                         if section.settings.so_sabz_single
                           if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
@@ -621,6 +791,60 @@
                           endif
                         endif
                         if section.settings.so_sabz_halfkg
+                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                            assign var_avail = false
+                          endif
+                        endif
+                      endif
+
+                      if title_lower contains 'hyderabadi murgh'
+                        if section.settings.so_hyderabadi_murgh_single
+                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                            assign var_avail = false
+                          endif
+                        endif
+                        if section.settings.so_hyderabadi_murgh_double
+                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                            assign var_avail = false
+                          endif
+                        endif
+                        if section.settings.so_hyderabadi_murgh_halfkg
+                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                            assign var_avail = false
+                          endif
+                        endif
+                      endif
+
+                      if title_lower contains 'hyderabadi mutton'
+                        if section.settings.so_hyderabadi_mutton_single
+                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                            assign var_avail = false
+                          endif
+                        endif
+                        if section.settings.so_hyderabadi_mutton_double
+                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                            assign var_avail = false
+                          endif
+                        endif
+                        if section.settings.so_hyderabadi_mutton_halfkg
+                          if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
+                            assign var_avail = false
+                          endif
+                        endif
+                      endif
+
+                      if title_lower contains 'gosht-e-dum' or title_lower contains 'gosht e dum'
+                        if section.settings.so_gosht_dum_single
+                          if var_title_lower contains 'single' or var_title_lower contains 'serves 1'
+                            assign var_avail = false
+                          endif
+                        endif
+                        if section.settings.so_gosht_dum_double
+                          if var_title_lower contains 'double' or var_title_lower contains 'serves 2'
+                            assign var_avail = false
+                          endif
+                        endif
+                        if section.settings.so_gosht_dum_halfkg
                           if var_title_lower contains 'half' or var_title_lower contains 'serves 3-4'
                             assign var_avail = false
                           endif
@@ -1256,120 +1480,270 @@
     },
     {
       "type": "header",
-      "content": "🍱 1. NIAMAT MEALS & COMBOS (6 INDIVIDUAL COMBOS)"
+      "content": "🍱 1. NIAMAT MEALS & COMBOS"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_meals_all",
+      "label": "Hide Entire Meals & Combos Section",
+      "info": "Turn ON when all combo meals are sold out",
+      "default": false
     },
     {
       "type": "checkbox",
       "id": "so_combo_tandoori_s1",
-      "label": "Alishaan Tandoori with 2 Shami & 1 Gulab Jamun (Serves 1)",
+      "label": "Sold Out: Tandoori Combo with 2 Shami & 1 Gulab (Serves 1)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_combo_tandoori_s2",
-      "label": "Alishaan Tandoori with 4 Shami & 2 Gulab Jamuns (Serves 2)",
+      "label": "Sold Out: Tandoori Combo with 4 Shami & 2 Gulab (Serves 2)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_combo_tandoori_halfkg",
-      "label": "Half Kg Tandoori Biryani with 6 Shami Kebabs (Serves 3-4)",
+      "label": "Sold Out: Half Kg Tandoori Combo with 6 Shami (Serves 3-4)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_combo_sabz_s1",
-      "label": "Sabz Tikka Biryani with 2 Gulab Jamuns (Serves 1)",
+      "label": "Sold Out: Sabz Tikka Combo with 2 Gulab Jamuns (Serves 1)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_combo_sabz_s2",
-      "label": "Sabz Tikka Biryani 4 Gulab Jamuns (Serves 2)",
+      "label": "Sold Out: Sabz Tikka Combo with 4 Gulab Jamuns (Serves 2)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_combo_sabz_halfkg",
-      "label": "Sabz Tikka Biryani with 6 Gulab Jamuns (Serves 3-4)",
+      "label": "Sold Out: Sabz Tikka Combo with 6 Gulab Jamuns (Serves 3-4)",
       "default": false
     },
     {
       "type": "header",
-      "content": "🍗 2. ALISHAAN TANDOORI BIRYANI (3 PORTIONS)"
+      "content": "🍗 2. ALISHAAN TANDOORI BIRYANI"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_alishaan_all",
+      "label": "Hide Entire Alishaan Tandoori (All Portions)",
+      "info": "Turn ON when all portions of Alishaan Tandoori are sold out",
+      "default": false
     },
     {
       "type": "checkbox",
       "id": "so_alishaan_single",
-      "label": "Single Plate (Serves 1) — Alishaan Tandoori",
+      "label": "Sold Out: Single Plate (Serves 1)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_alishaan_double",
-      "label": "Double Plate (Serves 2) — Alishaan Tandoori",
+      "label": "Sold Out: Double Plate (Serves 2)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_alishaan_halfkg",
-      "label": "Half Kg (Serves 3-4) — Alishaan Tandoori",
+      "label": "Sold Out: Half Kg (Serves 3-4)",
       "default": false
     },
     {
       "type": "header",
-      "content": "🌿 3. SABZ TIKKA BIRYANI (3 PORTIONS)"
+      "content": "🍲 3. USTAADI MURGH DUM BIRYANI"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_ustaadi_all",
+      "label": "Hide Entire Ustaadi Murgh Dum (All Portions)",
+      "info": "Turn ON when all portions of Ustaadi Murgh Dum are sold out",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_ustaadi_single",
+      "label": "Sold Out: Single Plate (Serves 1)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_ustaadi_double",
+      "label": "Sold Out: Double Plate (Serves 2)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_ustaadi_halfkg",
+      "label": "Sold Out: Half Kg (Serves 3-4)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "🌿 4. SABZ TIKKA BIRYANI (VEG)"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_sabz_all",
+      "label": "Hide Entire Sabz Tikka Biryani (All Portions)",
+      "info": "Turn ON when all portions of Sabz Tikka Biryani are sold out",
+      "default": false
     },
     {
       "type": "checkbox",
       "id": "so_sabz_single",
-      "label": "Single Plate (Serves 1) — Sabz Tikka Biryani",
+      "label": "Sold Out: Single Plate (Serves 1)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_sabz_double",
-      "label": "Double Plate (Serves 2) — Sabz Tikka Biryani",
+      "label": "Sold Out: Double Plate (Serves 2)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_sabz_halfkg",
-      "label": "Half Kg (Serves 3-4) — Sabz Tikka Biryani",
+      "label": "Sold Out: Half Kg (Serves 3-4)",
       "default": false
     },
     {
       "type": "header",
-      "content": "🍢 4. SIDES, DESSERTS & SPECIAL TRIAL"
+      "content": "👑 5. OTHER BIRYANIS (IF ADDED TO INSTANT MENU)"
+    },
+    {
+      "type": "checkbox",
+      "id": "so_hyderabadi_murgh_all",
+      "label": "Sold Out: Hyderabadi Murgh Dum (All Portions)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_hyderabadi_murgh_single",
+      "label": "Sold Out: Hyderabadi Murgh — Single Plate",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_hyderabadi_murgh_double",
+      "label": "Sold Out: Hyderabadi Murgh — Double Plate",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_hyderabadi_murgh_halfkg",
+      "label": "Sold Out: Hyderabadi Murgh — Half Kg",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_hyderabadi_mutton_all",
+      "label": "Sold Out: Hyderabadi Mutton Dum (All Portions)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_hyderabadi_mutton_single",
+      "label": "Sold Out: Hyderabadi Mutton — Single Plate",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_hyderabadi_mutton_double",
+      "label": "Sold Out: Hyderabadi Mutton — Double Plate",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_hyderabadi_mutton_halfkg",
+      "label": "Sold Out: Hyderabadi Mutton — Half Kg",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_gosht_dum_all",
+      "label": "Sold Out: Gosht-e-Dum Mazedaar (All Portions)",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_gosht_dum_single",
+      "label": "Sold Out: Gosht-e-Dum — Single Plate",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_gosht_dum_double",
+      "label": "Sold Out: Gosht-e-Dum — Double Plate",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_gosht_dum_halfkg",
+      "label": "Sold Out: Gosht-e-Dum — Half Kg",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_zam_zam_all",
+      "label": "Sold Out: Zam-Zam Lazawaab Biryani",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_makhmali_all",
+      "label": "Sold Out: Makhmali Malai Biryani",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_paneer_tikka_all",
+      "label": "Sold Out: Paneer-e-Tikka Biryani",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_nawabi_veg_all",
+      "label": "Sold Out: Nawabi Veg Dum Biryani",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "🍢 6. SIDES, DESSERTS & SPECIAL TRIAL"
     },
     {
       "type": "checkbox",
       "id": "so_shami_kebab",
-      "label": "Chicken Shami Kebab (2 pcs)",
+      "label": "Sold Out: Chicken Shami Kebab (2 pcs)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_gulab_jamun",
-      "label": "Gulab Jamun (3 pcs)",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "so_trial_all",
-      "label": "₹99 Trial Chicken Biryani",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "so_coke",
-      "label": "Coke / Beverages",
+      "label": "Sold Out: Gulab Jamun (3 pcs)",
       "default": false
     },
     {
       "type": "checkbox",
       "id": "so_raita",
-      "label": "Extra Raita",
+      "label": "Sold Out: Extra Raita",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_coke",
+      "label": "Sold Out: Chilled Coke / Beverages",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "so_trial_all",
+      "label": "Sold Out / Hide: ₹99 Trial Chicken Biryani",
       "default": false
     }
   ],
