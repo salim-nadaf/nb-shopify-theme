@@ -1,15 +1,6 @@
 {% comment %} NIAMAT BIRYANI — Production-Grade Refined Cart Drawer {% endcomment %}
 
-{% liquid
-  assign is_instant_enabled = settings.nb_instant_delivery_enabled
-  if shop.metafields.niamat.instant_delivery_enabled != blank
-    if shop.metafields.niamat.instant_delivery_enabled == false or shop.metafields.niamat.instant_delivery_enabled == 'false'
-      assign is_instant_enabled = false
-    else
-      assign is_instant_enabled = true
-    endif
-  endif
-%}
+{% render 'nb-instant-schedule' %}
 
 <div id="nb-drawer-overlay" onclick="nbCloseDrawer()"></div>
 
@@ -667,19 +658,24 @@
 
 <script>
 // ===== SINGLE SOURCE OF TRUTH CONFIGURATION =====
-{% liquid
-  assign is_instant_enabled = settings.nb_instant_delivery_enabled
-  if shop.metafields.niamat.instant_delivery_enabled != blank
-    if shop.metafields.niamat.instant_delivery_enabled == false or shop.metafields.niamat.instant_delivery_enabled == 'false'
-      assign is_instant_enabled = false
-    else
-      assign is_instant_enabled = true
-    endif
-  endif
-%}
+{% render 'nb-instant-schedule' %}
 
 const NB_CONFIG = {
-  instantDeliveryEnabled: {{ is_instant_enabled | json }},
+  instantDeliveryMode: {{ current_mode | default: 'auto' | json }},
+  instantDeliveryEnabled: (function() {
+    var mode = {{ current_mode | default: 'auto' | json }};
+    if (mode === 'force_open') return true;
+    if (mode === 'force_closed') return false;
+    try {
+      var nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+      var day = nowIST.getDay();
+      var totalMin = nowIST.getHours() * 60 + nowIST.getMinutes();
+      if (day === 5) return (totalMin >= 1140 && totalMin < 1320);
+      return (totalMin >= 720 && totalMin < 900) || (totalMin >= 1140 && totalMin < 1320);
+    } catch(e) {
+      return {{ is_instant_enabled | json }};
+    }
+  })(),
   instantDeliveryStatusMsg: {{ settings.nb_instant_delivery_status_msg | default: 'Instant Delivery is available' | json }},
   instantDeliveryOffMsg: {{ settings.nb_instant_delivery_off_msg | default: "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!" | json }},
   scheduledOrderingUrl: {{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' | json }},

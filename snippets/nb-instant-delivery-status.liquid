@@ -2,18 +2,9 @@
   NIAMAT BIRYANI — Instant Delivery Status Indicator Badge
 {% endcomment %}
 
-{% liquid
-  assign is_enabled = settings.nb_instant_delivery_enabled
-  if shop.metafields.niamat.instant_delivery_enabled != blank
-    if shop.metafields.niamat.instant_delivery_enabled == false or shop.metafields.niamat.instant_delivery_enabled == 'false'
-      assign is_enabled = false
-    else
-      assign is_enabled = true
-    endif
-  endif
-%}
+{% render 'nb-instant-schedule' %}
 
-{% if is_enabled %}
+{% if is_instant_enabled %}
   <div class="nb-status-pill nb-status-pill--on" id="nb-status-indicator">
     <span class="nb-status-dot">🟢</span>
     <span class="nb-status-text">{{ settings.nb_instant_delivery_status_msg | default: 'Instant Delivery Available' }}</span>
