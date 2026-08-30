@@ -2123,8 +2123,29 @@
       {
         "type": "checkbox",
         "id": "nb_instant_delivery_enabled",
-        "label": "Enable Instant Delivery",
+        "label": "Enable Instant Delivery (Master Switch)",
         "default": true
+      },
+      {
+        "type": "select",
+        "id": "nb_instant_delivery_mode",
+        "label": "Operating Mode",
+        "options": [
+          {
+            "value": "auto",
+            "label": "🕒 Auto (Store Hours: 12-3 & 7-10 PM)"
+          },
+          {
+            "value": "force_open",
+            "label": "🟢 Force Online / Open Now"
+          },
+          {
+            "value": "force_closed",
+            "label": "🔴 Force Offline / Closed Now"
+          }
+        ],
+        "default": "auto",
+        "info": "In Automatic mode, instant delivery turns ON and OFF automatically based on store hours in IST (Fri: 7–10 PM; other days: 12–3 PM & 7–10 PM). Select Force Online or Force Offline anytime for manual override."
       },
       {
         "type": "text",

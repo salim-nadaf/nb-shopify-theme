@@ -1,15 +1,8 @@
 {% comment %} NIAMAT BIRYANI — Instant Delivery Section with ₹99 Trial Hero {% endcomment %}
 {% render 'food-card-styles' %}
+{% render 'nb-instant-schedule' %}
 
 {% liquid
-  assign is_instant_enabled = settings.nb_instant_delivery_enabled
-  if shop.metafields.niamat.instant_delivery_enabled != blank
-    if shop.metafields.niamat.instant_delivery_enabled == false or shop.metafields.niamat.instant_delivery_enabled == 'false'
-      assign is_instant_enabled = false
-    else
-      assign is_instant_enabled = true
-    endif
-  endif
 
   assign trial_prod = all_products[section.settings.trial_product]
   if trial_prod == blank
@@ -76,13 +69,19 @@
 
           <!-- CTA Area: Submits to Cart Directly via AJAX Quick-Form -->
           <div class="nb-trial-cta-block">
-            <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id }}">
-              <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
-              <input type="hidden" name="quantity" value="1" />
-              <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
-                {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
-              </button>
-            </form>
+            {% if is_instant_enabled %}
+              <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id }}">
+                <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
+                <input type="hidden" name="quantity" value="1" />
+                <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
+                  {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
+                </button>
+              </form>
+            {% else %}
+              <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-trial-btn nb-trial-preorder-link" id="nb-trial-cta-button" style="text-align: center; text-decoration: none; display: block;">
+                📅 Pre-Order Trial Biryani
+              </a>
+            {% endif %}
           </div>
         </div>
 
@@ -150,19 +149,17 @@
       </a>
     </div>
 
-    {% unless is_instant_enabled %}
-      <div class="nb-instant-off-banner" style="max-width: 680px; margin: 16px auto 0; padding: 20px 24px; background: #FFF3E0; border: 1px solid #FFE0B2; border-left: 4px solid #E65100; border-radius: 16px; text-align: center;">
-        <div style="font-weight: 800; font-size: 1.05rem; color: #C62828; margin-bottom: 6px;">
-          🔴 Instant Delivery Currently Unavailable
-        </div>
-        <p style="font-size: 0.92rem; color: #5C4033; margin: 0 0 14px;">
-          {{ settings.nb_instant_delivery_off_msg | default: "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!" }}
-        </p>
-        <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold" style="display: inline-block;">
-          📅 Choose a Scheduled / Pre-Order
-        </a>
+    <div class="nb-instant-off-banner" style="{% if is_instant_enabled %}display: none;{% endif %} max-width: 680px; margin: 16px auto 0; padding: 20px 24px; background: #FFF3E0; border: 1px solid #FFE0B2; border-left: 4px solid #E65100; border-radius: 16px; text-align: center;">
+      <div style="font-weight: 800; font-size: 1.05rem; color: #C62828; margin-bottom: 6px;">
+        🔴 Instant Delivery Currently Unavailable
       </div>
-    {% endunless %}
+      <p style="font-size: 0.92rem; color: #5C4033; margin: 0 0 14px;">
+        {{ settings.nb_instant_delivery_off_msg | default: "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!" }}
+      </p>
+      <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold" style="display: inline-block;">
+        📅 Choose a Scheduled / Pre-Order
+      </a>
+    </div>
   </div>
 
   {% liquid
@@ -451,7 +448,7 @@
                     <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
                   </form>
                 {% else %}
-                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="font-size: 0.78rem;">📅 Pre-Order</a>
+                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm nb-btn--preorder-link" style="font-size: 0.78rem;">📅 Pre-Order</a>
                 {% endif %}
               </div>
             </div>
@@ -1020,7 +1017,7 @@
                     <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
                   </form>
                 {% else %}
-                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="font-size: 0.78rem;">📅 Pre-Order</a>
+                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm nb-btn--preorder-link" style="font-size: 0.78rem;">📅 Pre-Order</a>
                 {% endif %}
               </div>
             </div>
@@ -1556,6 +1553,135 @@
     initInstantDelivery();
     initTrialProduct();
   }
+
+  // ===== REAL-TIME IST STORE SCHEDULE & OVERRIDE SYNC =====
+  (function initScheduleSync() {
+    var mode = {{ current_mode | default: 'auto' | json }};
+    var preOrderUrl = {{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' | json }};
+
+    function isNowOpenIST() {
+      if (mode === 'force_open') return true;
+      if (mode === 'force_closed') return false;
+      try {
+        var nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+        var day = nowIST.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
+        var totalMin = nowIST.getHours() * 60 + nowIST.getMinutes();
+
+        if (day === 5) {
+          // Friday: ONLY 7 PM to 10 PM IST (1140 to 1320)
+          return totalMin >= 1140 && totalMin < 1320;
+        }
+        // Other days: 12 PM to 3 PM (720 to 900) & 7 PM to 10 PM (1140 to 1320)
+        var isLunch = (totalMin >= 720 && totalMin < 900);
+        var isDinner = (totalMin >= 1140 && totalMin < 1320);
+        return isLunch || isDinner;
+      } catch (e) {
+        return {{ is_instant_enabled | json }};
+      }
+    }
+
+    function syncInstantDeliveryUI() {
+      var isOpen = isNowOpenIST();
+
+      // 1. Off-banner visibility
+      var banner = document.querySelector('.nb-instant-off-banner');
+      if (banner) {
+        banner.style.display = isOpen ? 'none' : 'block';
+      }
+
+      // 2. Status Pill (if rendered)
+      var statusPill = document.getElementById('nb-status-indicator');
+      if (statusPill) {
+        if (isOpen) {
+          statusPill.className = 'nb-status-pill nb-status-pill--on';
+          statusPill.innerHTML = '<span class="nb-status-dot">🟢</span><span class="nb-status-text">Instant Delivery Available</span>';
+        } else {
+          statusPill.className = 'nb-status-pill nb-status-pill--off';
+          statusPill.innerHTML = '<span class="nb-status-dot">🔴</span><span class="nb-status-text">Instant Delivery Temporarily Unavailable</span>';
+        }
+      }
+
+      // 3. Card Action Buttons
+      document.querySelectorAll('.nb-food-card').forEach(function(card) {
+        var bottom = card.querySelector('.nb-food-card__bottom');
+        if (!bottom) return;
+        var prodId = card.getAttribute('data-product-id') || (card.querySelector('.nb-variant-selector') ? card.querySelector('.nb-variant-selector').dataset.productId : '');
+        var form = bottom.querySelector('form.nb-quick-form');
+        var preOrderBtn = bottom.querySelector('a.nb-btn--preorder-link');
+
+        if (isOpen) {
+          if (!form && preOrderBtn) {
+            var activePill = card.querySelector('.nb-variant-pill.active');
+            var vId = activePill ? activePill.dataset.variantId : '';
+            var newForm = document.createElement('form');
+            newForm.action = '/cart/add';
+            newForm.method = 'post';
+            newForm.className = 'nb-quick-form';
+            if (prodId) newForm.setAttribute('data-form', prodId);
+            newForm.innerHTML = '<input type="hidden" name="id" value="' + vId + '" class="nb-variant-input"' + (prodId ? ' data-product="' + prodId + '"' : '') + ' /><input type="hidden" name="quantity" value="1" /><button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>';
+            bottom.replaceChild(newForm, preOrderBtn);
+          }
+        } else {
+          if (form) {
+            var newBtn = document.createElement('a');
+            newBtn.href = preOrderUrl;
+            newBtn.className = 'nb-btn nb-btn--gold nb-btn--sm nb-btn--preorder-link';
+            newBtn.style.fontSize = '0.78rem';
+            newBtn.textContent = '📅 Pre-Order';
+            bottom.replaceChild(newBtn, form);
+          }
+        }
+      });
+
+      // 4. Trial Hero Button
+      var trialCtaBlock = document.querySelector('.nb-trial-cta-block');
+      if (trialCtaBlock) {
+        var trialForm = trialCtaBlock.querySelector('form.nb-trial-quick-form');
+        var trialPreOrder = trialCtaBlock.querySelector('a.nb-trial-preorder-link');
+        var trialVariantInput = document.getElementById('nb-trial-variant-input');
+        var trialCtaText = {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' | json }};
+        if (isOpen) {
+          if (!trialForm && trialPreOrder) {
+            var vId = trialVariantInput ? trialVariantInput.value : '';
+            var pId = trialVariantInput ? trialVariantInput.dataset.product : '';
+            var tf = document.createElement('form');
+            tf.action = '/cart/add';
+            tf.method = 'post';
+            tf.className = 'nb-quick-form nb-trial-quick-form';
+            tf.id = 'nb-trial-add-form';
+            if (pId) tf.dataset.form = pId;
+            tf.innerHTML = '<input type="hidden" name="id" value="' + vId + '" id="nb-trial-variant-input" /><input type="hidden" name="quantity" value="1" /><button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">' + trialCtaText + '</button>';
+            trialCtaBlock.replaceChild(tf, trialPreOrder);
+          }
+        } else {
+          if (trialForm) {
+            var tb = document.createElement('a');
+            tb.href = preOrderUrl;
+            tb.className = 'nb-trial-btn nb-trial-preorder-link';
+            tb.id = 'nb-trial-cta-button';
+            tb.style.textAlign = 'center';
+            tb.style.textDecoration = 'none';
+            tb.style.display = 'block';
+            tb.textContent = '📅 Pre-Order Trial Biryani';
+            trialCtaBlock.replaceChild(tb, trialForm);
+          }
+        }
+      }
+
+      // 5. Update global cart drawer config
+      if (window.NB_CONFIG) {
+        window.NB_CONFIG.instantDeliveryEnabled = isOpen;
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', syncInstantDeliveryUI);
+    } else {
+      syncInstantDeliveryUI();
+    }
+
+    setInterval(syncInstantDeliveryUI, 60000);
+  })();
 })();
 </script>
 
@@ -1565,6 +1691,31 @@
   "tag": "section",
   "class": "section",
   "settings": [
+    {
+      "type": "header",
+      "content": "⚡ INSTANT DELIVERY OPERATING MODE & TIMINGS"
+    },
+    {
+      "type": "select",
+      "id": "instant_availability_mode",
+      "label": "Instant Delivery Operating Mode",
+      "options": [
+        {
+          "value": "auto",
+          "label": "🕒 Auto (Store Hours: 12-3 & 7-10 PM)"
+        },
+        {
+          "value": "force_open",
+          "label": "🟢 Force Online / Open Now"
+        },
+        {
+          "value": "force_closed",
+          "label": "🔴 Force Offline / Closed Now"
+        }
+      ],
+      "default": "auto",
+      "info": "In Automatic mode, instant delivery turns ON and OFF automatically based on store hours in IST (Fri: 7–10 PM; other days: 12–3 PM & 7–10 PM). Select Force Online or Force Offline anytime for manual override."
+    },
     {
       "type": "header",
       "content": "₹99 Trial Hero Section"
