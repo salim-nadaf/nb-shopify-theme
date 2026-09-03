@@ -1,6 +1,6 @@
 {% comment %} NIAMAT BIRYANI — Instant Delivery Section with ₹99 Trial Hero {% endcomment %}
 {% render 'food-card-styles' %}
-{% render 'nb-instant-schedule' %}
+{% include 'nb-instant-schedule' %}
 
 {% liquid
 
@@ -69,16 +69,19 @@
 
           <!-- CTA Area: Submits to Cart Directly via AJAX Quick-Form -->
           <div class="nb-trial-cta-block">
-            <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id | default: '8400607281226' }}" {% unless is_instant_enabled %}style="display:none;"{% endunless %}>
-              <input type="hidden" name="id" value="{{ trial_variant.id | default: 44087268180042 }}" id="nb-trial-variant-input" />
-              <input type="hidden" name="quantity" value="1" />
-              <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
-                {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
-              </button>
-            </form>
-            <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-trial-btn nb-trial-preorder-link" id="nb-trial-preorder-btn" style="{% if is_instant_enabled %}display:none;{% endif %} text-align: center; text-decoration: none; display: block;">
-              📅 Pre-Order Trial Biryani
-            </a>
+            {% if is_instant_enabled %}
+              <form action="/cart/add" method="post" class="nb-quick-form nb-trial-quick-form" id="nb-trial-add-form" data-form="{{ trial_prod.id }}">
+                <input type="hidden" name="id" value="{{ trial_variant.id }}" id="nb-trial-variant-input" />
+                <input type="hidden" name="quantity" value="1" />
+                <button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">
+                  {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' }}
+                </button>
+              </form>
+            {% else %}
+              <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-trial-btn nb-trial-preorder-link" id="nb-trial-cta-button" style="text-align: center; text-decoration: none; display: block;">
+                📅 Pre-Order Trial Biryani
+              </a>
+            {% endif %}
           </div>
         </div>
 
@@ -438,12 +441,15 @@
                 <span class="nb-food-card__price" data-price-display="{{ product.id }}">
                   {{ first_available_variant.price | money }}
                 </span>
-                <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}" {% unless is_instant_enabled %}style="display:none;"{% endunless %}>
-                  <input type="hidden" name="id" value="{{ first_available_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
-                  <input type="hidden" name="quantity" value="1" />
-                  <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
-                </form>
-                <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm nb-btn--preorder-link" style="{% if is_instant_enabled %}display:none;{% endif %} font-size: 0.78rem;">📅 Pre-Order</a>
+                {% if is_instant_enabled %}
+                  <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
+                    <input type="hidden" name="id" value="{{ first_available_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+                  </form>
+                {% else %}
+                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm nb-btn--preorder-link" style="font-size: 0.78rem;">📅 Pre-Order</a>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -1004,12 +1010,15 @@
                 <span class="nb-food-card__price" data-price-display="{{ product.id }}">
                   {{ first_available_variant.price | money }}
                 </span>
-                <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}" {% unless is_instant_enabled %}style="display:none;"{% endunless %}>
-                  <input type="hidden" name="id" value="{{ first_available_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
-                  <input type="hidden" name="quantity" value="1" />
-                  <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
-                </form>
-                <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm nb-btn--preorder-link" style="{% if is_instant_enabled %}display:none;{% endif %} font-size: 0.78rem;">📅 Pre-Order</a>
+                {% if is_instant_enabled %}
+                  <form action="/cart/add" method="post" class="nb-quick-form" data-form="{{ product.id }}">
+                    <input type="hidden" name="id" value="{{ first_available_variant.id }}" class="nb-variant-input" data-product="{{ product.id }}" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>
+                  </form>
+                {% else %}
+                  <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm nb-btn--preorder-link" style="font-size: 0.78rem;">📅 Pre-Order</a>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -1596,26 +1605,72 @@
       document.querySelectorAll('.nb-food-card').forEach(function(card) {
         var bottom = card.querySelector('.nb-food-card__bottom');
         if (!bottom) return;
+        var prodId = card.getAttribute('data-product-id') || (card.querySelector('.nb-variant-selector') ? card.querySelector('.nb-variant-selector').dataset.productId : '');
         var form = bottom.querySelector('form.nb-quick-form');
         var preOrderBtn = bottom.querySelector('a.nb-btn--preorder-link');
 
-        if (form) form.style.display = isOpen ? '' : 'none';
-        if (preOrderBtn) preOrderBtn.style.display = isOpen ? 'none' : '';
+        if (isOpen) {
+          if (!form && preOrderBtn) {
+            var activePill = card.querySelector('.nb-variant-pill.active');
+            var vId = activePill ? activePill.dataset.variantId : '';
+            var newForm = document.createElement('form');
+            newForm.action = '/cart/add';
+            newForm.method = 'post';
+            newForm.className = 'nb-quick-form';
+            if (prodId) newForm.setAttribute('data-form', prodId);
+            newForm.innerHTML = '<input type="hidden" name="id" value="' + vId + '" class="nb-variant-input"' + (prodId ? ' data-product="' + prodId + '"' : '') + ' /><input type="hidden" name="quantity" value="1" /><button type="submit" class="nb-btn nb-btn--gold nb-btn--sm">Order Now</button>';
+            bottom.replaceChild(newForm, preOrderBtn);
+          }
+        } else {
+          if (form) {
+            var newBtn = document.createElement('a');
+            newBtn.href = preOrderUrl;
+            newBtn.className = 'nb-btn nb-btn--gold nb-btn--sm nb-btn--preorder-link';
+            newBtn.style.fontSize = '0.78rem';
+            newBtn.textContent = '📅 Pre-Order';
+            bottom.replaceChild(newBtn, form);
+          }
+        }
       });
 
       // 4. Trial Hero Button
-      var trialForm = document.getElementById('nb-trial-add-form');
-      var trialPreOrder = document.getElementById('nb-trial-preorder-btn');
-      if (trialForm) trialForm.style.display = isOpen ? '' : 'none';
-      if (trialPreOrder) trialPreOrder.style.display = isOpen ? 'none' : '';
+      var trialCtaBlock = document.querySelector('.nb-trial-cta-block');
+      if (trialCtaBlock) {
+        var trialForm = trialCtaBlock.querySelector('form.nb-trial-quick-form');
+        var trialPreOrder = trialCtaBlock.querySelector('a.nb-trial-preorder-link');
+        var trialVariantInput = document.getElementById('nb-trial-variant-input');
+        var trialCtaText = {{ section.settings.trial_cta_text | default: 'GET YOUR ₹99 CHICKEN BIRYANI' | json }};
+        if (isOpen) {
+          if (!trialForm && trialPreOrder) {
+            var vId = trialVariantInput ? trialVariantInput.value : '';
+            var pId = trialVariantInput ? trialVariantInput.dataset.product : '';
+            var tf = document.createElement('form');
+            tf.action = '/cart/add';
+            tf.method = 'post';
+            tf.className = 'nb-quick-form nb-trial-quick-form';
+            tf.id = 'nb-trial-add-form';
+            if (pId) tf.dataset.form = pId;
+            tf.innerHTML = '<input type="hidden" name="id" value="' + vId + '" id="nb-trial-variant-input" /><input type="hidden" name="quantity" value="1" /><button type="submit" class="nb-trial-btn" id="nb-trial-cta-button">' + trialCtaText + '</button>';
+            trialCtaBlock.replaceChild(tf, trialPreOrder);
+          }
+        } else {
+          if (trialForm) {
+            var tb = document.createElement('a');
+            tb.href = preOrderUrl;
+            tb.className = 'nb-trial-btn nb-trial-preorder-link';
+            tb.id = 'nb-trial-cta-button';
+            tb.style.textAlign = 'center';
+            tb.style.textDecoration = 'none';
+            tb.style.display = 'block';
+            tb.textContent = '📅 Pre-Order Trial Biryani';
+            trialCtaBlock.replaceChild(tb, trialForm);
+          }
+        }
+      }
 
       // 5. Update global cart drawer config
       if (window.NB_CONFIG) {
         window.NB_CONFIG.instantDeliveryEnabled = isOpen;
-      }
-      var cartNotice = document.getElementById('nb-instant-disabled-cart-notice');
-      if (cartNotice) {
-        cartNotice.style.display = isOpen ? 'none' : 'block';
       }
     }
 
