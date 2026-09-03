@@ -47,7 +47,7 @@
               {% endif %}
             </div>
           </div>
-          <span class="nb-g-score-sub" id="nbGoogleReviewsCount">{{ section.settings.total_reviews_text | default: 'Based on 59 Verified Google Reviews' }}</span>
+          <span class="nb-g-score-sub" id="nbGoogleReviewsCount">{{ section.settings.total_reviews_text | default: 'Based on 61 Verified Google Reviews' }}</span>
         </div>
       </div>
       <div class="nb-g-summary-right">
@@ -738,6 +738,10 @@ document.addEventListener('DOMContentLoaded', function() {
           countEl.textContent = 'Based on ' + data.userRatingCount + ' Verified Google Reviews';
         }
       }
+
+      try {
+        sessionStorage.setItem('nb_google_places_data', JSON.stringify(data));
+      } catch (e) {}
       
       // Non-destructively merge and update reviews from live Google API
       if (Array.isArray(data.reviews) && data.reviews.length > 0) {
@@ -839,10 +843,13 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, { rootMargin: '300px' });
     reviewObserver.observe(reviewSection);
+  }
+
+  // Also trigger after initial load to proactively update numbers and capture new reviews
+  if (window.requestIdleCallback) {
+    requestIdleCallback(fetchGoogleReviewsLive, { timeout: 2000 });
   } else {
-    ['scroll', 'touchstart'].forEach(function(evt) {
-      window.addEventListener(evt, fetchGoogleReviewsLive, { passive: true, once: true });
-    });
+    setTimeout(fetchGoogleReviewsLive, 1000);
   }
 });
 </script>
@@ -881,7 +888,7 @@ document.addEventListener('DOMContentLoaded', function() {
       "type": "text",
       "id": "total_reviews_text",
       "label": "Total Reviews Text (Fallback/Display)",
-      "default": "Based on 59 Verified Google Reviews"
+      "default": "Based on 61 Verified Google Reviews"
     },
     {
       "type": "text",
