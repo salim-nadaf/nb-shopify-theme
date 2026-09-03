@@ -29,11 +29,11 @@
   elsif current_mode == 'force_closed'
     assign is_instant_enabled = false
   else
-    # AUTO MODE: Calculate IST Opening Hours (+19800 seconds for UTC+5:30)
-    assign ist_epoch = 'now' | date: '%s' | plus: 19800
-    assign current_hour = ist_epoch | date: '%H' | plus: 0
-    assign current_min = ist_epoch | date: '%M' | plus: 0
-    assign current_day = ist_epoch | date: '%u' | plus: 0
+    # AUTO MODE: Calculate IST Opening Hours
+    # In Shopify Liquid, 'now' uses store timezone (Asia/Kolkata)
+    assign current_hour = 'now' | date: '%H' | plus: 0
+    assign current_min = 'now' | date: '%M' | plus: 0
+    assign current_day = 'now' | date: '%u' | plus: 0
     # %u: 1 = Mon, 2 = Tue, 3 = Wed, 4 = Thu, 5 = Fri, 6 = Sat, 7 = Sun
     assign total_mins = current_hour | times: 60 | plus: current_min
 
@@ -54,3 +54,4 @@
     endif
   endif
 %}
+<!-- DEBUG_TIME: now={{ 'now' | date: '%Y-%m-%d %H:%M:%S %Z %z %u' }}, mode={{ current_mode }}, is_enabled_setting={{ settings.nb_instant_delivery_enabled }}, is_open={{ is_instant_enabled }} -->
