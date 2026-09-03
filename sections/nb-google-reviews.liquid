@@ -47,7 +47,7 @@
               {% endif %}
             </div>
           </div>
-          <span class="nb-g-score-sub" id="nbGoogleReviewsCount">{{ section.settings.total_reviews_text | default: 'Based on 61 Verified Google Reviews' }}</span>
+          <span class="nb-g-score-sub" id="nbGoogleReviewsCount">{{ section.settings.total_reviews_text | default: 'Based on 59 Verified Google Reviews' }}</span>
         </div>
       </div>
       <div class="nb-g-summary-right">
@@ -317,6 +317,7 @@
   box-shadow: 0 8px 24px rgba(44, 24, 16, 0.05);
   transition: all 0.3s ease;
   box-sizing: border-box;
+  overflow: hidden;
 }
 .nb-review-card:hover {
   transform: translateY(-4px);
@@ -329,6 +330,7 @@
   align-items: center;
   gap: 12px;
   margin-bottom: 12px;
+  max-width: 100%;
 }
 .nb-review-avatar {
   width: 38px;
@@ -351,6 +353,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+  overflow: hidden;
 }
 .nb-review-author-name {
   font-size: 0.92rem;
@@ -366,6 +369,9 @@
   font-size: 0.68rem;
   font-weight: 700;
   color: #5F6368;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .nb-review-date {
   font-size: 0.72rem;
@@ -378,13 +384,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   margin-bottom: 12px;
+  max-width: 100%;
 }
 .nb-review-stars {
   color: #E6AC3C;
   font-size: 1.05rem;
   letter-spacing: 1.5px;
+  flex-shrink: 0;
 }
 .nb-review-dish-tag {
   background: rgba(200, 146, 42, 0.1);
@@ -395,6 +404,11 @@
   padding: 3px 8px;
   border-radius: 12px;
   white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  display: inline-block;
 }
 
 .nb-review-card__text {
@@ -738,10 +752,6 @@ document.addEventListener('DOMContentLoaded', function() {
           countEl.textContent = 'Based on ' + data.userRatingCount + ' Verified Google Reviews';
         }
       }
-
-      try {
-        sessionStorage.setItem('nb_google_places_data', JSON.stringify(data));
-      } catch (e) {}
       
       // Non-destructively merge and update reviews from live Google API
       if (Array.isArray(data.reviews) && data.reviews.length > 0) {
@@ -843,13 +853,10 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, { rootMargin: '300px' });
     reviewObserver.observe(reviewSection);
-  }
-
-  // Also trigger after initial load to proactively update numbers and capture new reviews
-  if (window.requestIdleCallback) {
-    requestIdleCallback(fetchGoogleReviewsLive, { timeout: 2000 });
   } else {
-    setTimeout(fetchGoogleReviewsLive, 1000);
+    ['scroll', 'touchstart'].forEach(function(evt) {
+      window.addEventListener(evt, fetchGoogleReviewsLive, { passive: true, once: true });
+    });
   }
 });
 </script>
@@ -888,7 +895,7 @@ document.addEventListener('DOMContentLoaded', function() {
       "type": "text",
       "id": "total_reviews_text",
       "label": "Total Reviews Text (Fallback/Display)",
-      "default": "Based on 61 Verified Google Reviews"
+      "default": "Based on 59 Verified Google Reviews"
     },
     {
       "type": "text",
