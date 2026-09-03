@@ -1,7 +1,35 @@
 {% comment %} NIAMAT BIRYANI — Production-Grade Refined Cart Drawer {% endcomment %}
 
-{% include 'nb-instant-schedule' %}
-<!-- CART_DRAWER_DEBUG: is_open={{ is_instant_enabled }}, mode={{ current_mode }} -->
+{% liquid
+  assign current_mode = settings.nb_instant_delivery_mode | default: 'auto'
+  if settings.nb_instant_delivery_enabled == false
+    assign current_mode = 'force_closed'
+  endif
+
+  assign is_instant_enabled = false
+  if current_mode == 'force_open'
+    assign is_instant_enabled = true
+  elsif current_mode == 'force_closed'
+    assign is_instant_enabled = false
+  else
+    assign current_hour = 'now' | date: '%H' | plus: 0
+    assign current_min = 'now' | date: '%M' | plus: 0
+    assign current_day = 'now' | date: '%u' | plus: 0
+    assign total_mins = current_hour | times: 60 | plus: current_min
+
+    if current_day == 5
+      if total_mins >= 1140 and total_mins < 1320
+        assign is_instant_enabled = true
+      endif
+    else
+      if total_mins >= 720 and total_mins < 900
+        assign is_instant_enabled = true
+      elsif total_mins >= 1140 and total_mins < 1320
+        assign is_instant_enabled = true
+      endif
+    endif
+  endif
+%}
 
 <div id="nb-drawer-overlay" onclick="nbCloseDrawer()"></div>
 
@@ -657,8 +685,6 @@
 
 <script>
 // ===== SINGLE SOURCE OF TRUTH CONFIGURATION =====
-{% include 'nb-instant-schedule' %}
-
 const NB_CONFIG = {
   instantDeliveryMode: {{ current_mode | default: 'auto' | json }},
   instantDeliveryEnabled: (function() {
@@ -683,6 +709,13 @@ const NB_CONFIG = {
   etaMin: parseInt("{{ settings.nb_eta_min | default: 45 }}", 10) || 45,
   etaMax: parseInt("{{ settings.nb_eta_max | default: 60 }}", 10) || 60
 };
+
+(function nbSyncCartNoticeInitial() {
+  var notice = document.getElementById('nb-instant-disabled-cart-notice');
+  if (notice) {
+    notice.style.display = NB_CONFIG.instantDeliveryEnabled ? 'none' : 'block';
+  }
+})();
 
 function nbShowToast(msg, duration) {
   var toast = document.getElementById('nb-cart-toast');
