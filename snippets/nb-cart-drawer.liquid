@@ -38,17 +38,15 @@
 
   <!-- MAIN DRAWER BODY -->
   <div class="nb-drawer__body">
-    {% unless is_instant_enabled %}
-      <div id="nb-instant-disabled-cart-notice" class="nb-instant-disabled-cart-notice" style="margin: 12px 16px 4px; padding: 14px 16px; background: #FFEBEE; border: 1px solid #EF9A9A; border-left: 4px solid #C62828; border-radius: 12px; font-size: 0.85rem;">
-        <div style="font-weight: 800; color: #C62828; margin-bottom: 4px;">🔴 Instant Delivery Currently Unavailable</div>
-        <p style="color: #5C4033; margin: 0 0 10px; font-size: 0.82rem; line-height: 1.35;">
-          {{ settings.nb_instant_delivery_off_msg | default: "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!" }}
-        </p>
-        <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="display: block; text-align: center; text-decoration: none;">
-          📅 Choose a Scheduled / Pre-Order
-        </a>
-      </div>
-    {% endunless %}
+    <div id="nb-instant-disabled-cart-notice" class="nb-instant-disabled-cart-notice" style="{% if is_instant_enabled %}display: none;{% endif %} margin: 12px 16px 4px; padding: 14px 16px; background: #FFEBEE; border: 1px solid #EF9A9A; border-left: 4px solid #C62828; border-radius: 12px; font-size: 0.85rem;">
+      <div style="font-weight: 800; color: #C62828; margin-bottom: 4px;">🔴 Instant Delivery Currently Unavailable</div>
+      <p style="color: #5C4033; margin: 0 0 10px; font-size: 0.82rem; line-height: 1.35;">
+        {{ settings.nb_instant_delivery_off_msg | default: "Online delivery is temporarily paused. We'll be back soon — thank you for your patience!" }}
+      </p>
+      <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-btn nb-btn--gold nb-btn--sm" style="display: block; text-align: center; text-decoration: none;">
+        📅 Choose a Scheduled / Pre-Order
+      </a>
+    </div>
 
     <!-- DYNAMIC FREE DELIVERY NOTICE BANNER JUST ABOVE ITEMS -->
     <div class="nb-drawer__items-fd-notice" id="nb-items-fd-notice">
