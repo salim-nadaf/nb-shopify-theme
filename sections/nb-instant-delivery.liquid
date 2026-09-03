@@ -20,11 +20,11 @@
   assign trial_img_url = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360'
 %}
 
-<div class="nb-instant-section">
+<div class="nb-instant-section" id="instant-delivery">
 
   <!-- ===== 1. ₹99 BIRYANI SPECIAL TRIAL OFFER HERO SECTION ===== -->
   {% unless section.settings.so_trial_all or trial_prod.available == false %}
-  <section class="nb-trial-hero" aria-labelledby="nb-trial-heading">
+  <section class="nb-trial-hero" id="trial-offer" aria-labelledby="nb-trial-heading">
     <div class="nb-trial-card">
       <div class="nb-diet-corner-badge" aria-hidden="true">
         {% render 'nb-diet-icon', diet: 'nonveg' %}
@@ -124,7 +124,7 @@
   {% endunless %}
 
   <!-- ===== 2. EXISTING REGULAR MENU HEADER & BANNER ===== -->
-  <div class="nb-section-header">
+  <div class="nb-section-header" id="menu">
     <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap;">
       <h3 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: #2C1810;">⚡ Instant Delivery</h3>
       {% include 'nb-instant-delivery-status' %}

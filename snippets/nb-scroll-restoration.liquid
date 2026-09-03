@@ -1,0 +1,189 @@
+{% comment %}
+  NIAMAT BIRYANI — Intelligent Scroll Restoration & Precision In-Page Navigation
+  1. Preserves exact section / scroll position on page refresh (F5, reload, swipe-to-refresh).
+  2. Precision in-page anchor navigation accounting for sticky header height.
+  3. Seamless cross-page hash targeting with dynamic offset correction.
+{% endcomment %}
+
+<style>
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height, 70px) + 20px);
+}
+
+/* Ensure all sections and elements with IDs have proper breathing space below sticky header */
+section,
+.shopify-section,
+[id],
+.nb-section-header,
+.nb-home-trial-section,
+.nb-google-reviews-section,
+.nb-trial-hero,
+.nb-instant-section,
+.nb-menu-category-section {
+  scroll-margin-top: calc(var(--header-height, 70px) + 24px);
+}
+</style>
+
+<script>
+(function initNbScrollRestoration() {
+  var STORAGE_KEY_PREFIX = 'nb_scroll_pos_';
+  var currentPath = window.location.pathname;
+  var storageKey = STORAGE_KEY_PREFIX + currentPath;
+
+  // Helper to get sticky header height dynamically
+  function getHeaderOffset() {
+    var header = document.querySelector('header-component') || document.querySelector('#header-group') || document.querySelector('.header');
+    var h = header ? header.offsetHeight : 70;
+    return Math.max(h, 60) + 16;
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 1. PRECISION IN-PAGE & CROSS-PAGE ANCHOR SMOOTH SCROLLING
+  // ═══════════════════════════════════════════════════════════════════
+  function scrollToTargetElement(targetEl, isSmooth) {
+    if (!targetEl) return;
+    var headerOffset = getHeaderOffset();
+    var elementPosition = targetEl.getBoundingClientRect().top + window.pageYOffset;
+    var offsetPosition = Math.max(0, elementPosition - headerOffset);
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: isSmooth ? 'smooth' : 'auto'
+    });
+  }
+
+  // Handle all in-page anchor link clicks
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[href*="#"]');
+    if (!link) return;
+
+    var href = link.getAttribute('href');
+    if (!href || href === '#' || href.startsWith('javascript:')) return;
+
+    // Check if link points to an anchor on the current page
+    var url;
+    try {
+      url = new URL(link.href, window.location.origin);
+    } catch(err) {
+      return;
+    }
+
+    if (url.pathname === window.location.pathname && url.hash) {
+      var targetId = decodeURIComponent(url.hash.substring(1));
+      var targetEl = document.getElementById(targetId) || document.querySelector('[name="' + targetId + '"]');
+      
+      if (targetEl) {
+        e.preventDefault();
+        scrollToTargetElement(targetEl, true);
+        if (history.pushState) {
+          history.pushState(null, null, url.hash);
+        } else {
+          window.location.hash = url.hash;
+        }
+      }
+    }
+  });
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 2. REAL-TIME SCROLL POSITION & ACTIVE SECTION TRACKING
+  // ═══════════════════════════════════════════════════════════════════
+  var scrollTicking = false;
+  function trackCurrentScroll() {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    window.requestAnimationFrame(function() {
+      try {
+        var scrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        
+        // Find visible section ID near the top of viewport
+        var headerOffset = getHeaderOffset();
+        var sections = document.querySelectorAll('section[id], div[id].nb-google-reviews-section, div[id].nb-instant-section, [id^="nb-"], [id^="cat-"]');
+        var activeSectionId = null;
+
+        for (var i = 0; i < sections.length; i++) {
+          var rect = sections[i].getBoundingClientRect();
+          if (rect.top <= headerOffset + 150 && rect.bottom >= headerOffset) {
+            activeSectionId = sections[i].id;
+          }
+        }
+
+        sessionStorage.setItem(storageKey, JSON.stringify({
+          scrollY: Math.round(scrollY),
+          sectionId: activeSectionId,
+          timestamp: Date.now()
+        }));
+      } catch (e) {}
+      scrollTicking = false;
+    });
+  }
+
+  window.addEventListener('scroll', trackCurrentScroll, { passive: true });
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 3. BULLETPROOF MULTI-STAGE SCROLL / SECTION RESTORATION ON REFRESH
+  // ═══════════════════════════════════════════════════════════════════
+  function restoreScrollPosition() {
+    var hash = window.location.hash;
+    
+    // Priority A: Direct URL Hash Navigation (e.g. #reviews, #combos)
+    if (hash && hash.length > 1) {
+      var targetId = decodeURIComponent(hash.substring(1));
+      var targetEl = document.getElementById(targetId) || document.querySelector('[name="' + targetId + '"]');
+      if (targetEl) {
+        scrollToTargetElement(targetEl, false);
+        return;
+      }
+    }
+
+    // Priority B: Stored Scroll / Section State from Refresh
+    try {
+      var raw = sessionStorage.getItem(storageKey);
+      if (!raw) return;
+      var saved = JSON.parse(raw);
+      if (!saved || typeof saved.scrollY !== 'number') return;
+
+      // Check if session is recent (within 2 hours)
+      if (Date.now() - saved.timestamp > 7200000) {
+        sessionStorage.removeItem(storageKey);
+        return;
+      }
+
+      // If we have a saved section ID, try to scroll directly to it
+      if (saved.sectionId) {
+        var secEl = document.getElementById(saved.sectionId);
+        if (secEl) {
+          scrollToTargetElement(secEl, false);
+          return;
+        }
+      }
+
+      // Fallback: restore exact pixel scrollY
+      if (saved.scrollY > 50) {
+        window.scrollTo(0, saved.scrollY);
+      }
+    } catch (e) {}
+  }
+
+  // Multi-stage execution to defeat image and deferred CSS hydration layout shifts
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  // Stage 1: Immediate attempt
+  restoreScrollPosition();
+
+  // Stage 2: On DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', restoreScrollPosition);
+  } else {
+    restoreScrollPosition();
+  }
+
+  // Stage 3: On full window load (when images and fonts have dimension)
+  window.addEventListener('load', function() {
+    setTimeout(restoreScrollPosition, 50);
+    setTimeout(restoreScrollPosition, 250);
+  });
+})();
+</script>
