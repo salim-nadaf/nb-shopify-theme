@@ -721,6 +721,12 @@ const NB_CONFIG = {
     if (mode === 'force_closed') return false;
     try {
       var nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+      var yr = nowIST.getFullYear();
+      var mo = String(nowIST.getMonth() + 1).padStart(2, '0');
+      var da = String(nowIST.getDate()).padStart(2, '0');
+      var dateKey = yr + '-' + mo + '-' + da;
+      if (dateKey === '2026-09-05') return false;
+
       var day = nowIST.getDay();
       var totalMin = nowIST.getHours() * 60 + nowIST.getMinutes();
       if (day === 5) return (totalMin >= 1140 && totalMin < 1320);
