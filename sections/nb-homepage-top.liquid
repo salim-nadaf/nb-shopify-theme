@@ -243,87 +243,8 @@
     </div>
   {% endunless %}
 
-  <!-- 2.5 ₹99 TRIAL BIRYANI SHOWCASE (DYNAMICALLY SYNCED WITH INSTANT DELIVERY) -->
-  {% liquid
-    assign trial_prod = all_products[section.settings.trial_product]
-    if trial_prod == blank
-      assign trial_prod = all_products['99-new-customer-trial-biryani']
-    endif
-    if trial_prod == blank
-      assign trial_prod = all_products['new-customer-trial-biryani']
-    endif
-    if trial_prod == blank
-      assign trial_prod = all_products['trial-biryani']
-    endif
-
-    assign trial_available = false
-    if trial_prod != blank and trial_prod.available
-      assign trial_available = true
-    endif
-
-    assign trial_target_url = '/collections/instant-delivery'
-    if trial_prod != blank and trial_prod.url != blank
-      assign trial_target_url = '/collections/instant-delivery'
-    endif
-  %}
-
-  {% if trial_available %}
-    <section class="nb-home-trial-section" aria-labelledby="nb-home-trial-heading">
-      <div class="nb-container">
-        <div class="nb-home-trial-card">
-          <div class="nb-diet-corner-badge" aria-hidden="true">
-            {% render 'nb-diet-icon', diet: 'nonveg' %}
-          </div>
-          <div class="nb-home-trial-content">
-            <div class="nb-home-trial-badge">
-              <span>TRY BIRYANI PALACE BY NIAMAT</span>
-            </div>
-
-            <h2 id="nb-home-trial-heading" class="nb-home-trial-title">
-              Your First Taste of <span class="nb-home-trial-price-highlight">Chicken Biryani for ₹99</span>
-            </h2>
-
-            <p class="nb-home-trial-sub">
-              Experience the royal taste of Biryani Palace by Niamat at a special introductory price.
-            </p>
-
-            <div class="nb-home-trial-details">
-              <div class="nb-home-trial-price-box">
-                <span class="nb-home-trial-amount">₹99</span>
-                <span class="nb-home-trial-portion" style="display: inline-flex; align-items: center; gap: 4px;">
-                  {% render 'nb-diet-icon', diet: 'nonveg' %}
-                  <span>Chicken Biryani · Single Trial Portion</span>
-                </span>
-              </div>
-            </div>
-
-            <div class="nb-home-trial-cta-wrap">
-              <a href="{{ trial_target_url }}" class="nb-home-trial-btn">
-                TRY CHICKEN BIRYANI FOR ₹99 →
-              </a>
-            </div>
-          </div>
-
-          <div class="nb-home-trial-visual">
-            <div class="nb-home-trial-img-wrap">
-              <img
-                src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=340"
-                srcset="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=340 340w, https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=600 600w"
-                sizes="(max-width: 768px) 320px, 340px"
-                alt="Biryani Palace by Niamat ₹99 Special Trial Biryani"
-                width="340"
-                height="230"
-                loading="lazy"
-                decoding="async"
-                class="nb-home-trial-img"
-              />
-              <span class="nb-home-trial-tag">Dum Cooked Fresh</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  {% endif %}
+  <!-- 2.5 SPECIAL OFFERS SHOWCASE (₹199 BEST VALUE + ₹99 TRIAL PORTION) -->
+  {% render 'nb-offer-cards', is_instant_enabled: is_instant_enabled %}
 
   <!-- 3. ORDER YOUR WAY (2 CARDS) -->
   <div class="nb-section-block" style="padding: 56px 0 !important; margin: 32px 0 !important;">
