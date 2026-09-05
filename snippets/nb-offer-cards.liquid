@@ -114,11 +114,11 @@
             <!-- Left Info Block -->
             <div class="nb-offer-info">
               <div class="nb-offer-portion-pill">
-                <span>🍗 750 ml Regular Portion</span>
+                <span>🍗 Regular Portion (Full Plate)</span>
               </div>
 
               <h3 class="nb-offer-item-title">
-                Regular Chicken Dum Biryani
+                Regular Chicken Biryani
               </h3>
 
               <p class="nb-offer-item-desc">
@@ -132,7 +132,7 @@
                   <span class="nb-offer-price-final">₹199</span>
                   <span class="nb-offer-save-badge">SAVE ₹50</span>
                 </div>
-                <span class="nb-offer-serving-tag">Serves 1–2</span>
+                <span class="nb-offer-serving-tag">Serves 1</span>
               </div>
 
               <!-- FREEBIE HIGHLIGHT CALLOUT -->
@@ -146,9 +146,9 @@
 
               <!-- PERKS CHECKLIST -->
               <ul class="nb-offer-perks">
-                <li><span class="nb-perk-check">✓</span> <strong>750 ml Fulfilling Portion</strong> (Larger than 500 ml trial)</li>
+                <li><span class="nb-perk-check">✓</span> <strong>Full Regular Portion</strong> (50% larger than Trial)</li>
                 <li><span class="nb-perk-check">✓</span> <strong>1x FREE Gulab Jamun</strong> automatically added</li>
-                <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita & Salad</strong> included</li>
+                <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
               </ul>
             </div>
 
@@ -163,7 +163,7 @@
                   loading="eager"
                   class="nb-offer-img"
                 />
-                <span class="nb-offer-img-tag">750 ml · Fresh Dum</span>
+                <span class="nb-offer-img-tag">Regular Portion · Full Plate</span>
               </div>
             </div>
           </div>
@@ -221,7 +221,7 @@
                 type="button"
                 class="nb-offer-submit-btn nb-offer-submit-btn--gold"
                 id="nb-btn-submit-199"
-                onclick="nbSubmitOfferOrder('199', '{{ regular_199_variant.id | default: '44041138962506' }}', 'Regular Chicken Biryani (750ml)', 199)"
+                onclick="nbSubmitOfferOrder('199', '{{ regular_199_variant.id | default: '44041138962506' }}', 'Regular Chicken Biryani', 199)"
               >
                 <span class="nb-offer-btn-text">ORDER REGULAR BIRYANI + FREE DESSERT</span>
                 <span class="nb-offer-btn-price" id="nb-price-tag-199">₹199</span>
@@ -253,7 +253,7 @@
             <!-- Left Info Block -->
             <div class="nb-offer-info">
               <div class="nb-offer-portion-pill nb-portion-pill--trial">
-                <span>🍗 500 ml Single Trial Portion</span>
+                <span>🍗 Trial Portion</span>
               </div>
 
               <h3 class="nb-offer-item-title">
@@ -261,7 +261,7 @@
               </h3>
 
               <p class="nb-offer-item-desc">
-                The perfect introduction to our royal recipe. A tasty 500 ml trial portion crafted for first-time customers.
+                The perfect introduction to our royal recipe. A delicious trial portion crafted for first-time customers to experience our authentic taste.
               </p>
 
               <!-- PRICE DISPLAY FOR ₹99 -->
@@ -270,13 +270,13 @@
                   <span class="nb-offer-price-final">₹99</span>
                   <span class="nb-offer-intro-badge">Introductory Price</span>
                 </div>
-                <span class="nb-offer-serving-tag">Single Taste</span>
+                <span class="nb-offer-serving-tag">Serves 1 · Trial</span>
               </div>
 
               <!-- PERKS CHECKLIST -->
               <ul class="nb-offer-perks">
-                <li><span class="nb-perk-check">✓</span> <strong>500 ml Introductory Portion</strong></li>
-                <li><span class="nb-perk-check">✓</span> <strong>Freshly Prepared Dum Chicken</strong></li>
+                <li><span class="nb-perk-check">✓</span> <strong>Introductory Trial Portion</strong></li>
+                <li><span class="nb-perk-check">✓</span> <strong>Freshly Prepared Chicken Biryani</strong></li>
                 <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
               </ul>
             </div>
@@ -292,7 +292,7 @@
                   loading="lazy"
                   class="nb-offer-img"
                 />
-                <span class="nb-offer-img-tag">500 ml · Trial Pack</span>
+                <span class="nb-offer-img-tag">Trial Portion · Intro Pack</span>
               </div>
             </div>
           </div>
@@ -367,8 +367,8 @@
     <!-- VALUE COMPARISON SUMMARY BAR -->
     <div class="nb-offers-comparison-bar">
       <div class="nb-comparison-item">
-        <span class="nb-comp-badge">750 ml vs 500 ml</span>
-        <span class="nb-comp-desc">Regular is 50% larger than Trial</span>
+        <span class="nb-comp-badge">👑 Regular vs Trial</span>
+        <span class="nb-comp-desc">Regular is 50% larger than Trial (Full Plate)</span>
       </div>
       <div class="nb-comparison-divider"></div>
       <div class="nb-comparison-item">
@@ -928,7 +928,7 @@ async function nbSubmitOfferOrder(tier, mainVariantId, mainTitle, basePrice) {
     {
       id: parseInt(mainVariantId, 10),
       quantity: 1,
-      properties: tier === '199' ? { '_offer': '₹199 Regular Portion', '_portion': '750ml', 'Free Sweet': '1x Gulab Jamun Included' } : { '_offer': '₹99 Trial Portion', '_portion': '500ml' }
+      properties: tier === '199' ? { '_offer': '₹199 Regular Portion', '_portion': 'Regular Portion', 'Free Sweet': '1x Gulab Jamun Included' } : { '_offer': '₹99 Trial Portion', '_portion': 'Trial Portion' }
     }
   ];
 
