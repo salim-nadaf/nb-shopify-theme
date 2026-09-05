@@ -10,10 +10,15 @@
 {% endcomment %}
 
 {% liquid
-  # 1. Determine Mode from Section or Global Theme Settings
-  assign current_mode = section.settings.instant_availability_mode
-  if current_mode == blank
-    assign current_mode = settings.nb_instant_delivery_mode | default: 'auto'
+  # 1. Determine Mode: Check Global Theme Settings and Section Settings
+  assign global_mode = settings.nb_instant_delivery_mode | default: 'auto'
+  assign section_mode = section.settings.instant_availability_mode
+
+  assign current_mode = 'auto'
+  if global_mode == 'force_open' or section_mode == 'force_open'
+    assign current_mode = 'force_open'
+  elsif global_mode == 'force_closed' or section_mode == 'force_closed'
+    assign current_mode = 'force_closed'
   endif
 
   # 2. Evaluate Operating Status (Force Online takes precedence)
