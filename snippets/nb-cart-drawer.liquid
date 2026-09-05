@@ -1071,8 +1071,17 @@ function nbRenderCart(cart) {
     return;
   }
 
-  var subtotalCents = cart.total_price;
-  var subtotalRupees = Math.round(subtotalCents / 100);
+  var subtotalRupees = 0;
+  if (cart && cart.items) {
+    cart.items.forEach(function(item) {
+      var isItem199 = (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199'));
+      if (isItem199) {
+        subtotalRupees += 199 * item.quantity;
+      } else {
+        subtotalRupees += Math.round(item.final_line_price / 100);
+      }
+    });
+  }
   subtotalEl.textContent = '₹' + subtotalRupees;
 
   // FREE DELIVERY THRESHOLD (₹799)
@@ -1157,16 +1166,18 @@ function nbRenderCart(cart) {
     var variantTitleLower = (item.variant_title || '').toLowerCase();
     var handle = (item.handle || '').toLowerCase();
 
-    // 1. Custom Display Name overrides
+    // 1. Strict Display Name & Offer overrides
+    var isTrialItem = titleLower.includes('trial') || handle.includes('trial') || (item.properties && item.properties['_offer'] && (item.properties['_offer'] === '₹99 Trial Portion' || item.properties['_offer'] === '₹99 Small Portion'));
+    var is199Offer = (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199'));
+
     var displayName = item.product_title;
-    if (titleLower.includes('trial') || handle.includes('trial') || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('99'))) {
+    if (isTrialItem) {
       displayName = '₹99 Trial Portion';
     }
 
     var isBiryani = titleLower.includes('biryani') || (item.product_type && item.product_type.toLowerCase().includes('biryani')) || displayName.includes('Biryani') || displayName.includes('Trial Portion');
     var raitaHtml = isBiryani ? '<div class="nb-raita-tag"><span>✓</span> Raita included</div>' : '';
 
-    var is199Offer = (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199')) || (titleLower.includes('alishaan') && item.properties && item.properties['_offer']) || (titleLower.includes('regular') && isBiryani);
     var freebieBadgeHtml = is199Offer ? '<div class="nb-freebie-tag">🎁 FREE Gulab Jamun Included</div>' : '';
 
     var isComplimentary = item.final_line_price === 0 || (item.properties && item.properties['_freebie']);
@@ -1174,7 +1185,7 @@ function nbRenderCart(cart) {
 
     var imgUrl = item.image;
     if (!imgUrl || imgUrl === '') {
-      if (displayName.includes('Trial') || titleLower.includes('trial')) {
+      if (isTrialItem) {
         imgUrl = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=180';
       } else if (titleLower.includes('tandoori') || titleLower.includes('alishaan')) {
         imgUrl = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=180';
@@ -1182,11 +1193,13 @@ function nbRenderCart(cart) {
     }
 
     var variantHtml = '';
-    if (displayName === '₹99 Trial Portion') {
+    if (isTrialItem) {
       variantHtml = '';
     } else if (item.variant_title && item.variant_title !== 'Default Title') {
       variantHtml = '<p class="nb-cart-item__variant">' + item.variant_title + '</p>';
     }
+
+    var linePriceFormatted = isComplimentary ? 'FREE (₹0)' : (is199Offer ? ('₹' + (199 * item.quantity)) : nbFormatMoney(item.final_line_price));
 
     return [
       '<div class="nb-cart-item" data-key="' + item.key + '">',
@@ -1198,7 +1211,7 @@ function nbRenderCart(cart) {
           freebieBadgeHtml,
           complimentaryBadgeHtml,
           '<div class="nb-cart-item__bottom">',
-            '<span class="nb-cart-item__price">' + (isComplimentary ? 'FREE (₹0)' : nbFormatMoney(item.final_line_price)) + '</span>',
+            '<span class="nb-cart-item__price">' + linePriceFormatted + '</span>',
             '<div class="nb-qty-control">',
               '<button class="nb-qty-btn" onclick="nbUpdateQty(\'' + item.key + '\', ' + (item.quantity - 1) + ')" aria-label="Decrease quantity">−</button>',
               '<span class="nb-qty-num">' + item.quantity + '</span>',

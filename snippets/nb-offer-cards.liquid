@@ -284,12 +284,12 @@
                 id="nb-btn-submit-199"
                 onclick="nbSubmitOfferOrder('199', '{{ regular_199_variant.id | default: '43997799546954' }}', 'Alishaan Tandoori Biryani', 199)"
               >
-                <span class="nb-offer-btn-text">ORDER ALISHAAN TANDOORI + FREE DESSERT</span>
+                <span class="nb-offer-btn-text">ORDER + FREE DESSERT</span>
                 <span class="nb-offer-btn-price" id="nb-price-tag-199">₹199</span>
               </button>
             {% else %}
               <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-offer-submit-btn nb-offer-submit-btn--gold" style="text-decoration: none; text-align: center;">
-                📅 Pre-Order Alishaan Tandoori (₹199)
+                📅 Pre-Order Now (₹199)
               </a>
             {% endif %}
           </div>
@@ -411,12 +411,12 @@
                 id="nb-btn-submit-99"
                 onclick="nbSubmitOfferOrder('99', '{{ trial_variant.id | default: '44087268180042' }}', '₹99 Trial Portion', 99)"
               >
-                <span class="nb-offer-btn-text">ORDER ₹99 TRIAL PORTION</span>
+                <span class="nb-offer-btn-text">ORDER NOW</span>
                 <span class="nb-offer-btn-price" id="nb-price-tag-99">₹99</span>
               </button>
             {% else %}
               <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-offer-submit-btn nb-offer-submit-btn--dark" style="text-decoration: none; text-align: center;">
-                📅 Pre-Order Trial Portion (₹99)
+                📅 Pre-Order Now (₹99)
               </a>
             {% endif %}
           </div>
