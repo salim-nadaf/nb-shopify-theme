@@ -4,28 +4,28 @@
 {% endcomment %}
 
 {% liquid
-  # 1. Look up ₹199 Regular Biryani Product
-  assign regular_199_prod = all_products[section.settings.regular_199_product]
+  # 1. Look up ₹199 Regular Biryani Product (Alishaan Tandoori Biryani - Single Plate / Serves 1 - ₹249)
+  assign regular_199_prod = all_products['chicken-tandoori-bucket-biryani-halfkg']
+  if regular_199_prod == blank
+    assign regular_199_prod = all_products['alishaan-tandoori-biryani']
+  endif
   if regular_199_prod == blank
     assign regular_199_prod = all_products['199-regular-portion-biryani']
   endif
-  if regular_199_prod == blank
-    assign regular_199_prod = all_products['regular-biryani-portion-199']
-  endif
-  if regular_199_prod == blank
-    assign regular_199_prod = all_products['regular-portion-biryani']
-  endif
-  if regular_199_prod == blank
-    assign regular_199_prod = all_products['199-biryani']
-  endif
-  if regular_199_prod == blank
-    assign regular_199_prod = all_products['alishaan-tandoori-biryani-copy']
-  endif
-  if regular_199_prod == blank
-    assign regular_199_prod = all_products['chicken-tandoori-bucket-biryani-halfkg']
-  endif
 
-  assign regular_199_variant = regular_199_prod.selected_or_first_available_variant | default: regular_199_prod.variants.first
+  assign regular_199_variant = null
+  if regular_199_prod != blank
+    for v in regular_199_prod.variants
+      assign vt = v.title | downcase
+      if vt contains 'single' or vt contains 'serves 1' or vt contains 'plate'
+        assign regular_199_variant = v
+        break
+      endif
+    endfor
+    if regular_199_variant == null
+      assign regular_199_variant = regular_199_prod.variants.first
+    endif
+  endif
 
   # 2. Look up ₹99 Trial Biryani Product
   assign trial_prod = all_products[section.settings.trial_product]
@@ -179,11 +179,11 @@
               </div>
 
               <h3 class="nb-offer-item-title">
-                Regular Chicken Biryani
+                Alishaan Tandoori Biryani
               </h3>
 
               <p class="nb-offer-item-desc">
-                Our satisfying full regular portion, slow-cooked to perfection with tender chicken, rich spices, and aromatic basmati rice.
+                Our signature smoky tandoori chicken slow-cooked with spiced aromatic basmati rice in authentic dum style.
               </p>
 
               <!-- PRICE ROW WITH ₹249 STRIKE -->
@@ -202,7 +202,7 @@
               <div class="nb-offer-img-frame">
                 <img
                   src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=360"
-                  alt="Niamat ₹199 Regular Chicken Biryani Portion"
+                  alt="Niamat ₹199 Alishaan Tandoori Biryani Portion"
                   width="280"
                   height="180"
                   loading="eager"
@@ -224,7 +224,7 @@
 
           <!-- PERKS CHECKLIST -->
           <ul class="nb-offer-perks">
-            <li><span class="nb-perk-check">✓</span> <strong>Full Regular Portion</strong> (Larger than Small portion)</li>
+            <li><span class="nb-perk-check">✓</span> <strong>Full Regular Portion</strong> (Larger than Trial portion)</li>
             <li><span class="nb-perk-check">✓</span> <strong>1x FREE Gulab Jamun</strong> automatically added</li>
             <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
           </ul>
@@ -282,14 +282,14 @@
                 type="button"
                 class="nb-offer-submit-btn nb-offer-submit-btn--gold"
                 id="nb-btn-submit-199"
-                onclick="nbSubmitOfferOrder('199', '{{ regular_199_variant.id | default: '44041138962506' }}', 'Regular Chicken Biryani', 199)"
+                onclick="nbSubmitOfferOrder('199', '{{ regular_199_variant.id | default: '43997799546954' }}', 'Alishaan Tandoori Biryani', 199)"
               >
-                <span class="nb-offer-btn-text">ORDER REGULAR BIRYANI + FREE DESSERT</span>
+                <span class="nb-offer-btn-text">ORDER ALISHAAN TANDOORI + FREE DESSERT</span>
                 <span class="nb-offer-btn-price" id="nb-price-tag-199">₹199</span>
               </button>
             {% else %}
               <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-offer-submit-btn nb-offer-submit-btn--gold" style="text-decoration: none; text-align: center;">
-                📅 Pre-Order Regular Biryani (₹199)
+                📅 Pre-Order Alishaan Tandoori (₹199)
               </a>
             {% endif %}
           </div>
@@ -314,15 +314,15 @@
           <div class="nb-offer-main-layout">
             <div class="nb-offer-info">
               <div class="nb-offer-portion-pill nb-portion-pill--trial">
-                <span>🍗 Small Portion</span>
+                <span>🍗 Trial Portion</span>
               </div>
 
               <h3 class="nb-offer-item-title">
-                Single Small Chicken Biryani
+                ₹99 Trial Portion
               </h3>
 
               <p class="nb-offer-item-desc">
-                The perfect introduction to our royal recipe. A delicious small portion crafted for first-time customers to experience our authentic taste.
+                The perfect introduction to our royal recipe. A delicious trial portion crafted for first-time customers to experience our authentic taste.
               </p>
 
               <!-- PRICE DISPLAY FOR ₹99 -->
@@ -331,7 +331,7 @@
                   <span class="nb-offer-price-final">₹99</span>
                   <span class="nb-offer-intro-badge">Special Price</span>
                 </div>
-                <span class="nb-offer-serving-tag">Small Portion</span>
+                <span class="nb-offer-serving-tag">Trial Portion</span>
               </div>
             </div>
 
@@ -340,20 +340,20 @@
               <div class="nb-offer-img-frame">
                 <img
                   src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360"
-                  alt="Niamat ₹99 Small Chicken Biryani Portion"
+                  alt="Niamat ₹99 Trial Portion Chicken Biryani"
                   width="280"
                   height="180"
                   loading="lazy"
                   class="nb-offer-img"
                 />
-                <span class="nb-offer-img-tag">Small Portion</span>
+                <span class="nb-offer-img-tag">Trial Portion</span>
               </div>
             </div>
           </div>
 
           <!-- PERKS CHECKLIST -->
           <ul class="nb-offer-perks" style="margin-bottom: 14px;">
-            <li><span class="nb-perk-check">✓</span> <strong>Introductory Small Portion</strong></li>
+            <li><span class="nb-perk-check">✓</span> <strong>Introductory Trial Portion</strong></li>
             <li><span class="nb-perk-check">✓</span> <strong>Freshly Prepared Chicken Biryani</strong></li>
             <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
           </ul>
@@ -409,14 +409,14 @@
                 type="button"
                 class="nb-offer-submit-btn nb-offer-submit-btn--dark"
                 id="nb-btn-submit-99"
-                onclick="nbSubmitOfferOrder('99', '{{ trial_variant.id | default: '44087268180042' }}', '₹99 Small Chicken Biryani', 99)"
+                onclick="nbSubmitOfferOrder('99', '{{ trial_variant.id | default: '44087268180042' }}', '₹99 Trial Portion', 99)"
               >
-                <span class="nb-offer-btn-text">ORDER ₹99 SMALL BIRYANI</span>
+                <span class="nb-offer-btn-text">ORDER ₹99 TRIAL PORTION</span>
                 <span class="nb-offer-btn-price" id="nb-price-tag-99">₹99</span>
               </button>
             {% else %}
               <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-offer-submit-btn nb-offer-submit-btn--dark" style="text-decoration: none; text-align: center;">
-                📅 Pre-Order Small Biryani (₹99)
+                📅 Pre-Order Trial Portion (₹99)
               </a>
             {% endif %}
           </div>

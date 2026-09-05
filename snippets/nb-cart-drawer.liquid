@@ -1155,21 +1155,45 @@ function nbRenderCart(cart) {
     var item = entry.item;
     var titleLower = (item.product_title || '').toLowerCase();
     var variantTitleLower = (item.variant_title || '').toLowerCase();
-    var isBiryani = titleLower.includes('biryani') || (item.product_type && item.product_type.toLowerCase().includes('biryani'));
+    var handle = (item.handle || '').toLowerCase();
+
+    // 1. Custom Display Name overrides
+    var displayName = item.product_title;
+    if (titleLower.includes('trial') || handle.includes('trial') || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('99'))) {
+      displayName = '₹99 Trial Portion';
+    }
+
+    var isBiryani = titleLower.includes('biryani') || (item.product_type && item.product_type.toLowerCase().includes('biryani')) || displayName.includes('Biryani') || displayName.includes('Trial Portion');
     var raitaHtml = isBiryani ? '<div class="nb-raita-tag"><span>✓</span> Raita included</div>' : '';
 
-    var is199Offer = (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199')) || titleLower.includes('199') || (titleLower.includes('regular') && isBiryani);
+    var is199Offer = (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199')) || (titleLower.includes('alishaan') && item.properties && item.properties['_offer']) || (titleLower.includes('regular') && isBiryani);
     var freebieBadgeHtml = is199Offer ? '<div class="nb-freebie-tag">🎁 FREE Gulab Jamun Included</div>' : '';
 
     var isComplimentary = item.final_line_price === 0 || (item.properties && item.properties['_freebie']);
     var complimentaryBadgeHtml = isComplimentary ? '<div class="nb-complimentary-tag">🎁 Complimentary Freebie (₹0)</div>' : '';
 
+    var imgUrl = item.image;
+    if (!imgUrl || imgUrl === '') {
+      if (displayName.includes('Trial') || titleLower.includes('trial')) {
+        imgUrl = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=180';
+      } else if (titleLower.includes('tandoori') || titleLower.includes('alishaan')) {
+        imgUrl = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=180';
+      }
+    }
+
+    var variantHtml = '';
+    if (displayName === '₹99 Trial Portion') {
+      variantHtml = '';
+    } else if (item.variant_title && item.variant_title !== 'Default Title') {
+      variantHtml = '<p class="nb-cart-item__variant">' + item.variant_title + '</p>';
+    }
+
     return [
       '<div class="nb-cart-item" data-key="' + item.key + '">',
-        '<img class="nb-cart-item__img" src="' + (item.image || '') + '" alt="' + item.product_title + '" onerror="this.style.display=\'none\'">',
+        '<img class="nb-cart-item__img" src="' + (imgUrl || '') + '" alt="' + displayName + '" onerror="this.src=\'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=180\'">',
         '<div class="nb-cart-item__info">',
-          '<p class="nb-cart-item__name">' + item.product_title + '</p>',
-          (item.variant_title && item.variant_title !== 'Default Title' ? '<p class="nb-cart-item__variant">' + item.variant_title + '</p>' : ''),
+          '<p class="nb-cart-item__name">' + displayName + '</p>',
+          variantHtml,
           raitaHtml,
           freebieBadgeHtml,
           complimentaryBadgeHtml,
