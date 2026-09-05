@@ -90,16 +90,51 @@
     <div class="nb-offers-header">
       <span class="nb-offers-tag">🔥 EXCLUSIVE ONLINE OFFERS</span>
       <h2 class="nb-offers-title">Choose Your Biryani Portion</h2>
-      <p class="nb-offers-subtitle">Slow-cooked in authentic Dum style with succulent chicken & fragrant long-grain Basmati rice.</p>
+      <p class="nb-offers-subtitle">Slow-cooked in authentic royal style with succulent chicken & fragrant long-grain Basmati rice.</p>
     </div>
 
-    <!-- OFFERS GRID (OPTION 1 FEATURED FIRST, OPTION 2 SECOND) -->
+    <!-- MOBILE SEGMENTED PORTION TABS (SWITCH OFFERS IN 1 TAP ON MOBILE) -->
+    <div class="nb-portion-tabs-wrap">
+      <div class="nb-portion-tabs" role="tablist" aria-label="Portion Selection">
+        <button
+          type="button"
+          class="nb-portion-tab active"
+          id="nb-tab-btn-199"
+          onclick="nbSwitchOfferTab('199')"
+          role="tab"
+          aria-selected="true"
+        >
+          <span class="nb-tab-pill-badge">👑 BEST VALUE</span>
+          <div class="nb-tab-info">
+            <strong class="nb-tab-name">Regular Portion</strong>
+            <span class="nb-tab-sub">₹199 <del>₹249</del> · Free Sweet</span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          class="nb-portion-tab"
+          id="nb-tab-btn-99"
+          onclick="nbSwitchOfferTab('99')"
+          role="tab"
+          aria-selected="false"
+        >
+          <span class="nb-tab-pill-badge nb-tab-badge--trial">✨ INTRO</span>
+          <div class="nb-tab-info">
+            <strong class="nb-tab-name">Trial Portion</strong>
+            <span class="nb-tab-sub">₹99 · Single Taste</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- OFFERS GRID (ON MOBILE: ACTIVE TAB SHOWN; ON DESKTOP: 2-COLUMN SIDE-BY-SIDE) -->
     <div class="nb-offers-grid">
 
       <!-- ======================================================== -->
       <!-- OPTION 1: ₹199 REGULAR BIRYANI (FEATURED / BEST VALUE)   -->
       <!-- ======================================================== -->
-      <div class="nb-offer-card nb-offer-card--featured" id="offer-regular-199">
+      <div class="nb-offer-card nb-offer-card--featured active" id="offer-regular-199">
         <!-- Top Highlighting Banner -->
         <div class="nb-offer-ribbon">
           <span>👑 BEST VALUE · REGULAR PORTION</span>
@@ -110,8 +145,8 @@
             {% render 'nb-diet-icon', diet: 'nonveg' %}
           </div>
 
+          <!-- TOP COMPACT ROW: INFO + THUMBNAIL -->
           <div class="nb-offer-main-layout">
-            <!-- Left Info Block -->
             <div class="nb-offer-info">
               <div class="nb-offer-portion-pill">
                 <span>🍗 Regular Portion (Full Plate)</span>
@@ -125,7 +160,7 @@
                 Our satisfying full regular portion, slow-cooked to perfection with tender chicken, rich spices, and aromatic basmati rice.
               </p>
 
-              <!-- PRICE DISPLAY WITH STRIKE-THROUGH ₹249 -->
+              <!-- PRICE ROW WITH ₹249 STRIKE -->
               <div class="nb-offer-price-row">
                 <div class="nb-offer-price-box">
                   <span class="nb-offer-price-strike">₹249</span>
@@ -134,39 +169,39 @@
                 </div>
                 <span class="nb-offer-serving-tag">Serves 1</span>
               </div>
-
-              <!-- FREEBIE HIGHLIGHT CALLOUT -->
-              <div class="nb-offer-freebie-callout">
-                <div class="nb-freebie-icon">🎁</div>
-                <div class="nb-freebie-text">
-                  <strong>FREE Gulab Jamun Included</strong>
-                  <span>Fresh sweet complimentary dessert with every ₹199 portion</span>
-                </div>
-              </div>
-
-              <!-- PERKS CHECKLIST -->
-              <ul class="nb-offer-perks">
-                <li><span class="nb-perk-check">✓</span> <strong>Full Regular Portion</strong> (50% larger than Trial)</li>
-                <li><span class="nb-perk-check">✓</span> <strong>1x FREE Gulab Jamun</strong> automatically added</li>
-                <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
-              </ul>
             </div>
 
-            <!-- Right Visual Block -->
+            <!-- Visual Thumbnail -->
             <div class="nb-offer-visual">
               <div class="nb-offer-img-frame">
                 <img
                   src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-tandoori-bucket-optimized.webp?v=1785619720&width=360"
                   alt="Niamat ₹199 Regular Chicken Biryani Portion"
-                  width="320"
-                  height="220"
+                  width="280"
+                  height="180"
                   loading="eager"
                   class="nb-offer-img"
                 />
-                <span class="nb-offer-img-tag">Regular Portion · Full Plate</span>
+                <span class="nb-offer-img-tag">Regular · Full Plate</span>
               </div>
             </div>
           </div>
+
+          <!-- FREEBIE HIGHLIGHT CALLOUT -->
+          <div class="nb-offer-freebie-callout">
+            <div class="nb-freebie-icon">🎁</div>
+            <div class="nb-freebie-text">
+              <strong>FREE Gulab Jamun Included</strong>
+              <span>Fresh sweet complimentary dessert with every ₹199 portion</span>
+            </div>
+          </div>
+
+          <!-- PERKS CHECKLIST -->
+          <ul class="nb-offer-perks">
+            <li><span class="nb-perk-check">✓</span> <strong>Full Regular Portion</strong> (50% larger than Trial)</li>
+            <li><span class="nb-perk-check">✓</span> <strong>1x FREE Gulab Jamun</strong> automatically added</li>
+            <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
+          </ul>
 
           <!-- INTERACTIVE ADD-ON ACCORDION FOR ₹199 -->
           <div class="nb-offer-addons-wrapper" id="nb-addons-199">
@@ -249,8 +284,8 @@
             {% render 'nb-diet-icon', diet: 'nonveg' %}
           </div>
 
+          <!-- TOP COMPACT ROW: INFO + THUMBNAIL -->
           <div class="nb-offer-main-layout">
-            <!-- Left Info Block -->
             <div class="nb-offer-info">
               <div class="nb-offer-portion-pill nb-portion-pill--trial">
                 <span>🍗 Trial Portion</span>
@@ -272,23 +307,16 @@
                 </div>
                 <span class="nb-offer-serving-tag">Serves 1 · Trial</span>
               </div>
-
-              <!-- PERKS CHECKLIST -->
-              <ul class="nb-offer-perks">
-                <li><span class="nb-perk-check">✓</span> <strong>Introductory Trial Portion</strong></li>
-                <li><span class="nb-perk-check">✓</span> <strong>Freshly Prepared Chicken Biryani</strong></li>
-                <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
-              </ul>
             </div>
 
-            <!-- Right Visual Block -->
+            <!-- Visual Thumbnail -->
             <div class="nb-offer-visual">
               <div class="nb-offer-img-frame">
                 <img
                   src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360"
                   alt="Niamat ₹99 Trial Chicken Biryani Portion"
-                  width="320"
-                  height="220"
+                  width="280"
+                  height="180"
                   loading="lazy"
                   class="nb-offer-img"
                 />
@@ -296,6 +324,13 @@
               </div>
             </div>
           </div>
+
+          <!-- PERKS CHECKLIST -->
+          <ul class="nb-offer-perks" style="margin-bottom: 14px;">
+            <li><span class="nb-perk-check">✓</span> <strong>Introductory Trial Portion</strong></li>
+            <li><span class="nb-perk-check">✓</span> <strong>Freshly Prepared Chicken Biryani</strong></li>
+            <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
+          </ul>
 
           <!-- INTERACTIVE ADD-ON ACCORDION FOR ₹99 -->
           <div class="nb-offer-addons-wrapper" id="nb-addons-99">
@@ -387,63 +422,162 @@
 
 <style>
 /* ========================================================
-   NIAMAT BIRYANI — DUAL OFFER SECTION STYLES
+   NIAMAT BIRYANI — OPTIMIZED COMPACT OFFER SECTION
    ======================================================== */
 .nb-offers-showcase-section {
-  padding: 36px 0 20px !important;
+  padding: 24px 0 16px !important;
   background: transparent;
 }
 .nb-offers-container {
-  max-width: 1040px;
+  max-width: 1060px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 12px;
 }
 
 .nb-offers-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 .nb-offers-tag {
   display: inline-block;
   background: rgba(200, 146, 42, 0.14);
   border: 1px solid rgba(200, 146, 42, 0.35);
   color: #C8922A;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 4px 14px;
+  padding: 3px 12px;
   border-radius: 20px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .nb-offers-title {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 1.85rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: #2C1810;
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
   letter-spacing: -0.01em;
 }
 .nb-offers-subtitle {
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   color: #7A5C4A;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
-/* OFFERS GRID */
+/* ========================================================
+   SEGMENTED PORTION TABS (SWITCH OFFERS IN 1 TAP)
+   ======================================================== */
+.nb-portion-tabs-wrap {
+  margin-bottom: 14px;
+}
+.nb-portion-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #F8F3EA;
+  padding: 5px;
+  border-radius: 16px;
+  border: 1.5px solid rgba(200, 146, 42, 0.25);
+  box-shadow: 0 4px 14px rgba(44, 24, 16, 0.05);
+}
+.nb-portion-tab {
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+.nb-portion-tab:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+.nb-portion-tab.active {
+  background: #FFFFFF;
+  border-color: #C8922A;
+  box-shadow: 0 4px 16px rgba(200, 146, 42, 0.2);
+}
+.nb-tab-pill-badge {
+  align-self: flex-start;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #C8922A, #A36B15);
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+.nb-tab-badge--trial {
+  background: #2C1810;
+  color: #F3C669;
+}
+.nb-tab-info {
+  display: flex;
+  flex-direction: column;
+}
+.nb-tab-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #2C1810;
+  line-height: 1.2;
+}
+.nb-tab-sub {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #C8922A;
+}
+.nb-tab-sub del {
+  color: #A89F91;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+/* ========================================================
+   OFFERS GRID & CARDS
+   ======================================================== */
 .nb-offers-grid {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 16px;
+}
+
+/* On Mobile: Only active card is visible */
+@media (max-width: 767px) {
+  .nb-offer-card {
+    display: none;
+  }
+  .nb-offer-card.active {
+    display: block;
+    animation: nbCardFadeIn 0.25s ease-out;
+  }
+}
+
+@keyframes nbCardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* BASE OFFER CARD */
 .nb-offer-card {
   position: relative;
   background: linear-gradient(145deg, #FFFFFF 0%, #FFFDF7 55%, #FDF5E6 100%);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px -10px rgba(44, 24, 16, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 8px 24px -6px rgba(44, 24, 16, 0.08);
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   overflow: hidden;
 }
@@ -451,32 +585,22 @@
 /* FEATURED ₹199 CARD (GOLD EMPHASIS) */
 .nb-offer-card--featured {
   border: 2px solid #C8922A;
-  box-shadow: 0 14px 40px -10px rgba(200, 146, 42, 0.25);
-}
-.nb-offer-card--featured:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 48px -8px rgba(200, 146, 42, 0.35);
+  box-shadow: 0 10px 30px -6px rgba(200, 146, 42, 0.22);
 }
 
 /* TRIAL ₹99 CARD */
 .nb-offer-card--trial {
   border: 1.5px solid rgba(200, 146, 42, 0.28);
-  opacity: 0.98;
-}
-.nb-offer-card--trial:hover {
-  transform: translateY(-2px);
-  border-color: #C8922A;
-  box-shadow: 0 12px 32px -8px rgba(44, 24, 16, 0.12);
 }
 
 /* TOP RIBBON */
 .nb-offer-ribbon {
   background: linear-gradient(90deg, #C8922A 0%, #D49E35 50%, #B07C1C 100%);
   color: #FFFFFF;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.06em;
-  padding: 6px 16px;
+  padding: 5px 14px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -486,31 +610,39 @@
 }
 
 .nb-offer-card-inner {
-  padding: 22px 20px;
+  padding: 16px 14px;
   position: relative;
 }
 
-/* MAIN CARD LAYOUT */
+.nb-diet-corner-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+}
+
+/* MAIN CARD TOP ROW (INFO + COMPACT THUMBNAIL) */
 .nb-offer-main-layout {
   display: flex;
-  flex-direction: column-reverse;
-  gap: 18px;
-  margin-bottom: 16px;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .nb-offer-info {
   flex: 1;
+  min-width: 0;
 }
 
 .nb-offer-portion-pill {
   display: inline-block;
   background: rgba(200, 146, 42, 0.12);
   color: #8C590E;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  padding: 3px 10px;
-  border-radius: 8px;
-  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
 }
 .nb-portion-pill--trial {
   background: rgba(44, 24, 16, 0.08);
@@ -519,17 +651,21 @@
 
 .nb-offer-item-title {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 1.45rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: #2C1810;
-  margin: 0 0 6px 0;
-  line-height: 1.25;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
 }
 .nb-offer-item-desc {
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   color: #7A5C4A;
-  margin: 0 0 14px 0;
-  line-height: 1.45;
+  margin: 0 0 10px 0;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* PRICE DISPLAY */
@@ -539,23 +675,22 @@
   justify-content: space-between;
   background: #FFFDF9;
   border: 1px solid rgba(200, 146, 42, 0.22);
-  border-radius: 12px;
-  padding: 10px 14px;
-  margin-bottom: 12px;
+  border-radius: 10px;
+  padding: 6px 10px;
 }
 .nb-offer-price-box {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 .nb-offer-price-strike {
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: #A89F91;
   text-decoration: line-through;
   font-weight: 700;
 }
 .nb-offer-price-final {
-  font-size: 1.65rem;
+  font-size: 1.45rem;
   font-weight: 900;
   color: #C8922A;
   line-height: 1;
@@ -563,88 +698,40 @@
 .nb-offer-save-badge {
   background: #E8F5E9;
   color: #2E7D32;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: 2px 6px;
+  border-radius: 5px;
   border: 1px solid #A5D6A7;
 }
 .nb-offer-intro-badge {
   background: rgba(200, 146, 42, 0.12);
   color: #8C590E;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: 2px 6px;
+  border-radius: 5px;
 }
 .nb-offer-serving-tag {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-weight: 700;
   color: #5C4033;
 }
 
-/* FREEBIE CALLOUT BOX */
-.nb-offer-freebie-callout {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: linear-gradient(135deg, #FFF9EB 0%, #FFF3D6 100%);
-  border: 1.5px dashed #C8922A;
-  border-radius: 10px;
-  padding: 10px 12px;
-  margin-bottom: 14px;
-}
-.nb-freebie-icon {
-  font-size: 1.4rem;
-  flex-shrink: 0;
-}
-.nb-freebie-text {
-  display: flex;
-  flex-direction: column;
-}
-.nb-freebie-text strong {
-  font-size: 0.86rem;
-  color: #2C1810;
-}
-.nb-freebie-text span {
-  font-size: 0.74rem;
-  color: #7A5C4A;
-}
-
-/* PERKS LIST */
-.nb-offer-perks {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.nb-offer-perks li {
-  font-size: 0.82rem;
-  color: #5C4033;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.nb-perk-check {
-  color: #2E7D32;
-  font-weight: 800;
-  font-size: 0.88rem;
-}
-
-/* VISUAL THUMBNAIL */
+/* COMPACT VISUAL THUMBNAIL */
 .nb-offer-visual {
-  width: 100%;
+  width: 95px;
+  flex-shrink: 0;
 }
 .nb-offer-img-frame {
   position: relative;
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(44, 24, 16, 0.1);
+  box-shadow: 0 4px 12px rgba(44, 24, 16, 0.12);
   border: 1px solid rgba(200, 146, 42, 0.25);
   background: #2C1810;
-  height: 180px;
+  height: 95px;
+  width: 95px;
 }
 .nb-offer-img {
   width: 100%;
@@ -654,28 +741,82 @@
 }
 .nb-offer-img-tag {
   position: absolute;
-  bottom: 8px;
-  left: 8px;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  text-align: center;
   background: rgba(44, 24, 16, 0.85);
   backdrop-filter: blur(4px);
   color: #F3C669;
-  font-size: 0.72rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
-  border: 1px solid rgba(200, 146, 42, 0.35);
+  padding: 2px 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* FREEBIE CALLOUT BOX */
+.nb-offer-freebie-callout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #FFF9EB 0%, #FFF3D6 100%);
+  border: 1.5px dashed #C8922A;
+  border-radius: 9px;
+  padding: 7px 10px;
+  margin-bottom: 10px;
+}
+.nb-freebie-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.nb-freebie-text {
+  display: flex;
+  flex-direction: column;
+}
+.nb-freebie-text strong {
+  font-size: 0.8rem;
+  color: #2C1810;
+}
+.nb-freebie-text span {
+  font-size: 0.7rem;
+  color: #7A5C4A;
+}
+
+/* PERKS LIST */
+.nb-offer-perks {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.nb-offer-perks li {
+  font-size: 0.78rem;
+  color: #5C4033;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.nb-perk-check {
+  color: #2E7D32;
+  font-weight: 800;
+  font-size: 0.82rem;
 }
 
 /* ADD-ONS SECTION */
 .nb-offer-addons-wrapper {
   background: #FFFDF9;
   border: 1px solid rgba(200, 146, 42, 0.25);
-  border-radius: 12px;
-  margin-bottom: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
   overflow: hidden;
 }
 .nb-addons-toggle {
-  padding: 10px 14px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -684,14 +825,14 @@
   user-select: none;
 }
 .nb-addons-toggle-title {
-  font-size: 0.84rem;
+  font-size: 0.8rem;
   color: #2C1810;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 .nb-addons-toggle-arrow {
-  font-size: 0.74rem;
+  font-size: 0.7rem;
   color: #C8922A;
   transition: transform 0.2s ease;
 }
@@ -700,47 +841,41 @@
 }
 .nb-addons-content {
   display: none;
-  padding: 12px 14px;
+  padding: 10px 12px;
   border-top: 1px solid rgba(200, 146, 42, 0.15);
 }
 .nb-addons-note {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: #7A5C4A;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
 }
 .nb-addons-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 .nb-addon-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
+  gap: 8px;
+  padding: 6px 8px;
   background: #FFFFFF;
   border: 1px solid rgba(200, 146, 42, 0.2);
-  border-radius: 8px;
+  border-radius: 7px;
   cursor: pointer;
-  transition: all 0.15s;
-}
-.nb-addon-item:hover {
-  border-color: #C8922A;
-  background: #FFFDF7;
 }
 .nb-addon-cb {
   display: none;
 }
 .nb-addon-custom-box {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border: 1.5px solid #C8922A;
   border-radius: 4px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  transition: background 0.15s;
 }
 .nb-addon-cb:checked + .nb-addon-custom-box {
   background: #2E7D32;
@@ -749,14 +884,14 @@
 .nb-addon-cb:checked + .nb-addon-custom-box::after {
   content: '✓';
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
 }
 .nb-addon-text-wrap {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
 }
 .nb-addon-title {
   color: #2C1810;
@@ -769,18 +904,18 @@
 
 /* SUBMIT BUTTON */
 .nb-offer-action-row {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 .nb-offer-submit-btn {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 13px 18px;
-  border-radius: 12px;
+  padding: 11px 14px;
+  border-radius: 11px;
   border: none;
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 0.96rem;
+  font-size: 0.88rem;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -789,24 +924,13 @@
 .nb-offer-submit-btn--gold {
   background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%);
   color: #FFFFFF !important;
-  box-shadow: 0 6px 20px rgba(200, 146, 42, 0.35);
-}
-.nb-offer-submit-btn--gold:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(200, 146, 42, 0.45);
+  box-shadow: 0 4px 16px rgba(200, 146, 42, 0.35);
 }
 .nb-offer-submit-btn--dark {
   background: linear-gradient(135deg, #2C1810 0%, #1A0D07 100%);
   color: #F3C669 !important;
   border: 1px solid rgba(200, 146, 42, 0.4);
-  box-shadow: 0 4px 14px rgba(44, 24, 16, 0.2);
 }
-.nb-offer-submit-btn--dark:hover {
-  transform: translateY(-2px);
-  border-color: #C8922A;
-  box-shadow: 0 8px 20px rgba(44, 24, 16, 0.3);
-}
-
 .nb-offer-btn-text {
   flex: 1;
   text-align: left;
@@ -814,39 +938,40 @@
 .nb-offer-btn-price {
   background: #FFFFFF;
   color: #2C1810;
-  padding: 3px 8px;
-  border-radius: 6px;
-  font-size: 0.88rem;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 0.82rem;
   font-weight: 900;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
-/* COMPARISON BAR */
+/* VALUE COMPARISON SUMMARY BAR */
 .nb-offers-comparison-bar {
-  margin-top: 18px;
+  margin-top: 14px;
   background: #FFFDF9;
   border: 1px dashed rgba(200, 146, 42, 0.35);
-  border-radius: 14px;
-  padding: 12px 16px;
+  border-radius: 12px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   text-align: center;
 }
 .nb-comparison-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
+  gap: 6px;
+  font-size: 0.76rem;
   color: #5C4033;
 }
 .nb-comp-badge {
   background: rgba(200, 146, 42, 0.15);
   color: #8C590E;
   font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 6px;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  white-space: nowrap;
 }
 .nb-comp-desc {
   font-weight: 600;
@@ -858,25 +983,38 @@
   background: rgba(200, 146, 42, 0.3);
 }
 
-/* DESKTOP RESPONSIVENESS */
+/* ========================================================
+   DESKTOP RESPONSIVENESS (>= 768px)
+   ======================================================== */
 @media (min-width: 768px) {
-  .nb-offers-grid {
-    gap: 26px;
+  .nb-offers-showcase-section {
+    padding: 36px 0 24px !important;
   }
-  .nb-offer-main-layout {
-    flex-direction: row;
-    align-items: center;
-    gap: 28px;
+  .nb-portion-tabs-wrap {
+    display: none; /* Desktop shows both side-by-side */
+  }
+  .nb-offers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .nb-offer-card {
+    display: block !important;
+  }
+  .nb-offer-card-inner {
+    padding: 20px 18px;
   }
   .nb-offer-visual {
-    max-width: 280px;
+    width: 110px;
   }
   .nb-offer-img-frame {
-    height: 190px;
+    height: 110px;
+    width: 110px;
   }
   .nb-offers-comparison-bar {
     flex-direction: row;
     justify-content: space-around;
+    padding: 10px 16px;
   }
   .nb-comparison-divider {
     display: block;
@@ -888,6 +1026,31 @@
 // ========================================================
 // OFFER SELECTION & ADD-ON BATCH DISPATCH LOGIC
 // ========================================================
+
+function nbSwitchOfferTab(tier) {
+  // Update Tab buttons
+  var tabs = document.querySelectorAll('.nb-portion-tab');
+  tabs.forEach(function(btn) {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-selected', 'false');
+  });
+  var activeBtn = document.getElementById('nb-tab-btn-' + tier);
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+    activeBtn.setAttribute('aria-selected', 'true');
+  }
+
+  // Update Cards on mobile
+  var cards = document.querySelectorAll('.nb-offer-card');
+  cards.forEach(function(card) {
+    card.classList.remove('active');
+  });
+  var targetCardId = tier === '199' ? 'offer-regular-199' : 'offer-trial-99';
+  var activeCard = document.getElementById(targetCardId);
+  if (activeCard) {
+    activeCard.classList.add('active');
+  }
+}
 
 function nbToggleAddonPanel(tier) {
   var content = document.getElementById('nb-addon-content-' + tier);
@@ -917,7 +1080,6 @@ function nbUpdateOfferTotal(tier) {
 
 async function nbSubmitOfferOrder(tier, mainVariantId, mainTitle, basePrice) {
   var btn = document.getElementById('nb-btn-submit-' + tier);
-  var origText = btn ? btn.innerHTML : '';
   if (btn) {
     btn.disabled = true;
     btn.style.opacity = '0.75';
