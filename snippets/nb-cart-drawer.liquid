@@ -2,14 +2,13 @@
 
 {% liquid
   assign current_mode = settings.nb_instant_delivery_mode | default: 'auto'
-  if settings.nb_instant_delivery_enabled == false
-    assign current_mode = 'force_closed'
-  endif
-
   assign is_instant_enabled = false
+
   if current_mode == 'force_open'
     assign is_instant_enabled = true
   elsif current_mode == 'force_closed'
+    assign is_instant_enabled = false
+  elsif settings.nb_instant_delivery_enabled == false
     assign is_instant_enabled = false
   else
     assign current_hour = 'now' | date: '%H' | plus: 0

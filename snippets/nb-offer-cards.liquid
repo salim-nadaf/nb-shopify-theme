@@ -77,9 +77,35 @@
     endif
   endif
 
-  assign is_open = true
-  if is_instant_enabled == false
+  assign is_open = false
+  assign current_mode = settings.nb_instant_delivery_mode | default: 'auto'
+  if current_mode == 'force_open'
+    assign is_open = true
+  elsif current_mode == 'force_closed'
     assign is_open = false
+  elsif settings.nb_instant_delivery_enabled == false
+    assign is_open = false
+  else
+    assign current_hour = 'now' | date: '%H' | plus: 0
+    assign current_min = 'now' | date: '%M' | plus: 0
+    assign current_day = 'now' | date: '%u' | plus: 0
+    assign total_mins = current_hour | times: 60 | plus: current_min
+
+    if current_day == 5
+      if total_mins >= 1140 and total_mins < 1320
+        assign is_open = true
+      endif
+    else
+      if total_mins >= 720 and total_mins < 900
+        assign is_open = true
+      elsif total_mins >= 1140 and total_mins < 1320
+        assign is_open = true
+      endif
+    endif
+  endif
+
+  if is_instant_enabled != nil
+    assign is_open = is_instant_enabled
   endif
 %}
 

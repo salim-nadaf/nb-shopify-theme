@@ -16,46 +16,37 @@
     assign current_mode = settings.nb_instant_delivery_mode | default: 'auto'
   endif
 
-  # Master killswitch: if settings.nb_instant_delivery_enabled is explicitly false, force closed
-  if settings.nb_instant_delivery_enabled == false
-    assign current_mode = 'force_closed'
-  endif
-
-  # 2. Evaluate Operating Status
+  # 2. Evaluate Operating Status (Force Online takes precedence)
   assign is_instant_enabled = false
 
   if current_mode == 'force_open'
     assign is_instant_enabled = true
   elsif current_mode == 'force_closed'
     assign is_instant_enabled = false
+  elsif settings.nb_instant_delivery_enabled == false
+    assign is_instant_enabled = false
   else
-    # Check for Specific Planned Closure Dates (e.g. Saturday 5th September 2026 IST)
-    assign current_date = 'now' | date: '%Y-%m-%d'
-    if current_date == '2026-09-05'
-      assign is_instant_enabled = false
-    else
-      # AUTO MODE: Calculate IST Opening Hours
-      # In Shopify Liquid, 'now' uses store timezone (Asia/Kolkata)
-      assign current_hour = 'now' | date: '%H' | plus: 0
-      assign current_min = 'now' | date: '%M' | plus: 0
-      assign current_day = 'now' | date: '%u' | plus: 0
-      # %u: 1 = Mon, 2 = Tue, 3 = Wed, 4 = Thu, 5 = Fri, 6 = Sat, 7 = Sun
-      assign total_mins = current_hour | times: 60 | plus: current_min
+    # AUTO MODE: Calculate IST Opening Hours
+    # In Shopify Liquid, 'now' uses store timezone (Asia/Kolkata)
+    assign current_hour = 'now' | date: '%H' | plus: 0
+    assign current_min = 'now' | date: '%M' | plus: 0
+    assign current_day = 'now' | date: '%u' | plus: 0
+    # %u: 1 = Mon, 2 = Tue, 3 = Wed, 4 = Thu, 5 = Fri, 6 = Sat, 7 = Sun
+    assign total_mins = current_hour | times: 60 | plus: current_min
 
-      # Lunch: 12:00 PM (720 min) to 3:00 PM (900 min)
-      # Dinner: 7:00 PM (1140 min) to 10:00 PM (1320 min)
-      if current_day == 5
-        # Friday: Only Dinner 7 PM - 10 PM
-        if total_mins >= 1140 and total_mins < 1320
-          assign is_instant_enabled = true
-        endif
-      else
-        # Other Days: Lunch 12 PM - 3 PM or Dinner 7 PM - 10 PM
-        if total_mins >= 720 and total_mins < 900
-          assign is_instant_enabled = true
-        elsif total_mins >= 1140 and total_mins < 1320
-          assign is_instant_enabled = true
-        endif
+    # Lunch: 12:00 PM (720 min) to 3:00 PM (900 min)
+    # Dinner: 7:00 PM (1140 min) to 10:00 PM (1320 min)
+    if current_day == 5
+      # Friday: Only Dinner 7 PM - 10 PM
+      if total_mins >= 1140 and total_mins < 1320
+        assign is_instant_enabled = true
+      endif
+    else
+      # Other Days: Lunch 12 PM - 3 PM or Dinner 7 PM - 10 PM
+      if total_mins >= 720 and total_mins < 900
+        assign is_instant_enabled = true
+      elsif total_mins >= 1140 and total_mins < 1320
+        assign is_instant_enabled = true
       endif
     endif
   endif
