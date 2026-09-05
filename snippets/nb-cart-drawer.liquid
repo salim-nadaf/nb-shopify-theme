@@ -1201,6 +1201,7 @@ function nbRenderCart(cart) {
     var raitaHtml = isBiryani ? '<div class="nb-raita-tag"><span>✓</span> Raita included</div>' : '';
 
     var freebieBadgeHtml = is199Offer ? '<div class="nb-freebie-tag">🎁 FREE Gulab Jamun Included</div>' : '';
+    var couponHintHtml = is199Offer ? '<div class="nb-coupon-hint-tag" style="font-size: 0.70rem; color: #8C590E; margin-top: 3px; font-weight: 600;">🎟️ Code: <strong>NEW199TB</strong> (Auto-applies at checkout)</div>' : '';
 
     var isComplimentary = item.final_line_price === 0 || (item.properties && item.properties['_freebie']);
     var complimentaryBadgeHtml = isComplimentary ? '<div class="nb-complimentary-tag">🎁 Complimentary Freebie (₹0)</div>' : '';
@@ -1231,6 +1232,7 @@ function nbRenderCart(cart) {
           variantHtml,
           raitaHtml,
           freebieBadgeHtml,
+          couponHintHtml,
           complimentaryBadgeHtml,
           '<div class="nb-cart-item__bottom">',
             '<span class="nb-cart-item__price">' + linePriceFormatted + '</span>',
