@@ -1154,6 +1154,10 @@ async function nbSubmitOfferOrder(tier, mainVariantId, mainTitle, basePrice) {
   });
 
   try {
+    if (tier === '199') {
+      fetch('/discount/NEW199TB').catch(function() {});
+    }
+
     var response = await fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

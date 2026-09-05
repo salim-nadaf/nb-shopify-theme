@@ -873,7 +873,20 @@ async function nbGoToCheckout() {
     console.error('Cart drawer checkout update error:', e);
   }
 
-  window.location.href = '/checkout';
+  // Auto-apply discount code NEW199TB for ₹199 regular portion offer
+  var has199Offer = false;
+  if (window.nbCurrentCart && window.nbCurrentCart.items) {
+    window.nbCurrentCart.items.forEach(function(item) {
+      var is199 = (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199'));
+      if (is199) has199Offer = true;
+    });
+  }
+
+  if (has199Offer) {
+    window.location.href = '/discount/NEW199TB?redirect=/checkout';
+  } else {
+    window.location.href = '/checkout';
+  }
 }
 
 function nbUpdateCartCustomerCard() {
@@ -937,6 +950,15 @@ function nbRenderCart(cart) {
   var upsellSection = document.getElementById('nb-drawer-upsell-section');
 
   var hasMainItems = nbHasMainItemInCart(cart);
+
+  if (cart && cart.items) {
+    var has199InCart = cart.items.some(function(item) {
+      return (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199'));
+    });
+    if (has199InCart) {
+      fetch('/discount/NEW199TB').catch(function() {});
+    }
+  }
 
   // CONTROL UPSELL SECTION VISIBILITY: ONLY APPEARS IF ACTUAL MAIN ITEMS ARE IN CART
   if (upsellSection) {
