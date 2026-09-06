@@ -874,10 +874,22 @@ async function nbGoToCheckout() {
   }
 
   // Auto-apply discount code NEW199TB for ₹199 regular portion offer
+  var cartToCheck = (cartData && cartData.items) ? cartData : window.nbCurrentCart;
   var has199Offer = false;
-  if (window.nbCurrentCart && window.nbCurrentCart.items) {
-    window.nbCurrentCart.items.forEach(function(item) {
-      var is199 = (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199'));
+  if (cartToCheck && cartToCheck.items) {
+    cartToCheck.items.forEach(function(item) {
+      var propOffer = (item.properties && item.properties['_offer']) ? String(item.properties['_offer']).toLowerCase() : '';
+      var propPortion = (item.properties && item.properties['_portion']) ? String(item.properties['_portion']).toLowerCase() : '';
+      var title = (item.title || item.product_title || '').toLowerCase();
+      var variantTitle = (item.variant_title || '').toLowerCase();
+      var vId = String(item.variant_id || item.id || '');
+
+      var is199 = (item.final_price === 19900) ||
+                  propOffer.includes('199') ||
+                  propOffer.includes('regular') ||
+                  (vId === '43997799546954') ||
+                  (title.includes('alishaan') && (variantTitle.includes('single') || variantTitle.includes('serves 1')));
+
       if (is199) has199Offer = true;
     });
   }
@@ -888,6 +900,7 @@ async function nbGoToCheckout() {
     window.location.href = '/checkout';
   }
 }
+window.nbGoToCheckout = nbGoToCheckout;
 
 function nbUpdateCartCustomerCard() {
   var phone = localStorage.getItem('gate_phone') || localStorage.getItem('nb_phone') || '';
