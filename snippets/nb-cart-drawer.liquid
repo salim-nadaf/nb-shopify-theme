@@ -883,9 +883,6 @@ async function nbGoToCheckout() {
   }
 
   if (has199Offer) {
-    try {
-      await fetch('/discount/NEW199TB');
-    } catch (e) {}
     window.location.href = '/checkout?discount=NEW199TB';
   } else {
     window.location.href = '/checkout';
@@ -953,15 +950,6 @@ function nbRenderCart(cart) {
   var upsellSection = document.getElementById('nb-drawer-upsell-section');
 
   var hasMainItems = nbHasMainItemInCart(cart);
-
-  if (cart && cart.items) {
-    var has199InCart = cart.items.some(function(item) {
-      return (item.final_price === 19900) || (item.properties && item.properties['_offer'] && item.properties['_offer'].includes('199'));
-    });
-    if (has199InCart) {
-      fetch('/discount/NEW199TB').catch(function() {});
-    }
-  }
 
   // CONTROL UPSELL SECTION VISIBILITY: ONLY APPEARS IF ACTUAL MAIN ITEMS ARE IN CART
   if (upsellSection) {

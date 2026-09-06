@@ -1159,10 +1159,6 @@ async function nbSubmitOfferOrder(tier, mainVariantId, mainTitle, basePrice) {
   });
 
   try {
-    if (tier === '199') {
-      fetch('/discount/NEW199TB').catch(function() {});
-    }
-
     var response = await fetch('/cart/add.js', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1170,10 +1166,14 @@ async function nbSubmitOfferOrder(tier, mainVariantId, mainTitle, basePrice) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to add items to cart');
+      var errData = await response.json().catch(function() { return {}; });
+      throw new Error(errData.description || 'Failed to add items to cart');
     }
 
-    // Open Cart Drawer
+    // Refresh and Open Cart Drawer
+    if (typeof nbRefreshCart === 'function') {
+      nbRefreshCart();
+    }
     if (typeof nbOpenDrawer === 'function') {
       nbOpenDrawer();
     } else {
