@@ -883,7 +883,10 @@ async function nbGoToCheckout() {
   }
 
   if (has199Offer) {
-    window.location.href = '/discount/NEW199TB?redirect=/checkout';
+    try {
+      await fetch('/discount/NEW199TB');
+    } catch (e) {}
+    window.location.href = '/checkout?discount=NEW199TB';
   } else {
     window.location.href = '/checkout';
   }
