@@ -1,30 +1,99 @@
 {% comment %}
-  NIAMAT BIRYANI — 3D Glossy Floating WhatsApp Button
-  Matches the official glossy sphere style:
-  - 3D glossy emerald-green sphere with top light shine
-  - White WhatsApp bubble outline with handset inside
-  - Fixed floating on all pages (Desktop & Mobile)
-  - Direct connection to +919167682582 with automated order greeting
+  NIAMAT BIRYANI — Dynamic Customer Intent Floating WhatsApp Button & Helper
+  - Dynamic Intent Routing:
+    * Family / Bulk / Pre-Orders (Primary Specialization): Contextual Family greeting
+    * Instant Delivery (Smaller Portions): Contextual Instant Delivery greeting
+  - Distinguishable Analytics Tracking: gtag('event', 'whatsapp_intent_click', { intent: 'family_bulk' | 'instant_delivery' }) & Meta Pixel
+  - Matches 3D glossy emerald sphere luxury design
 {% endcomment %}
 
 {% liquid
   assign wa_number = '919167682582'
-  assign greeting_msg = 'Hi Biryani Palace by Niamat! I need quick help with placing an order.' | url_encode
-  assign wa_url = 'https://wa.me/' | append: wa_number | append: '?text=' | append: greeting_msg
+  assign default_intent = 'family_bulk'
+  assign default_msg = "Hi Niamat, I'd like to enquire about a family/kilo/bulk biryani order."
+
+  if template.name == 'collection' and collection.handle == 'instant-delivery'
+    assign default_intent = 'instant_delivery'
+    assign default_msg = "Hi Niamat, I'm interested in an Instant Delivery order for quick delivery."
+  elsif template.name == 'page' and page.handle contains 'instant'
+    assign default_intent = 'instant_delivery'
+    assign default_msg = "Hi Niamat, I'm interested in an Instant Delivery order for quick delivery."
+  endif
+
+  assign encoded_msg = default_msg | url_encode
+  assign wa_url = 'https://wa.me/' | append: wa_number | append: '?text=' | append: encoded_msg
 %}
 
 <div id="nb-wa-root"></div>
 
 <script>
 (function() {
+  var waNumber = '919167682582';
+
+  // Global Contextual Intent Resolver
+  window.nbGetWhatsAppIntent = function() {
+    var path = (window.location.pathname || '').toLowerCase();
+    var search = (window.location.search || '').toLowerCase();
+
+    if (path.indexOf('/instant-delivery') !== -1 || search.indexOf('instant') !== -1 || path.indexOf('trial') !== -1) {
+      return {
+        intent: 'instant_delivery',
+        greeting: "Hi Niamat, I'm interested in an Instant Delivery order for quick delivery."
+      };
+    }
+    if (path.indexOf('/family-orders') !== -1 || path.indexOf('/bulk-orders') !== -1 || path.indexOf('/biryani-calculator') !== -1 || path.indexOf('family') !== -1) {
+      return {
+        intent: 'family_bulk',
+        greeting: "Hi Niamat, I'd like to enquire about a family/kilo/bulk biryani order."
+      };
+    }
+    // Default positioning: Core specialty is Family / Bulk Pre-Orders
+    return {
+      intent: 'family_bulk',
+      greeting: "Hi Niamat, I'd like to enquire about a family/kilo/bulk biryani order."
+    };
+  };
+
+  // Global WhatsApp Click Handler with Analytics Intent Attribution
+  window.nbOpenWhatsApp = function(options) {
+    options = options || {};
+    var contextInfo = window.nbGetWhatsAppIntent();
+    var intent = options.intent || contextInfo.intent;
+    var message = options.text || contextInfo.greeting;
+    var source = options.source || 'floating_button';
+
+    // 1. GA4 / GTag Tracking
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'whatsapp_intent_click', {
+          intent: intent,
+          page_location: window.location.href,
+          cta_source: source
+        });
+      }
+    } catch(e) {}
+
+    // 2. Meta Pixel Tracking
+    try {
+      if (typeof window.fbq === 'function') {
+        window.fbq('trackCustom', 'WhatsAppIntentClick', {
+          intent: intent,
+          cta_source: source
+        });
+      }
+    } catch(e) {}
+
+    var url = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(message);
+    window.open(url, '_blank', 'noopener,noreferrer');
+    return false;
+  };
+
   function initGlossyWhatsAppFloat() {
     if (document.getElementById('nbWhatsAppGlossyBtn')) return;
 
-    var waNumber = '919167682582';
-    var greeting = encodeURIComponent('Hi Biryani Palace by Niamat! I need quick help with placing an order.');
-    var waUrl = 'https://wa.me/' + waNumber + '?text=' + greeting;
-
     var isMobile = window.innerWidth < 768;
+    var info = window.nbGetWhatsAppIntent();
+    var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(info.greeting);
 
     var container = document.createElement('div');
     container.id = 'nbWhatsAppGlossyBtn';
@@ -50,6 +119,7 @@
     btn.target = '_blank';
     btn.rel = 'noopener noreferrer';
     btn.setAttribute('aria-label', 'Chat on WhatsApp');
+    btn.setAttribute('data-intent', info.intent);
     btn.style.cssText = [
       'position: relative !important',
       'display: flex !important',
@@ -66,6 +136,16 @@
       'transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease !important',
       'overflow: visible !important'
     ].join(';');
+
+    btn.onclick = function(e) {
+      e.preventDefault();
+      var currentInfo = window.nbGetWhatsAppIntent();
+      window.nbOpenWhatsApp({
+        intent: currentInfo.intent,
+        text: currentInfo.greeting,
+        source: 'floating_button'
+      });
+    };
 
     // Top Glossy Shine Highlight Layer
     var glossShine = document.createElement('span');

@@ -15,20 +15,20 @@
         "order_way_1": {
           "type": "order_way",
           "settings": {
-            "badge": "Fast 45-60m",
-            "title": "Instant Delivery",
-            "description": "Freshly prepared portions available today.\n\nPerfect for lunch, dinner and everyday cravings.",
-            "cta_text": "Order Instant Delivery",
+            "badge": "⚡ 45–60 Min Dispatch",
+            "title": "Instant Delivery (Smaller Portions)",
+            "description": "Craving biryani right now? Freshly prepared single & regular portions dispatched hot from our cloud kitchen.",
+            "cta_text": "Order Instant Delivery →",
             "cta_url": "/collections/instant-delivery"
           }
         },
         "order_way_2": {
           "type": "order_way",
           "settings": {
-            "badge": "1 Kg to 10 Kg Handi",
-            "title": "Family Pre-Orders",
-            "description": "Planning a gathering?\n\nPre-order larger quantities with your preferred delivery schedule.",
-            "cta_text": "Plan Family Orders",
+            "badge": "👑 Our Core Specialty (1 Kg+)",
+            "title": "Family & Bulk Pre-Orders",
+            "description": "Planning a family meal, gathering or party? Dum-cooked in traditional handis with honest 1:1 meat-to-rice portion.",
+            "cta_text": "Plan a Family Order →",
             "cta_url": "/pages/family-orders"
           }
         },

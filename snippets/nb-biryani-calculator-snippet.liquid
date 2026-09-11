@@ -4,7 +4,7 @@
 
 <div class="nb-calc-container">
   <div class="nb-calc-header">
-    <span class="nb-pill-badge">🧮 BIRYANI QUANTITY CALCULATOR</span>
+    <span class="nb-pill-badge">👑 OUR CORE SPECIALTY · FAMILY & GATHERING QUANTITY CALCULATOR</span>
     <h1>How Much Biryani Do You Need?</h1>
     <p class="nb-calc-sub">
       Planning a family gathering, house party, or corporate event? Use our interactive calculator to estimate the exact quantity of biryani and starters needed for your guests.
@@ -665,24 +665,36 @@
         pkgDescEl.innerText = "Tailored menu, live counter options & dedicated coordinator for large gatherings";
       }
 
-      // WhatsApp Pre-filled URL
-      var waMsg = "Hi Biryani Palace by Niamat! I calculated my biryani requirement on your website calculator:%0A" +
-                  "👥 Guests: " + guests + "%0A" +
-                  "🍚 Appetite: " + appetiteType + "%0A" +
-                  "🍗 Diet: " + dietType + "%0A" +
-                  "📦 Total Biryani Needed: " + totalKg + " Kg";
+      // WhatsApp Pre-filled URL & Intent Tracking
+      var rawWaMsg = "Hi Niamat! I calculated a family/bulk order requirement on your website calculator:\n" +
+                     "• Guests: " + guests + "\n" +
+                     "• Appetite: " + appetiteType + "\n" +
+                     "• Diet: " + dietType + "\n" +
+                     "• Total Biryani Needed: " + totalKg + " Kg";
 
       if (nonVegKg > 0 && vegKg > 0) {
-        waMsg += " (" + nonVegKg + " Kg Non-Veg + " + vegKg + " Kg Veg)";
+        rawWaMsg += " (" + nonVegKg + " Kg Non-Veg + " + vegKg + " Kg Veg)";
       }
       if (includeKebabsCheckbox && includeKebabsCheckbox.checked) {
-        waMsg += "%0A🍢 Kebabs: " + (kebabPacks * 12) + " Pcs";
+        rawWaMsg += "\n• Kebabs: " + (kebabPacks * 12) + " Pcs";
       }
-      waMsg += "%0A%0APlease confirm pricing and availability for my event date.";
+      rawWaMsg += "\n\nPlease confirm availability and pricing for my event date.";
 
       var waBtn = document.getElementById('nb-calc-wa-btn');
       if (waBtn) {
-        waBtn.href = "https://wa.me/919167682582?text=" + waMsg;
+        waBtn.href = "https://wa.me/919167682582?text=" + encodeURIComponent(rawWaMsg);
+        waBtn.onclick = function(e) {
+          e.preventDefault();
+          if (window.nbOpenWhatsApp) {
+            window.nbOpenWhatsApp({
+              intent: 'family_bulk',
+              text: rawWaMsg,
+              source: 'biryani_calculator'
+            });
+          } else {
+            window.open(waBtn.href, '_blank', 'noopener,noreferrer');
+          }
+        };
       }
     }
 

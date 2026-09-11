@@ -142,9 +142,9 @@
       {%- endif -%}
       <div class="nb-food-card__meta">
         {%- if is_preorder -%}
-          <span class="nb-meta-tag">1:1 Portion (1Kg Meat + 1Kg Rice)</span>
+          <span class="nb-meta-tag">👑 Family Handi (1:1 Meat-Rice)</span>
         {%- else -%}
-          <span class="nb-meta-tag">⚡ 45-60 mins</span>
+          <span class="nb-meta-tag">⚡ Instant Delivery (45–60 min)</span>
         {%- endif -%}
       </div>
     </div>
@@ -160,18 +160,18 @@
 
       {%- if is_preorder -%}
         <a href="/pages/family-orders" class="nb-btn nb-btn--outline">
-          Pre-Order →
+          Pre-Order Handi →
         </a>
       {%- elsif is_available -%}
         {%- if product.variants.size > 1 -%}
           <a href="/collections/instant-delivery" class="nb-btn nb-btn--gold">
-            Choose →
+            Order Instant →
           </a>
         {%- else -%}
           <form action="/cart/add" method="post" class="nb-quick-form">
             <input type="hidden" name="id" value="{{ first_variant.id }}">
             <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="nb-btn nb-btn--gold">Order Now</button>
+            <button type="submit" class="nb-btn nb-btn--gold">Order Instant</button>
           </form>
         {%- endif -%}
       {%- else -%}
