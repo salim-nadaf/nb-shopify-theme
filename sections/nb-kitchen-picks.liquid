@@ -1,0 +1,1169 @@
+{% comment %}
+  NIAMAT BIRYANI — "Niamat Kitchen Picks" Editorial Amazon Associates & Influencer Recommendations
+  Compliant with Amazon Associates Operating Agreement & Program Policies
+{% endcomment %}
+
+{% liquid
+  assign page_bg = section.settings.color_page_bg | default: '#FFFAF4'
+  assign card_bg = section.settings.color_card_bg | default: '#FFFFFF'
+  assign alt_bg = section.settings.color_alt_bg | default: '#FDF6EC'
+  assign gold_color = section.settings.color_accent_gold | default: '#C8922A'
+  assign text_dark = section.settings.color_text_dark | default: '#2C1810'
+  assign text_muted = section.settings.color_text_muted | default: '#7A5C4A'
+  assign storefront_url = section.settings.storefront_url | default: 'https://www.amazon.in/shop/niamatbiryani'
+%}
+
+<div class="nb-kitchen-picks-section" style="
+  --nb-kp-bg: {{ page_bg }};
+  --nb-kp-card-bg: {{ card_bg }};
+  --nb-kp-alt-bg: {{ alt_bg }};
+  --nb-kp-gold: {{ gold_color }};
+  --nb-kp-text-dark: {{ text_dark }};
+  --nb-kp-text-muted: {{ text_muted }};
+">
+  <div class="nb-kp-container">
+
+    <!-- 1. HERO SECTION -->
+    <header class="nb-kp-hero">
+      <div class="nb-kp-hero__badge">
+        <span class="nb-kp-chip">✨ NIAMAT EDITORIAL</span>
+        <span class="nb-kp-chip nb-kp-chip--subtle">KITCHEN ESSENTIALS</span>
+      </div>
+
+      <h1 class="nb-kp-hero__title">{{ section.settings.heading | default: 'Niamat Kitchen Picks' }}</h1>
+      <p class="nb-kp-hero__subheading">{{ section.settings.subheading | default: 'Kitchen tools & essentials worth having in your kitchen.' }}</p>
+      
+      <p class="nb-kp-hero__copy">
+        {{ section.settings.supporting_copy | default: 'Practical kitchen tools and essentials recommended by Niamat for biryani, Indian cooking and everyday kitchen use.' }}
+      </p>
+
+      {% if storefront_url != blank %}
+        <div class="nb-kp-hero__cta-wrap">
+          <a href="{{ storefront_url }}" 
+             target="_blank" 
+             rel="noopener sponsored"
+             class="nb-kp-btn nb-kp-btn--gold nb-kp-storefront-trigger"
+             data-tracking-location="hero"
+             title="Opens Niamat Amazon Storefront in a new tab">
+            {{ section.settings.storefront_cta_text | default: 'Shop Niamat Kitchen Picks on Amazon →' }}
+            <svg class="nb-kp-external-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      {% endif %}
+
+      <!-- TOP DIRECT AFFILIATE DISCLOSURE (COMPLIANCE REQUIRED) -->
+      <div class="nb-kp-top-disclosure">
+        <span class="nb-kp-disclosure-icon">⚖️</span>
+        <span class="nb-kp-disclosure-text">
+          {{ section.settings.top_disclosure | default: 'As an Amazon Associate I earn from qualifying purchases.' }}
+        </span>
+      </div>
+    </header>
+
+    <!-- 2. CATEGORY NAVIGATION TABS -->
+    <nav class="nb-kp-tabs-nav" aria-label="Kitchen Picks Categories">
+      <div class="nb-kp-tabs-scroll">
+        <button type="button" class="nb-kp-tab active" data-category="all" aria-pressed="true">
+          <span class="nb-kp-tab__icon">✨</span>
+          <span class="nb-kp-tab__label">All Picks</span>
+          <span class="nb-kp-tab__count" id="count-all">{{ section.blocks.size }}</span>
+        </button>
+        <button type="button" class="nb-kp-tab" data-category="biryani_indian" aria-pressed="false">
+          <span class="nb-kp-tab__icon">🍲</span>
+          <span class="nb-kp-tab__label">Biryani &amp; Indian Cooking</span>
+        </button>
+        <button type="button" class="nb-kp-tab" data-category="kitchen_tools" aria-pressed="false">
+          <span class="nb-kp-tab__icon">🔪</span>
+          <span class="nb-kp-tab__label">Kitchen Tools</span>
+        </button>
+        <button type="button" class="nb-kp-tab" data-category="storage_org" aria-pressed="false">
+          <span class="nb-kp-tab__icon">📦</span>
+          <span class="nb-kp-tab__label">Storage &amp; Organization</span>
+        </button>
+        <button type="button" class="nb-kp-tab" data-category="spice_masala" aria-pressed="false">
+          <span class="nb-kp-tab__icon">🌿</span>
+          <span class="nb-kp-tab__label">Spice &amp; Masala Storage</span>
+        </button>
+        <button type="button" class="nb-kp-tab" data-category="everyday_essentials" aria-pressed="false">
+          <span class="nb-kp-tab__icon">🍳</span>
+          <span class="nb-kp-tab__label">Everyday Kitchen Essentials</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- 3. PRODUCT RECOMMENDATIONS GRID -->
+    <main class="nb-kp-grid-wrap">
+      {% if section.blocks.size > 0 %}
+        <div class="nb-kp-grid" id="nb-kp-products-grid">
+          {% for block in section.blocks %}
+            {% liquid
+              assign cat_slug = block.settings.category | default: 'everyday_essentials'
+              assign cat_name = 'Kitchen Essentials'
+              case cat_slug
+                when 'biryani_indian'
+                  assign cat_name = 'Biryani & Indian Cooking'
+                when 'kitchen_tools'
+                  assign cat_name = 'Kitchen Tools'
+                when 'storage_org'
+                  assign cat_name = 'Storage & Organization'
+                when 'spice_masala'
+                  assign cat_name = 'Spice & Masala Storage'
+                when 'everyday_essentials'
+                  assign cat_name = 'Everyday Kitchen Essentials'
+              endcase
+
+              assign affiliate_url = block.settings.affiliate_url | default: storefront_url
+              assign cta_text = block.settings.cta_text | default: 'View on Amazon →'
+              assign badge = block.settings.badge
+            %}
+
+            <article class="nb-kp-card" 
+                     data-category="{{ cat_slug }}" 
+                     data-product-title="{{ block.settings.title | escape }}"
+                     {{ block.shopify_attributes }}>
+              
+              <!-- Card Image / Media Area -->
+              <div class="nb-kp-card__media">
+                {% if block.settings.image != blank %}
+                  <img src="{{ block.settings.image | image_url: width: 600 }}"
+                       alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                       width="300"
+                       height="300"
+                       loading="lazy"
+                       decoding="async"
+                       class="nb-kp-card__img">
+                {% else %}
+                  <div class="nb-kp-card__placeholder" aria-hidden="true">
+                    {% case cat_slug %}
+                      {% when 'biryani_indian' %}🍲
+                      {% when 'kitchen_tools' %}🔪
+                      {% when 'storage_org' %}📦
+                      {% when 'spice_masala' %}🌿
+                      {% else %}🍳
+                    {% endcase %}
+                  </div>
+                {% endif %}
+
+                <!-- Badges -->
+                <div class="nb-kp-card__badges">
+                  <span class="nb-kp-cat-tag">{{ cat_name }}</span>
+                  {% if badge != blank %}
+                    <span class="nb-kp-curator-tag">{{ badge }}</span>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Card Body Content -->
+              <div class="nb-kp-card__content">
+                <h3 class="nb-kp-card__title">{{ block.settings.title }}</h3>
+
+                {% if block.settings.editorial_note != blank %}
+                  <div class="nb-kp-card__editorial">
+                    <span class="nb-kp-editorial-label">
+                      <span class="nb-kp-quote-icon">❝</span> Why We Recommend It
+                    </span>
+                    <p class="nb-kp-editorial-text">{{ block.settings.editorial_note }}</p>
+                  </div>
+                {% endif %}
+
+                <div class="nb-kp-card__footer">
+                  <a href="{{ affiliate_url }}" 
+                     target="_blank" 
+                     rel="noopener sponsored"
+                     class="nb-kp-btn nb-kp-btn--card nb-kp-product-trigger"
+                     data-product-name="{{ block.settings.title | escape }}"
+                     data-category="{{ cat_name | escape }}"
+                     title="View {{ block.settings.title | escape }} on Amazon.in (Opens in new tab)">
+                    <span>{{ cta_text }}</span>
+                    <svg class="nb-kp-external-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  </a>
+                  <span class="nb-kp-card__tab-hint">Amazon India ↗</span>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+
+        <!-- Empty state after filtering (hidden by default) -->
+        <div class="nb-kp-empty-state" id="nb-kp-empty-state" style="display: none;">
+          <p>No items found in this category right now.</p>
+          <button type="button" class="nb-kp-btn nb-kp-btn--outline" onclick="document.querySelector('.nb-kp-tab[data-category=\'all\']').click();">
+            View All Recommendations
+          </button>
+        </div>
+      {% else %}
+        <div class="nb-kp-empty-state">
+          <p>Kitchen picks will be added soon. Explore our curated storefront on Amazon in the meantime!</p>
+          {% if storefront_url != blank %}
+            <a href="{{ storefront_url }}" target="_blank" rel="noopener sponsored" class="nb-kp-btn nb-kp-btn--gold">
+              Visit Amazon Storefront →
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </main>
+
+    <!-- 4. BOTTOM STOREFRONT PROMO BANNER -->
+    {% if storefront_url != blank %}
+      <section class="nb-kp-bottom-banner">
+        <div class="nb-kp-banner-card">
+          <div class="nb-kp-banner-content">
+            <span class="nb-kp-banner-badge">👑 OFFICIAL NIAMAT STOREFRONT</span>
+            <h2 class="nb-kp-banner-title">Looking for the Complete Kitchen Collection?</h2>
+            <p class="nb-kp-banner-desc">
+              Explore our full Amazon Influencer storefront for cookware, biryani tools, pantry jars, and chef essentials hand-picked by our culinary team.
+            </p>
+          </div>
+          <div class="nb-kp-banner-action">
+            <a href="{{ storefront_url }}" 
+               target="_blank" 
+               rel="noopener sponsored"
+               class="nb-kp-btn nb-kp-btn--gold nb-kp-btn--large nb-kp-storefront-trigger"
+               data-tracking-location="bottom_banner"
+               title="Opens Niamat Amazon Storefront in a new tab">
+              Explore all Niamat Kitchen Picks on Amazon →
+            </a>
+          </div>
+        </div>
+      </section>
+    {% endif %}
+
+    <!-- 5. COMPREHENSIVE AMAZON DISCLOSURE & TRADEMARK STATEMENTS -->
+    <footer class="nb-kp-compliance-box">
+      <div class="nb-kp-compliance-inner">
+        <h4 class="nb-kp-compliance-heading">Affiliate Transparency &amp; Trademark Notice</h4>
+        <p class="nb-kp-compliance-p">
+          <strong>Amazon Associates Disclosure:</strong> {{ section.settings.disclosure_text | default: 'As an Amazon Associate I earn from qualifying purchases.' }}
+        </p>
+        <p class="nb-kp-compliance-p">
+          <strong>Trademark Statement:</strong> Amazon and the Amazon logo are trademarks of Amazon.com, Inc. or its affiliates.
+        </p>
+        <p class="nb-kp-compliance-p nb-kp-compliance-p--fine">
+          <strong>Editorial Note:</strong> Recommendations on this page are curated independently by the Biryani Palace by Niamat culinary team for kitchen utility and value. We do not display live Amazon prices, stock status, or customer reviews, as those fluctuate directly on Amazon. Clicking any product link will open Amazon.in in a new tab where you can view current pricing and availability.
+        </p>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<style>
+/* ===== NIAMAT KITCHEN PICKS STYLES ===== */
+.nb-kitchen-picks-section {
+  background-color: var(--nb-kp-bg);
+  color: var(--nb-kp-text-dark);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  padding: 40px 16px 80px;
+  min-height: 80vh;
+}
+
+.nb-kp-container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+/* Hero Section */
+.nb-kp-hero {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 36px;
+  padding: 24px 16px 0;
+}
+
+.nb-kp-hero__badge {
+  display: inline-flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nb-kp-chip {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: rgba(200, 146, 42, 0.15);
+  color: #8C5E1B;
+  border: 1px solid rgba(200, 146, 42, 0.35);
+}
+
+.nb-kp-chip--subtle {
+  background: #2C1810;
+  color: #FDF6EC;
+  border-color: #2C1810;
+}
+
+.nb-kp-hero__title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: var(--nb-kp-text-dark);
+  line-height: 1.18;
+  margin: 0 0 12px;
+}
+
+.nb-kp-hero__subheading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--nb-kp-gold);
+  margin: 0 0 16px;
+  line-height: 1.4;
+}
+
+.nb-kp-hero__copy {
+  font-size: 1rem;
+  color: var(--nb-kp-text-muted);
+  line-height: 1.6;
+  margin: 0 auto 24px;
+  max-width: 640px;
+}
+
+.nb-kp-hero__cta-wrap {
+  margin-bottom: 20px;
+}
+
+/* Button Styles */
+.nb-kp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.22s ease-in-out;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.nb-kp-btn--gold {
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 60%, #B07C1C 100%);
+  color: #FFFFFF !important;
+  padding: 14px 28px;
+  font-size: 1rem;
+  box-shadow: 0 4px 16px rgba(200, 146, 42, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.nb-kp-btn--gold:hover {
+  background: linear-gradient(135deg, #E0AC42 0%, #D49E35 60%, #C8922A 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(200, 146, 42, 0.45);
+}
+
+.nb-kp-btn--large {
+  padding: 16px 36px;
+  font-size: 1.05rem;
+}
+
+.nb-kp-btn--card {
+  background: #2C1810;
+  color: #FDF6EC !important;
+  padding: 11px 18px;
+  font-size: 0.88rem;
+  border: 1px solid #2C1810;
+  width: 100%;
+}
+
+.nb-kp-btn--card:hover {
+  background: var(--nb-kp-gold);
+  border-color: var(--nb-kp-gold);
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(200, 146, 42, 0.3);
+}
+
+.nb-kp-btn--outline {
+  background: transparent;
+  color: var(--nb-kp-text-dark) !important;
+  border: 1.5px solid var(--nb-kp-gold);
+  padding: 10px 22px;
+  font-size: 0.9rem;
+}
+
+.nb-kp-btn--outline:hover {
+  background: var(--nb-kp-gold);
+  color: #FFFFFF !important;
+}
+
+.nb-kp-external-icon {
+  flex-shrink: 0;
+}
+
+/* Top Disclosure Banner */
+.nb-kp-top-disclosure {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(200, 146, 42, 0.1);
+  border: 1px dashed rgba(200, 146, 42, 0.45);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #5C3D18;
+}
+
+/* Category Tabs */
+.nb-kp-tabs-nav {
+  margin: 0 0 36px;
+  padding: 0 4px;
+}
+
+.nb-kp-tabs-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 146, 42, 0.4) transparent;
+}
+
+.nb-kp-tabs-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nb-kp-tabs-scroll::-webkit-scrollbar-thumb {
+  background: rgba(200, 146, 42, 0.4);
+  border-radius: 4px;
+}
+
+.nb-kp-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--nb-kp-card-bg);
+  border: 1.5px solid rgba(200, 146, 42, 0.25);
+  color: var(--nb-kp-text-dark);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.nb-kp-tab:hover {
+  border-color: var(--nb-kp-gold);
+  background: #FFFDF8;
+  color: #B07C1C;
+}
+
+.nb-kp-tab.active {
+  background: #2C1810;
+  color: #FDF6EC;
+  border-color: #2C1810;
+  box-shadow: 0 4px 14px rgba(44, 24, 16, 0.25);
+}
+
+.nb-kp-tab__count {
+  font-size: 0.74rem;
+  background: rgba(200, 146, 42, 0.2);
+  color: inherit;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-left: 2px;
+}
+
+.nb-kp-tab.active .nb-kp-tab__count {
+  background: var(--nb-kp-gold);
+  color: #FFFFFF;
+}
+
+/* Product Grid */
+.nb-kp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  margin-bottom: 56px;
+}
+
+@media (min-width: 992px) {
+  .nb-kp-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .nb-kp-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+}
+
+/* Product Card */
+.nb-kp-card {
+  background: var(--nb-kp-card-bg);
+  border: 1px solid rgba(200, 146, 42, 0.22);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 18px rgba(44, 24, 16, 0.05);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.nb-kp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(44, 24, 16, 0.12);
+  border-color: rgba(200, 146, 42, 0.55);
+}
+
+.nb-kp-card__media {
+  position: relative;
+  background: #FAF3E7;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.nb-kp-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.nb-kp-card:hover .nb-kp-card__img {
+  transform: scale(1.03);
+}
+
+.nb-kp-card__placeholder {
+  font-size: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.08));
+}
+
+.nb-kp-card__badges {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.nb-kp-cat-tag {
+  background: rgba(44, 24, 16, 0.88);
+  color: #FDF6EC;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.02em;
+}
+
+.nb-kp-curator-tag {
+  background: linear-gradient(135deg, #D49E35 0%, #C8922A 100%);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  letter-spacing: 0.02em;
+}
+
+.nb-kp-card__content {
+  padding: 22px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.nb-kp-card__title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--nb-kp-text-dark);
+  line-height: 1.35;
+  margin: 0 0 14px;
+}
+
+.nb-kp-card__editorial {
+  background: #FFFDF9;
+  border: 1px solid rgba(200, 146, 42, 0.22);
+  border-left: 3px solid var(--nb-kp-gold);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.nb-kp-editorial-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nb-kp-gold);
+  margin-bottom: 6px;
+}
+
+.nb-kp-quote-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.nb-kp-editorial-text {
+  font-size: 0.88rem;
+  color: #4A3326;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.nb-kp-card__footer {
+  margin-top: auto;
+}
+
+.nb-kp-card__tab-hint {
+  display: block;
+  text-align: center;
+  font-size: 0.74rem;
+  color: var(--nb-kp-text-muted);
+  margin-top: 8px;
+  letter-spacing: 0.02em;
+}
+
+/* Empty State */
+.nb-kp-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--nb-kp-card-bg);
+  border: 1px dashed rgba(200, 146, 42, 0.35);
+  border-radius: 16px;
+  color: var(--nb-kp-text-muted);
+  font-size: 1rem;
+}
+
+.nb-kp-empty-state p {
+  margin-bottom: 16px;
+}
+
+/* Bottom Promo Banner */
+.nb-kp-bottom-banner {
+  margin-bottom: 48px;
+}
+
+.nb-kp-banner-card {
+  background: linear-gradient(135deg, #1E100A 0%, #2C1810 100%);
+  border: 2px solid var(--nb-kp-gold);
+  border-radius: 20px;
+  padding: 36px 32px;
+  color: #FDF6EC;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(44, 24, 16, 0.2);
+}
+
+@media (min-width: 768px) {
+  .nb-kp-banner-card {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    padding: 44px 40px;
+  }
+  
+  .nb-kp-banner-content {
+    max-width: 60%;
+  }
+
+  .nb-kp-banner-action {
+    flex-shrink: 0;
+  }
+}
+
+.nb-kp-banner-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #F3C669;
+  background: rgba(200, 146, 42, 0.2);
+  border: 1px solid rgba(200, 146, 42, 0.4);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.nb-kp-banner-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 10px;
+  line-height: 1.25;
+}
+
+.nb-kp-banner-desc {
+  font-size: 0.94rem;
+  color: #E2D3C4;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Compliance Box */
+.nb-kp-compliance-box {
+  background: #FFFDF8;
+  border: 1px solid rgba(200, 146, 42, 0.3);
+  border-radius: 16px;
+  padding: 24px 24px;
+  margin-top: 20px;
+}
+
+.nb-kp-compliance-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.nb-kp-compliance-heading {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--nb-kp-text-dark);
+  margin: 0 0 12px;
+}
+
+.nb-kp-compliance-p {
+  font-size: 0.84rem;
+  color: var(--nb-kp-text-muted);
+  line-height: 1.55;
+  margin: 0 0 8px;
+}
+
+.nb-kp-compliance-p strong {
+  color: var(--nb-kp-text-dark);
+}
+
+.nb-kp-compliance-p--fine {
+  font-size: 0.8rem;
+  color: #8C7060;
+  margin-bottom: 0;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .nb-kitchen-picks-section {
+    padding: 24px 12px 60px;
+  }
+
+  .nb-kp-hero {
+    margin-bottom: 24px;
+    padding: 12px 4px 0;
+  }
+
+  .nb-kp-btn--gold,
+  .nb-kp-btn--large {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+  }
+
+  .nb-kp-card__content {
+    padding: 18px 14px 16px;
+  }
+
+  .nb-kp-banner-card {
+    padding: 28px 18px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // 1. Instant Category Filtering
+  var tabs = document.querySelectorAll('.nb-kp-tab');
+  var cards = document.querySelectorAll('.nb-kp-card');
+  var emptyState = document.getElementById('nb-kp-empty-state');
+
+  function filterPicks(selectedCat) {
+    var visibleCount = 0;
+
+    cards.forEach(function(card) {
+      var itemCat = card.getAttribute('data-category');
+      if (selectedCat === 'all' || itemCat === selectedCat) {
+        card.style.display = 'flex';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (emptyState) {
+      emptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+  }
+
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      tabs.forEach(function(t) { 
+        t.classList.remove('active'); 
+        t.setAttribute('aria-pressed', 'false');
+      });
+      tab.classList.add('active');
+      tab.setAttribute('aria-pressed', 'true');
+
+      var cat = tab.getAttribute('data-category');
+      filterPicks(cat);
+    });
+  });
+
+  // 2. Safe GA4 Click Tracking for Storefront & Product CTAs
+  function trackAmazonClick(eventName, params) {
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', eventName, params);
+      }
+      if (window.dataLayer && Array.isArray(window.dataLayer)) {
+        window.dataLayer.push(Object.assign({ event: eventName }, params));
+      }
+    } catch(e) {
+      // Silently fail without impacting user navigation
+    }
+  }
+
+  // Storefront Triggers (Hero & Bottom Banner)
+  var storefrontButtons = document.querySelectorAll('.nb-kp-storefront-trigger');
+  storefrontButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var loc = btn.getAttribute('data-tracking-location') || 'general';
+      trackAmazonClick('amazon_storefront_click', {
+        destination_type: 'amazon_influencer_storefront',
+        click_location: loc,
+        source_page: 'kitchen_picks'
+      });
+    });
+  });
+
+  // Individual Product Triggers
+  var productButtons = document.querySelectorAll('.nb-kp-product-trigger');
+  productButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var prodName = btn.getAttribute('data-product-name') || '';
+      var prodCat = btn.getAttribute('data-category') || '';
+      trackAmazonClick('amazon_product_click', {
+        product_name: prodName,
+        category: prodCat,
+        destination_type: 'amazon_product_affiliate',
+        source_page: 'kitchen_picks'
+      });
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Niamat Kitchen Picks",
+  "tag": "section",
+  "class": "nb-kitchen-picks-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero & Header Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Page Heading",
+      "default": "Niamat Kitchen Picks"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Kitchen tools & essentials worth having in your kitchen."
+    },
+    {
+      "type": "textarea",
+      "id": "supporting_copy",
+      "label": "Supporting Copy",
+      "default": "Practical kitchen tools and essentials recommended by Niamat for biryani, Indian cooking and everyday kitchen use."
+    },
+    {
+      "type": "url",
+      "id": "storefront_url",
+      "label": "Amazon Storefront URL",
+      "info": "Paste your Amazon Influencer Storefront or custom affiliate collection URL here."
+    },
+    {
+      "type": "text",
+      "id": "storefront_cta_text",
+      "label": "Primary Storefront CTA Label",
+      "default": "Shop Niamat Kitchen Picks on Amazon →"
+    },
+    {
+      "type": "text",
+      "id": "top_disclosure",
+      "label": "Top Disclosure Text",
+      "default": "As an Amazon Associate I earn from qualifying purchases."
+    },
+    {
+      "type": "header",
+      "content": "Compliance & Legal Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "disclosure_text",
+      "label": "Bottom Disclosure Statement",
+      "default": "As an Amazon Associate I earn from qualifying purchases."
+    },
+    {
+      "type": "header",
+      "content": "Color Palette"
+    },
+    {
+      "type": "color",
+      "id": "color_page_bg",
+      "label": "Page Background",
+      "default": "#FFFAF4"
+    },
+    {
+      "type": "color",
+      "id": "color_card_bg",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_accent_gold",
+      "label": "Accent Gold",
+      "default": "#C8922A"
+    },
+    {
+      "type": "color",
+      "id": "color_text_dark",
+      "label": "Dark Text",
+      "default": "#2C1810"
+    },
+    {
+      "type": "color",
+      "id": "color_text_muted",
+      "label": "Muted Text",
+      "default": "#7A5C4A"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_pick",
+      "name": "Kitchen Pick Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Product Name",
+          "default": "Heavy-Bottom Cast Iron Handi / Biryani Pot"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Category",
+          "options": [
+            {
+              "value": "biryani_indian",
+              "label": "1. Biryani & Indian Cooking"
+            },
+            {
+              "value": "kitchen_tools",
+              "label": "2. Kitchen Tools"
+            },
+            {
+              "value": "storage_org",
+              "label": "3. Storage & Organization"
+            },
+            {
+              "value": "spice_masala",
+              "label": "4. Spice & Masala Storage"
+            },
+            {
+              "value": "everyday_essentials",
+              "label": "5. Everyday Kitchen Essentials"
+            }
+          ],
+          "default": "biryani_indian"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Curator Badge (Optional)",
+          "default": "Biryani Essential",
+          "info": "e.g. Staff Pick, Chef Choice, Dum Classic, Essential"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "textarea",
+          "id": "editorial_note",
+          "label": "Why We Recommend It",
+          "default": "Even heat distribution is the secret to perfect dum biryani. A thick, heavy base prevents scorching and locks in rich aromatics."
+        },
+        {
+          "type": "url",
+          "id": "affiliate_url",
+          "label": "Amazon Affiliate URL",
+          "info": "Paste the specific Amazon Associates product link here."
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button Label",
+          "default": "View on Amazon →"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Niamat Kitchen Picks",
+      "blocks": [
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heavy-Bottom Cast Iron Biryani Handi",
+            "category": "biryani_indian",
+            "badge": "Dum Essential",
+            "editorial_note": "Even heat distribution is the secret to perfect dum biryani. A thick, heavy base prevents scorching and locks in rich aromatics.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Traditional Brass Masala Dabba (Spice Box)",
+            "category": "spice_masala",
+            "badge": "Authentic Classic",
+            "editorial_note": "Keeps daily whole and ground spices fresh, organized, and easily accessible while cooking authentic gravies and biryani masalas.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Precision Digital Food Kitchen Scale (1g to 10kg)",
+            "category": "kitchen_tools",
+            "badge": "Precision Tool",
+            "editorial_note": "Essential for measuring exact rice-to-meat ratios and spice weights to achieve consistent restaurant-quality flavour every single time.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heavy Duty Stainless Steel Rice Colander & Strainer",
+            "category": "biryani_indian",
+            "badge": "Chef's Choice",
+            "editorial_note": "Allows rapid draining of parboiled aged basmati rice without breaking delicate extra-long grains before layering on dum.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Airtight Glass Pantry Storage Containers with Bamboo Lids",
+            "category": "storage_org",
+            "badge": "Pantry Hero",
+            "editorial_note": "Preserves premium aged basmati rice, dry fruits, and saffron from moisture and pantry humidity while keeping the kitchen tidy.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heavy Tri-Ply Stainless Steel Deep Kadhai with Lid",
+            "category": "everyday_essentials",
+            "badge": "Daily Workhorse",
+            "editorial_note": "Ideal for shallow frying onions to golden crispy 'birista' and slow-braising tender chicken gravies with zero hotspot burning.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Granite Mortar & Pestle (Imam Dasta / Khalbatta)",
+            "category": "kitchen_tools",
+            "badge": "Aroma Booster",
+            "editorial_note": "Crushing whole green cardamoms, cloves, and peppercorns right before dum releases potent essential oils that pre-ground powder can never match.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "UV-Protected Amber Glass Spice Jars with Moisture Seals",
+            "category": "spice_masala",
+            "badge": "Freshness Lock",
+            "editorial_note": "Shields delicate ground spices like Kashmiri deggi mirch, garam masala, and turmeric from light degradation and aroma loss.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heat-Resistant Silicone Spatula & Kitchen Tongs Set",
+            "category": "everyday_essentials",
+            "badge": "Everyday Essential",
+            "editorial_note": "Gentle on cookware and perfect for turning marinating chicken pieces and gently lifting fluffy layered biryani without crushing rice.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Stackable Stainless Steel Food Storage Dabbas (Pack of 4)",
+            "category": "storage_org",
+            "badge": "Space Saver",
+            "editorial_note": "Durable, food-grade steel containers for storing prepared gravies, raita, and chopped garnishes safely in the refrigerator.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Instant Read Digital Meat & Cooking Thermometer",
+            "category": "kitchen_tools",
+            "badge": "Safety & Juiciness",
+            "editorial_note": "Guarantees perfectly juicy chicken cooked to safe internal temperatures without overcooking or drying out meat fibres.",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        {
+          "type": "product_pick",
+          "settings": {
+            "title": "Thick End-Grain Acacia Wood Chopping Board",
+            "category": "everyday_essentials",
+            "badge": "Durable Prep",
+            "editorial_note": "Protects your knife edges during high-volume prep of onions, fresh coriander, mint, ginger, and garlic for family meals.",
+            "cta_text": "View on Amazon →"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,187 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+/*
+ * ------------------------------------------------------------
+ * NIAMAT BIRYANI — Kitchen Picks Page Template
+ * Template for /pages/kitchen-picks
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main_kitchen_picks": {
+      "type": "nb-kitchen-picks",
+      "blocks": {
+        "pick_1": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heavy-Bottom Cast Iron Biryani Handi",
+            "category": "biryani_indian",
+            "badge": "Dum Essential",
+            "editorial_note": "Even heat distribution is the secret to perfect dum biryani. A thick, heavy base prevents scorching and locks in rich aromatics.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_2": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Traditional Brass Masala Dabba (Spice Box)",
+            "category": "spice_masala",
+            "badge": "Authentic Classic",
+            "editorial_note": "Keeps daily whole and ground spices fresh, organized, and easily accessible while cooking authentic gravies and biryani masalas.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_3": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Precision Digital Food Kitchen Scale (1g to 10kg)",
+            "category": "kitchen_tools",
+            "badge": "Precision Tool",
+            "editorial_note": "Essential for measuring exact rice-to-meat ratios and spice weights to achieve consistent restaurant-quality flavour every single time.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_4": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heavy Duty Stainless Steel Rice Colander & Strainer",
+            "category": "biryani_indian",
+            "badge": "Chef's Choice",
+            "editorial_note": "Allows rapid draining of parboiled aged basmati rice without breaking delicate extra-long grains before layering on dum.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_5": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Airtight Glass Pantry Storage Containers with Bamboo Lids",
+            "category": "storage_org",
+            "badge": "Pantry Hero",
+            "editorial_note": "Preserves premium aged basmati rice, dry fruits, and saffron from moisture and pantry humidity while keeping the kitchen tidy.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_6": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heavy Tri-Ply Stainless Steel Deep Kadhai with Lid",
+            "category": "everyday_essentials",
+            "badge": "Daily Workhorse",
+            "editorial_note": "Ideal for shallow frying onions to golden crispy 'birista' and slow-braising tender chicken gravies with zero hotspot burning.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_7": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Granite Mortar & Pestle (Imam Dasta / Khalbatta)",
+            "category": "kitchen_tools",
+            "badge": "Aroma Booster",
+            "editorial_note": "Crushing whole green cardamoms, cloves, and peppercorns right before dum releases potent essential oils that pre-ground powder can never match.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_8": {
+          "type": "product_pick",
+          "settings": {
+            "title": "UV-Protected Amber Glass Spice Jars with Moisture Seals",
+            "category": "spice_masala",
+            "badge": "Freshness Lock",
+            "editorial_note": "Shields delicate ground spices like Kashmiri deggi mirch, garam masala, and turmeric from light degradation and aroma loss.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_9": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heat-Resistant Silicone Spatula & Kitchen Tongs Set",
+            "category": "everyday_essentials",
+            "badge": "Everyday Essential",
+            "editorial_note": "Gentle on cookware and perfect for turning marinating chicken pieces and gently lifting fluffy layered biryani without crushing rice.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_10": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Stackable Stainless Steel Food Storage Dabbas (Pack of 4)",
+            "category": "storage_org",
+            "badge": "Space Saver",
+            "editorial_note": "Durable, food-grade steel containers for storing prepared gravies, raita, and chopped garnishes safely in the refrigerator.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_11": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Instant Read Digital Meat & Cooking Thermometer",
+            "category": "kitchen_tools",
+            "badge": "Safety & Juiciness",
+            "editorial_note": "Guarantees perfectly juicy chicken cooked to safe internal temperatures without overcooking or drying out meat fibres.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        },
+        "pick_12": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Thick End-Grain Acacia Wood Chopping Board",
+            "category": "everyday_essentials",
+            "badge": "Durable Prep",
+            "editorial_note": "Protects your knife edges during high-volume prep of onions, fresh coriander, mint, ginger, and garlic for family meals.",
+            "affiliate_url": "",
+            "cta_text": "View on Amazon →"
+          }
+        }
+      },
+      "block_order": [
+        "pick_1",
+        "pick_2",
+        "pick_3",
+        "pick_4",
+        "pick_5",
+        "pick_6",
+        "pick_7",
+        "pick_8",
+        "pick_9",
+        "pick_10",
+        "pick_11",
+        "pick_12"
+      ],
+      "settings": {
+        "heading": "Niamat Kitchen Picks",
+        "subheading": "Kitchen tools & essentials worth having in your kitchen.",
+        "supporting_copy": "Practical kitchen tools and essentials recommended by Niamat for biryani, Indian cooking and everyday kitchen use.",
+        "storefront_url": "https://www.amazon.in/shop/niamatbiryani",
+        "storefront_cta_text": "Shop Niamat Kitchen Picks on Amazon →",
+        "top_disclosure": "As an Amazon Associate I earn from qualifying purchases.",
+        "disclosure_text": "As an Amazon Associate I earn from qualifying purchases.",
+        "color_page_bg": "#FFFAF4",
+        "color_card_bg": "#FFFFFF",
+        "color_accent_gold": "#C8922A",
+        "color_text_dark": "#2C1810",
+        "color_text_muted": "#7A5C4A"
+      }
+    }
+  },
+  "order": [
+    "main_kitchen_picks"
+  ]
+}

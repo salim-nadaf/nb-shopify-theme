@@ -109,8 +109,12 @@
 
 {%- liquid
   assign custom_page_title = page_title
+  assign custom_meta_desc = page_description
   assign req_path_lower = request.path | downcase
-  if req_path_lower contains 'bulk-orders' or req_path_lower contains '/pages/bulk'
+  if req_path_lower contains 'kitchen-picks' or req_path_lower contains '/pages/kitchen'
+    assign custom_page_title = 'Niamat Kitchen Picks | Recommended Kitchen Essentials'
+    assign custom_meta_desc = 'Discover kitchen tools and essentials recommended by Niamat for biryani, Indian cooking and everyday kitchen use.'
+  elsif req_path_lower contains 'bulk-orders' or req_path_lower contains '/pages/bulk'
     assign custom_page_title = 'Bulk Catering Packages — Biryani Palace by Niamat'
   elsif req_path_lower contains 'biryani-calculator' or req_path_lower contains '/pages/calculator'
     assign custom_page_title = 'Biryani Quantity Calculator — Biryani Palace by Niamat'
@@ -122,7 +126,7 @@
   {{ custom_page_title }}
   {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
   {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-  {%- unless custom_page_title contains shop.name or custom_page_title contains 'Biryani Palace by Niamat' %} &ndash; {{ shop.name }}{% endunless -%}
+  {%- unless custom_page_title contains shop.name or custom_page_title contains 'Biryani Palace by Niamat' or custom_page_title contains 'Niamat Kitchen Picks' %} &ndash; {{ shop.name }}{% endunless -%}
 </title>
 
 <link
@@ -130,7 +134,12 @@
   href="{{ canonical_url }}"
 >
 
-{% if page_description %}
+{% if custom_meta_desc != blank %}
+  <meta
+    name="description"
+    content="{{ custom_meta_desc | escape }}"
+  >
+{% elsif page_description %}
   <meta
     name="description"
     content="{{ page_description | escape }}"
