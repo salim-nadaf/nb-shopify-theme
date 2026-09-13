@@ -91,6 +91,28 @@
       </div>
     </nav>
 
+    <!-- CATEGORY IDEA LIST BANNER (DYNAMICALLY UPDATED ON FILTERING) -->
+    <div class="nb-kp-category-banner" id="nb-kp-category-banner" style="display: none;">
+      <div class="nb-kp-cat-banner-inner">
+        <div class="nb-kp-cat-banner-text">
+          <span class="nb-kp-cat-banner-tag" id="cat-banner-tag">Category Collection</span>
+          <h2 class="nb-kp-cat-banner-title" id="cat-banner-title">Category Name</h2>
+          <p class="nb-kp-cat-banner-sub" id="cat-banner-desc">Explore our curated recommendations for this category.</p>
+        </div>
+        <div class="nb-kp-cat-banner-action" id="cat-banner-action">
+          <a href="{{ storefront_url }}" 
+             target="_blank" 
+             rel="noopener sponsored" 
+             class="nb-kp-btn nb-kp-btn--gold nb-kp-storefront-trigger" 
+             id="cat-banner-btn"
+             data-tracking-location="category_banner">
+            <span>Browse on Amazon Idea List →</span>
+            <svg class="nb-kp-external-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
     <!-- 3. PRODUCT RECOMMENDATIONS GRID -->
     <main class="nb-kp-grid-wrap">
       {% if section.blocks.size > 0 %}
@@ -481,6 +503,74 @@
   color: #FFFFFF;
 }
 
+/* Category Idea List Banner */
+.nb-kp-category-banner {
+  margin: 0 0 32px;
+  background: linear-gradient(135deg, #2C1810 0%, #1E100A 100%);
+  border: 1.5px solid rgba(200, 146, 42, 0.4);
+  border-radius: 16px;
+  padding: 24px 28px;
+  color: #FDF6EC;
+  box-shadow: 0 6px 20px rgba(44, 24, 16, 0.1);
+  animation: nbFadeIn 0.25s ease-out;
+}
+
+@keyframes nbFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.nb-kp-cat-banner-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+@media (min-width: 768px) {
+  .nb-kp-cat-banner-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.nb-kp-cat-banner-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #F3C669;
+  margin-bottom: 6px;
+}
+
+.nb-kp-cat-banner-title {
+  font-family: 'Playfair Display', Georgia, serif !important;
+  font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 6px;
+}
+
+.nb-kp-cat-banner-sub {
+  font-size: 0.9rem;
+  color: #E2D3C4;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.nb-kp-cat-banner-action {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .nb-kp-cat-banner-action {
+    width: auto;
+  }
+}
+
 /* Product Grid */
 .nb-kp-grid {
   display: grid;
@@ -794,10 +884,44 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // 1. Instant Category Filtering
-  var tabs = document.querySelectorAll('.nb-kp-tab');
-  var cards = document.querySelectorAll('.nb-kp-card');
-  var emptyState = document.getElementById('nb-kp-empty-state');
+  // 1. Category Metadata & Idea List URLs
+  var categoryMeta = {
+    'all': {
+      title: 'All Kitchen Picks',
+      desc: 'Discover practical kitchen essentials curated by Niamat.',
+      url: {{ storefront_url | json }}
+    },
+    'biryani_indian': {
+      title: 'Biryani & Indian Cooking',
+      desc: 'Hand-picked handis, strainers, kadhais, and cookware crafted for rich authentic dum cooking.',
+      url: {{ section.settings.url_idealist_biryani_indian | default: storefront_url | json }}
+    },
+    'kitchen_tools': {
+      title: 'Kitchen Tools',
+      desc: 'Precision scales, thermometers, and heavy-duty mortar & pestles for flawless meal prep.',
+      url: {{ section.settings.url_idealist_kitchen_tools | default: storefront_url | json }}
+    },
+    'storage_org': {
+      title: 'Storage & Organization',
+      desc: 'Airtight glass jars and stackable steel containers to keep your pantry fresh and organized.',
+      url: {{ section.settings.url_idealist_storage_org | default: storefront_url | json }}
+    },
+    'spice_masala': {
+      title: 'Spice & Masala Storage',
+      desc: 'Traditional brass masala dabbas and UV-protected jars that seal in potent aromatics.',
+      url: {{ section.settings.url_idealist_spice_masala | default: storefront_url | json }}
+    },
+    'everyday_essentials': {
+      title: 'Everyday Kitchen Essentials',
+      desc: 'Daily prep boards, heat-resistant spatulas, and durable utensils used in busy kitchens.',
+      url: {{ section.settings.url_idealist_everyday_essentials | default: storefront_url | json }}
+    }
+  };
+
+  var catBanner = document.getElementById('nb-kp-category-banner');
+  var catTitle = document.getElementById('cat-banner-title');
+  var catDesc = document.getElementById('cat-banner-desc');
+  var catBtn = document.getElementById('cat-banner-btn');
 
   function filterPicks(selectedCat) {
     var visibleCount = 0;
@@ -814,6 +938,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (emptyState) {
       emptyState.style.display = (visibleCount === 0) ? 'block' : 'none';
+    }
+
+    if (catBanner && categoryMeta[selectedCat]) {
+      if (selectedCat === 'all') {
+        catBanner.style.display = 'none';
+      } else {
+        var meta = categoryMeta[selectedCat];
+        if (catTitle) catTitle.textContent = meta.title;
+        if (catDesc) catDesc.textContent = meta.desc;
+        if (catBtn) {
+          catBtn.href = meta.url || {{ storefront_url | json }};
+          catBtn.setAttribute('data-category', meta.title);
+        }
+        catBanner.style.display = 'block';
+      }
     }
   }
 
@@ -920,6 +1059,40 @@ document.addEventListener('DOMContentLoaded', function() {
       "id": "top_disclosure",
       "label": "Top Disclosure Text",
       "default": "As an Amazon Associate I earn from qualifying purchases."
+    },
+    {
+      "type": "header",
+      "content": "Amazon Category Idea List URLs"
+    },
+    {
+      "type": "url",
+      "id": "url_idealist_biryani_indian",
+      "label": "Idea List: Biryani & Indian Cooking",
+      "info": "Paste the specific Amazon Idea List URL for Biryani & Indian Cooking"
+    },
+    {
+      "type": "url",
+      "id": "url_idealist_kitchen_tools",
+      "label": "Idea List: Kitchen Tools",
+      "info": "Paste the specific Amazon Idea List URL for Kitchen Tools"
+    },
+    {
+      "type": "url",
+      "id": "url_idealist_storage_org",
+      "label": "Idea List: Storage & Organization",
+      "info": "Paste the specific Amazon Idea List URL for Storage & Organization"
+    },
+    {
+      "type": "url",
+      "id": "url_idealist_spice_masala",
+      "label": "Idea List: Spice & Masala Storage",
+      "info": "Paste the specific Amazon Idea List URL for Spice & Masala Storage"
+    },
+    {
+      "type": "url",
+      "id": "url_idealist_everyday_essentials",
+      "label": "Idea List: Everyday Kitchen Essentials",
+      "info": "Paste the specific Amazon Idea List URL for Everyday Kitchen Essentials"
     },
     {
       "type": "header",
