@@ -7,17 +7,22 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-/*
- * ------------------------------------------------------------
- * NIAMAT BIRYANI — Kitchen Picks Page Template
- * Template for /pages/kitchen-picks
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main_kitchen_picks": {
       "type": "nb-kitchen-picks",
       "blocks": {
+        "product_pick_VqiXrw": {
+          "type": "product_pick",
+          "settings": {
+            "title": "Heavy-Bottom Cast Iron Handi / Biryani Pot",
+            "category": "biryani_indian",
+            "badge": "Biryani Essential",
+            "editorial_note": "Even heat distribution is the secret to perfect dum biryani. A thick, heavy base prevents scorching and locks in rich aromatics.",
+            "affiliate_url": "https://www.amazon.in/shop/milas25/list/WFC1E0AOIJWA?ref_=aipsflist",
+            "cta_text": "View on Amazon →"
+          }
+        },
         "pick_1": {
           "type": "product_pick",
           "settings": {
@@ -152,6 +157,7 @@
         }
       },
       "block_order": [
+        "product_pick_VqiXrw",
         "pick_1",
         "pick_2",
         "pick_3",
@@ -172,12 +178,17 @@
         "storefront_url": "https://www.amazon.in/shop/niamatbiryani",
         "storefront_cta_text": "Shop Niamat Kitchen Picks on Amazon →",
         "top_disclosure": "As an Amazon Associate I earn from qualifying purchases.",
+        "url_idealist_biryani_indian": "",
+        "url_idealist_kitchen_tools": "",
+        "url_idealist_storage_org": "",
+        "url_idealist_spice_masala": "",
+        "url_idealist_everyday_essentials": "",
         "disclosure_text": "As an Amazon Associate I earn from qualifying purchases.",
-        "color_page_bg": "#FFFAF4",
-        "color_card_bg": "#FFFFFF",
-        "color_accent_gold": "#C8922A",
-        "color_text_dark": "#2C1810",
-        "color_text_muted": "#7A5C4A"
+        "color_page_bg": "#fffaf4",
+        "color_card_bg": "#ffffff",
+        "color_accent_gold": "#c8922a",
+        "color_text_dark": "#2c1810",
+        "color_text_muted": "#7a5c4a"
       }
     }
   },
