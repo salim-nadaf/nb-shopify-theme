@@ -67,7 +67,7 @@
   fetchpriority="low"
 >
 
-{% if (template.name == 'collection' or template.name == 'search') and template.suffix != 'instant-delivery' and template.suffix != 'family-orders' and template.suffix != 'our-menu' and request.path != '/collections/instant-delivery' and request.path != '/collections/our-menu' and request.path != '/collections/family-orders' %}
+{% if template.name == 'collection' or template.name == 'search' and template.suffix != 'instant-delivery' and template.suffix != 'family-orders' and template.suffix != 'our-menu' and request.path != '/collections/instant-delivery' and request.path != '/collections/our-menu' and request.path != '/collections/family-orders' %}
   <link
     rel="modulepreload"
     href="{{ 'paginated-list-aspect-ratio.js' | asset_url }}"
@@ -245,3 +245,19 @@
     },
   };
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% if (template.name == 'collection' or template.name == 'search') and template.suffix
+    != 'instant-delivery' and template.suffix != 'family-orders' and template.suffix
+    != 'our-menu' and request.path != '/collections/instant-delivery' and request.path
+    != '/collections/our-menu' and request.path != '/collections/family-orders' %}"
+  to: "{% if template.name == 'collection' or template.name == 'search' and template.suffix
+    != 'instant-delivery' and template.suffix != 'family-orders' and template.suffix
+    != 'our-menu' and request.path != '/collections/instant-delivery' and request.path
+    != '/collections/our-menu' and request.path != '/collections/family-orders' %}"
+  position: 2898..3225
+{% endcomment %}
