@@ -106,13 +106,13 @@
       color: #2C1810 !important;
     }
 
-    header, .header, .header-wrapper, header-component,
-    #header-group, .header-section, .header__row, .header__row--top, .header__row--bottom,
+    #header-group, #header-group header, .header-section, .header-wrapper, header-component, .header,
+    .header__row, .header__row--top, .header__row--bottom,
     .header__column, .header__row-inner {
       background: linear-gradient(135deg, #1E100A 0%, #2C1810 100%) !important;
       background-color: #1E100A !important;
     }
-    header, .header, .header-wrapper, header-component {
+    #header-group, #header-group header, .header, .header-wrapper, header-component, .header-section {
       border-bottom: 2px solid #C8922A !important;
       box-shadow: 0 4px 20px rgba(0,0,0,0.25) !important;
     }
@@ -122,13 +122,13 @@
         top: 0 !important;
         z-index: 1000 !important;
       }
-      .header-section, header-component, .header-wrapper, header, .header {
+      .header-section, header-component, .header-wrapper, .header {
         position: sticky !important;
         top: 0 !important;
         z-index: 1000 !important;
       }
     }
-    .header a, .header__heading-link, nav a,
+    .header a, .header__heading-link, .header nav a,
     .header__menu-item, header-component a,
     .header__row a, .header__row span {
       color: #FDF6EC !important;
