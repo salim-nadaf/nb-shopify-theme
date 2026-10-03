@@ -260,18 +260,16 @@
     <!-- VALUE COMPARISON SUMMARY BAR -->
     <div class="nb-offers-comparison-bar">
       <div class="nb-comparison-item">
-        <span class="nb-comp-badge">👑 Full Regular Portion</span>
+        <span class="nb-comp-badge">👑 Regular Portion</span>
         <span class="nb-comp-desc">Satisfying Meal for 1 Person</span>
       </div>
-      <div class="nb-comparison-divider"></div>
       <div class="nb-comparison-item">
         <span class="nb-comp-badge">🎁 Free Sweet Included</span>
-        <span class="nb-comp-desc">Complimentary Gulab Jamun with ₹199</span>
+        <span class="nb-comp-desc">1x Gulab Jamun with ₹199</span>
       </div>
-      <div class="nb-comparison-divider"></div>
       <div class="nb-comparison-item">
         <span class="nb-comp-badge">🏷️ Special Discount Price</span>
-        <span class="nb-comp-desc">Only ₹199 (MRP ₹249 · Save ₹50)</span>
+        <span class="nb-comp-desc">Only ₹199 <span style="color: #A89F91; text-decoration: line-through; font-size: 0.72rem;">₹249</span> (Save ₹50)</span>
       </div>
     </div>
 
@@ -703,48 +701,75 @@
   font-weight: 900;
 }
 
-/* VALUE COMPARISON SUMMARY BAR */
+/* VALUE HIGHLIGHT SUMMARY BAR */
 .nb-offers-comparison-bar {
-  margin-top: 14px;
-  background: #FFFDF9;
-  border: 1px dashed rgba(200, 146, 42, 0.35);
-  border-radius: 12px;
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: center;
-  text-align: center;
+  margin: 14px auto 0;
+  max-width: 680px;
+  background: linear-gradient(145deg, #FFFDF9 0%, #FAF3E6 100%);
+  border: 1.5px dashed rgba(200, 146, 42, 0.4);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  box-sizing: border-box;
 }
 .nb-comparison-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  font-size: 0.76rem;
-  color: #5C4033;
+  justify-content: center;
+  text-align: center;
+  gap: 5px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(200, 146, 42, 0.2);
+  border-radius: 9px;
+  box-sizing: border-box;
 }
 .nb-comp-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(200, 146, 42, 0.15);
   color: #8C590E;
   font-weight: 800;
-  padding: 2px 7px;
-  border-radius: 5px;
-  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.73rem;
+  line-height: 1.2;
   white-space: nowrap;
 }
 .nb-comp-desc {
-  font-weight: 600;
-}
-.nb-comparison-divider {
-  display: none;
-  width: 1px;
-  height: 16px;
-  background: rgba(200, 146, 42, 0.3);
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #5C4033;
+  line-height: 1.3;
 }
 
 /* ========================================================
-   DESKTOP RESPONSIVENESS (>= 768px)
+   RESPONSIVENESS (MOBILE & DESKTOP)
    ======================================================== */
+@media (max-width: 640px) {
+  .nb-offers-comparison-bar {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .nb-comparison-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  .nb-comp-desc {
+    text-align: right;
+    font-size: 0.75rem;
+  }
+}
+
 @media (min-width: 768px) {
   .nb-offers-showcase-section {
     padding: 32px 0 20px !important;
@@ -758,14 +783,6 @@
   .nb-offer-img-frame {
     height: 110px;
     width: 110px;
-  }
-  .nb-offers-comparison-bar {
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 10px 16px;
-  }
-  .nb-comparison-divider {
-    display: block;
   }
 }
 </style>
