@@ -1,28 +1,10 @@
-{% comment %} NIAMAT BIRYANI — Instant Delivery Section with ₹99 Trial Hero {% endcomment %}
+{% comment %} NIAMAT BIRYANI — Instant Delivery Section with ₹199 Special Offer Hero {% endcomment %}
 {% render 'food-card-styles' %}
 {% include 'nb-instant-schedule' %}
 
-{% liquid
-
-  assign trial_prod = all_products[section.settings.trial_product]
-  if trial_prod == blank
-    assign trial_prod = all_products['99-new-customer-trial-biryani']
-  endif
-  if trial_prod == blank
-    assign trial_prod = all_products['new-customer-trial-biryani']
-  endif
-  if trial_prod == blank
-    assign trial_prod = all_products['trial-biryani']
-  endif
-
-  assign trial_variant = trial_prod.selected_or_first_available_variant | default: trial_prod.variants.first
-
-  assign trial_img_url = 'https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360'
-%}
-
 <div class="nb-instant-section" id="instant-delivery">
 
-  <!-- ===== 1. SPECIAL OFFERS SHOWCASE (₹199 BEST VALUE + ₹99 TRIAL PORTION) ===== -->
+  <!-- ===== 1. SPECIAL OFFER SHOWCASE (₹199 ALISHAAN TANDOORI BIRYANI + FREE GULAB JAMUN) ===== -->
   {% render 'nb-offer-cards', is_instant_enabled: is_instant_enabled %}
 
   <!-- ===== 2. EXISTING REGULAR MENU HEADER & BANNER ===== -->

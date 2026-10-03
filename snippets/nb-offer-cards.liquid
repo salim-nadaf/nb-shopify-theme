@@ -1,5 +1,5 @@
 {% comment %}
-  NIAMAT BIRYANI — SPECIAL OFFERS SHOWCASE (₹199 BEST VALUE + ₹99 TRIAL PORTION)
+  NIAMAT BIRYANI — SPECIAL OFFER SHOWCASE (₹199 BEST VALUE REGULAR PORTION + FREE DESSERT)
   Fully integrated with live Shopify product catalog, dynamic add-ons, and cart drawer.
 {% endcomment %}
 
@@ -27,21 +27,7 @@
     endif
   endif
 
-  # 2. Look up ₹99 Trial Biryani Product
-  assign trial_prod = all_products[section.settings.trial_product]
-  if trial_prod == blank
-    assign trial_prod = all_products['99-new-customer-trial-biryani']
-  endif
-  if trial_prod == blank
-    assign trial_prod = all_products['new-customer-trial-biryani']
-  endif
-  if trial_prod == blank
-    assign trial_prod = all_products['trial-biryani']
-  endif
-
-  assign trial_variant = trial_prod.selected_or_first_available_variant | default: trial_prod.variants.first
-
-  # 3. Look up Add-on Products (Shami Kebab, Gulab Jamun, Coke)
+  # 2. Look up Add-on Products (Shami Kebab, Gulab Jamun, Coke)
   assign kebab_prod = all_products['shami-kebab']
   if kebab_prod == blank
     assign kebab_prod = all_products['chicken-shami-kebab']
@@ -59,21 +45,16 @@
     assign coke_prod = all_products['chilled-coke']
   endif
   assign coke_250_variant = null
-  assign coke_750_variant = null
   if coke_prod != blank
     for v in coke_prod.variants
       assign vt = v.title | downcase
       if vt contains '250'
         assign coke_250_variant = v
-      elsif vt contains '750'
-        assign coke_750_variant = v
+        break
       endif
     endfor
     if coke_250_variant == null
       assign coke_250_variant = coke_prod.variants.first
-    endif
-    if coke_750_variant == null and coke_prod.variants.size > 1
-      assign coke_750_variant = coke_prod.variants[1]
     endif
   endif
 
@@ -109,69 +90,34 @@
   endif
 %}
 
-<section class="nb-offers-showcase-section" id="nb-special-offers" aria-label="Special Biryani Offers">
+<section class="nb-offers-showcase-section" id="nb-special-offers" aria-label="Special ₹199 Biryani Offer">
   <div class="nb-offers-container">
     
     <!-- SECTION HEADER -->
     <div class="nb-offers-header">
-      <span class="nb-offers-tag">⚡ INSTANT DELIVERY · SMALLER PORTIONS (45–60 MIN)</span>
-      <h2 class="nb-offers-title">Choose Your Biryani Portion</h2>
-      <p class="nb-offers-subtitle">Craving a quick meal? Slow-cooked in authentic royal dum style, portioned for 1 person & delivered hot in 45–60 mins.</p>
+      <span class="nb-offers-tag">⚡ SPECIAL LAUNCH OFFER · 45–60 MIN DISPATCH</span>
+      <h2 class="nb-offers-title">₹199 Regular Portion Offer</h2>
+      <p class="nb-offers-subtitle">Enjoy our signature slow-cooked royal dum biryani with a complimentary sweet dessert delivered hot & fresh to your door.</p>
       
       <!-- SUBTLE INTENT CONTEXT PILL -->
       <div style="margin: 10px auto 4px; text-align: center;">
         <a href="/pages/family-orders" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; color: #7A5C4A; background: #FFFDF7; border: 1px solid rgba(200, 146, 42, 0.3); padding: 4px 14px; border-radius: 20px; text-decoration: none; transition: all 0.2s ease;">
           <span>👑 Planning for a family meal or gathering (1 Kg+ Handi)?</span>
-          <span style="color: #C8922A; text-decoration: underline;">View Family & Bulk Pre-Orders →</span>
+          <span style="color: #C8922A; text-decoration: underline;">View Family &amp; Bulk Pre-Orders →</span>
         </a>
       </div>
     </div>
 
-    <!-- MOBILE SEGMENTED PORTION TABS (SWITCH OFFERS IN 1 TAP ON MOBILE) -->
-    <div class="nb-portion-tabs-wrap">
-      <div class="nb-portion-tabs" role="tablist" aria-label="Portion Selection">
-        <button
-          type="button"
-          class="nb-portion-tab active"
-          id="nb-tab-btn-199"
-          onclick="nbSwitchOfferTab('199')"
-          role="tab"
-          aria-selected="true"
-        >
-          <span class="nb-tab-pill-badge">👑 BEST VALUE</span>
-          <div class="nb-tab-info">
-            <strong class="nb-tab-name">Regular Portion</strong>
-            <span class="nb-tab-sub">₹199 <del>₹249</del> · Free Sweet</span>
-          </div>
-        </button>
-
-        <button
-          type="button"
-          class="nb-portion-tab"
-          id="nb-tab-btn-99"
-          onclick="nbSwitchOfferTab('99')"
-          role="tab"
-          aria-selected="false"
-        >
-          <span class="nb-tab-pill-badge nb-tab-badge--trial">✨ INTRO</span>
-          <div class="nb-tab-info">
-            <strong class="nb-tab-name">Small Portion</strong>
-            <span class="nb-tab-sub">₹99 · Single Serve</span>
-          </div>
-        </button>
-      </div>
-    </div>
-
-    <!-- OFFERS GRID (ON MOBILE: ACTIVE TAB SHOWN; ON DESKTOP: 2-COLUMN SIDE-BY-SIDE) -->
+    <!-- OFFERS GRID (SINGLE CENTERED FEATURED CARD) -->
     <div class="nb-offers-grid">
 
       <!-- ======================================================== -->
-      <!-- OPTION 1: ₹199 REGULAR BIRYANI (FEATURED / BEST VALUE)   -->
+      <!-- ₹199 REGULAR BIRYANI (FEATURED / BEST VALUE)            -->
       <!-- ======================================================== -->
       <div class="nb-offer-card nb-offer-card--featured active" id="offer-regular-199">
         <!-- Top Highlighting Banner -->
         <div class="nb-offer-ribbon">
-          <span>👑 BEST VALUE · REGULAR PORTION</span>
+          <span>👑 BEST VALUE · REGULAR PORTION + FREE DESSERT</span>
         </div>
 
         <div class="nb-offer-card-inner">
@@ -232,8 +178,8 @@
 
           <!-- PERKS CHECKLIST -->
           <ul class="nb-offer-perks">
-            <li><span class="nb-perk-check">✓</span> <strong>Full Regular Portion</strong> (Larger than Trial portion)</li>
-            <li><span class="nb-perk-check">✓</span> <strong>1x FREE Gulab Jamun</strong> automatically added</li>
+            <li><span class="nb-perk-check">✓</span> <strong>Full Regular Portion</strong> (Satisfying meal for 1 person)</li>
+            <li><span class="nb-perk-check">✓</span> <strong>1x FREE Gulab Jamun</strong> automatically added to order</li>
             <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
           </ul>
 
@@ -292,7 +238,7 @@
                 id="nb-btn-submit-199"
                 onclick="nbSubmitOfferOrder('199', '{{ regular_199_variant.id | default: '43997799546954' }}', 'Alishaan Tandoori Biryani', 199)"
               >
-                <span class="nb-offer-btn-text">ORDER + FREE DESSERT</span>
+                <span class="nb-offer-btn-text">ORDER NOW + FREE DESSERT</span>
                 <span class="nb-offer-btn-price" id="nb-price-tag-199">₹199</span>
               </button>
             {% else %}
@@ -309,140 +255,13 @@
         </div>
       </div>
 
-
-      <!-- ======================================================== -->
-      <!-- OPTION 2: ₹99 SMALL PORTION (TRY US FIRST)               -->
-      <!-- ======================================================== -->
-      <div class="nb-offer-card nb-offer-card--trial" id="offer-trial-99">
-        <div class="nb-offer-ribbon nb-offer-ribbon--trial">
-          <span>✨ ENTRY-LEVEL · TRY US FIRST</span>
-        </div>
-
-        <div class="nb-offer-card-inner">
-          <div class="nb-diet-corner-badge" aria-hidden="true">
-            {% render 'nb-diet-icon', diet: 'nonveg' %}
-          </div>
-
-          <!-- TOP COMPACT ROW: INFO + THUMBNAIL -->
-          <div class="nb-offer-main-layout">
-            <div class="nb-offer-info">
-              <div class="nb-offer-portion-pill nb-portion-pill--trial">
-                <span>🍗 Trial Portion</span>
-              </div>
-
-              <h3 class="nb-offer-item-title">
-                ₹99 Trial Portion
-              </h3>
-
-              <p class="nb-offer-item-desc">
-                The perfect introduction to our royal recipe. A delicious trial portion crafted for first-time customers to experience our authentic taste.
-              </p>
-
-              <!-- PRICE DISPLAY FOR ₹99 -->
-              <div class="nb-offer-price-row">
-                <div class="nb-offer-price-box">
-                  <span class="nb-offer-price-final">₹99</span>
-                  <span class="nb-offer-intro-badge">Special Price</span>
-                </div>
-                <span class="nb-offer-serving-tag">Trial Portion</span>
-              </div>
-            </div>
-
-            <!-- Visual Thumbnail -->
-            <div class="nb-offer-visual">
-              <div class="nb-offer-img-frame">
-                <img
-                  src="https://cdn.shopify.com/s/files/1/0722/3410/6954/files/chicken-dum-bucket-optimized.webp?v=1785619720&width=360"
-                  alt="Niamat ₹99 Trial Portion Chicken Biryani"
-                  width="280"
-                  height="180"
-                  loading="lazy"
-                  class="nb-offer-img"
-                />
-                <span class="nb-offer-img-tag">Trial Portion</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- PERKS CHECKLIST -->
-          <ul class="nb-offer-perks" style="margin-bottom: 14px;">
-            <li><span class="nb-perk-check">✓</span> <strong>Introductory Trial Portion</strong></li>
-            <li><span class="nb-perk-check">✓</span> <strong>Freshly Prepared Chicken Biryani</strong></li>
-            <li><span class="nb-perk-check">✓</span> <strong>Fresh Raita</strong> included</li>
-          </ul>
-
-          <!-- INTERACTIVE ADD-ON ACCORDION FOR ₹99 -->
-          <div class="nb-offer-addons-wrapper" id="nb-addons-99">
-            <div class="nb-addons-toggle" onclick="nbToggleAddonPanel('99')">
-              <span class="nb-addons-toggle-title">
-                <span>✨</span> <strong>Add Starters & Drinks</strong> (Optional)
-              </span>
-              <span class="nb-addons-toggle-arrow" id="nb-addon-arrow-99">▼</span>
-            </div>
-
-            <div class="nb-addons-content" id="nb-addon-content-99">
-              <div class="nb-addons-list">
-                <!-- Add-on 1: Chicken Shami Kebab -->
-                <label class="nb-addon-item">
-                  <input type="checkbox" class="nb-addon-cb" data-tier="99" data-variant-id="{{ kebab_variant.id | default: '44083134693450' }}" data-price="49" data-name="Chicken Shami Kebab" onchange="nbUpdateOfferTotal('99')" />
-                  <span class="nb-addon-custom-box"></span>
-                  <div class="nb-addon-text-wrap">
-                    <span class="nb-addon-title">Chicken Shami Kebab (2 pcs)</span>
-                    <span class="nb-addon-price">+₹49</span>
-                  </div>
-                </label>
-
-                <!-- Add-on 2: Gulab Jamun -->
-                <label class="nb-addon-item">
-                  <input type="checkbox" class="nb-addon-cb" data-tier="99" data-variant-id="{{ jamun_variant.id | default: '44083135283274' }}" data-price="79" data-name="Gulab Jamun (3 pcs)" onchange="nbUpdateOfferTotal('99')" />
-                  <span class="nb-addon-custom-box"></span>
-                  <div class="nb-addon-text-wrap">
-                    <span class="nb-addon-title">Gulab Jamun (3 pcs)</span>
-                    <span class="nb-addon-price">+₹79</span>
-                  </div>
-                </label>
-
-                <!-- Add-on 3: Chilled Coke 250ml -->
-                <label class="nb-addon-item">
-                  <input type="checkbox" class="nb-addon-cb" data-tier="99" data-variant-id="{{ coke_250_variant.id | default: '44087358554186' }}" data-price="29" data-name="Chilled Coke (250ml)" onchange="nbUpdateOfferTotal('99')" />
-                  <span class="nb-addon-custom-box"></span>
-                  <div class="nb-addon-text-wrap">
-                    <span class="nb-addon-title">🥤 Chilled Coke (250ml)</span>
-                    <span class="nb-addon-price">+₹29</span>
-                  </div>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <!-- ACTION BUTTON & TOTAL -->
-          <div class="nb-offer-action-row">
-            {% if is_open %}
-              <button
-                type="button"
-                class="nb-offer-submit-btn nb-offer-submit-btn--dark"
-                id="nb-btn-submit-99"
-                onclick="nbSubmitOfferOrder('99', '{{ trial_variant.id | default: '44087268180042' }}', '₹99 Trial Portion', 99)"
-              >
-                <span class="nb-offer-btn-text">ORDER NOW</span>
-                <span class="nb-offer-btn-price" id="nb-price-tag-99">₹99</span>
-              </button>
-            {% else %}
-              <a href="{{ settings.nb_scheduled_ordering_url | default: '/pages/family-orders' }}" class="nb-offer-submit-btn nb-offer-submit-btn--dark" style="text-decoration: none; text-align: center;">
-                📅 Pre-Order Now (₹99)
-              </a>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-
     </div>
 
     <!-- VALUE COMPARISON SUMMARY BAR -->
     <div class="nb-offers-comparison-bar">
       <div class="nb-comparison-item">
-        <span class="nb-comp-badge">👑 Regular Portion</span>
-        <span class="nb-comp-desc">Full Plate (Larger than Small Portion)</span>
+        <span class="nb-comp-badge">👑 Full Regular Portion</span>
+        <span class="nb-comp-desc">Satisfying Meal for 1 Person</span>
       </div>
       <div class="nb-comparison-divider"></div>
       <div class="nb-comparison-item">
@@ -451,8 +270,8 @@
       </div>
       <div class="nb-comparison-divider"></div>
       <div class="nb-comparison-item">
-        <span class="nb-comp-badge">💰 Save ₹50 on Regular</span>
-        <span class="nb-comp-desc">Special Campaign ₹199 (MRP ₹249)</span>
+        <span class="nb-comp-badge">💰 Special Launch Price</span>
+        <span class="nb-comp-desc">Only ₹199 (MRP ₹249 · Save ₹50)</span>
       </div>
     </div>
 
@@ -461,14 +280,14 @@
 
 <style>
 /* ========================================================
-   NIAMAT BIRYANI — OPTIMIZED COMPACT OFFER SECTION
+   NIAMAT BIRYANI — OPTIMIZED COMPACT ₹199 OFFER SECTION
    ======================================================== */
 .nb-offers-showcase-section {
   padding: 24px 0 16px !important;
   background: transparent;
 }
 .nb-offers-container {
-  max-width: 1060px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 0 12px;
 }
@@ -501,83 +320,9 @@
 .nb-offers-subtitle {
   font-size: 0.85rem;
   color: #7A5C4A;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 580px;
   line-height: 1.4;
-}
-
-/* ========================================================
-   SEGMENTED PORTION TABS (SWITCH OFFERS IN 1 TAP)
-   ======================================================== */
-.nb-portion-tabs-wrap {
-  margin-bottom: 14px;
-}
-.nb-portion-tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  background: #F8F3EA;
-  padding: 5px;
-  border-radius: 16px;
-  border: 1.5px solid rgba(200, 146, 42, 0.25);
-  box-shadow: 0 4px 14px rgba(44, 24, 16, 0.05);
-}
-.nb-portion-tab {
-  background: transparent;
-  border: 1.5px solid transparent;
-  border-radius: 12px;
-  padding: 8px 10px;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-  position: relative;
-  -webkit-tap-highlight-color: transparent;
-}
-.nb-portion-tab:hover {
-  background: rgba(255, 255, 255, 0.6);
-}
-.nb-portion-tab.active {
-  background: #FFFFFF;
-  border-color: #C8922A;
-  box-shadow: 0 4px 16px rgba(200, 146, 42, 0.2);
-}
-.nb-tab-pill-badge {
-  align-self: flex-start;
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  padding: 2px 7px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, #C8922A, #A36B15);
-  color: #FFFFFF;
-  line-height: 1.2;
-}
-.nb-tab-badge--trial {
-  background: #2C1810;
-  color: #F3C669;
-}
-.nb-tab-info {
-  display: flex;
-  flex-direction: column;
-}
-.nb-tab-name {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 0.96rem;
-  font-weight: 800;
-  color: #2C1810;
-  line-height: 1.2;
-}
-.nb-tab-sub {
-  font-size: 0.74rem;
-  font-weight: 700;
-  color: #C8922A;
-}
-.nb-tab-sub del {
-  color: #A89F91;
-  font-weight: 600;
-  margin-left: 2px;
 }
 
 /* ========================================================
@@ -585,30 +330,8 @@
    ======================================================== */
 .nb-offers-grid {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* On Mobile: Only active card is visible */
-@media (max-width: 767px) {
-  .nb-offer-card {
-    display: none;
-  }
-  .nb-offer-card.active {
-    display: block;
-    animation: nbCardFadeIn 0.25s ease-out;
-  }
-}
-
-@keyframes nbCardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  justify-content: center;
+  width: 100%;
 }
 
 /* BASE OFFER CARD */
@@ -619,17 +342,14 @@
   box-shadow: 0 8px 24px -6px rgba(44, 24, 16, 0.08);
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   overflow: hidden;
+  width: 100%;
+  max-width: 680px;
 }
 
 /* FEATURED ₹199 CARD (GOLD EMPHASIS) */
 .nb-offer-card--featured {
   border: 2px solid #C8922A;
   box-shadow: 0 10px 30px -6px rgba(200, 146, 42, 0.22);
-}
-
-/* TRIAL ₹99 CARD */
-.nb-offer-card--trial {
-  border: 1.5px solid rgba(200, 146, 42, 0.28);
 }
 
 /* TOP RIBBON */
@@ -642,10 +362,6 @@
   padding: 5px 14px;
   text-align: center;
   text-transform: uppercase;
-}
-.nb-offer-ribbon--trial {
-  background: linear-gradient(90deg, #2C1810 0%, #4A2E1F 100%);
-  color: #F3C669;
 }
 
 .nb-offer-card-inner {
@@ -682,10 +398,6 @@
   padding: 2px 8px;
   border-radius: 6px;
   margin-bottom: 6px;
-}
-.nb-portion-pill--trial {
-  background: rgba(44, 24, 16, 0.08);
-  color: #5C4033;
 }
 
 .nb-offer-item-title {
@@ -750,18 +462,6 @@
   padding: 3px 6px;
   border-radius: 5px;
   border: 1px solid #A5D6A7;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-}
-.nb-offer-intro-badge {
-  background: rgba(200, 146, 42, 0.12);
-  color: #8C590E;
-  font-size: 0.68rem;
-  font-weight: 800;
-  padding: 3px 6px;
-  border-radius: 5px;
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -970,11 +670,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 14px;
+  padding: 12px 16px;
   border-radius: 11px;
   border: none;
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -985,10 +685,10 @@
   color: #FFFFFF !important;
   box-shadow: 0 4px 16px rgba(200, 146, 42, 0.35);
 }
-.nb-offer-submit-btn--dark {
-  background: linear-gradient(135deg, #2C1810 0%, #1A0D07 100%);
-  color: #F3C669 !important;
-  border: 1px solid rgba(200, 146, 42, 0.4);
+.nb-offer-submit-btn--gold:hover {
+  background: linear-gradient(135deg, #E0AC42 0%, #D49E35 60%, #C8922A 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(200, 146, 42, 0.45);
 }
 .nb-offer-btn-text {
   flex: 1;
@@ -997,9 +697,9 @@
 .nb-offer-btn-price {
   background: #FFFFFF;
   color: #2C1810;
-  padding: 2px 7px;
-  border-radius: 5px;
-  font-size: 0.82rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
   font-weight: 900;
 }
 
@@ -1047,21 +747,10 @@
    ======================================================== */
 @media (min-width: 768px) {
   .nb-offers-showcase-section {
-    padding: 36px 0 24px !important;
-  }
-  .nb-portion-tabs-wrap {
-    display: none; /* Desktop shows both side-by-side */
-  }
-  .nb-offers-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-  }
-  .nb-offer-card {
-    display: block !important;
+    padding: 32px 0 20px !important;
   }
   .nb-offer-card-inner {
-    padding: 20px 18px;
+    padding: 22px 20px;
   }
   .nb-offer-visual {
     width: 110px;
@@ -1083,33 +772,8 @@
 
 <script>
 // ========================================================
-// OFFER SELECTION & ADD-ON BATCH DISPATCH LOGIC
+// OFFER SELECTION & ADD-ON BATCH DISPATCH LOGIC (₹199 ONLY)
 // ========================================================
-
-function nbSwitchOfferTab(tier) {
-  // Update Tab buttons
-  var tabs = document.querySelectorAll('.nb-portion-tab');
-  tabs.forEach(function(btn) {
-    btn.classList.remove('active');
-    btn.setAttribute('aria-selected', 'false');
-  });
-  var activeBtn = document.getElementById('nb-tab-btn-' + tier);
-  if (activeBtn) {
-    activeBtn.classList.add('active');
-    activeBtn.setAttribute('aria-selected', 'true');
-  }
-
-  // Update Cards on mobile
-  var cards = document.querySelectorAll('.nb-offer-card');
-  cards.forEach(function(card) {
-    card.classList.remove('active');
-  });
-  var targetCardId = tier === '199' ? 'offer-regular-199' : 'offer-trial-99';
-  var activeCard = document.getElementById(targetCardId);
-  if (activeCard) {
-    activeCard.classList.add('active');
-  }
-}
 
 function nbToggleAddonPanel(tier) {
   var content = document.getElementById('nb-addon-content-' + tier);
@@ -1126,7 +790,7 @@ function nbToggleAddonPanel(tier) {
 }
 
 function nbUpdateOfferTotal(tier) {
-  var basePrice = tier === '199' ? 199 : 99;
+  var basePrice = 199;
   var checkboxes = document.querySelectorAll('.nb-addon-cb[data-tier="' + tier + '"]:checked');
   var addonSum = 0;
   checkboxes.forEach(function(cb) {
@@ -1149,7 +813,7 @@ async function nbSubmitOfferOrder(tier, mainVariantId, mainTitle, basePrice) {
     {
       id: parseInt(mainVariantId, 10),
       quantity: 1,
-      properties: tier === '199' ? { '_offer': '₹199 Regular Portion', '_portion': 'Regular Portion', 'Free Sweet': '1x Gulab Jamun Included' } : { '_offer': '₹99 Small Portion', '_portion': 'Small Portion' }
+      properties: { '_offer': '₹199 Regular Portion', '_portion': 'Regular Portion', 'Free Sweet': '1x Gulab Jamun Included' }
     }
   ];
 
