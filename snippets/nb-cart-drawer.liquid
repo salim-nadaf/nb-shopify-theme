@@ -234,9 +234,9 @@
         <span>📜</span> <strong>Store Delivery Policy</strong>
       </div>
       <ul class="nb-policy-list">
-        <li>🚚 <strong>0–5 km (Kalyan / Nearby)</strong>: ₹49 Delivery · <strong>FREE</strong> > ₹799</li>
-        <li>🚀 <strong>5–8 km (Extended Zone)</strong>: ₹89 Delivery · <strong>FREE</strong> > ₹1,299</li>
-        <li>⛔ <strong>> 8 km</strong>: Outside direct delivery radius</li>
+        <li>🚚 <strong>0–5 km (Kalyan / Nearby)</strong>: ₹49 · <strong>FREE</strong> above ₹799</li>
+        <li>🚀 <strong>5–8 km (Extended Zone)</strong>: ₹89 · <strong>FREE</strong> above ₹1,299</li>
+        <li>📍 <em>Calculated on final checkout after entering your pincode.</em></li>
       </ul>
     </div>
 
@@ -264,7 +264,7 @@
       </div>
       <div class="nb-summary-row">
         <span>Delivery</span>
-        <span id="nb-delivery-val" class="nb-delivery-highlight">₹0</span>
+        <span id="nb-delivery-val" class="nb-delivery-highlight" style="font-size: 0.8rem; font-weight: 700; text-align: right;">Calculated at checkout</span>
       </div>
       <div class="nb-summary-row nb-total-row">
         <span>TOTAL</span>
@@ -1083,7 +1083,7 @@ function nbRenderCart(cart) {
     ].join('');
 
     subtotalEl.textContent = '₹0';
-    deliveryEl.textContent = '₹0';
+    deliveryEl.textContent = 'Calculated at checkout';
     grandTotalEl.textContent = '₹0';
     if (btnTotalEl) btnTotalEl.textContent = '₹0';
     if (btnTextEl) btnTextEl.textContent = 'Proceed to Checkout';
@@ -1122,7 +1122,7 @@ function nbRenderCart(cart) {
     } else {
       var neededAmount = targetThreshold - subtotalRupees;
       var fillPct = Math.min(100, Math.round((subtotalRupees / targetThreshold) * 100));
-      itemsFdText.innerHTML = 'Add <strong>₹' + neededAmount + '</strong> more for <strong style="color:#C8922A;">FREE Delivery</strong> (Free above ₹' + targetThreshold + ' · ₹49 below ₹' + targetThreshold + ')';
+      itemsFdText.innerHTML = 'Add <strong>₹' + neededAmount + '</strong> more for <strong style="color:#C8922A;">FREE Delivery</strong> (Free above ₹' + targetThreshold + ')';
       itemsFdFill.style.width = fillPct + '%';
       itemsFdFill.style.background = 'linear-gradient(90deg, #D49E35 0%, #C8922A 100%)';
     }
@@ -1131,16 +1131,16 @@ function nbRenderCart(cart) {
   // DELIVERY STATUS IN CART SUMMARY
   if (subtotalRupees >= targetThreshold) {
     deliveryEl.textContent = 'FREE 🎉';
-    deliveryEl.style.color = '#25D366';
+    deliveryEl.style.color = '#2E7D32';
     progressFillEl.style.width = '100%';
     progressMsgEl.innerHTML = '🎉 You\'ve unlocked <strong>FREE DELIVERY</strong>!';
   } else {
     var needed = targetThreshold - subtotalRupees;
     var pct = Math.min(100, Math.round((subtotalRupees / targetThreshold) * 100));
-    deliveryEl.textContent = '₹49 (Within 5 km)';
-    deliveryEl.style.color = '#C8922A';
+    deliveryEl.textContent = 'Calculated at checkout (by pincode)';
+    deliveryEl.style.color = '#8C590E';
     progressFillEl.style.width = pct + '%';
-    progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed + '</strong> more for <strong>FREE DELIVERY</strong> (Orders below ₹' + targetThreshold + ' are ₹49)';
+    progressMsgEl.innerHTML = '🚚 Add <strong>₹' + needed + '</strong> more for <strong>FREE DELIVERY</strong> (Free above ₹' + targetThreshold + ')';
   }
 
   if (checkoutBtn) {
